@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s http://localhost:5174/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5174/)",
+      "Bash(npx tsc *)",
+      "WebSearch",
+      "Bash(npx vite *)",
+      "mcp__Desktop_Commander__read_file",
+      "Bash(powershell \"Get-ChildItem -Recurse -Include '*.tsx','*.ts' | Sort-Object LastWriteTime -Descending | Select-Object -First 15 | Format-Table LastWriteTime, Name -AutoSize\")",
+      "Bash(python -c ' *)",
+      "mcp__Desktop_Commander__list_directory",
+      "Bash(npx vitest *)",
+      "Bash(node -e \"const fs=require\\('fs'\\);const content=fs.readFileSync\\('src/pages/TodayPage.tsx','utf8'\\);const lines=content.split\\('\\\\n'\\);for\\(let i=258;i<280;i++\\){const line=lines[i];for\\(let j=0;j<line.length;j++\\){const cp=line.charCodeAt\\(j\\);if\\(cp>127\\){console.log\\('Line '+\\(i+1\\)+' col '+\\(j+1\\)+' char:',cp.toString\\(16\\),String.fromCharCode\\(cp\\)\\);}}}\")"
+    ]
+  }
+}

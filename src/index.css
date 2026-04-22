@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-brand-50:  oklch(0.98 0.02 150);
+  --color-brand-100: oklch(0.95 0.04 150);
+  --color-brand-200: oklch(0.88 0.08 150);
+  --color-brand-300: oklch(0.78 0.12 150);
+  --color-brand-400: oklch(0.68 0.14 150);
+  --color-brand-500: oklch(0.58 0.15 150);
+  --color-brand-600: oklch(0.50 0.14 150);
+  --color-brand-700: oklch(0.42 0.12 150);
+  --color-brand-800: oklch(0.34 0.09 150);
+  --color-brand-900: oklch(0.26 0.06 150);
+
+  --color-accent:  oklch(0.55 0.12 155);
+  --color-danger:  oklch(0.50 0.22 25);
+  --color-warn:    oklch(0.52 0.10 55);
+  --color-ok:      oklch(0.55 0.14 155);
+}
+
+html {
+  height: 100%;
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  height: 100%;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  background: var(--app-bg);
+  color: var(--app-fg);
+}
+
+#root {
+  height: 100%;
+  min-height: 100dvh;
+}
+
+/* ── Light palette — earthy cargo, green + brown ── */
+:root {
+  --app-bg:        #F6F7FB;
+  --app-fg:        #121826;
+  --app-muted:     #566075;
+  --app-border:    #DFE4F0;
+  --app-card:      #FFFFFF;
+  --app-elevated:  #F1F4FA;
+  --workspace-bg:  #EEF2F9;
+
+  /* Sidebar */
+  --shell-sidebar-bg:      #FFFFFF;
+  --shell-sidebar-border:  #DFE4F0;
+  --shell-sidebar-fg:      #121826;
+  --shell-sidebar-muted:   #566075;
+  --shell-nav-active-bg:   #E8EDFA;
+  --shell-nav-active-fg:   #2846B8;
+  --shell-nav-hover-bg:    rgba(40, 70, 184, 0.07);
+
+  /* Top bar */
+  --shell-top-bg:      rgba(246, 247, 251, 0.97);
+  --shell-top-border:  #DFE4F0;
+  --shell-top-fg:      #121826;
+  --shell-top-muted:   #566075;
+  --shell-search-bg:   #EFF3FB;
+
+  /* Semantic warning — brown, not amber */
+  --warn-bg:     #FFF6E7;
+  --warn-fg:     #8A5A02;
+  --warn-border: #EAC073;
+  --warn-accent: #A86B00;
+}
+
+/* Selected route polyline glow */
+.leaflet-overlay-pane svg path.route-plan-polyline-selected {
+  filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 1px currentColor);
+}
+
+.leaflet-container {
+  font-family: inherit;
+}
+
+.leaflet-pane,
+.leaflet-top,
+.leaflet-bottom {
+  z-index: 20 !important;
+}
+
+/* Form input base */
+.input-base {
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid var(--app-border);
+  background: var(--app-card);
+  color: var(--app-fg);
+  font-size: 12px;
+  padding: 8px 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input-base:focus {
+  border-color: #2846B8;
+}
+.input-base::placeholder {
+  color: var(--app-muted);
+}
+
+/* Scrollbar */
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--app-border);
+  border-radius: 4px;
+}
+
+/* ── Load Planning Studio ── */
+.lp-studio {
+  --lp-bg:           #FAFAF7;
+  --lp-surface:      #FFFFFF;
+  --lp-surface-alt:  #F5F3EE;
+  --lp-border:       #E2DED6;
+  --lp-border-strong:#D0CCC4;
+  --lp-fg:           #1A1A1A;
+  --lp-fg-muted:     #5C5754;
+  --lp-fg-subtle:    #8A8784;
+
+  --lp-green:        #2D5F4E;
+  --lp-green-hover:  #1F4538;
+  --lp-green-soft:   #E8F0EC;
+  --lp-green-ink:    #1F4538;
+
+  --lp-brown:        #8B6F47;
+  --lp-brown-soft:   #F2EBE0;
+  --lp-brown-ink:    #5C4A30;
+  --lp-sand:         #D4B896;
+  --lp-sand-soft:    #F7EFDF;
+
+  --lp-amber:        #8B6F47;
+  --lp-amber-soft:   #F2EBE0;
+  --lp-rust:         #A84432;
+  --lp-rust-soft:    #F6E3DE;
+
+  --lp-cargo-dry:    #8B6F47;
+  --lp-cargo-reefer: #5F8A7D;
+  --lp-cargo-hazmat: #A84432;
+  --lp-cargo-auto:   #6B7A52;
+  --lp-cargo-bulk:   #7A6B8A;
+
+  color: var(--lp-fg);
+  background: var(--lp-bg);
+}
+
+.lp-studio .lp-grain {
+  background-image:
+    radial-gradient(ellipse 80% 40% at 50% -10%, rgba(45,95,78,0.06), transparent 55%),
+    radial-gradient(ellipse 60% 30% at 90% 0%, rgba(139,111,71,0.05), transparent 50%);
+}
+
+.lp-studio .lp-paper {
+  background: var(--lp-surface);
+  box-shadow:
+    0 1px 2px rgba(26,26,26,0.03),
+    0 1px 3px rgba(26,26,26,0.04);
+}
+
+.lp-studio .lp-road {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--lp-border-strong) 0 16px,
+    transparent 16px 32px
+  );
+}
+
+@keyframes lp-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+.lp-pulse {
+  animation: lp-pulse 1.6s ease-in-out infinite;
+}
+
+/* Page canvas — warm earthy glow */
+.page-canvas {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.80 0.08 85 / 0.20), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, oklch(0.75 0.06 55 / 0.10), transparent 45%);
+}
+
+/* Premium grid — subtle brown ruling lines */
+.premium-grid {
+  background-image:
+    linear-gradient(to right,  rgba(40,70,184,0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(40,70,184,0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+.brand-hero {
+  background-image:
+    radial-gradient(ellipse 65% 55% at 10% 0%, rgba(89, 114, 255, 0.16), transparent 60%),
+    radial-gradient(ellipse 55% 50% at 95% 5%, rgba(49, 130, 246, 0.12), transparent 56%);
+}
+
+.btn-brand {
+  background: linear-gradient(135deg, #2d4dd8 0%, #2846b8 100%);
+  box-shadow: 0 10px 24px rgba(45, 77, 216, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.btn-brand:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(45, 77, 216, 0.28);
+  filter: brightness(1.02);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid #2d4dd8;
+  outline-offset: 2px;
+}
+
+/* ── Overview sidebar full-height on lg ── */
+@media (min-width: 1024px) {
+  .overview-jobs-sidebar {
+    width: 320px !important;
+    max-height: none !important;
+    border-top: none !important;
+    border-left: 1px solid var(--app-border) !important;
+  }
+}
