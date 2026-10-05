@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:messageContainer xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:d2="http://datex2.eu/schema/3/d2Payload" xmlns:com="http://datex2.eu/schema/3/common" xmlns:par="http://datex2.eu/schema/3/parking" xmlns:loc="http://datex2.eu/schema/3/locationReferencing" xmlns:con="http://datex2.eu/schema/3/messageContainer" xmlns:ex="http://datex2.eu/schema/3/exchangeInformation" xmlns:cis="http://datex2.eu/schema/3/cisInformation" xmlns:inf="http://datex2.eu/schema/3/informationManagement" xmlns:sit="http://datex2.eu/schema/3/situation" modelBaseVersion="3" extensionName="Exchange 2018" extensionVersion="1">
+  <con:payload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" lang="pt" modelBaseVersion="3" xsi:type="sit:SituationPublication">
+    <com:publicationTime>2026-09-04T10:55:21.335428</com:publicationTime>
+    <com:publicationCreator>
+      <com:country>pt</com:country>
+      <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+    </com:publicationCreator>
+  </con:payload>
+  <con:exchangeInformation modelBaseVersion="3" extensionName="Exchange 2018" extensionVersion="1">
+    <ex:messageType>payloadDelivery</ex:messageType>
+    <ex:exchangeContext>
+      <ex:codedExchangeProtocol>snapshotPull</ex:codedExchangeProtocol>
+      <ex:exchangeSpecificationVersion>2020</ex:exchangeSpecificationVersion>
+      <ex:supplierOrCisRequester>
+        <ex:address>Praça General Humberto Delgado, 5º Piso - 4049-001 Porto</ex:address>
+        <ex:name>DMGM - Câmara Municipal do Porto</ex:name>
+        <ex:internationalIdentifier>
+          <com:country>pt</com:country>
+          <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+        </ex:internationalIdentifier>
+      </ex:supplierOrCisRequester>
+    </ex:exchangeContext>
+    <ex:dynamicInformation>
+      <ex:exchangeStatus>online</ex:exchangeStatus>
+      <ex:messageGenerationTimestamp>2026-09-04T10:55:21.335428</ex:messageGenerationTimestamp>
+    </ex:dynamicInformation>
+  </con:exchangeInformation>
+</con:messageContainer>

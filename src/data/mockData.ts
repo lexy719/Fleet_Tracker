@@ -1,17 +1,13 @@
-import type {
-  CargoItem,
-  Driver,
-  FuelMetrics,
-  FuelReading,
-  Job,
-  MaintenanceItem,
-  OpsAlert,
-  Route,
-  Truck,
-  TruckingJobRow,
-  VehicleTrailEvent,
-} from "./types";
-import { demoDate, demoDateOnly, demoTimeLabel } from "../lib/demoTime";
+import type { Customer, Driver, Job, LegacyDriver, LegacyJob, LegacyTruck, Site, Trailer, Truck } from "./types";
+import { DEMO_NOW, demoDate, demoDateOnly } from "../lib/demoTime";
+import { demoTrailers as buildDemoTrailers, legacyDriverToDriver, legacyJobToJob, legacyTruckToTruck } from "../domain/demo/legacy";
+
+/*
+ * DEMO SEED SOURCE ONLY (Phase 5). FleetOS reads jobs, trucks, trailers and drivers from the
+ * operational store (IndexedDB "fleetos-operations"). These records are written there ONCE
+ * by the deliberate demo seed (and again only on an explicit "repor dados demo"). No UI
+ * component imports operational records from this file.
+ */
 
 /* ─── Iberian coordinate anchors ────────────────────── */
 const T = {
@@ -32,19 +28,10 @@ const T = {
   faro:      [37.0194, -7.9304] as [number, number],
 };
 
-function lerp(a: [number, number], b: [number, number], steps: number): [number, number][] {
-  const out: [number, number][] = [];
-  for (let i = 0; i <= steps; i++) {
-    const t = i / steps;
-    out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]);
-  }
-  return out;
-}
-
 /* ══════════════════════════════════════════════════════
    TRUCKS
    ══════════════════════════════════════════════════════ */
-export const trucks: Truck[] = [
+const legacyTrucks: LegacyTruck[] = [
   {
     id: "t1", name: "Volvo FH 500",              plate: "23-AB-45",
     model: "Volvo FH 500 Globetrotter XL",        yearManuf: 2021, odometerKm: 412_800,
@@ -125,12 +112,29 @@ export const trucks: Truck[] = [
     routeId: "r2", driverId: "d7",
     fuelPct: 29, maxWeightKg: 26_000, currentWeightKg: 19_200, cargoSlots: 4, maxSlots: 5,
   },
+  /*
+   * DEMO VEHICLE — explicit test values for the VCI compliance slice (not a real vehicle).
+   * Regulatory attributes are set by hand so the rule can be evaluated deterministically.
+   */
+  {
+    id: "t-demo-vci", name: "DEMO · Trator VCI",     plate: "DEMO-VCI",
+    model: "Viatura de demonstração (dados de teste)", yearManuf: 2024, odometerKm: 0,
+    bodyType: "curtainsider",
+    status: "idle", lat: 41.1850, lng: -8.6960, headingDeg: 0,
+    routeId: null, driverId: null,
+    fuelPct: 90, maxWeightKg: 26_000, currentWeightKg: 0, cargoSlots: 0, maxSlots: 6,
+    isDemo: true,
+    grossVehicleWeightKg: 40_000,
+    axleCount: 5,
+    firstAxleHeightM: 1.35,
+    ownerCategory: "private",
+  },
 ];
 
 /* ══════════════════════════════════════════════════════
    DRIVERS
    ══════════════════════════════════════════════════════ */
-export const drivers: Driver[] = [
+const legacyDrivers: LegacyDriver[] = [
   {
     id: "d1", name: "João Silva",
     phone: "+351 912 440 218", license: "C+E · ADR · Cisternas",
@@ -259,43 +263,9 @@ export const drivers: Driver[] = [
 ];
 
 /* ══════════════════════════════════════════════════════
-   ROUTES
-   ══════════════════════════════════════════════════════ */
-export const routes: Route[] = [
-  {
-    id: "r1", name: "FAR → BAD · via Évora",
-    origin: "Faro — Plataforma Algarve",
-    destination: "Badajoz · Polígono El Nevero (ES)",
-    truckId: "t9", driverId: "d6",
-    distanceKm: 382, progressPct: 31,
-    status: "active", etaDestination: "21:30", delayMin: 0,
-    polyline: [...lerp(T.faro, T.evora, 12), ...lerp(T.evora, T.badajoz, 10)],
-    stops: [
-      { id: "s13", name: "Faro — Plataforma", lat: T.faro[0], lng: T.faro[1], eta: "12:00", plannedEta: "12:00", delayMin: 0, type: "pickup" },
-      { id: "s14", name: "Évora — Transferência", lat: T.evora[0], lng: T.evora[1], eta: "15:30", plannedEta: "15:30", delayMin: 0, type: "delivery", windowStart: "15:00", windowEnd: "17:00" },
-      { id: "s15", name: "Badajoz · El Nevero", lat: T.badajoz[0], lng: T.badajoz[1], eta: "21:30", plannedEta: "21:30", delayMin: 0, type: "delivery" },
-    ],
-  },
-  {
-    id: "r2", name: "LIS → MAD · A6/E90",
-    origin: "Lisboa — Bobadela",
-    destination: "Madrid · Corredor Henares (ES)",
-    truckId: "t10", driverId: "d7",
-    distanceKm: 624, progressPct: 67,
-    status: "delayed", etaDestination: "23:45", delayMin: 35,
-    polyline: [...lerp(T.lisbon, T.badajoz, 14), ...lerp(T.badajoz, T.madrid, 16)],
-    stops: [
-      { id: "s16", name: "Bobadela — Armazém B", lat: T.lisbon[0], lng: T.lisbon[1], eta: "05:30", plannedEta: "05:30", delayMin: 0, type: "pickup" },
-      { id: "s17", name: "Badajoz · Gasolinera Repsol", lat: T.badajoz[0], lng: T.badajoz[1], eta: "12:00", plannedEta: "11:25", delayMin: 35, type: "fuel" },
-      { id: "s18", name: "Madrid · Corredor Henares", lat: T.madrid[0], lng: T.madrid[1], eta: "23:45", plannedEta: "23:10", delayMin: 35, type: "delivery", windowStart: "22:00", windowEnd: "01:00" },
-    ],
-  },
-];
-
-/* ══════════════════════════════════════════════════════
    JOBS — all dates shifted to feel like today
    ══════════════════════════════════════════════════════ */
-export const jobs: Job[] = [
+const legacyJobs: LegacyJob[] = [
   /* ── BACKLOG ── */
   {
     id: "J-4201",
@@ -500,121 +470,196 @@ export const jobs: Job[] = [
     rateEur: 720,
     createdAt: demoDate("2026-04-14T15:00:00"),
   },
+  /*
+   * DEMO JOB — through-trip Matosinhos → Espinho for the VCI compliance slice.
+   * Municipalities and authorization state are EXPLICIT demo values (not inferred).
+   */
+  {
+    id: "J-DEMO-VCI",
+    reference: "DEMO-VCI-0001",
+    client: "DEMO — teste VCI (dados fictícios)",
+    status: "backlog",
+    priority: "normal",
+    cargoType: "dry",
+    totalWeightKg: 18_000,
+    totalPallets: 24,
+    stops: [
+      { id: "jdemo-s1", sequence: 1, type: "pickup", clientName: "DEMO — Porto de Leixões", address: "Porto de Leixões (demo)", city: "Matosinhos", municipality: "Matosinhos", lat: 41.1850, lng: -8.6960, scheduledTime: "08:00", windowEnd: "18:00", cargoDescription: "Carga geral (demo)", weightKg: 18_000, pallets: 24, completed: false },
+      { id: "jdemo-s2", sequence: 2, type: "delivery", clientName: "DEMO — Espinho", address: "Espinho (demo)", city: "Espinho", municipality: "Espinho", lat: 41.0070, lng: -8.6410, scheduledTime: "09:00", windowEnd: "20:00", cargoDescription: "Carga geral (demo)", weightKg: 18_000, pallets: 24, completed: false },
+    ],
+    pickupDeadline:   demoDate("2026-04-17T18:00:00"),
+    deliveryDeadline: demoDate("2026-04-17T20:00:00"),
+    slaStatus: "on_track",
+    rateEur: 0,
+    createdAt: demoDate("2026-04-16T12:00:00"),
+    notes: "Trabalho de demonstração para o teste de conformidade VCI — não é um transporte real.",
+    isDemo: true,
+    recordedFacts: {
+      "authorization.pt-vci-habilitacao": { value: false, source: "registo do trabalho: sem habilitação VCI" },
+      "authorization.pt-imt-aet": { value: false, source: "registo do trabalho: sem autorização especial IMT" },
+    },
+  },
+  /*
+   * DEMO JOB — planned night run Coimbra → Viseu for the road-event slice (IP3 night closures).
+   * The planned departure is a REAL date (not demo-shifted) so it can meet the real event.
+   */
+  {
+    id: "J-DEMO-IP3",
+    reference: "DEMO-IP3-0001",
+    client: "DEMO — teste corte IP3 (dados fictícios)",
+    status: "backlog",
+    priority: "normal",
+    cargoType: "dry",
+    totalWeightKg: 14_000,
+    totalPallets: 20,
+    stops: [
+      { id: "jip3-s1", sequence: 1, type: "pickup", clientName: "DEMO — Coimbra", address: "Coimbra (demo)", city: "Coimbra", municipality: "Coimbra", lat: 40.2115, lng: -8.4292, scheduledTime: "21:00", windowEnd: "21:30", windowStartAt: "2026-10-01T21:00:00+01:00", windowEndAt: "2026-10-01T21:30:00+01:00", cargoDescription: "Carga geral (demo)", weightKg: 14_000, pallets: 20, completed: false },
+      { id: "jip3-s2", sequence: 2, type: "delivery", clientName: "DEMO — Viseu", address: "Viseu (demo)", city: "Viseu", municipality: "Viseu", lat: 40.6566, lng: -7.9125, scheduledTime: "21:30", windowEnd: "23:30", windowStartAt: "2026-10-01T21:30:00+01:00", windowEndAt: "2026-10-01T23:30:00+01:00", cargoDescription: "Carga geral (demo)", weightKg: 14_000, pallets: 20, completed: false },
+    ],
+    pickupDeadline:   "2026-10-01T20:30:00",
+    deliveryDeadline: "2026-10-01T22:30:00",
+    slaStatus: "on_track",
+    rateEur: 0,
+    createdAt: demoDate("2026-04-16T12:00:00"),
+    notes: "Trabalho de demonstração para o teste de eventos rodoviários (IP3) — não é um transporte real.",
+    isDemo: true,
+    plannedDepartureAt: "2026-10-01T20:15:00.000Z",
+  },
+  {
+    id: "J-DEMO-3C",
+    reference: "DEMO-3C-0001",
+    client: "DEMO — rota limpa Road Intelligence (dados fictícios)",
+    status: "backlog",
+    priority: "normal",
+    cargoType: "dry",
+    totalWeightKg: 24_000,
+    totalPallets: 33,
+    stops: [
+      { id: "j3c-s1", sequence: 1, type: "pickup", clientName: "DEMO — Vieira do Minho", address: "Vieira do Minho (demo)", city: "Vieira do Minho", municipality: "Vieira do Minho", lat: 41.6352, lng: -8.1431, scheduledTime: "06:00", windowEnd: "06:30", windowStartAt: "2026-10-06T06:00:00+01:00", windowEndAt: "2026-10-06T06:30:00+01:00", cargoDescription: "Carga geral (demo)", weightKg: 24_000, pallets: 33, completed: false },
+      { id: "j3c-s2", sequence: 2, type: "delivery", clientName: "DEMO — Faro", address: "Faro (demo)", city: "Faro", municipality: "Faro", lat: 37.0355, lng: -7.918, scheduledTime: "14:00", windowEnd: "18:00", windowStartAt: "2026-10-06T14:00:00+01:00", windowEndAt: "2026-10-06T18:00:00+01:00", cargoDescription: "Carga geral (demo)", weightKg: 24_000, pallets: 33, completed: false },
+    ],
+    pickupDeadline:   "2026-10-06T06:30:00",
+    deliveryDeadline: "2026-10-06T18:00:00",
+    slaStatus: "on_track",
+    rateEur: 0,
+    createdAt: demoDate("2026-04-16T12:00:00"),
+    notes: "Trabalho de demonstração da Fase 3C (descoberta + rota limpa) — não é um transporte real.",
+    isDemo: true,
+    plannedDepartureAt: "2026-10-06T05:00:00.000Z",
+  },
+  {
+    id: "J-DEMO-PL",
+    reference: "DEMO-PL-0001",
+    client: "DEMO — aceitação Road Intelligence 3C.5 (dados fictícios)",
+    status: "backlog",
+    priority: "normal",
+    cargoType: "dry",
+    totalWeightKg: 24_000,
+    totalPallets: 33,
+    stops: [
+      { id: "jpl-s1", sequence: 1, type: "pickup", clientName: "DEMO — Porto", address: "Porto (demo)", city: "Porto", municipality: "Porto", lat: 41.1496, lng: -8.6109, scheduledTime: "06:00", windowEnd: "06:30", windowStartAt: "2026-10-06T06:00:00+01:00", windowEndAt: "2026-10-06T06:30:00+01:00", cargoDescription: "Carga geral (demo)", weightKg: 24_000, pallets: 33, completed: false },
+      { id: "jpl-s2", sequence: 2, type: "delivery", clientName: "DEMO — Lisboa", address: "Lisboa (demo)", city: "Lisboa", municipality: "Lisboa", lat: 38.7223, lng: -9.1393, scheduledTime: "10:00", windowEnd: "14:00", windowStartAt: "2026-10-06T10:00:00+01:00", windowEndAt: "2026-10-06T14:00:00+01:00", cargoDescription: "Carga geral (demo)", weightKg: 24_000, pallets: 33, completed: false },
+    ],
+    pickupDeadline:   "2026-10-06T06:30:00",
+    deliveryDeadline: "2026-10-06T14:00:00",
+    slaStatus: "on_track",
+    rateEur: 0,
+    createdAt: demoDate("2026-04-16T12:00:00"),
+    notes: "Trabalho de demonstração da Fase 3C.5 (tortura com rotas reais) — não é um transporte real.",
+    isDemo: true,
+    plannedDepartureAt: "2026-10-06T05:00:00.000Z",
+  },
+  {
+    id: "J-DEMO-BF",
+    reference: "DEMO-BF-0001",
+    client: "DEMO — aceitação Road Intelligence 3C.5 (dados fictícios)",
+    status: "backlog",
+    priority: "normal",
+    cargoType: "dry",
+    totalWeightKg: 24_000,
+    totalPallets: 33,
+    stops: [
+      { id: "jbf-s1", sequence: 1, type: "pickup", clientName: "DEMO — Bragança", address: "Bragança (demo)", city: "Bragança", municipality: "Bragança", lat: 41.8061, lng: -6.7567, scheduledTime: "06:00", windowEnd: "06:30", windowStartAt: "2026-10-06T06:00:00+01:00", windowEndAt: "2026-10-06T06:30:00+01:00", cargoDescription: "Carga geral (demo)", weightKg: 24_000, pallets: 33, completed: false },
+      { id: "jbf-s2", sequence: 2, type: "delivery", clientName: "DEMO — Faro", address: "Faro (demo)", city: "Faro", municipality: "Faro", lat: 37.0355, lng: -7.918, scheduledTime: "14:00", windowEnd: "20:00", windowStartAt: "2026-10-06T14:00:00+01:00", windowEndAt: "2026-10-06T20:00:00+01:00", cargoDescription: "Carga geral (demo)", weightKg: 24_000, pallets: 33, completed: false },
+    ],
+    pickupDeadline:   "2026-10-06T06:30:00",
+    deliveryDeadline: "2026-10-06T20:00:00",
+    slaStatus: "on_track",
+    rateEur: 0,
+    createdAt: demoDate("2026-04-16T12:00:00"),
+    notes: "Trabalho de demonstração da Fase 3C.5 (tortura com rotas reais) — não é um transporte real.",
+    isDemo: true,
+    plannedDepartureAt: "2026-10-06T05:00:00.000Z",
+  },
+  {
+    id: "J-DEMO-SB",
+    reference: "DEMO-SB-0001",
+    client: "DEMO — aceitação Road Intelligence 3C.5 (dados fictícios)",
+    status: "backlog",
+    priority: "normal",
+    cargoType: "dry",
+    totalWeightKg: 24_000,
+    totalPallets: 33,
+    stops: [
+      { id: "jsb-s1", sequence: 1, type: "pickup", clientName: "DEMO — Sines", address: "Sines (demo)", city: "Sines", municipality: "Sines", lat: 37.9561, lng: -8.8698, scheduledTime: "06:00", windowEnd: "06:30", windowStartAt: "2026-10-06T06:00:00+01:00", windowEndAt: "2026-10-06T06:30:00+01:00", cargoDescription: "Carga geral (demo)", weightKg: 24_000, pallets: 33, completed: false },
+      { id: "jsb-s2", sequence: 2, type: "delivery", clientName: "DEMO — Braga", address: "Braga (demo)", city: "Braga", municipality: "Braga", lat: 41.5454, lng: -8.4265, scheduledTime: "12:00", windowEnd: "18:00", windowStartAt: "2026-10-06T12:00:00+01:00", windowEndAt: "2026-10-06T18:00:00+01:00", cargoDescription: "Carga geral (demo)", weightKg: 24_000, pallets: 33, completed: false },
+    ],
+    pickupDeadline:   "2026-10-06T06:30:00",
+    deliveryDeadline: "2026-10-06T18:00:00",
+    slaStatus: "on_track",
+    rateEur: 0,
+    createdAt: demoDate("2026-04-16T12:00:00"),
+    notes: "Trabalho de demonstração da Fase 3C.5 (tortura com rotas reais) — não é um transporte real.",
+    isDemo: true,
+    plannedDepartureAt: "2026-10-06T05:00:00.000Z",
+  },
 ];
 
 /* ══════════════════════════════════════════════════════
-   MAINTENANCE RECORDS
+   DEMO SEED — converted to the persistent record shapes
    ══════════════════════════════════════════════════════ */
-export const maintenanceItems: MaintenanceItem[] = [
-  { id: "m1",  truckId: "t1",  type: "service_oil", label: "Revisão óleo + filtros",              dueDate: demoDateOnly("2026-05-20"), lastDoneDate: demoDateOnly("2025-11-18"), status: "ok",       estimatedCostEur: 380 },
-  { id: "m2",  truckId: "t1",  type: "tacho_cal",   label: "Calibração tacógrafo",                dueDate: demoDateOnly("2026-08-14"), lastDoneDate: demoDateOnly("2024-08-14"), status: "ok",       estimatedCostEur: 220 },
-  { id: "m3",  truckId: "t2",  type: "itp",         label: "ITP — Inspeção Técnica Periódica",    dueDate: demoDateOnly("2026-04-28"), status: "due_soon", estimatedCostEur: 180, notes: "Agendar oficina Braga com urgência" },
-  { id: "m4",  truckId: "t2",  type: "tires",       label: "Pneus traseiros",                     dueDate: demoDateOnly("2026-06-01"), lastDoneDate: demoDateOnly("2024-12-10"), status: "ok",       estimatedCostEur: 1_200 },
-  { id: "m5",  truckId: "t3",  type: "service_oil", label: "Revisão óleo + filtros",              dueDate: demoDateOnly("2026-04-25"), lastDoneDate: demoDateOnly("2025-10-22"), status: "due_soon", estimatedCostEur: 420, notes: "Acima dos 300k km — prioritário" },
-  { id: "m6",  truckId: "t3",  type: "itp",         label: "ITP — Inspeção Técnica Periódica",    dueDate: demoDateOnly("2026-07-12"), status: "ok",       estimatedCostEur: 180 },
-  { id: "m7",  truckId: "t4",  type: "service_oil", label: "Revisão 10.000 km",                   dueDate: demoDateOnly("2026-09-14"), lastDoneDate: demoDateOnly("2026-03-14"), status: "ok",       estimatedCostEur: 350 },
-  { id: "m8",  truckId: "t5",  type: "itp",         label: "ITP — Inspeção Técnica Periódica",    dueDate: demoDateOnly("2026-10-08"), lastDoneDate: demoDateOnly("2024-10-08"), status: "ok",       estimatedCostEur: 180 },
-  { id: "m9",  truckId: "t6",  type: "service_oil", label: "Revisão avançada (manutenção ativa)", dueDate: demoDateOnly("2026-04-17"), lastDoneDate: demoDateOnly("2025-04-12"), status: "overdue",  estimatedCostEur: 850, notes: "Veículo em manutenção — substituição bomba combustível" },
-  { id: "m10", truckId: "t6",  type: "tires",       label: "Pneus completos — desgaste irregular",dueDate: demoDateOnly("2026-04-22"), lastDoneDate: demoDateOnly("2023-09-01"), status: "due_soon", estimatedCostEur: 2_400 },
-  { id: "m11", truckId: "t7",  type: "tacho_cal",   label: "Calibração tacógrafo",                dueDate: demoDateOnly("2026-05-02"), lastDoneDate: demoDateOnly("2024-05-02"), status: "due_soon", estimatedCostEur: 220, notes: "Prazo legal — agendar antes de fim do mês" },
-  { id: "m12", truckId: "t8",  type: "itp",         label: "ITP — Inspeção Técnica Periódica",    dueDate: demoDateOnly("2026-11-20"), lastDoneDate: demoDateOnly("2024-11-20"), status: "ok",       estimatedCostEur: 180 },
-  { id: "m13", truckId: "t9",  type: "service_oil", label: "Revisão 30.000 km",                   dueDate: demoDateOnly("2026-06-18"), lastDoneDate: demoDateOnly("2025-12-18"), status: "ok",       estimatedCostEur: 360 },
-  { id: "m14", truckId: "t10", type: "itp",         label: "ITP — Inspeção Técnica Periódica",    dueDate: demoDateOnly("2026-04-10"), lastDoneDate: demoDateOnly("2024-04-10"), status: "overdue",  estimatedCostEur: 180, notes: "VENCIDA — veículo não pode circular — AGENDAR URGENTE" },
-  { id: "m15", truckId: "t10", type: "tires",       label: "Pneus dianteiros",                    dueDate: demoDateOnly("2026-05-15"), status: "due_soon", estimatedCostEur: 900 },
-];
 
-/* ══════════════════════════════════════════════════════
-   CARGO (Load Planning)
-   ══════════════════════════════════════════════════════ */
-export const initialCargoByTruck: Record<string, CargoItem[]> = {
-  t1: [], t2: [], t3: [], t4: [], t5: [],
-  t6: [],
-  t7: [
-    { id: "c13", sku: "FRU-2201", label: "Polpa de fruta — exportação ES", weightKg: 18_600, type: "refrigerated", destination: "Madrid Dole", loadStatus: "pending" },
-  ],
-  t8: [],
-  t9: [
-    { id: "c14", sku: "FRU-2188", label: "Sumos NFC — Frulact Faro", weightKg: 24_800, type: "refrigerated", destination: "Badajoz Mercadona", loadStatus: "secured" },
-  ],
-  t10: [
-    { id: "c15", sku: "MAK-7710", label: "HoReCa mix — alimentares", weightKg: 12_000, type: "dry", destination: "Madrid Makro", loadStatus: "secured" },
-    { id: "c16", sku: "MAK-7711", label: "HoReCa — não alimentares", weightKg: 7_200, type: "dry", destination: "Madrid Makro", loadStatus: "secured" },
-  ],
-};
+/** Seed timestamp: demo manual measurements (fuel, odometer, driver hours) are "recorded" at seed time. */
+export const DEMO_SEED_AT = DEMO_NOW.toISOString();
 
-export const warehouseStock: CargoItem[] = [
-  { id: "w1", sku: "WH-10001", label: "Equipamento informático — Sonae", weightKg: 1_800, type: "automotive", destination: "Matosinhos CD", loadStatus: "pending" },
-  { id: "w2", sku: "WH-10002", label: "Paletes de fruta — citrinos", weightKg: 9_200, type: "dry", destination: "Vigo ES", loadStatus: "pending" },
-  { id: "w3", sku: "WH-10003", label: "Material de construção — ADR classe 8", weightKg: 2_400, type: "hazmat", destination: "Coimbra CD", loadStatus: "secured" },
-];
+const slug = (s: string) => s.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 48);
 
-/* ══════════════════════════════════════════════════════
-   FUEL
-   ══════════════════════════════════════════════════════ */
-export const fuelReadings: FuelReading[] = [
-  { id: "f1",  truckId: "t1",  date: demoDateOnly("2026-04-15"), liters: 380, costEur: 558, odometerKm: 412_200, lPer100km: 33.2 },
-  { id: "f2",  truckId: "t1",  date: demoDateOnly("2026-04-12"), liters: 410, costEur: 602, odometerKm: 411_780, lPer100km: 34.1 },
-  { id: "f3",  truckId: "t2",  date: demoDateOnly("2026-04-14"), liters: 220, costEur: 323, odometerKm: 198_200, lPer100km: 30.8 },
-  { id: "f4",  truckId: "t3",  date: demoDateOnly("2026-04-15"), liters: 520, costEur: 764, odometerKm: 305_900, lPer100km: 35.4 },
-  { id: "f5",  truckId: "t3",  date: demoDateOnly("2026-04-11"), liters: 480, costEur: 705, odometerKm: 305_420, lPer100km: 34.8 },
-  { id: "f6",  truckId: "t4",  date: demoDateOnly("2026-04-13"), liters: 290, costEur: 426, odometerKm: 120_800, lPer100km: 28.4 },
-  { id: "f7",  truckId: "t5",  date: demoDateOnly("2026-04-15"), liters: 450, costEur: 662, odometerKm: 256_700, lPer100km: 33.1 },
-  { id: "f8",  truckId: "t9",  date: demoDateOnly("2026-04-14"), liters: 410, costEur: 602, odometerKm: 167_200, lPer100km: 32.8 },
-  { id: "f9",  truckId: "t10", date: demoDateOnly("2026-04-15"), liters: 540, costEur: 793, odometerKm: 355_100, lPer100km: 36.1 },
-  { id: "f10", truckId: "t7",  date: demoDateOnly("2026-04-10"), liters: 310, costEur: 455, odometerKm: 203_100, lPer100km: 30.2 },
-];
+/** Demo customers and sites derived deterministically from the demo jobs (stable ids). */
+function demoRecords(jobs: Job[], at: string): { customers: Customer[]; sites: Site[]; jobs: Job[] } {
+  const customers = new Map<string, Customer>();
+  const sites = new Map<string, Site>();
+  const linked = jobs.map((j) => {
+    const cid = `cust-demo-${slug(j.client)}`;
+    if (!customers.has(cid)) customers.set(cid, { id: cid, name: j.client, ...(j.buyerNif ? { nif: j.buyerNif } : {}), isDemo: true, createdAt: at, updatedAt: at });
+    const stops = j.stops.map((st) => {
+      const sid = `site-demo-${slug(`${st.clientName}-${st.city}`)}`;
+      if (!sites.has(sid)) {
+        sites.set(sid, { id: sid, customerId: cid, name: st.clientName, address: st.address, locality: st.city, country: "PT", lat: st.lat, lng: st.lng, geocodedAddress: st.address, isDemo: true, createdAt: at, updatedAt: at });
+      }
+      return { ...st, siteId: sid };
+    });
+    return { ...j, customerId: cid, stops };
+  });
+  return { customers: [...customers.values()], sites: [...sites.values()], jobs: linked };
+}
 
-export const fuelMetricsByTruck: FuelMetrics[] = [
-  { truckId: "t1",  avgLPer100km30d: 33.6, cost30dEur: 3_520, inefficiencyFlags: ["Tempo inativo 12% acima da média"] },
-  { truckId: "t2",  avgLPer100km30d: 30.8, cost30dEur: 1_980, inefficiencyFlags: [] },
-  { truckId: "t3",  avgLPer100km30d: 35.1, cost30dEur: 4_580, inefficiencyFlags: ["Travagem brusca +18% WoW", "Desnível na AP-6 (ES)"] },
-  { truckId: "t4",  avgLPer100km30d: 28.6, cost30dEur: 1_540, inefficiencyFlags: [] },
-  { truckId: "t5",  avgLPer100km30d: 33.1, cost30dEur: 2_960, inefficiencyFlags: ["Auxiliar reefer 35% do tempo"] },
-  { truckId: "t6",  avgLPer100km30d: 32.0, cost30dEur: 820,   inefficiencyFlags: ["Em manutenção — amostra limitada"] },
-  { truckId: "t7",  avgLPer100km30d: 30.2, cost30dEur: 1_820, inefficiencyFlags: [] },
-  { truckId: "t8",  avgLPer100km30d: 27.4, cost30dEur: 1_240, inefficiencyFlags: [] },
-  { truckId: "t9",  avgLPer100km30d: 32.8, cost30dEur: 3_110, inefficiencyFlags: ["Excesso velocidade A2 · 3 eventos"] },
-  { truckId: "t10", avgLPer100km30d: 36.1, cost30dEur: 4_820, inefficiencyFlags: ["Consumo 21% acima da frota", "Pneus desgastados — atrito elevado"] },
-];
+export function buildDemoSeed(at = DEMO_SEED_AT): { trucks: Truck[]; drivers: Driver[]; trailers: Trailer[]; jobs: Job[]; customers: Customer[]; sites: Site[] } {
+  const rec = demoRecords(legacyJobs.map((j) => ({ ...legacyJobToJob(j, at), isDemo: true })), at);
+  return {
+    trucks: legacyTrucks.map((t) => legacyTruckToTruck(t, at)),
+    drivers: legacyDrivers.map((d) => legacyDriverToDriver(d, at)),
+    trailers: buildDemoTrailers(at),
+    jobs: rec.jobs,
+    customers: rec.customers,
+    sites: rec.sites,
+  };
+}
 
-/* ══════════════════════════════════════════════════════
-   OPS ALERTS
-   ══════════════════════════════════════════════════════ */
-export const opsAlerts: OpsAlert[] = [
-  { id: "a1", severity: "critical", title: "Prazo em risco — Makro Madrid (J-4171)",      detail: "Atraso de +35min · entrega até 23:59 · motorista Carlos Mendes com apenas 2.5h disponíveis", entityType: "job",         entityId: "J-4171", ts: demoDate("2026-04-17T14:22:00") },
-  { id: "a2", severity: "critical", title: "ITP vencida — MAN TGS 26.400 (11-ST-78)",     detail: "Inspeção periódica vencida · veículo não pode circular legalmente · agendar urgente",          entityType: "maintenance", entityId: "m14",    ts: demoDate("2026-04-17T08:00:00") },
-  { id: "a3", severity: "warning",  title: "Limite HOS — Carlos Mendes (d7)",              detail: "53.5h conduzidas esta semana · apenas 2.5h restantes · em rota Madrid (8h estimadas)",        entityType: "driver",      entityId: "d7",     ts: demoDate("2026-04-17T14:10:00") },
-  { id: "a4", severity: "warning",  title: "Combustível baixo — MAN TGS 26.400 (t10)",    detail: "29% restante · rota Madrid · próxima paragem recomendada antes de Toledo",                     entityType: "truck",       entityId: "t10",    ts: demoDate("2026-04-17T13:30:00") },
-  { id: "a5", severity: "warning",  title: "ITP próxima — Scania R 450 (67-CD-89)",        detail: "ITP vence em breve · agendar oficina Braga",                                                   entityType: "maintenance", entityId: "m3",     ts: demoDate("2026-04-17T09:00:00") },
-  { id: "a6", severity: "info",     title: "Lacuna tacógrafo — Sofia Costa (d8)",          detail: "Gap no registo · inserção manual obrigatória antes de retomar serviço",                        entityType: "driver",      entityId: "d8",     ts: demoDate("2026-04-17T11:00:00") },
-];
-
-/* ══════════════════════════════════════════════════════
-   VEHICLE TRAIL EVENTS
-   ══════════════════════════════════════════════════════ */
-export const vehicleTrailEvents: VehicleTrailEvent[] = [
-  { id: "ve6", truckId: "t10", kind: "driving", timeLabel: demoTimeLabel("2026-04-17T14:30:00"), address: "A-5 · km 312 · Comunidade de Madrid (ES)", speedKmh: 91 },
-  { id: "ve7", truckId: "t10", kind: "stop",    timeLabel: demoTimeLabel("2026-04-17T11:25:00"), address: "Badajoz · Gasolinera Repsol · Polígono El Nevero", speedKmh: 0 },
-  { id: "ve8", truckId: "t9",  kind: "driving", timeLabel: demoTimeLabel("2026-04-17T14:05:00"), address: "A2 · km 192 · Beja Norte", speedKmh: 79 },
-];
-
-/* ══════════════════════════════════════════════════════
-   LEGACY / COMPAT
-   ══════════════════════════════════════════════════════ */
-export const truckingJobs: TruckingJobRow[] = jobs.slice(0, 8).map((j) => ({
-  id: j.id,
-  shipmentId: j.reference,
-  carrier: j.client,
-  jobType: j.totalPallets > 28 ? "FTL" : "LTL",
-  status: j.status === "in_transit" ? "In Transit" : j.status === "delivered" || j.status === "invoiced" ? "Delivered" : "Pending",
-  estPickup: new Date(j.pickupDeadline).toLocaleDateString("pt-PT", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }),
-  actualPickup: j.stops[0]?.actualTime ?? "—",
-  routeId: j.assignedTruckId ? routes.find((r) => r.truckId === j.assignedTruckId)?.id : undefined,
-}));
-
-export function getTrailEventsForTruck(truckId: string) { return vehicleTrailEvents.filter((e) => e.truckId === truckId); }
-export function getRouteById(id: string)  { return routes.find((r) => r.id === id); }
-export function getTruckById(id: string)  { return trucks.find((t) => t.id === id); }
-export function getDriverById(id: string) { return drivers.find((d) => d.id === id); }
-export function getJobsByStatus(status: Job["status"]) { return jobs.filter((j) => j.status === status); }
-export function getMaintenanceByTruck(truckId: string) { return maintenanceItems.filter((m) => m.truckId === truckId); }
+/** Converted demo records (seed + test fixtures). Not an operational source for the UI. */
+const SEED = buildDemoSeed();
+export const demoTrucks: Truck[] = SEED.trucks;
+export const demoDrivers: Driver[] = SEED.drivers;
+export const demoTrailers: Trailer[] = SEED.trailers;
+export const demoJobs: Job[] = SEED.jobs;
+/** Pre-Phase-5 demo jobs (legacy shape) — migration fixtures. */
+export const legacyDemoJobs: readonly LegacyJob[] = legacyJobs;

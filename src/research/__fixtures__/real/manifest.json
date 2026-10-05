@@ -1,0 +1,284 @@
+[
+  {
+    "name": "ip-alertas-ips-p0.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas-ips",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas-ips",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "17839",
+      "last-modified": "Thu, 01 Oct 2026 08:36:37 GMT",
+      "etag": "W/\"1790843797\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 63347,
+    "sha256": "e9909b8ca60d51e61bce2e248841b02fb22c253c68eea81c877567888430477b",
+    "retrievedAt": "2026-10-01T12:58:03.864Z"
+  },
+  {
+    "name": "ip-alertas-ips-p1.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas-ips?page=1",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas-ips?page=1",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "17681",
+      "last-modified": "Thu, 01 Oct 2026 10:51:53 GMT",
+      "etag": "W/\"1790851913\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 63159,
+    "sha256": "cc8336cb17197a12f076764c1fdfc82e09a2fc342d529acc69c1263788f33551",
+    "retrievedAt": "2026-10-01T12:58:03.889Z"
+  },
+  {
+    "name": "ip-alertas-ips-p2.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas-ips?page=2",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas-ips?page=2",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "17770",
+      "last-modified": "Thu, 01 Oct 2026 10:51:53 GMT",
+      "etag": "W/\"1790851913\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 63260,
+    "sha256": "2e6333199d6d92b4ac2c817912fd8362cba7e84dcf6ed46c44a319aa333ceba6",
+    "retrievedAt": "2026-10-01T12:58:03.998Z"
+  },
+  {
+    "name": "ip-alertas-ips-p3.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas-ips?page=3",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas-ips?page=3",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "17827",
+      "last-modified": "Thu, 01 Oct 2026 10:51:54 GMT",
+      "etag": "W/\"1790851914\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 63361,
+    "sha256": "40e93a161ed25496f16bc43d3daab65db04e9d5682906691ac3bf59da2735d45",
+    "retrievedAt": "2026-10-01T12:58:04.100Z"
+  },
+  {
+    "name": "ip-ip3-vegetacao.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/ip3-trabalhos-de-gestao-da-vegetacao",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/ip3-trabalhos-de-gestao-da-vegetacao",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "16701",
+      "last-modified": "Thu, 01 Oct 2026 11:37:53 GMT",
+      "etag": "W/\"1790854673\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 58919,
+    "sha256": "2a91cf02038132ff157ca2ccd65d9ee902dfa15b23867b6dc2d40719d849575b",
+    "retrievedAt": "2026-10-01T12:58:04.125Z"
+  },
+  {
+    "name": "ip-ip3-duplicacao-16.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/ip3-coimbraviseu-troco-santa-comba-daoviseu-duplicacaorequalificacao-16",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/ip3-coimbraviseu-troco-santa-comba-daoviseu-duplicacaorequalificacao-16",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "16972",
+      "last-modified": "Thu, 01 Oct 2026 12:18:05 GMT",
+      "etag": "W/\"1790857085\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 59561,
+    "sha256": "6134bbaa09c0ee8962a09930d4a51b4bd953e85ae1bfccd72a2729f8d0bf20da",
+    "retrievedAt": "2026-10-01T12:58:04.149Z"
+  },
+  {
+    "name": "ip-ip3-duplicacao-17.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/ip3-coimbraviseu-troco-santa-comba-daoviseu-duplicacaorequalificacao-17",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/ip3-coimbraviseu-troco-santa-comba-daoviseu-duplicacaorequalificacao-17",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "17097",
+      "last-modified": "Thu, 01 Oct 2026 09:11:13 GMT",
+      "etag": "W/\"1790845873\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 59928,
+    "sha256": "150b0c97979e450eba39b0a1d1724a413059ff1deeccde8e2abfa3ff68afd83b",
+    "retrievedAt": "2026-10-01T12:58:04.173Z"
+  },
+  {
+    "name": "ip-en378-encerramento.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/encerramento-da-en378-no-acesso-ao-porto-de-abrigo-de-sesimbra",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/encerramento-da-en378-no-acesso-ao-porto-de-abrigo-de-sesimbra",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "16601",
+      "last-modified": "Thu, 01 Oct 2026 09:10:27 GMT",
+      "etag": "W/\"1790845827\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 58698,
+    "sha256": "af2af1b8102c90ce5893ecade25780fff8ec287f6177bd148bed64996b46bc92",
+    "retrievedAt": "2026-10-01T12:58:04.198Z"
+  },
+  {
+    "name": "ip-en119-pavimentos.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/en119-intervencao-em-pavimentos-e-obras-acessorias",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/en119-intervencao-em-pavimentos-e-obras-acessorias",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "16710",
+      "last-modified": "Thu, 01 Oct 2026 09:43:03 GMT",
+      "etag": "W/\"1790847783\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 58851,
+    "sha256": "971a39a45827eb16c40fdda78d4aed9ee3ba4055cc779e703be625848357698f",
+    "retrievedAt": "2026-10-01T12:58:04.224Z"
+  },
+  {
+    "name": "ip-en264-pavimentacao.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/trabalhos-de-pavimentacao-na-en264",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/trabalhos-de-pavimentacao-na-en264",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "16608",
+      "last-modified": "Thu, 01 Oct 2026 08:46:53 GMT",
+      "etag": "W/\"1790844413\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 58579,
+    "sha256": "660bb135d9c98a4a3aa8af631151b2ce331a24eaad608775369a4081871c3fe6",
+    "retrievedAt": "2026-10-01T12:58:04.248Z"
+  },
+  {
+    "name": "ip-en10-ponte-marechal-carmona.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/empreitada-de-reabilitacao-na-ponte-marechal-carmona-na-en10",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/empreitada-de-reabilitacao-na-ponte-marechal-carmona-na-en10",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "16801",
+      "last-modified": "Thu, 01 Oct 2026 10:52:06 GMT",
+      "etag": "W/\"1790851926\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 59117,
+    "sha256": "16e6931daf6f9acf1922982e58c327ae0466b5bf5bf089383e3cb2f20afa2dec",
+    "retrievedAt": "2026-10-01T12:58:04.273Z"
+  },
+  {
+    "name": "ip-ic8-campores.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/condicionamento-de-transito-no-ic8-acesso-ao-parque-empresarial-do-campores-0",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/condicionamento-de-transito-no-ic8-acesso-ao-parque-empresarial-do-campores-0",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "16734",
+      "last-modified": "Thu, 01 Oct 2026 10:52:07 GMT",
+      "etag": "W/\"1790851927\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 59075,
+    "sha256": "db3a2aa8da9335290d4739b7dd4299d7389d9454fc7ae33e500eeeddf12299a1",
+    "retrievedAt": "2026-10-01T12:58:04.301Z"
+  },
+  {
+    "name": "ip-ic2-peregrinos.html",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/ic2-campanha-de-apoio-aos-peregrinos",
+    "finalUrl": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/ic2-campanha-de-apoio-aos-peregrinos",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/html; charset=UTF-8",
+      "content-length": "16756",
+      "last-modified": "Thu, 01 Oct 2026 11:54:25 GMT",
+      "etag": "W/\"1790855665\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "max-age=3600, public",
+      "expires": "Sun, 19 Nov 1978 05:00:00 GMT"
+    },
+    "byteLength": 58827,
+    "sha256": "7bd5162cc527c77ae4f0d29922ace0c1576220231be8f8527a3cce437b25605a",
+    "retrievedAt": "2026-10-01T12:58:04.407Z"
+  },
+  {
+    "name": "porto-datex-nao-programados.xml",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://dadosabertos.cm-porto.pt/dataset/539db002-9e19-11f1-84ed-6abdb6d5cf34/resource/75a3447c-bf9d-4c02-b3b7-aaecf5f00d2c/download/condicionamentos_nao_programados.xml",
+    "finalUrl": "https://dadosabertos.cm-porto.pt/dataset/539db002-9e19-11f1-84ed-6abdb6d5cf34/resource/75a3447c-bf9d-4c02-b3b7-aaecf5f00d2c/download/condicionamentos_nao_programados.xml",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "text/xml",
+      "content-length": "2087",
+      "last-modified": "Fri, 04 Sep 2026 11:10:00 GMT",
+      "etag": "\"1788520200.0112643-2087-2164331368\"",
+      "date": "Thu, 01 Oct 2026 12:58:04 GMT",
+      "cache-control": "no-cache, public, max-age=0, must-revalidate"
+    },
+    "byteLength": 2087,
+    "sha256": "cd72ee1cb62ac72c2f263524bfbbb78a2ed840d3f073d3ebb5e59fecfbe2e89a",
+    "retrievedAt": "2026-10-01T12:58:04.530Z"
+  },
+  {
+    "name": "dr-dl-155-a-2026.pdf",
+    "label": "REAL SNAPSHOT — recorded from the official source, unedited",
+    "requestedUrl": "https://files.diariodarepublica.pt/1s/2026/07/14703/0000200005.pdf",
+    "finalUrl": "https://files.diariodarepublica.pt/1s/2026/07/14703/0000200005.pdf",
+    "httpStatus": 200,
+    "headers": {
+      "content-type": "application/pdf",
+      "content-length": "118245",
+      "last-modified": "Fri, 31 Jul 2026 15:50:21 GMT",
+      "etag": "\"3321e5000fa0c45ef9b8881df9009192\"",
+      "date": "Thu, 01 Oct 2026 12:54:08 GMT"
+    },
+    "byteLength": 118245,
+    "sha256": "466c269ef65fcc7a32fec367922cb0d334503b267e43f8868f0c774742698f84",
+    "retrievedAt": "2026-10-01T12:58:04.657Z"
+  }
+]

@@ -18,8 +18,7 @@ export type CompanySettings = {
   email:              string;
   iban:               string;
   licencaComunitaria: string;
-  invoicePrefix:      string;   // e.g. "FT 2026/"
-  invoiceNextSeq:     number;   // next invoice sequence number
+  invoicePrefix:      string;   // e.g. "FT 2026/" — numbering itself lives in the operational store
   vatPct:             number;   // default 23 for PT transport services
   paymentTermsDays:   number;   // default 30
 };
@@ -35,7 +34,6 @@ export const DEFAULT_SETTINGS: CompanySettings = {
   iban:               "PT50 0010 0000 0000 0000 0000 5",
   licencaComunitaria: "CM 123456789",
   invoicePrefix:      "FT 2026/",
-  invoiceNextSeq:     1,
   vatPct:             23,
   paymentTermsDays:   30,
 };
@@ -47,7 +45,6 @@ type SettingsCtx = {
   settings:       CompanySettings;
   updateSettings: (patch: Partial<CompanySettings>) => void;
   resetSettings:  () => void;
-  nextInvoiceNumber: () => string;
 };
 
 const SettingsContext = createContext<SettingsCtx | null>(null);
@@ -73,15 +70,9 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     setSettings({ ...DEFAULT_SETTINGS });
   }, []);
 
-  /** Generates the next invoice number string and increments the sequence. */
-  const nextInvoiceNumber = useCallback((): string => {
-    const num = `${settings.invoicePrefix}${String(settings.invoiceNextSeq).padStart(4, "0")}`;
-    setSettings((prev) => ({ ...prev, invoiceNextSeq: prev.invoiceNextSeq + 1 }));
-    return num;
-  }, [settings.invoicePrefix, settings.invoiceNextSeq]);
 
   return (
-    <SettingsContext.Provider value={{ settings, updateSettings, resetSettings, nextInvoiceNumber }}>
+    <SettingsContext.Provider value={{ settings, updateSettings, resetSettings }}>
       {children}
     </SettingsContext.Provider>
   );
@@ -91,4 +82,9 @@ export function useSettings() {
   const ctx = useContext(SettingsContext);
   if (!ctx) throw new Error("useSettings must be used inside <SettingsProvider>");
   return ctx;
+}
+
+/** Company identity frozen into a document at issue time. */
+export function companySnapshot(s: CompanySettings): import("../domain/documents/documents").CompanySnapshot {
+  return { name: s.name, nif: s.nif, address: s.address, postalCity: s.postalCity, country: s.country, phone: s.phone, email: s.email, licencaComunitaria: s.licencaComunitaria, iban: s.iban, invoicePrefix: s.invoicePrefix, vatPct: s.vatPct, paymentTermsDays: s.paymentTermsDays };
 }

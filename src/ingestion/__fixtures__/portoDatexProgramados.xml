@@ -1,0 +1,1631 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:messageContainer xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:d2="http://datex2.eu/schema/3/d2Payload" xmlns:com="http://datex2.eu/schema/3/common" xmlns:par="http://datex2.eu/schema/3/parking" xmlns:loc="http://datex2.eu/schema/3/locationReferencing" xmlns:con="http://datex2.eu/schema/3/messageContainer" xmlns:ex="http://datex2.eu/schema/3/exchangeInformation" xmlns:cis="http://datex2.eu/schema/3/cisInformation" xmlns:inf="http://datex2.eu/schema/3/informationManagement" xmlns:sit="http://datex2.eu/schema/3/situation" modelBaseVersion="3" extensionName="Exchange 2018" extensionVersion="1">
+  <con:payload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" lang="pt" modelBaseVersion="3" xsi:type="sit:SituationPublication">
+    <com:publicationTime>2026-09-04T11:00:02.358544</com:publicationTime>
+    <com:publicationCreator>
+      <com:country>pt</com:country>
+      <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+    </com:publicationCreator>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp332985">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-02-16T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp332985" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-02-16T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-02-16T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-02-23T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt"> 09H00/17H00 </com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.143365427 -8.586708096 41.143358622 -8.586749063 41.143398455 -8.586756663 41.143437193 -8.586761326 41.143469298 -8.586763014 41.143500296 -8.586764693 41.143530198 -8.586763436 41.143549039 -8.586759172 41.143572326 -8.586750544 41.143603366 -8.586741971 41.143633314 -8.586728995 41.143672161 -8.586705828 41.143701043 -8.58668259 41.143728841 -8.586653487 41.143749989 -8.586625803 41.14373349 -8.586597857 41.143714556 -8.586625557 41.143656781 -8.58667496 41.143629023 -8.586693811 41.143580228 -8.586712514 41.143532557 -8.586726832 41.143503457 -8.586729035 41.14345216 -8.586727786 41.143424049 -8.586724615 41.143365427 -8.586708096</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp361384">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-02-19T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp361384" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2021-02-19T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-02-19T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-02-27T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras particulares das 14H00 às 20H00 No troço compreendido entrea Rua do Amial e a Rua de Delfim Maia</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.172805988 -8.612781965 41.17279736 -8.612670482 41.172670997 -8.611140597 41.172627204 -8.611145929 41.172754287 -8.612749705 41.172805988 -8.612781965</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp361385">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-02-19T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp361385" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-02-19T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-02-19T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-02-27T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras particulares 14H00/20H00 em ambos os lados do troço compreendido entrea Rua do Amial e a Rua de Delfim Maia</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.172725416 -8.612639471 41.17274537 -8.61263716 41.172627204 -8.611145929 41.172565756 -8.611155058 41.17259067 -8.611161674 41.172609119 -8.611185642 41.172614428 -8.611208083 41.172725416 -8.612639471</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp399786">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-03-11T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp399786" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-03-11T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-03-11T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-03-29T23:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras públicas  </com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.152690002 -8.674849329 41.153015598 -8.674276386 41.153000909 -8.67426614 41.152676579 -8.67484027 41.152690002 -8.674849329</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp404181">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-03-18T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp404181" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-03-18T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-03-18T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-05-16T23:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Passagem de cabo de fibra ótica  Entre o nº 60 e a Rua Dr. Eduardo Santos Silva</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.179351061 -8.584998116 41.179348921 -8.584998101 41.179282263 -8.585074138 41.179539639 -8.585489562 41.179586931 -8.58543889 41.179397651 -8.585125931 41.179386881 -8.585142857 41.179342198 -8.585074551 41.179376591 -8.585037956 41.179351061 -8.584998116</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp473405">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-06-20T23:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp473405" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-06-20T23:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-06-20T23:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-07-12T23:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Manutenção do arvoredo Das 9:00 às 18:00 Lado Nascente, entre o .º 155 e o n.º 191</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.15850356 -8.650315754 41.158396656 -8.650362218 41.158332892 -8.65040677 41.158295319 -8.650432756 41.158282239 -8.650438661 41.158260116 -8.650436234 41.158244834 -8.650427101 41.158234674 -8.650415007 41.158223422 -8.650393141 41.158212032 -8.650402063 41.158228367 -8.650429225 41.158240794 -8.650442088 41.158257779 -8.650451234 41.158283303 -8.650454439 41.158303186 -8.65045009 41.158402263 -8.650377281 41.158507448 -8.650334557 41.158507451 -8.650333807 41.15850356 -8.650315754</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp482210">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-07-04T23:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp482210" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-07-04T23:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-07-04T23:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-07-11T23:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Manutenção do arvoredo Das 10:00 às 17:00 Lado Norte, frente ao n.º 55 e numa extensão de aproximadamente 25 metros</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.14127744 -8.610818276 41.141274568 -8.610782107 41.141269751 -8.61074629 41.141262839 -8.610697277 41.141253705 -8.610648615 41.141243273 -8.610607032 41.141214382 -8.610524488 41.141179252 -8.61054451 41.141203849 -8.610620788 41.141215158 -8.610667171 41.141229445 -8.610753784 41.141237075 -8.610827851 41.14127744 -8.610818276</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp504609">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-08-03T23:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp504609" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-08-03T23:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-08-03T23:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-08-25T23:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Cargas e descargas Das 10:00 às 13:00 Entre o n.º 84A e o n.º 92</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.153687011 -8.620990727 41.153688078 -8.621006499 41.153801037 -8.620994578 41.153799965 -8.620979556 41.153687011 -8.620990727</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp529004">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-09-07T23:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp529004" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-09-07T23:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-09-07T23:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-10-01T23:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Manutenção de elementos de edifício A partir das 14H00 No troço compreendido entre o n.º 366 e o n.º 374, numa extensão de aproximadamente 15 metros</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.146136938 -8.594742525 41.146102441 -8.594927778 41.146119865 -8.594933456 41.146154362 -8.594748203 41.146136938 -8.594742525</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp532203">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-09-12T23:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp532203" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-09-12T23:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-09-12T23:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-10-18T23:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras particulares  Junto ao nº 270</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.153383275 -8.562076076 41.15335579 -8.562114074 41.153362404 -8.562122912 41.153390797 -8.562084622 41.153383275 -8.562076076</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp571890">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-11-24T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp571890" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-11-24T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-11-24T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2021-12-19T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras particulares 07H30/13H00 Ambos os lados, entre o nº 458 e o nº 492</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.151577611 -8.611999454 41.151577868 -8.611937869 41.151132266 -8.611947813 41.151132009 -8.612009398 41.151577611 -8.611999454</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp619507">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-01-24T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp619507" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-01-24T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-01-24T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-02-28T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Passagem de cabo de fibra ótica das 10H às 16H toda a extensão</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.157584421 -8.594010527 41.157602187 -8.59401108 41.157611212 -8.594023903 41.157640904 -8.594116426 41.157770308 -8.594521876 41.157890276 -8.594875471 41.157975114 -8.595077964 41.158035696 -8.595196148 41.158054483 -8.59523214 41.158059079 -8.595253498 41.158091349 -8.595311435 41.15812057 -8.595333157 41.158179453 -8.595327082 41.158142408 -8.595243721 41.158120088 -8.595215313 41.15808092 -8.595144757 41.158015092 -8.595010698 41.157969014 -8.594902296 41.157892174 -8.594685599 41.157743671 -8.594233482 41.157664648 -8.593988217 41.157664053 -8.593979516 41.157670423 -8.593962881 41.157584421 -8.594010527</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp599123">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2021-12-20T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp599123" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2021-12-20T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2021-12-20T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-03-16T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras públicas 10H00/16H00 no troço compreendido entre a Rua do Capitão Henrique Galvão e o n.º 245</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.160691208 -8.628334964 41.161122898 -8.628201494 41.16112037 -8.628169544 41.160686044 -8.628303177 41.160691208 -8.628334964</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645143">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-03-07T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645143" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-03-07T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-03-07T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-03-21T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Manutenção do arvoredo  </com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.178404179 -8.606226846 41.176896965 -8.604055307 41.176781045 -8.603945661 41.176498861 -8.603840423 41.17649628 -8.603880009 41.176764276 -8.603980744 41.17684713 -8.604046149 41.177709836 -8.60528451 41.178390789 -8.606248753 41.178404179 -8.606226846</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645146">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-03-07T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645146" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-03-07T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-03-07T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-03-21T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Manutenção do arvoredo  ambos os lados</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.178323656 -8.606329481 41.176756599 -8.604157511 41.176620716 -8.604050923 41.176487923 -8.604001564 41.176487742 -8.604045568 41.17661721 -8.604094903 41.176743119 -8.60420142 41.178306942 -8.606351363 41.178323656 -8.606329481</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645144">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-03-07T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645144" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-03-07T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-03-07T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-03-21T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Manutenção do arvoredo 10H00/16H00 </com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.178393162 -8.606259572 41.176885949 -8.604088033 41.176770016 -8.603981588 41.176487806 -8.60388275 41.176487644 -8.603922353 41.176753247 -8.604016671 41.176836114 -8.604078874 41.177698819 -8.605317236 41.178379773 -8.606281479 41.178393162 -8.606259572</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645150">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-03-07T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645150" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-03-07T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-03-07T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-03-21T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Manutenção do arvoredo  ambos os lados</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.176167841 -8.603998466 41.173781261 -8.603831722 41.173780972 -8.603902126 41.176167624 -8.604051271 41.176167841 -8.603998466</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645145">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-03-07T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645145" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-03-07T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-03-07T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-03-21T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Manutenção do arvoredo 10H00/16H00 ambos os lados</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.178343106 -8.606304017 41.176776048 -8.604132048 41.176640165 -8.604025459 41.176500145 -8.603969647 41.176496441 -8.603988423 41.176500004 -8.604004052 41.17663666 -8.60406944 41.176762568 -8.604175956 41.178326391 -8.6063259 41.178343106 -8.606304017</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645149">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-03-07T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp645149" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-03-07T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-03-07T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-03-21T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Manutenção do arvoredo  ambos os lados</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.176178458 -8.603768117 41.173791878 -8.603601381 41.173791589 -8.603671785 41.176178241 -8.603820921 41.176178458 -8.603768117</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp661527">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-03-28T23:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp661527" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-03-28T23:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-03-28T23:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-04-03T23:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Eventos e lazer  entre o Passeio de S. Lázaro e a Rua D. João IV</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.145600375 -8.603059805 41.14571387 -8.601999351 41.145689623 -8.601996886 41.145579517 -8.603075701 41.145602064 -8.603060097 41.145600375 -8.603059805</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp690708">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-05-12T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp690708" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-05-12T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-05-12T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-06-13T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Passagem de cabo de fibra ótica Das 00:00 às 07:00 às 21:00 às 24:00 Entre o n.º 276 e a Rua de D. Manuel II</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.148707681 -8.625682658 41.148760063 -8.625606148 41.148823086 -8.625576364 41.148905925 -8.625592114 41.150805082 -8.626052677 41.151146582 -8.625972455 41.151346955 -8.625913444 41.151378385 -8.625917462 41.151410643 -8.625728591 41.151347831 -8.625709207 41.151259161 -8.625719889 41.151130339 -8.625760526 41.151081529 -8.625809329 41.150843992 -8.625868061 41.149221054 -8.625513374 41.148820764 -8.625414242 41.148647339 -8.62541152 41.14868892 -8.625603934 41.148707681 -8.625682658</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp720329">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-06-29T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp720329" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2022-06-29T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-06-29T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-07-02T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Eventos e lazer 15H30/19H00 </com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.149074155 -8.610592769 41.149084208 -8.610589142 41.149074617 -8.610585895 41.149199978 -8.61054737 41.149267215 -8.610523111 41.149599312 -8.610457903 41.149662742 -8.610413662 41.149658049 -8.610292131 41.149641265 -8.610161342 41.149535426 -8.610194958 41.149401673 -8.610274218 41.149294016 -8.610328453 41.149076969 -8.610436907 41.149056015 -8.610475726 41.148707166 -8.610610728 41.148085939 -8.610826271 41.147895178 -8.610863851 41.147874422 -8.610855104 41.147891159 -8.610996778 41.147926591 -8.61122627 41.147949466 -8.611350223 41.147972897 -8.611341225 41.148723459 -8.611275634 41.149419972 -8.611289881 41.149693598 -8.611326263 41.149816697 -8.611308821 41.149926058 -8.611261478 41.150403977 -8.61092339 41.150739418 -8.610939302 41.15087252 -8.61093841 41.150987032 -8.610863808 41.151831619 -8.610232869 41.151786779 -8.610129666 41.151179601 -8.61058675 41.150884675 -8.610815351 41.150806808 -8.61082519 41.150737653 -8.610823629 41.15053439 -8.610814304 41.150556918 -8.610813894 41.150508437 -8.610804945 41.150421811 -8.610802022 41.150336764 -8.610835789 41.150034346 -8.611055951 41.149877963 -8.611160261 41.14978253 -8.611191659 41.149770324 -8.611209909 41.14974955 -8.611205173 41.149732826 -8.61106063 41.149670447 -8.611060176 41.149347867 -8.611128889 41.149330625 -8.611108131 41.14931685 -8.6110874 41.14925679 -8.610529912 41.149150751 -8.610611666 41.149195477 -8.610689932 41.149212557 -8.610749658 41.149234614 -8.610862147 41.149230805 -8.610944645 41.149225302 -8.611017961 41.149202509 -8.611081981 41.149167664 -8.611127575 41.149126012 -8.611143318 41.148708342 -8.611160905 41.148250809 -8.611180494 41.147935235 -8.611230918 41.147896404 -8.610985354 41.148297546 -8.610879964 41.14877259 -8.61071207 41.149074155 -8.610592769</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp726734">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-07-11T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp726734" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-07-11T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-07-11T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-07-13T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Cargas e descargas  nº 48 numa extensão de aproximadamente 12 metros</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.157720905 -8.624666924 41.157718514 -8.624666225 41.157724282 -8.624687587 41.157869182 -8.624642812 41.157864071 -8.624622136 41.157720905 -8.624666924</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp755945">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-08-24T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp755945" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-08-24T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-08-24T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-09-05T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Cargas e descargas Tem prorrogação até 06/09/2022 entre o nº 170 e o nº 182</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.158794105 -8.61066917 41.158599205 -8.610747999 41.158604296 -8.610772605 41.158799566 -8.610693781 41.158794105 -8.61066917</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp755946">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2022-08-24T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp755946" version="1.0" xsi:type="sit:MaintenanceWorks">
+        <sit:situationRecordCreationTime>2022-08-24T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2022-08-24T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2022-09-05T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Cargas e descargas Tem prorrogação até 06/09/2022 entre o nº 170 e o nº 182, lado oposto</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.158604294 -8.610773048 41.158611905 -8.610805441 41.158807175 -8.610726617 41.158799563 -8.610694224 41.158604294 -8.610773048</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:roadMaintenanceType>roadworks</sit:roadMaintenanceType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp852331">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2023-01-23T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp852331" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2023-01-23T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2023-01-23T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2023-02-15T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras particulares Das 00H30 às 06H00. Instalação mobiliário urbano No troço compreendido entre a Rua de Cadouços e a Rua de Diu</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.151135938 -8.67654964 41.151097943 -8.67662689 41.151243059 -8.67673368 41.151432986 -8.676873249 41.151529807 -8.676943787 41.15157896 -8.676982881 41.151609625 -8.677004728 41.151726785 -8.677090973 41.151751858 -8.677036254 41.151746445 -8.677038473 41.151740856 -8.677039856 41.151730139 -8.677040243 41.151719167 -8.677037412 41.151633967 -8.676973904 41.151433 -8.676823212 41.151223356 -8.676665358 41.151156873 -8.676615928 41.151148808 -8.67660788 41.151142551 -8.676598179 41.151138011 -8.676587182 41.151135278 -8.67657477 41.151134618 -8.676562018 41.151135938 -8.67654964</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp196353">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2023-06-29T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp196353" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2023-06-29T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2023-06-29T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2023-07-21T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Cargas e descargas Das 12H00 às 17H00 No troço compreendido entre a Rua de António Aroso e a Rua do Jornal de Notícias</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.169934809 -8.670340333 41.169967375 -8.670288319 41.169949944 -8.670272136 41.169926285 -8.670243426 41.169910278 -8.670210618 41.169868534 -8.670113439 41.169859229 -8.670087222 41.169859771 -8.670067623 41.169867466 -8.67005402 41.169856357 -8.670029572 41.169843778 -8.670031845 41.169834849 -8.670021078 41.169817093 -8.669978158 41.169796661 -8.669931652 41.16977886 -8.669898237 41.169761925 -8.669871958 41.169711493 -8.66980857 41.16968225 -8.669774171 41.169606307 -8.669694535 41.169543766 -8.669628672 41.169504907 -8.669586768 41.16947812 -8.669555062 41.169450788 -8.669519786 41.169398596 -8.669449257 41.169337543 -8.669353108 41.169254703 -8.669212226 41.169187002 -8.669098052 41.169123769 -8.668988223 41.1690681 -8.668892713 41.169023557 -8.668818088 41.168995614 -8.668769739 41.168951591 -8.668679672 41.168878269 -8.668519263 41.168857845 -8.668470976 41.168853516 -8.668436483 41.168855927 -8.668400857 41.168739231 -8.668540109 41.168766196 -8.668533795 41.168792654 -8.668539951 41.168815938 -8.668552617 41.168831112 -8.668571751 41.168916643 -8.66871325 41.169052271 -8.668941745 41.169219185 -8.66922352 41.169296686 -8.66935426 41.16935814 -8.66946051 41.169402191 -8.66952028 41.169438779 -8.669568107 41.169470494 -8.669601636 41.169574783 -8.669715813 41.169603836 -8.669742785 41.169655213 -8.669796079 41.169692715 -8.669840349 41.169723957 -8.669879221 41.169744018 -8.66990909 41.169800584 -8.670028522 41.169823222 -8.670083363 41.169844045 -8.670142349 41.169864007 -8.670193604 41.169868451 -8.670203147 41.169902212 -8.670279467 41.169934809 -8.670340333</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp475236">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2023-12-10T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp475236" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2023-12-10T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2023-12-10T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2023-12-30T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Eventos e lazer Das 17H00 às 21H30 No troço compreendido entre o n.º 39 e a Rua de Damião de Góis</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.157557361 -8.614304187 41.157681979 -8.614315679 41.157807752 -8.614319439 41.157931055 -8.614321226 41.157930451 -8.614336352 41.157949625 -8.614337565 41.15800646 -8.614333336 41.158095475 -8.614320646 41.15815602 -8.614311797 41.158260428 -8.614294496 41.158334878 -8.614282134 41.158412947 -8.61426019 41.158493112 -8.614232184 41.15859416 -8.614209103 41.158689321 -8.614184268 41.158767293 -8.614167817 41.158823822 -8.614152155 41.15889847 -8.61413295 41.15891922 -8.614127427 41.15900802 -8.614085523 41.159059643 -8.614063945 41.159137233 -8.614048788 41.159142511 -8.613992473 41.1590808 -8.61401944 41.159014215 -8.614047321 41.15896267 -8.614067748 41.158883291 -8.614097848 41.158873899 -8.614060796 41.158807329 -8.614110584 41.158773414 -8.614124752 41.158710599 -8.614137873 41.158586402 -8.61416627 41.158349815 -8.614215895 41.15830069 -8.614232679 41.158197461 -8.614242167 41.158107317 -8.61424508 41.158035818 -8.614246223 41.157933447 -8.614244638 41.157933222 -8.61425524 41.157886736 -8.614251299 41.157804929 -8.614244605 41.157769598 -8.614240458 41.157745689 -8.614239547 41.157720503 -8.614237577 41.15764913 -8.614233165 41.157611464 -8.614220175 41.157558952 -8.61420634 41.157557361 -8.614304187</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp985396">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2024-07-15T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp985396" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2024-07-15T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2024-07-15T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2024-07-23T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Bombagem de betão Das 08H00 às 13H00 </com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.150737403 -8.614249362 41.15028385 -8.613016456 41.150269823 -8.613032185 41.150268597 -8.61305606 41.150278804 -8.613075489 41.150292377 -8.613112786 41.150322941 -8.613188913 41.150378355 -8.61334264 41.150492612 -8.613648607 41.150719995 -8.614257514 41.150737403 -8.614249362</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp904973">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2026-02-24T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp904973" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2026-02-24T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2026-02-24T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2025-04-30T00:00:00Z</com:overallStartTime>
+            <com:overallEndTime>2026-09-29T00:00:00Z</com:overallEndTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras públicas Prorrogação até 30/09/2026 arruamento norte</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.156529274 -8.629435041 41.156597185 -8.629413123 41.156593162 -8.629409888 41.156581094 -8.629400182 41.156565857 -8.629376567 41.156541131 -8.629306948 41.156497016 -8.629053454 41.156488625 -8.628940163 41.156481397 -8.628931562 41.156469402 -8.628904767 41.15645923 -8.628829917 41.156451346 -8.628786062 41.156448186 -8.628770015 41.156439294 -8.628752144 41.156418994 -8.628799704 41.156452089 -8.628987954 41.156529274 -8.629435041</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp3524703">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2026-08-18T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp3524703" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2026-08-18T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2026-08-18T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2025-12-18T00:00:00Z</com:overallStartTime>
+            <com:overallEndTime>2027-02-25T00:00:00Z</com:overallEndTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras particulares Das 10:00 às 16:00 Todo o arruamento</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.167991983 -8.606582289 41.168012345 -8.606598658 41.168115399 -8.606750802 41.168308755 -8.607050944 41.168311753 -8.607067187 41.168312208 -8.607080709 41.168308565 -8.607096903 41.168318727 -8.607109819 41.168403076 -8.606967814 41.168385153 -8.606979175 41.168363192 -8.606979017 41.168346359 -8.606973488 41.168333131 -8.606961226 41.168323882 -8.606974677 41.168150827 -8.606705773 41.168159562 -8.606692994 41.16814841 -8.606672637 41.168142956 -8.606632719 41.16814266 -8.606580673 41.168153444 -8.606566558 41.167991983 -8.606582289</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp3910463">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2026-05-10T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp3910463" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2026-05-10T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2026-05-10T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2026-06-04T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Cargas e descargas Das 10:00 às 12:00 Entre a Travessa do Leal e a Rua do Bonjardim</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.155549282 -8.608407827 41.155507977 -8.608078488 41.155465736 -8.607759781 41.1554679 -8.607744776 41.155472914 -8.607735066 41.155479459 -8.607726104 41.155489572 -8.607718349 41.155425829 -8.607716533 41.155511376 -8.608413291 41.155549282 -8.608407827</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp4052891">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2026-06-16T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp4052891" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2026-06-16T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2026-06-16T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2026-06-30T00:00:00Z</com:overallStartTime>
+            <com:overallEndTime>2026-12-31T00:00:00Z</com:overallEndTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras públicas Das 00H00 às 24H00 No troço compreendido entre a Rua de Fonseca Cardoso e a Rua do Bonjardim</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.155721457 -8.609174219 41.155841339 -8.609171259 41.155819592 -8.609109041 41.155768634 -8.608969228 41.155738354 -8.608887996 41.155698146 -8.608826307 41.155636437 -8.60872999 41.155602482 -8.608679177 41.155586949 -8.608654546 41.155578371 -8.608628434 41.1555515 -8.608440669 41.155547991 -8.608403449 41.15553853 -8.608320911 41.155529013 -8.608241927 41.155512724 -8.608119989 41.155485222 -8.607909092 41.155464983 -8.607761842 41.155467949 -8.607745007 41.155476698 -8.607729748 41.155488906 -8.607718343 41.155426358 -8.60772019 41.15545219 -8.607914983 41.155491908 -8.608252385 41.155518227 -8.608469401 41.155528659 -8.608467179 41.155556714 -8.608684208 41.15570122 -8.608887525 41.155758024 -8.609014355 41.155778056 -8.609071198 41.155765873 -8.609076472 41.155764623 -8.609098682 41.155758724 -8.609124689 41.155750528 -8.609146082 41.155740051 -8.609159031 41.155721457 -8.609174219</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp4094498">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2026-07-05T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp4094498" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2026-07-05T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2026-07-05T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2026-07-12T00:00:00Z</com:overallStartTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras públicas BRT 2 Entre a Avenida da Boavista e a Rua de Fez</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.162388883 -8.661621729 41.162423116 -8.661601912 41.162440479 -8.661582349 41.162629785 -8.661831762 41.162980582 -8.662313079 41.163264747 -8.662701124 41.163257834 -8.662714958 41.163261215 -8.662740402 41.163271663 -8.662805904 41.163305625 -8.663017231 41.163309109 -8.663031994 41.163310161 -8.663061951 41.163304082 -8.663088698 41.163280055 -8.663132639 41.16324894 -8.663163911 41.163392247 -8.663084682 41.163337233 -8.662874598 41.163343233 -8.662865189 41.163436749 -8.662992044 41.163469992 -8.663015956 41.163449346 -8.662896204 41.163443084 -8.66291013 41.16343357 -8.662906901 41.163270249 -8.662677028 41.163016919 -8.662334516 41.162506791 -8.661625831 41.162477289 -8.661565697 41.162431299 -8.66146445 41.162388883 -8.661621729</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp4287329">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2026-08-24T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp4287329" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2026-08-24T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2026-08-24T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2026-09-03T00:00:00Z</com:overallStartTime>
+            <com:overallEndTime>2026-09-05T00:00:00Z</com:overallEndTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Eventos e lazer Dias 04 e 05/09/2026 das 21H00 às 24H00 e dia 06/09/2026, das 11H00 às 13H00 </com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.149253363 -8.610299092 41.149236938 -8.610279819 41.149225732 -8.610259053 41.149220582 -8.610244075 41.149216316 -8.610225658 41.149212929 -8.610204564 41.149203199 -8.610107195 41.149187607 -8.609957303 41.149176735 -8.609856094 41.149167537 -8.609770221 41.149160069 -8.609685892 41.149158575 -8.609627273 41.149159042 -8.609584374 41.14916453 -8.609518144 41.149112154 -8.609510101 41.149109481 -8.60952617 41.149104702 -8.609561378 41.149101351 -8.609601575 41.149100275 -8.609651365 41.149102853 -8.609727997 41.149131253 -8.610000946 41.149143588 -8.610098333 41.149142351 -8.610117478 41.14913473 -8.61013964 41.149116711 -8.610155598 41.149082055 -8.610273329 41.149098034 -8.61033014 41.149096739 -8.610363074 41.149253363 -8.610299092</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+    <sit:situation id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp4261320">
+      <sit:overallSeverity>none</sit:overallSeverity>
+      <sit:situationVersionTime>2026-08-19T00:00:00Z</sit:situationVersionTime>
+      <sit:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:allowedDeliveryChannel>anyGeneralDeliveryService</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>safetyServices</com:allowedDeliveryChannel>
+        <com:allowedDeliveryChannel>vms</com:allowedDeliveryChannel>
+        <com:informationStatus>real</com:informationStatus>
+      </sit:headerInformation>
+      <sit:situationRecord id="urn:ngsi-ld:Alert:porto:RoadAlerts:cmp4261320" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:situationRecordCreationTime>2026-08-19T00:00:00Z</sit:situationRecordCreationTime>
+        <sit:situationRecordVersionTime>2026-08-19T00:00:00Z</sit:situationRecordVersionTime>
+        <sit:probabilityOfOccurrence>certain</sit:probabilityOfOccurrence>
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2026-09-07T00:00:00Z</com:overallStartTime>
+            <com:overallEndTime>2026-09-29T00:00:00Z</com:overallEndTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment>
+          <sit:comment>
+            <com:values>
+              <com:value lang="pt">Obras públicas  entre a Av. Fernão Magalhães e a R. Naulila</com:value>
+            </com:values>
+          </sit:comment>
+          <sit:commentType>description</sit:commentType>
+        </sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:AreaLocation">
+          <loc:gmlMultiPolygon>
+            <loc:gmlPolygon>
+              <loc:exterior>
+                <loc:posList>41.166079152 -8.589248129 41.165985673 -8.588854228 41.165921336 -8.588875038 41.166029252 -8.589341668 41.166079152 -8.589248129</loc:posList>
+              </loc:exterior>
+            </loc:gmlPolygon>
+          </loc:gmlMultiPolygon>
+        </sit:locationReference>
+        <sit:complianceOption>mandatory</sit:complianceOption>
+        <sit:roadOrCarriagewayOrLaneManagementType>laneClosures</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+      <sit:informationManager>
+        <com:country>pt</com:country>
+        <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+      </sit:informationManager>
+    </sit:situation>
+  </con:payload>
+  <con:exchangeInformation modelBaseVersion="3" extensionName="Exchange 2018" extensionVersion="1">
+    <ex:messageType>payloadDelivery</ex:messageType>
+    <ex:exchangeContext>
+      <ex:codedExchangeProtocol>snapshotPull</ex:codedExchangeProtocol>
+      <ex:exchangeSpecificationVersion>2020</ex:exchangeSpecificationVersion>
+      <ex:supplierOrCisRequester>
+        <ex:address>Praça General Humberto Delgado, 5º Piso - 4049-001 Porto</ex:address>
+        <ex:name>DMGM - Câmara Municipal do Porto</ex:name>
+        <ex:internationalIdentifier>
+          <com:country>pt</com:country>
+          <com:nationalIdentifier>Câmara Municipal do Porto</com:nationalIdentifier>
+        </ex:internationalIdentifier>
+      </ex:supplierOrCisRequester>
+    </ex:exchangeContext>
+    <ex:dynamicInformation>
+      <ex:exchangeStatus>online</ex:exchangeStatus>
+      <ex:messageGenerationTimestamp>2026-09-04T11:00:02.358544</ex:messageGenerationTimestamp>
+    </ex:dynamicInformation>
+  </con:exchangeInformation>
+</con:messageContainer>

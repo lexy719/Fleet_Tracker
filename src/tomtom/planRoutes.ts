@@ -3,6 +3,7 @@
  * @see https://developer.tomtom.com/routing-api/documentation/tomtom-maps/calculate-route
  */
 
+import { routesEquivalent } from "../regulations/geometry";
 import { getTomTomRestBase } from "./config";
 import { tomtomFetchJson } from "./httpClient";
 import { maxCargoKg, totalVehicleWeightKg, type TruckPreset } from "./truckPresets";
@@ -49,6 +50,16 @@ export type RoutePlanOption = {
   tollSectionCount: number;
   stopArrivals: RouteStopArrival[];
   legDurationSec: number[];
+  /** Points per leg — partitions `polyline` (TomTom legs are concatenated in order). */
+  legPointCounts: number[];
+  /** Road numbers from TomTom `ROAD_SHIELDS` sections (e.g. "A28", "IC1"). Display/diagnostics only. */
+  roadNumbers: string[];
+  /** Departure time sent to TomTom (RFC 3339). */
+  departAtIso?: string;
+  /** Arrival time reported by TomTom `summary.arrivalTime`. */
+  arrivalAtIso?: string;
+  /** How TomTom produced this route — kept for persistence / audit. */
+  routing?: RouteRequestInfo;
   error?: string;
   /** Stroke / legend color index (palette) */
   colorIndex: number;
@@ -112,6 +123,8 @@ type TomTomRouteCore = {
     travelTimeInSeconds: number;
     trafficDelayInSeconds?: number;
     fuelConsumptionInLiters?: number;
+    departureTime?: string;
+    arrivalTime?: string;
   };
   legs: TomTomLeg[];
 };
@@ -128,9 +141,25 @@ type TomTomSection = {
   tollPaymentTypes?: string[];
   /** When present, may list priced legs (shape varies by API version). */
   tollPrices?: unknown;
+  /** `sectionType=roadShields` — observed shape: `{ reference, shieldContent }`. */
+  roadShieldReferences?: { reference?: string; shieldContent?: string }[];
 };
 
+/** Axis-aligned rectangle for the documented POST `avoidAreas` body (max 10, ~160×160 km each). */
+export type AvoidRectangle = { south: number; west: number; north: number; east: number };
+
+export type RouteRequestInfo = {
+  /** primary = first route of a request; alternative = further routes (maxAlternatives); toll_avoiding = avoid=tollRoads request. */
+  role: "primary" | "alternative" | "toll_avoiding";
+  /** Query parameters sent (API key excluded). */
+  params: Record<string, string>;
+  avoidAreas?: AvoidRectangle[];
+};
+
+type CollectedRoute = { route: TomTomRoute; routing: RouteRequestInfo };
+
 type InternalCandidate = {
+  routing: RouteRequestInfo;
   route: TomTomRoute;
   durationSec: number;
   distanceM: number;
@@ -151,6 +180,22 @@ const SIMILAR_DURATION_SEC = 120;
 const SIMILAR_DISTANCE_M = 500;
 const SIMILAR_TOLL_EUR = 0.5;
 
+/** Provider geometry/summary sanity: malformed responses become errors, never routes. */
+export function tomtomRouteValid(route: TomTomRoute | undefined): boolean {
+  if (!route || !route.summary || !Array.isArray(route.legs) || route.legs.length === 0) return false;
+  if (!Number.isFinite(route.summary.lengthInMeters) || !Number.isFinite(route.summary.travelTimeInSeconds)) return false;
+  let n = 0;
+  for (const leg of route.legs) {
+    if (!Array.isArray(leg.points)) return false;
+    for (const p of leg.points) {
+      if (!p || typeof p.latitude !== "number" || typeof p.longitude !== "number" || !Number.isFinite(p.latitude) || !Number.isFinite(p.longitude)) return false;
+      if (Math.abs(p.latitude) > 90 || Math.abs(p.longitude) > 180) return false;
+      n++;
+    }
+  }
+  return n >= 2;
+}
+
 function polylineFromRoute(route: TomTomRoute): [number, number][] {
   const pts: [number, number][] = [];
   for (const leg of route.legs) {
@@ -159,6 +204,24 @@ function polylineFromRoute(route: TomTomRoute): [number, number][] {
     }
   }
   return pts;
+}
+
+/** Distinct road numbers from ROAD_SHIELDS sections, in first-seen order. */
+function roadNumbersFromRoute(route: TomTomRoute): string[] {
+  const out: string[] = [];
+  for (const sec of allSectionsFromRoute(route)) {
+    if (normalizeTomTomSectionType(sec.sectionType) !== "ROAD_SHIELDS") continue;
+    for (const ref of sec.roadShieldReferences ?? []) {
+      const n = ref.shieldContent?.trim();
+      if (n && !out.includes(n)) out.push(n);
+    }
+  }
+  return out;
+}
+
+/** RFC 3339 without milliseconds (TomTom `departAt` accepts a dateTime; default is `now`). */
+export function toTomTomDateTime(d: Date): string {
+  return d.toISOString().replace(/\.\d{3}Z$/, "Z");
 }
 
 function legDurationsSec(route: TomTomRoute): number[] {
@@ -432,7 +495,17 @@ function buildTruckRoutingQuery(preset: TruckPreset, totalWeightKg: number): URL
   s.append("sectionType", "tollVignette");
   s.append("sectionType", "motorway");
   s.append("sectionType", "traffic");
+  s.append("sectionType", "roadShields");
   return s;
+}
+
+function paramsRecord(p: URLSearchParams): Record<string, string> {
+  const out: Record<string, string> = {};
+  p.forEach((v, k) => {
+    if (k === "key") return;
+    out[k] = out[k] ? `${out[k]},${v}` : v;
+  });
+  return out;
 }
 
 async function calculateRoutes(
@@ -440,6 +513,7 @@ async function calculateRoutes(
   waypoints: { lat: number; lng: number }[],
   queryParams: URLSearchParams,
   debugLabel?: string,
+  avoidAreas?: AvoidRectangle[],
 ): Promise<{ routes: TomTomRoute[] } | { error: string }> {
   if (waypoints.length < 2) return { error: "Need at least two waypoints" };
   const path = waypoints.map((p) => `${p.lat},${p.lng}`).join(":");
@@ -452,7 +526,21 @@ async function calculateRoutes(
   }
   let data: TomTomRouteResponse;
   try {
-    data = await tomtomFetchJson<TomTomRouteResponse>(url, { timeoutMs: 15_000, retries: 1 });
+    data = await tomtomFetchJson<TomTomRouteResponse>(url, {
+      timeoutMs: 15_000,
+      retries: 1,
+      jsonBody:
+        avoidAreas && avoidAreas.length > 0
+          ? {
+              avoidAreas: {
+                rectangles: avoidAreas.map((r) => ({
+                  southWestCorner: { latitude: r.south, longitude: r.west },
+                  northEastCorner: { latitude: r.north, longitude: r.east },
+                })),
+              },
+            }
+          : undefined,
+    });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Routing request failed";
     return { error: message.slice(0, 200) };
@@ -490,7 +578,12 @@ function tollSubtitleFragment(c: InternalCandidate): string {
   return `€${c.tollCostEur.toFixed(2)} toll`;
 }
 
-function toCandidate(route: TomTomRoute, lPer: number, fuelEur: number, totalWeightKg: number): InternalCandidate {
+function toCandidate(
+  { route, routing }: CollectedRoute,
+  lPer: number,
+  fuelEur: number,
+  totalWeightKg: number,
+): InternalCandidate {
   const s = route.summary;
   const distanceKm = s.lengthInMeters / 1000;
   const fuelL = fuelLitersFromRoute(route, distanceKm, lPer);
@@ -499,6 +592,7 @@ function toCandidate(route: TomTomRoute, lPer: number, fuelEur: number, totalWei
   const toll = tollAnalysisFromRoute(route, totalWeightKg, polyline);
   return {
     route,
+    routing,
     durationSec: s.travelTimeInSeconds,
     distanceM: s.lengthInMeters,
     tollCostEur: toll.totalEur,
@@ -513,12 +607,17 @@ function toCandidate(route: TomTomRoute, lPer: number, fuelEur: number, totalWei
   };
 }
 
+/**
+ * Same PATH, not merely similar numbers: similar distance/time/toll can belong to routes
+ * on different roads (one of which may avoid a restriction). Numbers are a cheap guard;
+ * geometry decides.
+ */
 function similarCandidates(a: InternalCandidate, b: InternalCandidate): boolean {
-  return (
+  const numbersClose =
     Math.abs(a.durationSec - b.durationSec) < SIMILAR_DURATION_SEC &&
     Math.abs(a.distanceM - b.distanceM) < SIMILAR_DISTANCE_M &&
-    Math.abs(a.tollCostEur - b.tollCostEur) < SIMILAR_TOLL_EUR
-  );
+    Math.abs(a.tollCostEur - b.tollCostEur) < SIMILAR_TOLL_EUR;
+  return numbersClose && routesEquivalent(a.polyline, b.polyline);
 }
 
 function dedupeCandidates(candidates: InternalCandidate[]): InternalCandidate[] {
@@ -619,6 +718,8 @@ export type PlanRoutePlanningOpts = {
   departAt?: Date;
   waypointStops: { id: string; name: string; windowStart?: string; windowEnd?: string }[];
   truck: PlanRouteTruckOpts;
+  /** Documented POST `avoidAreas` rectangles (≤ 10). Avoidance is not guaranteed — verify results. */
+  avoidAreas?: AvoidRectangle[];
 };
 
 function emptyOption(id: string, error: string): RoutePlanOption {
@@ -638,6 +739,8 @@ function emptyOption(id: string, error: string): RoutePlanOption {
     tollSectionCount: 0,
     stopArrivals: [],
     legDurationSec: [],
+    legPointCounts: [],
+    roadNumbers: [],
     error,
     colorIndex: 0,
   };
@@ -665,32 +768,36 @@ export async function planRouteOptions(
   const lPer = baseLPer * (1 + 0.12 * loadRatio);
 
   const baseQuery = buildTruckRoutingQuery(preset, totalWeightKg);
+  /** Same departure for TomTom's time-dependent travel times and our local ETAs. */
+  const departAt = planning.departAt ?? new Date();
+  const departAtIso = toTomTomDateTime(departAt);
+  baseQuery.set("departAt", departAtIso);
 
-  const collected: TomTomRoute[] = [];
+  const collected: CollectedRoute[] = [];
+  const avoidAreas = planning.avoidAreas;
+  const tag = (routes: TomTomRoute[], query: URLSearchParams, firstRole: RouteRequestInfo["role"]) =>
+    routes.forEach((route, i) =>
+      collected.push({
+        route,
+        routing: { role: i === 0 ? firstRole : "alternative", params: paramsRecord(query), avoidAreas },
+      }),
+    );
 
-  const tryAlternatives = await calculateRoutes(
-    key,
-    waypoints,
-    mergeRoutingParams(baseQuery, {
-      maxAlternatives: "3",
-      alternativeType: "anyRoute",
-    }),
-    "alternatives(max=3,anyRoute)",
-  );
+  const altQuery = mergeRoutingParams(baseQuery, {
+    maxAlternatives: "3",
+    alternativeType: "anyRoute",
+  });
+  const tryAlternatives = await calculateRoutes(key, waypoints, altQuery, "alternatives(max=3,anyRoute)", avoidAreas);
 
   if ("routes" in tryAlternatives) {
-    collected.push(...tryAlternatives.routes);
+    tag(tryAlternatives.routes, altQuery, "primary");
   } else {
-    const fallback = await calculateRoutes(
-      key,
-      waypoints,
-      mergeRoutingParams(baseQuery, {
-        maxAlternatives: "0",
-      }),
-      "fallback(max=0)",
-    );
+    const fallbackQuery = mergeRoutingParams(baseQuery, {
+      maxAlternatives: "0",
+    });
+    const fallback = await calculateRoutes(key, waypoints, fallbackQuery, "fallback(max=0)", avoidAreas);
     if ("routes" in fallback) {
-      collected.push(...fallback.routes);
+      tag(fallback.routes, fallbackQuery, "primary");
     } else {
       const e1 = "error" in tryAlternatives ? tryAlternatives.error : "Routing failed";
       const e2 = "error" in fallback ? fallback.error : "";
@@ -698,20 +805,18 @@ export async function planRouteOptions(
     }
   }
 
-  const tollAvoid = await calculateRoutes(
-    key,
-    waypoints,
-    mergeRoutingParams(baseQuery, {
-      maxAlternatives: "0",
-      avoid: "tollRoads",
-    }),
-    "avoidTollRoads",
-  );
+  const tollQuery = mergeRoutingParams(baseQuery, {
+    maxAlternatives: "0",
+    avoid: "tollRoads",
+  });
+  const tollAvoid = await calculateRoutes(key, waypoints, tollQuery, "avoidTollRoads", avoidAreas);
   if ("routes" in tollAvoid && tollAvoid.routes[0]) {
-    collected.push(tollAvoid.routes[0]);
+    tag([tollAvoid.routes[0]], tollQuery, "toll_avoiding");
   }
 
-  let candidates = collected.map((r, idx) => {
+  const invalid = collected.filter((r) => !tomtomRouteValid(r.route)).length;
+  if (invalid && import.meta.env.DEV) console.warn(`[TomTom] ${invalid} route(s) with invalid geometry dropped`);
+  let candidates = collected.filter((r) => tomtomRouteValid(r.route)).map((r, idx) => {
     const c = toCandidate(r, lPer, fuelEur, totalWeightKg);
     if (import.meta.env.DEV && idx === 0) {
       const secs = allSectionsFromRoute(c.route);
@@ -736,7 +841,7 @@ export async function planRouteOptions(
   const labels = buildTitlesAndSubtitles(candidates);
   const order = sortDisplayOrder(candidates, labels);
 
-  const startTime = planning.departAt ?? new Date();
+  const startTime = departAt;
   const out: RoutePlanOption[] = [];
 
   order.forEach((srcIdx, displayIdx) => {
@@ -761,6 +866,11 @@ export async function planRouteOptions(
       tollSectionCount: c.tollSectionCount,
       stopArrivals: buildStopArrivals(route, waypointStops, startTime),
       legDurationSec: c.legDurationSec,
+      legPointCounts: route.legs.map((l) => l.points.length),
+      roadNumbers: roadNumbersFromRoute(route),
+      departAtIso,
+      arrivalAtIso: s.arrivalTime,
+      routing: c.routing,
       colorIndex: displayIdx,
     });
   });
@@ -856,5 +966,63 @@ export function pickDecisionVariants(options: RoutePlanOption[]): {
     cheapest: q.lowestToll,
     balanced: null,
     fuelEfficient: q.mostFuelEfficient,
+  };
+}
+
+/**
+ * One route for one strategy (Phase 3C clean-route solver). Same truck parameters and
+ * departure handling as `planRouteOptions`; avoidAreas are a request, not a guarantee.
+ */
+export async function planStrategyRoute(
+  key: string,
+  waypoints: { lat: number; lng: number }[],
+  planning: PlanRoutePlanningOpts,
+  strategy: "FASTEST" | "NO_TOLLS",
+  id: string,
+): Promise<RoutePlanOption> {
+  const fuelEur = planning.fuelEurPerL ?? DEFAULT_FUEL_EUR_PER_L;
+  if (planning.waypointStops.length !== waypoints.length - 1) return emptyOption(id, "Waypoint / stop metadata mismatch");
+  const preset = planning.truck.preset;
+  const cargoWeightKg = Math.max(0, planning.truck.cargoWeightKg);
+  const totalWeightKg = totalVehicleWeightKg(preset, cargoWeightKg);
+  const maxCargo = maxCargoKg(preset);
+  const loadRatio = maxCargo > 0 ? Math.min(1, cargoWeightKg / maxCargo) : 0;
+  const lPer = (planning.lPer100kmFallback ?? preset.lPer100kmFallback) * (1 + 0.12 * loadRatio);
+  const baseQuery = buildTruckRoutingQuery(preset, totalWeightKg);
+  const departAt = planning.departAt ?? new Date();
+  const departAtIso = toTomTomDateTime(departAt);
+  baseQuery.set("departAt", departAtIso);
+  const query = mergeRoutingParams(baseQuery, { maxAlternatives: "0", ...(strategy === "NO_TOLLS" ? { avoid: "tollRoads" } : {}) });
+  const res = await calculateRoutes(key, waypoints, query, `strategy:${strategy}`, planning.avoidAreas);
+  if (!("routes" in res) || !res.routes[0]) return emptyOption(id, "error" in res ? res.error : "No route returned");
+  const route = res.routes[0];
+  if (!tomtomRouteValid(route)) return emptyOption(id, "Geometria/resumo inválidos na resposta do fornecedor");
+  const routing: RouteRequestInfo = { role: strategy === "NO_TOLLS" ? "toll_avoiding" : "primary", params: paramsRecord(query), avoidAreas: planning.avoidAreas };
+  const c = toCandidate({ route, routing }, lPer, fuelEur, totalWeightKg);
+  const s = route.summary;
+  return {
+    id,
+    title: strategy === "NO_TOLLS" ? "Sem portagens" : "Mais rápida",
+    subtitle: planning.avoidAreas?.length ? `desvio pedido (${planning.avoidAreas.length} áreas)` : "",
+    polyline: c.polyline,
+    distanceM: s.lengthInMeters,
+    durationSec: s.travelTimeInSeconds,
+    trafficDelaySec: s.trafficDelayInSeconds ?? 0,
+    fuelConsumptionL: c.fuelL,
+    fuelCostEur: c.fuelCostEur,
+    tollCostEur: c.tollCostEur,
+    tollPricedEur: c.tollPricedEur,
+    tollEstimatedEur: c.tollEstimatedEur,
+    tollDataQuality: c.tollDataQuality,
+    tollSectionCount: c.tollSectionCount,
+    stopArrivals: buildStopArrivals(route, planning.waypointStops, departAt),
+    legDurationSec: c.legDurationSec,
+    legPointCounts: route.legs.map((l) => l.points.length),
+    roadNumbers: roadNumbersFromRoute(route),
+    departAtIso,
+    arrivalAtIso: s.arrivalTime,
+    routing,
+    colorIndex: 20,
+    comparisonRole: "other",
   };
 }

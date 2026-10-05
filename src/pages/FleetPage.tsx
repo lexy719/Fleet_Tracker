@@ -1,240 +1,138 @@
-import { AlertTriangle, ArrowRight, MapPin, Package, Route, Wrench } from "lucide-react";
-import clsx from "clsx";
-import { useEffect, useMemo } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import { PageHeader } from "../components/layout/PageHeader";
-import { Card } from "../components/ui/Card";
-import { Badge } from "../components/ui/Badge";
-import { STATUS_LABELS, useJobs } from "../context/JobsContext";
-import { maintenanceItems, trucks } from "../data/mockData";
-import type { Job, JobStatus, MaintenanceStatus } from "../data/types";
-import { fleetBadgeFromJobs } from "../lib/fleetTmsStatus";
-import { dispatchUrl, mapUrl } from "../lib/appLinks";
+import { Plus } from "lucide-react";
+import { useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useFleetData } from "../context/FleetDataContext";
+import { useJobs } from "../context/JobsContext";
+import { trailerOperationalState, trailerTypeLabel } from "../domain/fleet/trailers";
+import { truckDisplayName, truckOperationalState, truckPayloadKg } from "../domain/fleet/trucks";
+import { paths } from "../lib/appLinks";
+import { fmtTonnes } from "../ui/format";
+import { Button, Checkbox, EmptyState, PageHeader, ProvenanceTag, StatusBadge, Tabs } from "../ui/kit";
+import { JobRef, resourceWork } from "../ui/resources/resourceParts";
+import { useEditors } from "../ui/shell/editors";
+import { TRAILER_STATE, TRUCK_STATE } from "../ui/status";
 
-const ACTIVE_STATUSES: JobStatus[] = ["assigned", "loading", "in_transit"];
+const norm = (s: string) => s.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
 
-function jobProgressPct(j: Job): number {
-  if (!j.stops.length) return 0;
-  return Math.round((j.stops.filter((s) => s.completed).length / j.stops.length) * 100);
+function TrucksTable({ q, archived }: { q: string; archived: boolean }) {
+  const { trucks, getDriver } = useFleetData();
+  const { jobs } = useJobs();
+  const navigate = useNavigate();
+  const rows = useMemo(
+    () =>
+      trucks
+        .filter((t) => (archived ? true : !t.archivedAt))
+        .filter((t) => !q || norm(`${t.plate} ${t.unitNumber ?? ""} ${truckDisplayName(t)}`).includes(norm(q)))
+        .sort((a, b) => a.plate.localeCompare(b.plate))
+        .map((t) => ({ t, state: truckOperationalState(t, jobs), work: resourceWork(jobs, (j) => j.assignedTruckId === t.id) })),
+    [trucks, jobs, q, archived],
+  );
+  if (!rows.length) return <EmptyState title="Sem viaturas" detail={q ? "Nenhuma viatura corresponde à pesquisa." : "Registe a primeira viatura da frota."} />;
+  return (
+    <table className="ui-table min-w-[900px]">
+      <thead>
+        <tr>
+          <th>Matrícula</th>
+          <th>Viatura</th>
+          <th>Estado</th>
+          <th className="r">Carga útil</th>
+          <th>Trabalho atual / próximo</th>
+          <th>Motorista</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map(({ t, state, work }) => {
+          const d = getDriver((work.current ?? work.next)?.assignedDriverId);
+          return (
+            <tr key={t.id} data-clickable="true" onClick={() => navigate(paths.truck(t.id))} data-testid="truck-row">
+              <td className="w-[150px]">
+                <span className="num block font-medium">{t.plate}</span>
+                <span className="block text-[12px] text-[var(--text-3)]">{t.unitNumber ?? "—"}{t.isDemo ? <ProvenanceTag kind="DEMO" className="ml-1.5" /> : null}</span>
+              </td>
+              <td className="max-w-[220px]">
+                <span className="block truncate">{truckDisplayName(t)}</span>
+                <span className="block text-[12px] text-[var(--text-3)]">{t.vehicleType === "TRACTOR" ? "Trator" : t.vehicleType === "RIGID" ? "Rígido" : "Furgão"}{t.yearManuf ? ` · ${t.yearManuf}` : ""}</span>
+              </td>
+              <td className="w-[140px]"><StatusBadge status={TRUCK_STATE[state]} /></td>
+              <td className="num r w-[100px]">{fmtTonnes(truckPayloadKg(t))}</td>
+              <td className="max-w-[280px]">
+                {work.current ? <JobRef job={work.current} /> : work.next ? <><span className="block text-[11px] text-[var(--text-3)]">Próximo</span><JobRef job={work.next} /></> : <span className="text-[var(--text-3)]">—</span>}
+              </td>
+              <td className="max-w-[180px] truncate text-[var(--text-2)]">{d?.name ?? "—"}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
 }
 
-function routeSummary(j: Job): string {
-  const sorted = [...j.stops].sort((a, b) => a.sequence - b.sequence);
-  const first = sorted[0]; const last = sorted[sorted.length - 1];
-  if (!first || !last || first.id === last.id) return first?.city ?? "—";
-  return `${first.city} → ${last.city}`;
-}
-
-const STATUS_COLOR: Partial<Record<JobStatus, string>> = {
-  assigned:   "bg-[#E8F0EC] text-[#2D5F4E]",
-  loading:    "bg-[#F2EBE0] text-[#6B4E2A]",
-  in_transit: "bg-blue-500/12 text-blue-900",
-};
-
-function statusBadge(s: MaintenanceStatus) {
-  if (s === "overdue") return <Badge variant="danger">Em atraso</Badge>;
-  if (s === "due_soon") return <Badge variant="warn">≤ 30 dias</Badge>;
-  return <Badge variant="ok">OK</Badge>;
+function TrailersTable({ q, archived }: { q: string; archived: boolean }) {
+  const { trailers } = useFleetData();
+  const { jobs } = useJobs();
+  const navigate = useNavigate();
+  const rows = useMemo(
+    () =>
+      trailers
+        .filter((t) => (archived ? true : !t.archivedAt))
+        .filter((t) => !q || norm(`${t.plate} ${t.unitNumber ?? ""} ${trailerTypeLabel(t)}`).includes(norm(q)))
+        .sort((a, b) => a.plate.localeCompare(b.plate))
+        .map((t) => ({ t, state: trailerOperationalState(t, jobs), work: resourceWork(jobs, (j) => j.assignedTrailerId === t.id) })),
+    [trailers, jobs, q, archived],
+  );
+  if (!rows.length) return <EmptyState title="Sem reboques" detail={q ? "Nenhum reboque corresponde à pesquisa." : "Registe o primeiro reboque."} />;
+  return (
+    <table className="ui-table min-w-[960px]">
+      <thead>
+        <tr><th>Matrícula</th><th>Tipo</th><th>Estado</th><th className="r">Carga útil</th><th className="r">Paletes</th><th>Capacidades</th><th>Trabalho atual / próximo</th></tr>
+      </thead>
+      <tbody>
+        {rows.map(({ t, state, work }) => {
+          const caps = [t.capabilities.refrigerated && `Frio ${t.capabilities.tempMinC ?? "?"}…${t.capabilities.tempMaxC ?? "?"} °C`, t.capabilities.adrSuitable && "ADR", t.capabilities.tailLift && "Plataforma elevatória", ...(t.capabilities.other ?? [])].filter(Boolean) as string[];
+          return (
+            <tr key={t.id} data-clickable="true" onClick={() => navigate(paths.trailer(t.id))} data-testid="trailer-row">
+              <td className="w-[150px]"><span className="num block font-medium">{t.plate}</span><span className="block text-[12px] text-[var(--text-3)]">{t.unitNumber ?? "—"}{t.isDemo ? <ProvenanceTag kind="DEMO" className="ml-1.5" /> : null}</span></td>
+              <td>{trailerTypeLabel(t)}<span className="block text-[12px] text-[var(--text-3)]">{[t.make, t.model].filter(Boolean).join(" ") || "—"}</span></td>
+              <td className="w-[140px]"><StatusBadge status={TRAILER_STATE[state]} /></td>
+              <td className="num r w-[100px]">{fmtTonnes(t.payloadKg)}</td>
+              <td className="num r w-[80px]">{t.palletCapacity ?? "—"}</td>
+              <td className="text-[12.5px] text-[var(--text-2)]">{caps.length ? caps.join(" · ") : "—"}</td>
+              <td className="max-w-[240px]"><JobRef job={work.current ?? work.next} /></td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
 }
 
 export function FleetPage() {
-  const { jobs } = useJobs();
-  const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    const truck = searchParams.get("truck");
-    if (!truck) return;
-    window.requestAnimationFrame(() => {
-      document.getElementById(`fleet-card-${truck}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
-    });
-  }, [searchParams]);
-
-  const highlightedTruck = searchParams.get("truck");
-
-  const byTruck = useMemo(() => {
-    const m = new Map<string, typeof maintenanceItems>();
-    for (const t of trucks) m.set(t.id, []);
-    for (const it of maintenanceItems) {
-      const list = m.get(it.truckId) ?? [];
-      list.push(it);
-      m.set(it.truckId, list);
-    }
-    return m;
-  }, []);
-
-  /* Active job per truck */
-  const activeJobByTruck = useMemo(() => {
-    const m = new Map<string, Job>();
-    for (const j of jobs) {
-      if (j.assignedTruckId && ACTIVE_STATUSES.includes(j.status)) {
-        if (!m.has(j.assignedTruckId)) m.set(j.assignedTruckId, j);
-      }
-    }
-    return m;
-  }, [jobs]);
-
-  const overdue = maintenanceItems.filter((m) => m.status === "overdue").length;
-
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const tab = pathname.startsWith("/fleet/trailers") ? "trailers" : "trucks";
+  const { trucks, trailers } = useFleetData();
+  const ed = useEditors();
+  const [q, setQ] = useState("");
+  const [archived, setArchived] = useState(false);
   return (
-    <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-6">
+    <div className="flex min-h-0 flex-1 flex-col">
       <PageHeader
-        eyebrow="Frota"
-        title="Viaturas e manutenção"
-        subtitle="Inspeções, revisões, pneus e tacógrafo — tudo em dia para não ficar parado na estrada com carga a bordo."
-        stats={[
-          { label: "Unidades", value: String(trucks.length) },
-          { label: "Itens em atraso", value: String(overdue) },
-        ]}
-      />
-
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-        {trucks.map((t) => {
-          const items = byTruck.get(t.id) ?? [];
-          const bad = items.filter((i) => i.status !== "ok");
-          const { label: fleetLabel, hint: fleetHint } = fleetBadgeFromJobs(jobs, t.id, t.status);
-          const activeJob = activeJobByTruck.get(t.id) ?? null;
-          const pct = activeJob ? jobProgressPct(activeJob) : 0;
-          return (
-            <Card
-              key={t.id}
-              id={`fleet-card-${t.id}`}
-              className={clsx("flex flex-col gap-3", highlightedTruck === t.id && "ring-2 ring-[#2D5F4E]")}
-            >
-              {/* ── Truck identity ── */}
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <div className="font-mono text-lg font-bold text-[#2D5F4E]">{t.plate}</div>
-                  <div className="text-sm font-medium text-[var(--app-fg)]">{t.name}</div>
-                  <div className="text-xs text-[var(--app-muted)]">
-                    {t.model} · {t.yearManuf ?? "—"} · {t.odometerKm != null ? `${(t.odometerKm / 1000).toFixed(0)}k km` : "—"}
-                  </div>
-                </div>
-                <div className="flex max-w-[min(100%,11rem)] flex-col items-end gap-1 text-right">
-                  <Badge variant="muted" className="capitalize">
-                    {fleetLabel}
-                  </Badge>
-                  {fleetHint && (
-                    <p className="text-[9px] leading-tight text-[var(--app-muted)]">{fleetHint}</p>
-                  )}
-                </div>
-              </div>
-
-              {/* ── Active job ── */}
-              {activeJob ? (
-                <div
-                  className="rounded-xl border p-3"
-                  style={{ borderColor: "var(--app-border)", background: "var(--app-elevated)" }}
-                >
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <Route className="h-3.5 w-3.5 shrink-0 text-[#2D5F4E]" />
-                      <span className="font-mono text-[11px] font-bold text-[#2D5F4E]">{activeJob.id}</span>
-                      <span className={clsx("rounded-full px-1.5 py-0.5 text-[9px] font-semibold", STATUS_COLOR[activeJob.status] ?? "bg-black/5 text-[var(--app-muted)]")}>
-                        {STATUS_LABELS[activeJob.status]}
-                      </span>
-                    </div>
-                    <Link
-                      to={mapUrl({ truck: t.id })}
-                      className="text-[10px] font-semibold text-[#2D5F4E] hover:underline"
-                    >
-                      Mapa
-                    </Link>
-                  </div>
-                  <p className="mt-1 truncate text-[12px] font-semibold text-[var(--app-fg)]">{activeJob.client}</p>
-                  <p className="mt-0.5 flex items-center gap-1 text-[10px] text-[var(--app-muted)]">
-                    <MapPin className="h-3 w-3 shrink-0" />
-                    {routeSummary(activeJob)}
-                  </p>
-                  {/* Progress bar */}
-                  <div className="mt-2">
-                    <div className="mb-1 flex items-center justify-between text-[9px] text-[var(--app-muted)]">
-                      <span>{activeJob.stops.filter(s => s.completed).length}/{activeJob.stops.length} paragens</span>
-                      <span>{pct}%</span>
-                    </div>
-                    <div className="h-1 overflow-hidden rounded-full bg-black/10">
-                      <div
-                        className="h-full rounded-full transition-all"
-                        style={{ width: `${pct}%`, background: "#2D5F4E" }}
-                      />
-                    </div>
-                  </div>
-                  <div className="mt-2 flex items-center justify-between">
-                    <p className="flex items-center gap-1 text-[10px] text-[var(--app-muted)]">
-                      <Package className="h-3 w-3" />
-                      {activeJob.totalPallets} plt · {(activeJob.totalWeightKg / 1000).toFixed(1)} t
-                    </p>
-                    <Link
-                      to={`/app/jobs?job=${activeJob.id}`}
-                      className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-[#2D5F4E] hover:underline"
-                    >
-                      Detalhe <ArrowRight className="h-3 w-3" />
-                    </Link>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className="flex items-center justify-between rounded-xl border border-dashed px-3 py-2.5"
-                  style={{ borderColor: "var(--app-border)" }}
-                >
-                  <p className="text-[11px] text-[var(--app-muted)]">
-                    {t.status === "maintenance" ? "Em manutenção — indisponível" : "Sem trabalho ativo"}
-                  </p>
-                  {t.status !== "maintenance" && (
-                    <Link
-                      to={dispatchUrl(t.id)}
-                      className="text-[10px] font-semibold text-[#2D5F4E] hover:underline"
-                    >
-                      Expedir →
-                    </Link>
-                  )}
-                </div>
-              )}
-
-              {/* ── Maintenance ── */}
-              <div className="space-y-2">
-                <p className="text-[10px] font-bold uppercase tracking-wide text-[var(--app-muted)]">
-                  Manutenção
-                </p>
-                {items.length === 0 ? (
-                  <p className="text-xs text-[var(--app-muted)]">Sem registos.</p>
-                ) : (
-                  <ul className="space-y-2">
-                    {items.map((m) => (
-                      <li
-                        key={m.id}
-                        className="flex items-start justify-between gap-2 rounded-lg border border-[var(--app-border)] px-2 py-1.5 text-xs"
-                      >
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-1.5 font-medium text-[var(--app-fg)]">
-                            <Wrench className="h-3.5 w-3.5 shrink-0 text-[var(--app-muted)]" />
-                            <span className="truncate">{m.label}</span>
-                          </div>
-                          <div className="mt-0.5 text-[10px] text-[var(--app-muted)]">
-                            Vence: {m.dueDate}
-                            {m.lastDoneDate ? ` · Último: ${m.lastDoneDate}` : ""}
-                          </div>
-                          {m.notes ? (
-                            <div className="mt-1 flex items-start gap-1 text-[10px] text-[#7A5C2E]">
-                              <AlertTriangle className="mt-0.5 h-3 w-3 shrink-0" />
-                              {m.notes}
-                            </div>
-                          ) : null}
-                        </div>
-                        {statusBadge(m.status)}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-
-              {bad.length > 0 ? (
-                <p className="text-[11px] font-semibold text-rose-700">
-                  {bad.length} {bad.length === 1 ? "item em atraso ou a vencer" : "itens em atraso ou a vencer"}
-                </p>
-              ) : null}
-            </Card>
-          );
-        })}
+        title="Frota"
+        meta={`${trucks.filter((t) => !t.archivedAt).length} viaturas · ${trailers.filter((t) => !t.archivedAt).length} reboques`}
+        actions={
+          <Button variant="primary" icon={<Plus className="h-3.5 w-3.5" />} onClick={() => (tab === "trucks" ? ed.openTruck() : ed.openTrailer())}>
+            {tab === "trucks" ? "Nova viatura" : "Novo reboque"}
+          </Button>
+        }
+      >
+        <div className="flex items-center gap-3 pb-2">
+          <input className="ui-input w-[260px]" placeholder={tab === "trucks" ? "Procurar matrícula, unidade, modelo…" : "Procurar matrícula, tipo…"} aria-label="Procurar" value={q} onChange={(e) => setQ(e.target.value)} />
+          <Checkbox label="Incluir arquivados" checked={archived} onChange={setArchived} />
+        </div>
+        <Tabs value={tab} onChange={(t) => navigate(t === "trucks" ? paths.trucks() : paths.trailers())} items={[{ value: "trucks", label: "Viaturas" }, { value: "trailers", label: "Reboques" }]} />
+      </PageHeader>
+      <div className="min-h-0 flex-1 overflow-auto bg-[var(--surface)] scroll-thin">
+        {tab === "trucks" ? <TrucksTable q={q} archived={archived} /> : <TrailersTable q={q} archived={archived} />}
       </div>
     </div>
   );

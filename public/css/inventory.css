@@ -1,0 +1,446 @@
+/* ═══════════════════════════════════════════════════════════════
+   FleetTracker — Inventory v31
+   Load planner trailer viz, cargo panel, stock table helpers,
+   warehouse utilization, movement timeline
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Load Planner Layout ─────────────────────────────────────── */
+.inv-planner-body {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 0;
+  padding: 0 !important;
+}
+
+/* ── Trailer Visualization (SVG + overlay grid) ─────────────── */
+.inv-trailer-wrap {
+  padding: var(--space-lg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.inv-trailer-visual {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--bg-surface) 0%, var(--bg-primary) 100%);
+  border: 1px solid var(--border);
+  padding: var(--space-md) var(--space-sm);
+}
+
+.inv-trailer-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Grid overlaid exactly on the trailer box area of the SVG */
+.inv-trailer-grid-overlay {
+  position: absolute;
+  /* These % values map to the trailer box region in the SVG (viewBox 0 0 900 280) */
+  top: 26%;
+  left: 21.5%;
+  width: 74.5%;
+  height: 56%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
+  padding: 4px;
+}
+
+/* ── Individual Slot ── */
+.inv-slot {
+  border-radius: var(--radius-xs);
+  border: 1.5px dashed rgba(148,163,184,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: rgba(255,255,255,0.18);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  position: relative;
+  min-height: 34px;
+  user-select: none;
+}
+
+.inv-slot:hover {
+  border-color: var(--accent);
+  background: rgba(59,130,246,0.06);
+  color: rgba(255,255,255,0.4);
+}
+
+.inv-slot.is-selected {
+  border-color: var(--accent);
+  border-style: solid;
+  background: rgba(59,130,246,0.08);
+  box-shadow: inset 0 0 0 1px rgba(59,130,246,0.2);
+  color: var(--accent);
+}
+
+.inv-slot.is-loaded {
+  border-style: solid;
+  border-color: rgba(34,197,94,0.4);
+  background: rgba(34,197,94,0.12);
+  color: var(--success);
+}
+
+.inv-slot.is-loaded .inv-slot-label {
+  font-size: 0.5rem;
+  line-height: 1.15;
+  text-align: center;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.inv-slot.is-loaded .inv-slot-weight {
+  font-size: 0.45rem;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.inv-slot-code {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 700;
+}
+
+/* ── Capacity Row ── */
+.inv-capacity-row {
+  display: flex;
+  gap: var(--space-lg);
+}
+
+.inv-capacity-item {
+  flex: 1;
+}
+
+.inv-capacity-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.inv-capacity-header span:last-child {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.inv-capacity-bar {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+
+.inv-capacity-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.4s var(--ease-out);
+}
+
+.inv-capacity-fill--weight  { background: linear-gradient(90deg, var(--accent), #60a5fa); }
+.inv-capacity-fill--pallets { background: linear-gradient(90deg, var(--success), #4ade80); }
+.inv-capacity-fill--value   { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+
+/* ── Cargo Assignment Panel ─────────────────────────────────── */
+.inv-cargo-panel {
+  display: flex;
+  flex-direction: column;
+  border-left: 0;
+  max-height: 420px;
+}
+
+.inv-cargo-panel-header {
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.inv-cargo-panel-title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.inv-cargo-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-sm);
+}
+
+.inv-cargo-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.5rem 0.625rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  margin-bottom: var(--space-xs);
+  cursor: grab;
+  transition: all var(--duration-fast) var(--ease-out);
+  background: var(--bg-elevated);
+}
+
+.inv-cargo-item:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-hover);
+}
+
+.inv-cargo-item:active {
+  cursor: grabbing;
+  border-color: var(--accent);
+}
+
+.inv-cargo-item-icon {
+  width: 28px; height: 28px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+.inv-cargo-item-icon--construction { background: rgba(249,115,22,0.12); color: #f97316; }
+.inv-cargo-item-icon--equipment    { background: rgba(59,130,246,0.12); color: #3b82f6; }
+.inv-cargo-item-icon--chemicals    { background: rgba(168,85,247,0.12); color: #a855f7; }
+.inv-cargo-item-icon--food         { background: rgba(34,197,94,0.12);  color: #22c55e; }
+.inv-cargo-item-icon--fuel         { background: rgba(234,179,8,0.12);  color: #eab308; }
+.inv-cargo-item-icon--electronics  { background: rgba(6,182,212,0.12);  color: #06b6d4; }
+.inv-cargo-item-icon--other        { background: rgba(100,116,139,0.12); color: #64748b; }
+
+.inv-cargo-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.inv-cargo-item-name {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inv-cargo-item-meta {
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+}
+
+.inv-cargo-item-qty {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.inv-cargo-item-assign {
+  width: 24px; height: 24px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-subtle);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all var(--duration-fast) var(--ease-out);
+  border: none;
+}
+
+.inv-cargo-item-assign:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Slot detail panel (replaces cargo list when slot is selected) */
+.inv-slot-detail {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md);
+}
+
+.inv-slot-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ── Stock Table Enhancements ────────────────────────────────── */
+.stock-qty {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.stock-qty--low {
+  color: var(--warning);
+}
+
+.stock-qty--critical {
+  color: var(--danger);
+}
+
+.stock-location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+
+.stock-location-badge i {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+}
+
+/* ── Movement Timeline ───────────────────────────────────────── */
+.inv-movements-list {
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.inv-movement {
+  display: flex;
+  gap: var(--space-sm);
+  padding: 0.625rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.inv-movement:last-child { border-bottom: none; }
+
+.inv-movement-icon {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  flex-shrink: 0;
+}
+
+.inv-movement-icon--load     { background: var(--accent-subtle); color: var(--accent); }
+.inv-movement-icon--unload   { background: var(--success-subtle); color: var(--success); }
+.inv-movement-icon--transfer { background: rgba(139,92,246,0.12); color: #8b5cf6; }
+.inv-movement-icon--receipt  { background: rgba(6,182,212,0.12); color: #06b6d4; }
+
+.inv-movement-body { flex: 1; min-width: 0; }
+
+.inv-movement-title {
+  font-size: var(--text-base);
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.inv-movement-sub {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+.inv-movement-time {
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding-top: 0.15rem;
+}
+
+/* ── Warehouse Utilization ───────────────────────────────────── */
+.inv-warehouse-card {
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-sm);
+  background: var(--bg-elevated);
+}
+
+.inv-warehouse-card:last-child { margin-bottom: 0; }
+
+.inv-warehouse-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.inv-warehouse-name {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.inv-warehouse-name i { color: var(--text-muted); font-size: 0.75rem; }
+
+.inv-warehouse-pct {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.inv-warehouse-bar {
+  height: 8px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+
+.inv-warehouse-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width 0.4s var(--ease-out);
+}
+
+.inv-warehouse-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .inv-planner-body {
+    grid-template-columns: 1fr;
+  }
+  .inv-trailer-wrap { border-right: none; border-bottom: 1px solid var(--border); }
+  .inv-cargo-panel { max-height: 300px; }
+}
+
+@media (max-width: 768px) {
+  .inv-trailer-grid-overlay {
+    gap: 2px;
+    padding: 2px;
+  }
+  .inv-slot {
+    min-height: 24px;
+  }
+}

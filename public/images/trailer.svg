@@ -1,0 +1,208 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 280" fill="none">
+  <defs>
+    <!-- Ground reflection -->
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Cab body gradient -->
+    <linearGradient id="cabBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <!-- Cab accent -->
+    <linearGradient id="cabAccent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.6"/>
+      <stop offset="100%" stop-color="#1d4ed8" stop-opacity="0.3"/>
+    </linearGradient>
+    <!-- Window glass -->
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.35"/>
+      <stop offset="50%" stop-color="#93c5fd" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.25"/>
+    </linearGradient>
+    <!-- Trailer body -->
+    <linearGradient id="trailerBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="50%" stop-color="#172032"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <!-- Trailer top highlight -->
+    <linearGradient id="trailerHighlight" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#3b82f6" stop-opacity="0.15"/>
+      <stop offset="70%" stop-color="#3b82f6" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Wheel gradient -->
+    <radialGradient id="wheel" cx="0.4" cy="0.35" r="0.6">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="60%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </radialGradient>
+    <!-- Tire gradient -->
+    <radialGradient id="tire" cx="0.4" cy="0.35" r="0.6">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </radialGradient>
+    <!-- Shadow -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Ground line -->
+  <rect x="0" y="232" width="900" height="48" fill="url(#ground)"/>
+  <line x1="30" y1="233" x2="870" y2="233" stroke="#334155" stroke-width="1.5" stroke-opacity="0.4"/>
+
+  <!-- === CAB === -->
+  <g filter="url(#shadow)">
+    <!-- Cab main body -->
+    <rect x="20" y="100" width="130" height="132" rx="8" fill="url(#cabBody)" stroke="#475569" stroke-width="1.5" stroke-opacity="0.4"/>
+
+    <!-- Cab top / roof -->
+    <path d="M24 100 Q24 80, 50 72 L140 72 Q148 72, 150 80 L150 100" fill="url(#cabBody)" stroke="#475569" stroke-width="1.2" stroke-opacity="0.3"/>
+
+    <!-- Windshield -->
+    <path d="M34 78 Q34 74, 40 72 L134 72 Q140 72, 142 76 L142 110 L34 110 Z" fill="url(#glass)" stroke="#60a5fa" stroke-width="0.8" stroke-opacity="0.3"/>
+    <!-- Windshield reflection -->
+    <path d="M50 76 L60 76 L55 108 L45 108 Z" fill="white" fill-opacity="0.06"/>
+    <path d="M90 76 L105 76 L100 108 L85 108 Z" fill="white" fill-opacity="0.04"/>
+
+    <!-- Side window -->
+    <rect x="24" y="78" width="8" height="30" rx="3" fill="url(#glass)" stroke="#60a5fa" stroke-width="0.5" stroke-opacity="0.25"/>
+
+    <!-- Headlights -->
+    <rect x="148" y="115" width="6" height="18" rx="3" fill="#fbbf24" fill-opacity="0.6" filter="url(#glow)"/>
+    <rect x="148" y="138" width="6" height="10" rx="3" fill="#f97316" fill-opacity="0.4"/>
+
+    <!-- Grill -->
+    <g>
+      <rect x="148" y="160" width="5" height="52" rx="2" fill="#1e293b" stroke="#475569" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="148" y1="168" x2="153" y2="168" stroke="#475569" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="148" y1="176" x2="153" y2="176" stroke="#475569" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="148" y1="184" x2="153" y2="184" stroke="#475569" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="148" y1="192" x2="153" y2="192" stroke="#475569" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="148" y1="200" x2="153" y2="200" stroke="#475569" stroke-width="0.5" stroke-opacity="0.3"/>
+    </g>
+
+    <!-- Bumper -->
+    <rect x="145" y="216" width="12" height="16" rx="4" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+
+    <!-- Cab accent stripe -->
+    <rect x="20" y="118" width="128" height="3" rx="1" fill="url(#cabAccent)"/>
+
+    <!-- Door handle -->
+    <rect x="60" y="150" width="16" height="4" rx="2" fill="#475569" fill-opacity="0.6"/>
+
+    <!-- Side mirror -->
+    <rect x="14" y="95" width="10" height="22" rx="4" fill="#334155" stroke="#475569" stroke-width="0.8" stroke-opacity="0.4"/>
+    <rect x="15" y="98" width="8" height="16" rx="3" fill="url(#glass)"/>
+
+    <!-- Step -->
+    <rect x="20" y="228" width="50" height="4" rx="2" fill="#334155"/>
+  </g>
+
+  <!-- Cab wheel -->
+  <g>
+    <circle cx="90" cy="233" r="24" fill="url(#tire)" stroke="#1e293b" stroke-width="2"/>
+    <circle cx="90" cy="233" r="17" fill="url(#wheel)" stroke="#475569" stroke-width="1.5"/>
+    <circle cx="90" cy="233" r="6" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+    <!-- Wheel bolts -->
+    <circle cx="90" cy="222" r="1.5" fill="#64748b"/>
+    <circle cx="100" cy="230" r="1.5" fill="#64748b"/>
+    <circle cx="97" cy="241" r="1.5" fill="#64748b"/>
+    <circle cx="83" cy="241" r="1.5" fill="#64748b"/>
+    <circle cx="80" cy="230" r="1.5" fill="#64748b"/>
+  </g>
+
+  <!-- === CONNECTOR === -->
+  <rect x="152" y="195" width="30" height="8" rx="2" fill="#334155" stroke="#475569" stroke-width="0.8" stroke-opacity="0.3"/>
+  <circle cx="175" cy="199" r="4" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+
+  <!-- === TRAILER === -->
+  <g filter="url(#shadow)">
+    <!-- Trailer main box -->
+    <rect x="180" y="60" width="690" height="172" rx="6" fill="url(#trailerBody)" stroke="#334155" stroke-width="1.5" stroke-opacity="0.5"/>
+
+    <!-- Top highlight line -->
+    <rect x="180" y="60" width="690" height="3" rx="1.5" fill="url(#trailerHighlight)"/>
+
+    <!-- Trailer edge details (vertical ribs) -->
+    <line x1="295" y1="64" x2="295" y2="228" stroke="#334155" stroke-width="0.5" stroke-opacity="0.2"/>
+    <line x1="410" y1="64" x2="410" y2="228" stroke="#334155" stroke-width="0.5" stroke-opacity="0.2"/>
+    <line x1="525" y1="64" x2="525" y2="228" stroke="#334155" stroke-width="0.5" stroke-opacity="0.2"/>
+    <line x1="640" y1="64" x2="640" y2="228" stroke="#334155" stroke-width="0.5" stroke-opacity="0.2"/>
+    <line x1="755" y1="64" x2="755" y2="228" stroke="#334155" stroke-width="0.5" stroke-opacity="0.2"/>
+
+    <!-- Bottom frame rail -->
+    <rect x="180" y="228" width="690" height="6" rx="2" fill="#1e293b" stroke="#334155" stroke-width="0.8" stroke-opacity="0.4"/>
+
+    <!-- Rear lights -->
+    <rect x="866" y="80" width="5" height="24" rx="2.5" fill="#ef4444" fill-opacity="0.5"/>
+    <rect x="866" y="110" width="5" height="14" rx="2.5" fill="#f97316" fill-opacity="0.4"/>
+    <rect x="866" y="200" width="5" height="24" rx="2.5" fill="#ef4444" fill-opacity="0.5"/>
+
+    <!-- Rear door lines -->
+    <line x1="868" y1="65" x2="868" y2="226" stroke="#475569" stroke-width="1" stroke-opacity="0.3"/>
+    <rect x="864" y="140" width="4" height="20" rx="2" fill="#475569" fill-opacity="0.4"/>
+
+    <!-- Mud flap -->
+    <rect x="862" y="228" width="12" height="8" rx="1" fill="#1e293b" stroke="#334155" stroke-width="0.5"/>
+
+    <!-- Under-trailer details -->
+    <rect x="200" y="232" width="200" height="3" rx="1" fill="#1e293b"/>
+    <rect x="580" y="232" width="180" height="3" rx="1" fill="#1e293b"/>
+
+    <!-- FleetTracker branding on trailer -->
+    <text x="520" y="248" font-family="Inter, sans-serif" font-size="9" font-weight="700" fill="#334155" letter-spacing="0.12em">FLEETTRACKER</text>
+  </g>
+
+  <!-- Trailer wheels — front axle -->
+  <g>
+    <circle cx="340" cy="233" r="22" fill="url(#tire)" stroke="#1e293b" stroke-width="2"/>
+    <circle cx="340" cy="233" r="15" fill="url(#wheel)" stroke="#475569" stroke-width="1.5"/>
+    <circle cx="340" cy="233" r="5" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+    <circle cx="340" cy="223" r="1.2" fill="#64748b"/>
+    <circle cx="349" cy="230" r="1.2" fill="#64748b"/>
+    <circle cx="346" cy="240" r="1.2" fill="#64748b"/>
+    <circle cx="334" cy="240" r="1.2" fill="#64748b"/>
+    <circle cx="331" cy="230" r="1.2" fill="#64748b"/>
+  </g>
+  <g>
+    <circle cx="385" cy="233" r="22" fill="url(#tire)" stroke="#1e293b" stroke-width="2"/>
+    <circle cx="385" cy="233" r="15" fill="url(#wheel)" stroke="#475569" stroke-width="1.5"/>
+    <circle cx="385" cy="233" r="5" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+    <circle cx="385" cy="223" r="1.2" fill="#64748b"/>
+    <circle cx="394" cy="230" r="1.2" fill="#64748b"/>
+    <circle cx="391" cy="240" r="1.2" fill="#64748b"/>
+    <circle cx="379" cy="240" r="1.2" fill="#64748b"/>
+    <circle cx="376" cy="230" r="1.2" fill="#64748b"/>
+  </g>
+
+  <!-- Trailer wheels — rear axle -->
+  <g>
+    <circle cx="740" cy="233" r="22" fill="url(#tire)" stroke="#1e293b" stroke-width="2"/>
+    <circle cx="740" cy="233" r="15" fill="url(#wheel)" stroke="#475569" stroke-width="1.5"/>
+    <circle cx="740" cy="233" r="5" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+    <circle cx="740" cy="223" r="1.2" fill="#64748b"/>
+    <circle cx="749" cy="230" r="1.2" fill="#64748b"/>
+    <circle cx="746" cy="240" r="1.2" fill="#64748b"/>
+    <circle cx="734" cy="240" r="1.2" fill="#64748b"/>
+    <circle cx="731" cy="230" r="1.2" fill="#64748b"/>
+  </g>
+  <g>
+    <circle cx="785" cy="233" r="22" fill="url(#tire)" stroke="#1e293b" stroke-width="2"/>
+    <circle cx="785" cy="233" r="15" fill="url(#wheel)" stroke="#475569" stroke-width="1.5"/>
+    <circle cx="785" cy="233" r="5" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+    <circle cx="785" cy="223" r="1.2" fill="#64748b"/>
+    <circle cx="794" cy="230" r="1.2" fill="#64748b"/>
+    <circle cx="791" cy="240" r="1.2" fill="#64748b"/>
+    <circle cx="779" cy="240" r="1.2" fill="#64748b"/>
+    <circle cx="776" cy="230" r="1.2" fill="#64748b"/>
+  </g>
+</svg>

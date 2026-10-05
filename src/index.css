@@ -1,29 +1,100 @@
 @import "tailwindcss";
 
+/*
+ * FleetOS design tokens. Every component reads these variables — no one-off colours.
+ * Palette: warm neutral surfaces, one restrained petrol accent, semantic status colours
+ * used as small markers / tinted backgrounds (never whole red/green panels).
+ */
+
 @theme {
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
 
-  --color-brand-50:  oklch(0.98 0.02 150);
-  --color-brand-100: oklch(0.95 0.04 150);
-  --color-brand-200: oklch(0.88 0.08 150);
-  --color-brand-300: oklch(0.78 0.12 150);
-  --color-brand-400: oklch(0.68 0.14 150);
-  --color-brand-500: oklch(0.58 0.15 150);
-  --color-brand-600: oklch(0.50 0.14 150);
-  --color-brand-700: oklch(0.42 0.12 150);
-  --color-brand-800: oklch(0.34 0.09 150);
-  --color-brand-900: oklch(0.26 0.06 150);
+:root {
+  color-scheme: light;
 
-  --color-accent:  oklch(0.55 0.12 155);
-  --color-danger:  oklch(0.50 0.22 25);
-  --color-warn:    oklch(0.52 0.10 55);
-  --color-ok:      oklch(0.55 0.14 155);
+  /* Surfaces */
+  --bg: #f3f4f2;            /* app canvas */
+  --surface: #ffffff;        /* working surfaces (tables, panels) */
+  --surface-2: #f8f9f7;      /* subtle sections, table headers */
+  --surface-sunken: #eceee9; /* wells, segmented controls */
+  --border: #e1e4de;
+  --border-strong: #cbcfc7;
+  --overlay: rgba(20, 24, 22, 0.28);
+
+  /* Text */
+  --text: #15191c;
+  --text-2: #4a5057;
+  --text-3: #7b8188;
+  --text-inverse: #ffffff;
+
+  /* Accent — petrol */
+  --accent: #1d5c58;
+  --accent-hover: #164a47;
+  --accent-soft: #e2edeb;
+  --accent-ink: #12403d;
+
+  /* Status (semantic) */
+  --ok: #2b7a4b;
+  --ok-soft: #e5f1e9;
+  --warn: #a56204;
+  --warn-soft: #fbefd9;
+  --danger: #b2382b;
+  --danger-soft: #f8e3df;
+  --info: #2f5f8f;
+  --info-soft: #e5edf6;
+  --neutral: #6a7077;
+  --neutral-soft: #eceee9;
+
+  /* Cargo identity (restrained hues carried over from the original Jobs board) */
+  --cargo-dry: #8b6f47;
+  --cargo-reefer: #2f6f8f;
+  --cargo-hazmat: #b2382b;
+  --cargo-bulk: #6f6488;
+  --cargo-auto: #5f6e45;
+
+  /* Route schematic */
+  --route-line: #c9cdc5;
+  --route-pickup: var(--accent);
+  --route-delivery: #15191c;
+
+  /* Provenance (not alarms) */
+  --prov-demo: #6d5aa6;
+  --prov-demo-soft: #efebf8;
+
+  /* Radii / shadows */
+  --r-sm: 4px;
+  --r-md: 6px;
+  --r-lg: 8px;
+  --shadow-sm: 0 1px 2px rgba(16, 20, 18, 0.05);
+  --shadow-md: 0 4px 16px rgba(16, 20, 18, 0.10), 0 1px 3px rgba(16, 20, 18, 0.06);
+  --shadow-lg: 0 16px 48px rgba(16, 20, 18, 0.16), 0 2px 6px rgba(16, 20, 18, 0.06);
+
+  /* Density */
+  --row-h: 40px;
+  --row-h-compact: 32px;
+  --sidebar-w: 200px;
+  --topbar-h: 48px;
+
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Legacy aliases (older components read these) */
+  --app-bg: var(--bg);
+  --app-fg: var(--text);
+  --app-muted: var(--text-2);
+  --app-border: var(--border);
+  --app-card: var(--surface);
+  --app-elevated: var(--surface-2);
+  --workspace-bg: var(--bg);
+  --warn-bg: var(--warn-soft);
+  --warn-fg: var(--warn);
+  --warn-border: color-mix(in srgb, var(--warn) 40%, transparent);
+  --warn-accent: var(--warn);
 }
 
 html {
   height: 100%;
-  color-scheme: light;
 }
 
 body {
@@ -31,9 +102,12 @@ body {
   min-height: 100%;
   height: 100%;
   font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  font-feature-settings: "cv11";
   -webkit-font-smoothing: antialiased;
-  background: var(--app-bg);
-  color: var(--app-fg);
+  background: var(--bg);
+  color: var(--text);
 }
 
 #root {
@@ -41,197 +115,162 @@ body {
   min-height: 100dvh;
 }
 
-/* ── Light palette — earthy cargo, green + brown ── */
-:root {
-  --app-bg:        #F6F7FB;
-  --app-fg:        #121826;
-  --app-muted:     #566075;
-  --app-border:    #DFE4F0;
-  --app-card:      #FFFFFF;
-  --app-elevated:  #F1F4FA;
-  --workspace-bg:  #EEF2F9;
-
-  /* Sidebar */
-  --shell-sidebar-bg:      #FFFFFF;
-  --shell-sidebar-border:  #DFE4F0;
-  --shell-sidebar-fg:      #121826;
-  --shell-sidebar-muted:   #566075;
-  --shell-nav-active-bg:   #E8EDFA;
-  --shell-nav-active-fg:   #2846B8;
-  --shell-nav-hover-bg:    rgba(40, 70, 184, 0.07);
-
-  /* Top bar */
-  --shell-top-bg:      rgba(246, 247, 251, 0.97);
-  --shell-top-border:  #DFE4F0;
-  --shell-top-fg:      #121826;
-  --shell-top-muted:   #566075;
-  --shell-search-bg:   #EFF3FB;
-
-  /* Semantic warning — brown, not amber */
-  --warn-bg:     #FFF6E7;
-  --warn-fg:     #8A5A02;
-  --warn-border: #EAC073;
-  --warn-accent: #A86B00;
+/* Tabular numerals for times, weights, distances, costs */
+.num {
+  font-variant-numeric: tabular-nums;
 }
 
-/* Selected route polyline glow */
+/* Focus */
+:where(button, a, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-radius: var(--r-sm);
+}
+
+/* Scrollbars */
+.scroll-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+.scroll-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@layer components {
+/* ── Primitives (class-level; React primitives live in src/ui) ── */
+
+.ui-input {
+  width: 100%;
+  height: 32px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 13px;
+  padding: 0 10px;
+  transition: border-color 120ms var(--ease), box-shadow 120ms var(--ease);
+}
+textarea.ui-input {
+  height: auto;
+  min-height: 64px;
+  padding: 7px 10px;
+  resize: vertical;
+}
+select.ui-input {
+  padding-right: 26px;
+}
+.ui-input:hover {
+  border-color: var(--text-3);
+}
+.ui-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent);
+}
+.ui-input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+.ui-input::placeholder {
+  color: var(--text-3);
+}
+.ui-input:disabled {
+  background: var(--surface-2);
+  color: var(--text-3);
+}
+
+/* Data tables: no cell borders, row separators only, sticky header */
+.ui-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 13px;
+}
+.ui-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  height: 32px;
+  padding: 0 12px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-3);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+.ui-table tbody td {
+  height: var(--row-h);
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.ui-table tbody tr {
+  transition: background 120ms var(--ease);
+}
+.ui-table tbody tr[data-clickable="true"] {
+  cursor: pointer;
+}
+.ui-table tbody tr:hover {
+  background: var(--surface-2);
+}
+.ui-table tbody tr[aria-selected="true"] {
+  background: var(--accent-soft);
+}
+.ui-table td.r,
+.ui-table th.r {
+  text-align: right;
+}
+.ui-table td.num {
+  white-space: nowrap;
+}
+
+}
+
+/* Leaflet */
 .leaflet-overlay-pane svg path.route-plan-polyline-selected {
-  filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 1px currentColor);
+  filter: drop-shadow(0 0 3px currentColor);
 }
-
 .leaflet-container {
   font-family: inherit;
 }
-
 .leaflet-pane,
 .leaflet-top,
 .leaflet-bottom {
   z-index: 20 !important;
 }
 
-/* Form input base */
-.input-base {
-  width: 100%;
-  border-radius: 10px;
-  border: 1px solid var(--app-border);
-  background: var(--app-card);
-  color: var(--app-fg);
-  font-size: 12px;
-  padding: 8px 10px;
-  outline: none;
-  transition: border-color 0.15s;
+@keyframes ui-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-.input-base:focus {
-  border-color: #2846B8;
+@keyframes ui-slide-in {
+  from { transform: translateX(16px); opacity: 0; }
+  to { transform: none; opacity: 1; }
 }
-.input-base::placeholder {
-  color: var(--app-muted);
+@keyframes ui-pop {
+  from { transform: translateY(-4px); opacity: 0; }
+  to { transform: none; opacity: 1; }
 }
-
-/* Scrollbar */
-.scroll-thin::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+@keyframes ui-shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
 }
-.scroll-thin::-webkit-scrollbar-thumb {
-  background: var(--app-border);
-  border-radius: 4px;
+.ui-skeleton {
+  border-radius: var(--r-sm);
+  background: linear-gradient(90deg, var(--surface-sunken) 0, var(--surface-2) 100px, var(--surface-sunken) 200px);
+  background-size: 400px 100%;
+  animation: ui-shimmer 1.2s linear infinite;
 }
-
-/* ── Load Planning Studio ── */
-.lp-studio {
-  --lp-bg:           #FAFAF7;
-  --lp-surface:      #FFFFFF;
-  --lp-surface-alt:  #F5F3EE;
-  --lp-border:       #E2DED6;
-  --lp-border-strong:#D0CCC4;
-  --lp-fg:           #1A1A1A;
-  --lp-fg-muted:     #5C5754;
-  --lp-fg-subtle:    #8A8784;
-
-  --lp-green:        #2D5F4E;
-  --lp-green-hover:  #1F4538;
-  --lp-green-soft:   #E8F0EC;
-  --lp-green-ink:    #1F4538;
-
-  --lp-brown:        #8B6F47;
-  --lp-brown-soft:   #F2EBE0;
-  --lp-brown-ink:    #5C4A30;
-  --lp-sand:         #D4B896;
-  --lp-sand-soft:    #F7EFDF;
-
-  --lp-amber:        #8B6F47;
-  --lp-amber-soft:   #F2EBE0;
-  --lp-rust:         #A84432;
-  --lp-rust-soft:    #F6E3DE;
-
-  --lp-cargo-dry:    #8B6F47;
-  --lp-cargo-reefer: #5F8A7D;
-  --lp-cargo-hazmat: #A84432;
-  --lp-cargo-auto:   #6B7A52;
-  --lp-cargo-bulk:   #7A6B8A;
-
-  color: var(--lp-fg);
-  background: var(--lp-bg);
-}
-
-.lp-studio .lp-grain {
-  background-image:
-    radial-gradient(ellipse 80% 40% at 50% -10%, rgba(45,95,78,0.06), transparent 55%),
-    radial-gradient(ellipse 60% 30% at 90% 0%, rgba(139,111,71,0.05), transparent 50%);
-}
-
-.lp-studio .lp-paper {
-  background: var(--lp-surface);
-  box-shadow:
-    0 1px 2px rgba(26,26,26,0.03),
-    0 1px 3px rgba(26,26,26,0.04);
-}
-
-.lp-studio .lp-road {
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--lp-border-strong) 0 16px,
-    transparent 16px 32px
-  );
-}
-
-@keyframes lp-pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.55; }
-}
-.lp-pulse {
-  animation: lp-pulse 1.6s ease-in-out infinite;
-}
-
-/* Page canvas — warm earthy glow */
-.page-canvas {
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, oklch(0.80 0.08 85 / 0.20), transparent 50%),
-    radial-gradient(ellipse 60% 40% at 100% 0%, oklch(0.75 0.06 55 / 0.10), transparent 45%);
-}
-
-/* Premium grid — subtle brown ruling lines */
-.premium-grid {
-  background-image:
-    linear-gradient(to right,  rgba(40,70,184,0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(40,70,184,0.06) 1px, transparent 1px);
-  background-size: 44px 44px;
-}
-
-.brand-hero {
-  background-image:
-    radial-gradient(ellipse 65% 55% at 10% 0%, rgba(89, 114, 255, 0.16), transparent 60%),
-    radial-gradient(ellipse 55% 50% at 95% 5%, rgba(49, 130, 246, 0.12), transparent 56%);
-}
-
-.btn-brand {
-  background: linear-gradient(135deg, #2d4dd8 0%, #2846b8 100%);
-  box-shadow: 0 10px 24px rgba(45, 77, 216, 0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-}
-
-.btn-brand:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 30px rgba(45, 77, 216, 0.28);
-  filter: brightness(1.02);
-}
-
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
-  outline: 2px solid #2d4dd8;
-  outline-offset: 2px;
-}
-
-/* ── Overview sidebar full-height on lg ── */
-@media (min-width: 1024px) {
-  .overview-jobs-sidebar {
-    width: 320px !important;
-    max-height: none !important;
-    border-top: none !important;
-    border-left: 1px solid var(--app-border) !important;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

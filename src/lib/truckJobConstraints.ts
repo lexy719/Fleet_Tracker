@@ -23,7 +23,7 @@ export function isTruckAvailableForJobAssignment(jobs: Job[], jobId: string, tru
 export function truckAssignmentBlockedMessage(jobs: Job[], jobId: string, truckId: string): string | null {
   const block = blockingOperationalJobsOnTruck(jobs, jobId, truckId)[0];
   if (!block) return null;
-  return `Esta viatura já está no trabalho ${block.id} (em curso). Termine ou cancele esse trabalho antes de atribuir outro à mesma viatura.`;
+  return `Esta viatura já está no trabalho ${block.jobNumber || block.id} (em curso). Termine ou cancele esse trabalho antes de atribuir outro à mesma viatura.`;
 }
 
 /**
@@ -47,7 +47,7 @@ export function isDriverAvailableForJobAssignment(jobs: Job[], jobId: string, dr
 export function driverAssignmentBlockedMessage(jobs: Job[], jobId: string, driverId: string): string | null {
   const block = blockingOperationalJobsForDriver(jobs, jobId, driverId)[0];
   if (!block) return null;
-  return `Este motorista já está no trabalho ${block.id} (em curso). Termine ou cancele antes de atribuir outra entrega.`;
+  return `Este motorista já está no trabalho ${block.jobNumber || block.id} (em curso). Termine ou cancele antes de atribuir outra entrega.`;
 }
 
 /**
@@ -77,7 +77,7 @@ export function truckLineIncompatibleMessage(
   if (isTruckCompatibleForAssignment(jobs, jobId, truckId, driverId)) return null;
   const block = blockingOperationalJobsOnTruck(jobs, jobId, truckId)[0];
   if (!block) return null;
-  return `A viatura está no trabalho ${block.id} com outro motorista. Para agendar a seguir, use a mesma viatura e o mesmo motorista.`;
+  return `A viatura está no trabalho ${block.jobNumber || block.id} com outro motorista. Para agendar a seguir, use a mesma viatura e o mesmo motorista.`;
 }
 
 export function driverLineIncompatibleMessage(
@@ -89,7 +89,7 @@ export function driverLineIncompatibleMessage(
   if (isDriverCompatibleForAssignment(jobs, jobId, truckId, driverId)) return null;
   const block = blockingOperationalJobsForDriver(jobs, jobId, driverId)[0];
   if (!block) return null;
-  return `Este motorista está no trabalho ${block.id} com outra viatura. Para fila, alinhe viatura e motorista ao trabalho em curso.`;
+  return `Este motorista está no trabalho ${block.jobNumber || block.id} com outra viatura. Para fila, alinhe viatura e motorista ao trabalho em curso.`;
 }
 
 export type AssignmentMode = "assigned" | "queued";

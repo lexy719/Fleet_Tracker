@@ -1,0 +1,24 @@
+{
+  "_comment": "SYNTHETIC TEST DATA — NOT AN OFFICIAL PUBLICATION. FleetOS dev fixture (source dev-test-ip-point-event), same structure as the IP 'Viajar na Estrada' ArcGIS layers. The point lies on the route saved for job J-4203 in the 2026-09-30 browser acceptance run.",
+  "features": [
+    {
+      "attributes": {
+        "objectid": 1,
+        "tipo": "MaintenanceWorks",
+        "estado": "ativo",
+        "datainicio": 1790726400000,
+        "dataobservacao": 1790802000000,
+        "datafim": null,
+        "commentsummary": "[TESTE SINTÉTICO] Corte total de trânsito entre os kms 10,0 e 13,0, devido a instabilidade de talude.",
+        "description": "IC1",
+        "pkbegin": 10,
+        "direction": "Ambos",
+        "distrito": "Setúbal",
+        "concelho": "Alcácer do Sal",
+        "latitude": 38.42922,
+        "longitude": -8.51931
+      },
+      "geometry": { "x": -8.51931, "y": 38.42922 }
+    }
+  ]
+}

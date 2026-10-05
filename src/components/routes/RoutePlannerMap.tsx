@@ -6,7 +6,6 @@ import shadowUrl from "leaflet/dist/images/marker-shadow.png";
 import { Fragment, useEffect, useMemo } from "react";
 import { CircleMarker, MapContainer, Marker, Polyline, Popup, TileLayer, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import type { CargoItem } from "../../data/types";
 import { routeLineBaseColor, type RoutePlanOption, type RouteOptionId } from "../../tomtom/planRoutes";
 import { getTomTomKey, TOMTOM } from "../../tomtom/config";
 import { MapLibreTomTomLayer } from "../map/MapLibreTomTomLayer";
@@ -39,9 +38,11 @@ function FitToShapes({ points }: { points: [number, number][] }) {
     if (points.length === 0) return;
     const b = L.latLngBounds(points);
     map.fitBounds(b, { padding: [72, 72], maxZoom: 12 });
-    requestAnimationFrame(() => {
-      map.invalidateSize({ animate: false });
+    // The map may unmount before the frame runs (e.g. leaving Dispatch) — never touch a removed map.
+    const raf = requestAnimationFrame(() => {
+      if ((map as unknown as { _mapPane?: unknown })._mapPane) map.invalidateSize({ animate: false });
     });
+    return () => cancelAnimationFrame(raf);
   }, [map, points]);
   return null;
 }
@@ -92,7 +93,6 @@ export function RoutePlannerMap({
   onRouteLineClick,
   truck,
   markers,
-  cargoByStopId,
   selectedMarkerId,
   onMarkerClick,
   className,
@@ -108,7 +108,6 @@ export function RoutePlannerMap({
   onRouteLineClick?: (id: RouteOptionId) => void;
   truck?: { lat: number; lng: number } | null;
   markers: RouteMapMarker[];
-  cargoByStopId?: Record<string, CargoItem[]>;
   selectedMarkerId: string | null;
   onMarkerClick: (id: string) => void;
   className?: string;
@@ -147,7 +146,7 @@ export function RoutePlannerMap({
   return (
     <div
       className={clsx(
-        "relative flex h-full w-full min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border min-h-[200px] lg:min-h-0",
+        "relative flex h-full w-full min-w-0 flex-1 flex-col overflow-hidden rounded-[var(--r-lg)] border min-h-[200px] lg:min-h-0",
         "border-[var(--app-border)] bg-[var(--app-elevated)]",
         className,
       )}
@@ -180,8 +179,8 @@ export function RoutePlannerMap({
           <Marker position={[truck.lat, truck.lng]} icon={truckIcon}>
             <Popup>
               <div className="text-sm">
-                <div className="font-semibold text-slate-900">Posição da viatura</div>
-                <p className="mt-1 text-xs text-slate-600">GPS em tempo real</p>
+                <div className="font-semibold text-[var(--text-2)]">Posição da viatura</div>
+                <p className="mt-1 text-xs text-[var(--text-3)]">Posição simulada (demo) — sem telemetria</p>
               </div>
             </Popup>
           </Marker>
@@ -191,7 +190,6 @@ export function RoutePlannerMap({
           let viaN = 0;
           return markers.map((s) => {
           const selected = selectedMarkerId === s.id;
-          const cargo = cargoByStopId?.[s.id] ?? [];
           const col = markerColor(s.role);
           const badge =
             s.role === "start" ? "A" : s.role === "finish" ? "B" : `${++viaN}`;
@@ -213,24 +211,12 @@ export function RoutePlannerMap({
             >
               <Popup>
                 <div className="min-w-[200px] max-w-[260px] text-sm">
-                  <div className="font-semibold text-slate-900">
+                  <div className="font-semibold text-[var(--text-2)]">
                     {roleTitle(s.role)} · {s.label || "Point"}
                   </div>
-                  <div className="mt-1 font-mono text-[11px] text-slate-500">
+                  <div className="mt-1 font-mono text-[11px] text-[var(--text-3)]">
                     {s.lat.toFixed(5)}, {s.lng.toFixed(5)}
                   </div>
-                  {cargo.length > 0 ? (
-                    <div className="mt-2 border-t border-slate-200 pt-2">
-                      <div className="text-[10px] font-bold uppercase tracking-wide text-slate-500">Cargo</div>
-                      <ul className="mt-1 space-y-1">
-                        {cargo.map((c) => (
-                          <li key={c.id} className="text-xs text-slate-800">
-                            <span className="font-mono text-[10px] text-slate-500">{c.sku}</span> · {c.label}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ) : null}
                 </div>
               </Popup>
             </Marker>
@@ -304,7 +290,7 @@ export function RoutePlannerMap({
 
       <div
         className={clsx(
-          "pointer-events-none absolute left-3 flex flex-wrap gap-2 rounded-xl border px-3 py-2 text-[10px] shadow-sm",
+          "pointer-events-none absolute left-3 flex flex-wrap gap-2 rounded-[var(--r-md)] border px-3 py-2 text-[10px] shadow-sm",
           "border-[var(--app-border)] bg-[var(--app-card)] text-[var(--app-muted)]",
           comparisonSheetInset === "expanded"
             ? "bottom-[max(7rem,min(38vh,24rem))]"
@@ -315,22 +301,8 @@ export function RoutePlannerMap({
       >
         {options
           .filter((o) => !o.error && o.polyline.length > 0)
-          // Show same 3 meaningful options as the right-panel cards
-          .filter((o, _, arr) => {
-            const r = o.comparisonRole;
-            if (r === "fastest" || r === "lowest_toll" || r === "most_fuel" || r === "single") return true;
-            return o.id === arr.find((x) => x.comparisonRole === "other")?.id;
-          })
           .map((o) => {
-            const label = (() => {
-              switch (o.comparisonRole) {
-                case "fastest":     return "Mais rápida";
-                case "lowest_toll": return "Menos portagem";
-                case "most_fuel":   return "Mais eficiente";
-                case "single":      return "Rota disponível";
-                default:            return "Alternativa";
-              }
-            })();
+            const label = o.title;
             return (
               <span key={o.id} className="inline-flex max-w-[160px] items-center gap-1.5" title={label}>
                 <span

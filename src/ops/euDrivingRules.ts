@@ -18,14 +18,10 @@
  * mandatory breaks — are legal and normal for international routes.
  */
 
-const SEC_PER_H = 3_600;
-
-export const MAX_CONTINUOUS_SEC    = 4.5 * SEC_PER_H;  // 4h30 before mandatory break
-export const BREAK_DURATION_SEC    = 45  * 60;          // 45-min mandatory break
-export const MAX_DAILY_SEC         = 9   * SEC_PER_H;   // standard daily driving max
-export const MAX_DAILY_EXTENDED_SEC = 10 * SEC_PER_H;  // extendable (≤ 2×/week)
-export const DAILY_REST_SEC        = 11  * SEC_PER_H;   // min daily rest between days
-export const MAX_WEEKLY_H          = 56;                // weekly driving limit
+import { MAX_DAILY_SEC, MAX_DAILY_EXTENDED_SEC, MAX_WEEKLY_H } from "./drivingLimits";
+import { planStops } from "./drivingStops";
+export { MAX_CONTINUOUS_SEC, BREAK_DURATION_SEC, MAX_DAILY_SEC, MAX_DAILY_EXTENDED_SEC, DAILY_REST_SEC, MAX_WEEKLY_H } from "./drivingLimits";
+const SEC_PER_H = 3600;
 
 export type DrivingIssueCode =
   | "MULTI_DAY"
@@ -65,50 +61,10 @@ export function simulateDrivingSchedule(
   tripDriveSec: number,
   alreadyTodaySec: number,
 ): DrivingSchedule {
-  let remaining    = Math.max(0, tripDriveSec);
-  let todayDriven  = Math.max(0, alreadyTodaySec);
-  let continuous   = 0;   // seconds since last break/rest
-  let breakCount   = 0;
-  let restCount    = 0;
-  let drivingDays  = 1;
-
-  while (remaining > 0) {
-    // How far until we MUST stop for a break?
-    const tillBreak = MAX_CONTINUOUS_SEC - continuous;
-    // How far until we MUST stop for a daily rest?
-    const tillRest  = MAX_DAILY_SEC - todayDriven;
-    // How far can we actually go (whichever limit comes first)?
-    const driveNow  = Math.min(remaining, tillBreak, tillRest);
-
-    remaining   -= driveNow;
-    continuous  += driveNow;
-    todayDriven += driveNow;
-
-    if (remaining <= 0) break; // trip finished
-
-    const needsRest  = todayDriven >= MAX_DAILY_SEC;
-    const needsBreak = continuous  >= MAX_CONTINUOUS_SEC;
-
-    if (needsRest) {
-      // Daily rest (11h) — subsumes any pending 45-min break requirement
-      restCount++;
-      drivingDays++;
-      todayDriven = 0;
-      continuous  = 0;
-    } else if (needsBreak) {
-      // Mandatory 45-min break mid-day
-      breakCount++;
-      continuous = 0;
-      // todayDriven is NOT reset — break doesn't count toward daily rest
-    }
-  }
-
-  const totalElapsedSec =
-    tripDriveSec +
-    breakCount * BREAK_DURATION_SEC +
-    restCount  * DAILY_REST_SEC;
-
-  return { breakCount, restCount, totalElapsedSec, drivingDays };
+  const stops = planStops(tripDriveSec, { drivenTodaySec: alreadyTodaySec, continuousSec: 0 });
+  const breakCount = stops.filter((s) => s.kind === "break").length;
+  const restCount = stops.filter((s) => s.kind === "rest").length;
+  return { breakCount, restCount, drivingDays: 1 + restCount, totalElapsedSec: tripDriveSec + stops.reduce((sum, s) => sum + s.durationSec, 0) };
 }
 
 /* ─── Formatting helpers ──────────────────────────────────────────────────── */

@@ -3,7 +3,7 @@
  * Referência: Convenção relativa ao contrato de transporte internacional de mercadorias por estrada (Genebra, 1956).
  */
 import type { CargoType, Job } from "../data/types";
-import type { CompanySettings } from "../context/SettingsContext";
+import type { CompanySnapshot } from "../domain/documents/documents";
 
 const CARGO_LABEL: Record<CargoType, string> = {
   dry:          "Seco",
@@ -61,7 +61,10 @@ export type CmrCarrierContext = {
   driverName?: string;
   driverLicense?: string;
   /** Optional: override carrier info from settings. */
-  settings?: CompanySettings;
+  settings?: Pick<CompanySnapshot, "name" | "address" | "postalCity" | "country" | "nif" | "licencaComunitaria">;
+  /** Issued document number and date (snapshot). */
+  number?: string;
+  issuedAt?: string;
 };
 
 export function buildPortugueseCMRHtml(job: Job, ctx: CmrCarrierContext): string {
@@ -79,7 +82,7 @@ export function buildPortugueseCMRHtml(job: Job, ctx: CmrCarrierContext): string
   const first = job.stops[0];
   const last = job.stops[job.stops.length - 1];
   const issuePlace = first?.city ?? "—";
-  const issueDate = formatPtDate(job.createdAt, new Date().toISOString());
+  const issueDate = formatPtDate(ctx.issuedAt ?? job.createdAt, ctx.issuedAt ?? job.createdAt);
 
   const senderBlock = first
     ? `${escapeHtml(first.clientName)}<br>${escapeHtml(first.address)}<br>${escapeHtml(first.city)}`
@@ -102,7 +105,7 @@ export function buildPortugueseCMRHtml(job: Job, ctx: CmrCarrierContext): string
     .filter(Boolean)
     .join(" · ") || CARGO_LABEL[job.cargoType];
 
-  const marksPackages = `${escapeHtml(job.id)} · ${job.totalPallets} vol.`;
+  const marksPackages = `${escapeHtml(job.jobNumber)} · ${job.totalPallets} vol.`;
 
   const weightBrut = `${job.totalWeightKg.toLocaleString("pt-PT")} kg`;
 
@@ -135,7 +138,7 @@ export function buildPortugueseCMRHtml(job: Job, ctx: CmrCarrierContext): string
 <html lang="pt">
 <head>
 <meta charset="utf-8">
-<title>CMR — ${escapeHtml(job.id)}</title>
+<title>${ctx.number ? escapeHtml(ctx.number) : `CMR — ${escapeHtml(job.jobNumber)}`}</title>
 <style>
   @page { size: A4; margin: 12mm; }
   * { box-sizing: border-box; }
@@ -234,7 +237,7 @@ export function buildPortugueseCMRHtml(job: Job, ctx: CmrCarrierContext): string
 </style>
 </head>
 <body>
-  <div class="cmr-title">CARTA DE PORTE (CMR)</div>
+  <div class="cmr-title">CARTA DE PORTE (CMR)${ctx.number ? ` · N.º ${escapeHtml(ctx.number)}` : ""}</div>
   <p class="cmr-sub">Documento previsto na Convenção relativa ao contrato de transporte internacional de mercadorias por estrada (CMR), ratificada por Portugal. Válido como prova do contrato de transporte entre as partes indicadas.</p>
 
   <div class="cmr-carrier-id">
@@ -249,7 +252,7 @@ export function buildPortugueseCMRHtml(job: Job, ctx: CmrCarrierContext): string
     <div class="cell"><div class="num" data-n="2">Destinatário (nome, morada, país)</div>${consigneeBlock}</div>
     <div class="cell"><div class="num" data-n="3">Lugar previsto para entrega da mercadoria</div>${placeDelivery}</div>
     <div class="cell"><div class="num" data-n="4">Lugar e data/hora da tomada a cargo</div>${takeOver}</div>
-    <div class="cell"><div class="num" data-n="5">Documentos anexos</div>Ref. cliente: ${escapeHtml(job.reference)} · Ref. transporte: ${escapeHtml(job.id)}</div>
+    <div class="cell"><div class="num" data-n="5">Documentos anexos</div>Ref. cliente: ${escapeHtml(job.reference)} · Ref. transporte: ${escapeHtml(job.jobNumber)}</div>
     <div class="cell"><div class="num" data-n="6">Sinais e números · n.º de volumes</div>${marksPackages}</div>
     <div class="cell wide"><div class="num" data-n="7">Designação da mercadoria</div>${natureGoods}</div>
     <div class="cell"><div class="num" data-n="8">N.º estatístico</div>—</div>

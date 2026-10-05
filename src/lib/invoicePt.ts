@@ -5,7 +5,7 @@
  * NOTA: Para produção substitua por um software de faturação certificado pela AT
  * (Art.º 123.º CIVA / Portaria 363/2010).  Esta implementação é para demonstração.
  */
-import type { CompanySettings } from "../context/SettingsContext";
+import type { CompanySnapshot } from "../domain/documents/documents";
 import type { CargoType, Job } from "../data/types";
 
 const CARGO_LABEL: Record<CargoType, string> = {
@@ -35,15 +35,19 @@ function fmtEur(n: number): string {
 }
 
 export type InvoiceContext = {
-  settings:      CompanySettings;
+  settings:      CompanySnapshot;
   invoiceNumber: string;
+  /** Issue / due dates as recorded on the issued document (never "now" on reprint). */
+  issuedAt:      string;
+  dueAt:         string;
+  buyer:         { name: string; nif?: string; billingAddress?: string };
 };
 
 export function buildPtInvoiceHtml(job: Job, ctx: InvoiceContext): string {
-  const { settings, invoiceNumber } = ctx;
+  const { settings, invoiceNumber, buyer } = ctx;
 
-  const issueDate   = new Date().toISOString();
-  const dueDate     = new Date(Date.now() + settings.paymentTermsDays * 86_400_000).toISOString();
+  const issueDate   = ctx.issuedAt;
+  const dueDate     = ctx.dueAt;
 
   const baseAmount  = job.rateEur;
   const vatAmount   = Math.round(baseAmount * settings.vatPct) / 100;
@@ -167,9 +171,10 @@ export function buildPtInvoiceHtml(job: Job, ctx: InvoiceContext): string {
     </div>
     <div class="party-box">
       <div class="role">Adquirente (cliente)</div>
-      <div class="name">${esc(job.client)}</div>
+      <div class="name">${esc(buyer.name)}</div>
       <div class="detail">
-        NIF: ${job.buyerNif ? esc(job.buyerNif) : "—"}<br>
+        NIF: ${buyer.nif ? esc(buyer.nif) : "—"}<br>
+        ${buyer.billingAddress ? `${esc(buyer.billingAddress)}<br>` : ""}
         Ref. cliente: ${esc(job.reference)}
       </div>
     </div>
@@ -189,7 +194,7 @@ export function buildPtInvoiceHtml(job: Job, ctx: InvoiceContext): string {
       <tr>
         <td>
           <strong>${esc(serviceDesc)}</strong><br>
-          <span style="font-size:7.5pt;color:#555">Rota: ${routeDesc} · Ref. transporte: ${esc(job.id)} · Ref: ${esc(job.reference)}</span>
+          <span style="font-size:7.5pt;color:#555">Rota: ${routeDesc} · Ref. transporte: ${esc(job.jobNumber)} · Ref: ${esc(job.reference)}</span>
         </td>
         <td style="text-align:right">1</td>
         <td style="text-align:right">${fmtEur(baseAmount)}</td>

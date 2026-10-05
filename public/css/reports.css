@@ -1,0 +1,193 @@
+/* ═══════════════════════════════════════════════════════════════
+   FleetTracker — Reports & Analytics Widgets
+   Chart visualizations, donut, bar charts, horizontal bars,
+   compliance cards. Uses design tokens from core.css.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Card Header Icon (shared across report cards) ─────────── */
+.rpt-icon { margin-right: 0.5rem; }
+.rpt-icon--accent  { color: var(--accent); }
+.rpt-icon--success { color: var(--success); }
+.rpt-icon--warning { color: var(--warning); }
+.rpt-icon--danger  { color: var(--danger); }
+.rpt-icon--info    { color: var(--info); }
+
+.rpt-detail-link { font-size: var(--text-sm); }
+
+/* ── Donut Chart ───────────────────────────────────────────── */
+.rpt-donut-wrap {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.rpt-donut {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--success) 0% 65%,
+    var(--warning) 65% 80%,
+    var(--danger) 80% 88%,
+    var(--text-muted) 88% 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rpt-donut-center {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.rpt-donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.rpt-donut-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-md);
+}
+
+.rpt-donut-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.rpt-donut-legend-dot--success { background: var(--success); }
+.rpt-donut-legend-dot--warning { background: var(--warning); }
+.rpt-donut-legend-dot--danger  { background: var(--danger); }
+.rpt-donut-legend-dot--muted   { background: var(--text-muted); }
+
+.rpt-donut-legend-label { color: var(--text-secondary); }
+.rpt-donut-legend-value { margin-left: auto; font-weight: 600; }
+
+/* ── Vertical Bar Chart ────────────────────────────────────── */
+.rpt-bar-chart {
+  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.rpt-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.rpt-bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, var(--accent), var(--accent-hover));
+  border-radius: var(--radius-xs);
+  transition: height var(--duration-slow) var(--ease-out);
+}
+
+.rpt-bar-fill--current {
+  background: linear-gradient(180deg, var(--success), #16a34a);
+}
+
+.rpt-bar-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+/* ── Horizontal Bar Chart ──────────────────────────────────── */
+.rpt-hbar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rpt-hbar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rpt-hbar-name {
+  width: 140px;
+  font-size: var(--text-md);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.rpt-hbar-track {
+  flex: 1;
+  height: 24px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-xs);
+  overflow: hidden;
+}
+
+.rpt-hbar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  border-radius: var(--radius-xs);
+  transition: width var(--duration-slow) var(--ease-out);
+}
+
+.rpt-hbar-value {
+  width: 70px;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: var(--text-md);
+  color: var(--text-primary);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ── Compliance Items ──────────────────────────────────────── */
+.rpt-compliance-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.rpt-compliance-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--border);
+}
+
+.rpt-compliance-item--danger  { border-left-color: var(--danger); }
+.rpt-compliance-item--warning { border-left-color: var(--warning); }
+.rpt-compliance-item--success { border-left-color: var(--success); }
+
+.rpt-compliance-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.rpt-compliance-sub {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}

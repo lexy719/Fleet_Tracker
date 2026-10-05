@@ -1,0 +1,967 @@
+/* ═══════════════════════════════════════════════════════════════
+   FleetTracker — Dispatch Board v31
+   Single-screen dispatch: load board, truck viz, Gantt, alerts
+   Used by: operations.html, inventory.html
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Dispatch Header Meta ──────────────────────────────────── */
+.dispatch-sync {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--success);
+  background: var(--success-subtle);
+  border-radius: var(--radius-full);
+}
+
+.dispatch-sync-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  animation: livePulse 2s ease-in-out infinite;
+}
+
+.dispatch-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+}
+
+.dispatch-user-avatar {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), #8b5cf6);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; font-weight: 600; color: #fff;
+}
+
+/* ── KPI Sparkline ─────────────────────────────────────────── */
+.kpi-spark {
+  display: block;
+  margin-top: var(--space-xs);
+  overflow: hidden;
+}
+
+.kpi-spark svg {
+  width: 100%;
+  height: 24px;
+  display: block;
+}
+
+/* ── Freight List Items ──────────────────────────────────────── */
+.freight-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  margin-bottom: var(--space-xs);
+}
+
+.freight-item:hover {
+  border-color: var(--border-hover);
+}
+
+.freight-item.is-selected {
+  border-color: var(--accent);
+  background: var(--bg-active);
+  box-shadow: 0 0 0 1px var(--accent-subtle);
+}
+
+.freight-item input[type="checkbox"] {
+  margin-top: 0.25rem;
+  width: 14px; height: 14px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+}
+
+.freight-id {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.freight-meta {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.freight-detail {
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+/* ── Dispatch Board — 3 Column Layout ──────────────────────── */
+.dispatch-board {
+  display: grid;
+  grid-template-columns: 300px 1fr 280px;
+  gap: var(--space-md);
+  min-height: 0;
+  flex: 1;
+}
+
+.dispatch-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.dispatch-column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.dispatch-column-title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.dispatch-column-count {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-subtle);
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.dispatch-column-body {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  padding: var(--space-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* ── Load Card ─────────────────────────────────────────────── */
+.load-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.load-card:hover {
+  border-color: var(--border-accent);
+  box-shadow: 0 0 0 1px var(--accent-subtle);
+}
+
+.load-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+}
+
+.load-card-id {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+.load-card-priority {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.125rem 0.375rem;
+  border-radius: var(--radius-xs);
+}
+
+.priority-high   { background: var(--danger-subtle);  color: var(--danger); }
+.priority-medium { background: var(--warning-subtle); color: var(--warning); }
+.priority-normal { background: rgba(100,116,139,0.12); color: var(--text-muted); }
+
+.load-card-route {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: var(--space-xs);
+}
+
+.load-card-route i { color: var(--text-muted); font-size: 0.625rem; }
+
+.load-card-meta {
+  display: flex;
+  gap: var(--space-md);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.load-card-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.load-card-customer {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  margin-top: var(--space-xs);
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--border);
+}
+
+/* ── Status Labels on Load Cards ───────────────────────────── */
+.load-status {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.125rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.load-status--loading    { background: var(--accent-subtle);  color: var(--accent); }
+.load-status--transit    { background: var(--success-subtle); color: var(--success); }
+.load-status--delivering { background: var(--warning-subtle); color: var(--warning); }
+.load-status--completed  { background: rgba(100,116,139,0.12); color: var(--text-muted); }
+.load-status--planned    { background: var(--info-subtle);    color: var(--info); }
+
+/* ── Truck Card (right column) ─────────────────────────────── */
+.truck-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+
+.truck-card:hover { border-color: var(--border-hover); }
+
+.truck-card-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.truck-card-info { flex: 1; min-width: 0; }
+.truck-card-plate { font-size: var(--text-base); font-weight: 600; color: var(--text-primary); }
+.truck-card-driver { font-size: var(--text-xs); color: var(--text-muted); }
+.truck-card-hos { font-size: var(--text-xs); font-family: var(--font-mono); color: var(--text-muted); }
+
+/* ── Truck Visualization Panel ─────────────────────────────── */
+.truck-viz {
+  position: relative;
+  overflow: hidden;
+}
+
+.truck-viz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: 1px solid var(--border);
+}
+
+.truck-viz-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.truck-viz-sub {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+}
+
+.truck-viz-body {
+  position: relative;
+  padding: var(--space-md);
+}
+
+/* Truck frame — shared by dispatch + inventory */
+.truck-viz-frame,
+.tms-truck-frame {
+  position: relative;
+  background: linear-gradient(135deg, var(--bg-surface) 0%, var(--bg-card) 100%);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  padding: var(--space-sm);
+}
+
+.truck-viz-img,
+.tms-truck-img {
+  width: 100%;
+  height: auto;
+  opacity: 0.9;
+  display: block;
+}
+
+.tms-truck-img-wrap,
+.inv-truck-visual-3d {
+  position: relative;
+}
+
+/* Cargo grid overlay on truck image */
+.cargo-grid,
+.tms-trailer-grid {
+  position: absolute;
+  top: 28%;
+  left: 7%;
+  width: 50%;
+  height: 52%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.cargo-slot,
+.tms-slot {
+  aspect-ratio: 1;
+  border-radius: var(--radius-xs);
+  border: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  transition: all var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+  background: rgba(255,255,255,0.03);
+}
+
+.cargo-slot--loaded,
+.tms-slot.is-active {
+  background: rgba(59,130,246,0.25);
+  border-color: rgba(59,130,246,0.4);
+}
+
+.cargo-slot--empty {
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.2);
+}
+
+.cargo-slot:hover,
+.tms-slot:hover {
+  border-color: var(--accent);
+  background: rgba(59,130,246,0.15);
+}
+
+.cargo-slot--loaded span,
+.tms-slot.is-active span {
+  font-size: 0.4rem;
+  line-height: 1.1;
+  text-align: center;
+  color: #60a5fa;
+}
+
+/* Zoom controls (inventory page) */
+.tms-zoom-hint {
+  position: absolute;
+  bottom: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  gap: 0.25rem;
+  z-index: 2;
+}
+
+.tms-zoom-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.tms-zoom-btn:hover:not(:disabled) {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.tms-zoom-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Capacity bars */
+.capacity-row {
+  display: flex;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--border);
+}
+
+.capacity-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.capacity-label {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+.capacity-text {
+  font-size: var(--text-2xs);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.capacity-bar {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+}
+
+.capacity-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--duration-slow) var(--ease-out);
+}
+
+.capacity-fill--weight  { background: linear-gradient(90deg, var(--accent), #60a5fa); }
+.capacity-fill--pallets { background: linear-gradient(90deg, var(--success), #4ade80); }
+.capacity-fill--volume  { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+
+/* ── Gantt Timeline ────────────────────────────────────────── */
+.gantt {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.gantt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.gantt-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.gantt-body {
+  padding: var(--space-sm) var(--space-md);
+  position: relative;
+}
+
+.gantt-row {
+  position: relative;
+  height: 28px;
+  margin-bottom: 4px;
+  background: rgba(255,255,255,0.02);
+  border-radius: var(--radius-xs);
+}
+
+.gantt-row:last-child { margin-bottom: 0; }
+
+.gantt-label {
+  width: 80px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.gantt-track {
+  flex: 1;
+  height: 20px;
+  position: relative;
+  background: rgba(255,255,255,0.02);
+  border-radius: var(--radius-xs);
+}
+
+.gantt-bar {
+  position: absolute;
+  top: 3px; bottom: 3px;
+  border-radius: var(--radius-xs);
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  font-size: var(--text-2xs);
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.gantt-bar--blue   { background: linear-gradient(90deg, rgba(59,130,246,0.6), rgba(59,130,246,0.3)); }
+.gantt-bar--green  { background: linear-gradient(90deg, rgba(34,197,94,0.6), rgba(34,197,94,0.3)); }
+.gantt-bar--purple { background: linear-gradient(90deg, rgba(139,92,246,0.6), rgba(139,92,246,0.3)); }
+.gantt-bar--orange { background: linear-gradient(90deg, rgba(249,115,22,0.6), rgba(249,115,22,0.3)); }
+
+.gantt-now {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 2px;
+  background: var(--danger);
+  z-index: 2;
+}
+
+.gantt-now::before {
+  content: 'NOW';
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.5rem;
+  font-weight: 700;
+  color: var(--danger);
+  letter-spacing: 0.05em;
+}
+
+/* ── Alert Tiles ───────────────────────────────────────────── */
+.alert-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+}
+
+.alert-tile {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.alert-tile h4 {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.alert-tile-title {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  margin-bottom: var(--space-sm);
+}
+
+.alert-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0;
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+}
+
+.alert-line:last-child {
+  border-bottom: none;
+}
+
+.alert-tile-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.25rem 0;
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+}
+
+.alert-tile-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.alert-tile-value--warn { color: var(--warning); }
+.alert-tile-value--danger { color: var(--danger); }
+.alert-tile-value--ok { color: var(--success); }
+
+/* ── Shipment Progress Strip ───────────────────────────────── */
+.shipment-strip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+}
+
+.shipment-strip-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-md);
+}
+
+.shipment-cards {
+  display: flex;
+  gap: var(--space-md);
+  overflow-x: auto;
+  padding: var(--space-xs) 0;
+  scrollbar-width: thin;
+}
+
+.shipment-card {
+  min-width: 240px;
+  max-width: 280px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  flex-shrink: 0;
+  transition: border-color var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+}
+
+.shipment-card:hover { border-color: var(--border-hover); }
+
+.shipment-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.shipment-card-id { font-size: var(--text-xs); font-weight: 700; font-family: var(--font-mono); color: var(--accent); }
+.shipment-card-eta { font-size: var(--text-xs); color: var(--text-muted); }
+
+.shipment-card-route {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: var(--space-sm);
+}
+
+.shipment-card-progress {
+  height: 4px;
+  border-radius: var(--radius-full);
+  background: rgba(255,255,255,0.06);
+  overflow: hidden;
+  margin: var(--space-sm) 0 var(--space-xs);
+}
+
+.shipment-card-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--accent), var(--success));
+  transition: width var(--duration-slow) var(--ease-out);
+}
+
+.shipment-card-info {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ── Inventory List Styles ─────────────────────────────────── */
+.inv-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+/* ── Shipment Detail Modal (inventory) ─────────────────────── */
+.shipment-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: var(--z-modal);
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+}
+
+.shipment-modal-overlay.active {
+  display: flex;
+}
+
+.shipment-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+}
+
+.shipment-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-shipment-title {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--accent);
+}
+
+.modal-shipment-route {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+}
+
+.modal-close-btn {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+}
+
+.modal-close-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.shipment-modal-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+}
+
+.modal-truck-section { display: flex; flex-direction: column; gap: var(--space-lg); }
+.modal-data-section { display: flex; flex-direction: column; gap: var(--space-lg); }
+
+.interactive-truck-load {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.truck-load-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.modal-truck-visual {
+  position: relative;
+  margin-bottom: var(--space-md);
+}
+
+.modal-truck-visual img {
+  width: 100%;
+  height: auto;
+  display: block;
+  opacity: 0.9;
+}
+
+.modal-cargo-grid {
+  position: absolute;
+  top: 28%;
+  left: 7%;
+  width: 50%;
+  height: 52%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
+}
+
+.capacity-info {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.capacity-metric { flex: 1; }
+.capacity-metric-label { font-size: var(--text-xs); color: var(--text-muted); }
+.capacity-metric-value { font-size: var(--text-md); font-weight: 600; color: var(--text-primary); margin: 0.25rem 0; }
+.capacity-bar-fill { height: 100%; border-radius: var(--radius-full); background: linear-gradient(90deg, var(--accent), var(--success)); }
+
+.data-group {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.data-group-title {
+  font-size: var(--text-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-group-title i { color: var(--text-muted); }
+
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.375rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-row:last-child { border-bottom: none; }
+
+.data-label {
+  font-size: var(--text-base);
+  color: var(--text-muted);
+}
+
+.data-value {
+  font-size: var(--text-base);
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.data-value.highlight { color: var(--accent); }
+
+.status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+.status-indicator .status-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+}
+
+.status-indicator.in-transit { color: var(--success); }
+.status-indicator.in-transit .status-dot { background: var(--success); }
+.status-indicator.loading { color: var(--warning); }
+.status-indicator.loading .status-dot { background: var(--warning); }
+
+.cargo-manifest { font-size: var(--text-base); color: var(--text-secondary); }
+
+.modal-actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: auto;
+}
+
+.modal-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1rem;
+  font-size: var(--text-base);
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.modal-btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+.modal-btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.modal-btn-secondary {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+.modal-btn-secondary:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+/* ── Dispatch Responsive ───────────────────────────────────── */
+@media (max-width: 1200px) {
+  .dispatch-board {
+    grid-template-columns: 1fr 1fr;
+  }
+  .dispatch-board > :nth-child(3) {
+    grid-column: 1 / -1;
+  }
+  .alert-tiles { grid-template-columns: 1fr 1fr; }
+  .shipment-modal-content { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  .dispatch-board { grid-template-columns: 1fr; }
+  .alert-tiles { grid-template-columns: 1fr; }
+  .shipment-card { min-width: 200px; }
+}

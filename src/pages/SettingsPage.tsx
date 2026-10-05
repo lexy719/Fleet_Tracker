@@ -1,256 +1,270 @@
-import { Building2, CreditCard, Info, RotateCcw, Save } from "lucide-react";
-import { useState } from "react";
-import { PageHeader } from "../components/layout/PageHeader";
-import { Card } from "../components/ui/Card";
-import { DEFAULT_SETTINGS, useSettings } from "../context/SettingsContext";
-import type { CompanySettings } from "../context/SettingsContext";
+import clsx from "clsx";
+import { ExternalLink } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { DEV_FIXTURES_AVAILABLE, useIngestion } from "../context/IngestionContext";
+import { useOperations, useOperationsRuntime } from "../context/OperationsContext";
+import { useRoadEvents } from "../context/RoadEventsContext";
+import { DEFAULT_SETTINGS, useSettings, type CompanySettings } from "../context/SettingsContext";
+import { buildDemoSeed } from "../data/mockData";
+import { documentSeries } from "../domain/documents/documents";
+import { OPS_TIME_ZONE } from "../domain/time";
+import { availableRoadEvents } from "../regulations/repository";
+import { Button, Checkbox, DataList, Field, Modal, Notice, PageHeader, SectionTitle } from "../ui/kit";
+import { CustomersList, SitesList } from "../ui/records/RecordLists";
 
-/* ─── Field + Section helpers ─────────────────────────────── */
-function SectionTitle({ icon: Icon, label }: { icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; label: string }) {
+export type SettingsGroup = "company" | "billing" | "operations" | "customers" | "sites" | "data" | "demo";
+const GROUPS: { value: SettingsGroup; label: string; heading?: string }[] = [
+  { value: "company", label: "Empresa" },
+  { value: "billing", label: "Faturação" },
+  { value: "operations", label: "Operação" },
+  { value: "customers", label: "Clientes", heading: "Registos" },
+  { value: "sites", label: "Locais" },
+  { value: "data", label: "Dados", heading: "Sistema" },
+  { value: "demo", label: "Demonstração e desenvolvimento" },
+];
+
+/** Read-only: the number the next issued invoice will get (owned by the operational store). */
+function NextInvoiceNumber({ prefix }: { prefix: string }) {
+  const { state, service } = useOperations();
+  const [n, setN] = useState<number | null>(null);
+  const series = documentSeries("INVOICE", { invoicePrefix: prefix }, new Date());
+  const issued = state.documents.filter((d) => d.series === series).length;
+  useEffect(() => {
+    let alive = true;
+    void service.peekNextNumber(series).then((v) => alive && setN(v));
+    return () => {
+      alive = false;
+    };
+  }, [service, series, issued]);
   return (
-    <div className="mb-4 flex items-center gap-2">
-      <Icon className="h-4 w-4" style={{ color: "#2D5F4E" }} />
-      <h2 className="text-[11px] font-black uppercase tracking-widest" style={{ color: "#2D5F4E" }}>
-        {label}
-      </h2>
+    <Field label="Próximo número" help="Atribuído ao emitir — reimprimir não consome números; anulados não são reutilizados.">
+      <div className="ui-input num flex items-center bg-[var(--surface-2)] text-[var(--text-2)]">{n === null ? "…" : `${prefix}${String(n).padStart(4, "0")}`}</div>
+    </Field>
+  );
+}
+
+function Text({ label, help, value, onChange, type = "text" }: { label: string; help?: string; value: string; onChange: (v: string) => void; type?: string }) {
+  return (
+    <Field label={label} help={help}>
+      <input className="ui-input" type={type} value={value} onChange={(e) => onChange(e.target.value)} />
+    </Field>
+  );
+}
+function Num({ label, help, unit, value, onChange }: { label: string; help?: string; unit?: string; value: number; onChange: (v: number) => void }) {
+  return (
+    <Field label={label} help={help} unit={unit}>
+      <input className="ui-input num" type="number" value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </Field>
+  );
+}
+
+function DataSection() {
+  const { state } = useOperations();
+  const { persistent, bootstrap, error } = useOperationsRuntime();
+  const count = <T extends { isDemo?: boolean; archivedAt?: string }>(xs: T[]) => `${xs.filter((x) => !x.isDemo).length} próprios · ${xs.filter((x) => x.isDemo).length} demo`;
+  return (
+    <div className="space-y-4">
+      {!persistent ? <Notice title="Armazenamento persistente indisponível">As alterações ficam só em memória e perdem-se ao recarregar a página. Verifique se o navegador permite IndexedDB.</Notice> : null}
+      {error ? <Notice title="Erro na inicialização dos dados">{error}</Notice> : null}
+      <DataList
+        rows={[
+          { label: "Armazenamento", value: persistent ? "Neste navegador (IndexedDB)" : "Memória (temporário)" },
+          { label: "Trabalhos", value: count(state.jobs) },
+          { label: "Viaturas", value: count(state.trucks) },
+          { label: "Reboques", value: count(state.trailers) },
+          { label: "Motoristas", value: count(state.drivers) },
+          { label: "Clientes", value: count(state.customers) },
+          { label: "Locais", value: count(state.sites) },
+          { label: "Documentos", value: `${state.documents.filter((d) => d.status === "ISSUED").length} emitidos · ${state.documents.filter((d) => d.status === "VOID").length} anulados` },
+          ...(bootstrap?.legacy ? [{ label: "Migração anterior", value: `${bootstrap.legacy.imported} trabalho(s) importado(s)${bootstrap.legacy.duplicates ? `, ${bootstrap.legacy.duplicates} duplicado(s) preservado(s)` : ""}${bootstrap.legacy.dropped ? `, ${bootstrap.legacy.dropped} entrada(s) inválida(s) ignorada(s)` : ""}` }] : []),
+        ]}
+      />
+      <p className="text-[12px] text-[var(--text-3)]">Os dados operacionais ficam guardados apenas neste navegador; não há sincronização entre dispositivos.</p>
     </div>
   );
 }
 
-function Field({
-  label,
-  hint,
-  children,
-}: {
-  label: string;
-  hint?: string;
-  children: React.ReactNode;
-}) {
+function DevTools() {
+  const { enabledIds, setEnabled } = useRoadEvents();
+  const ing = useIngestion();
+  const events = availableRoadEvents();
   return (
-    <div className="space-y-1">
-      <label className="block text-[11px] font-semibold" style={{ color: "var(--app-muted)" }}>
-        {label}
-      </label>
-      {children}
-      {hint && (
-        <p className="text-[10px]" style={{ color: "var(--app-muted)" }}>
-          {hint}
-        </p>
+    <div className="space-y-3">
+      <p className="text-[13px] text-[var(--text-2)]">Ferramentas para testar a Road Intelligence. Não fazem parte do fluxo operacional; tudo o que delas resulta fica identificado.</p>
+      {events.map((e) => (
+        <div key={e.id} className="flex items-center gap-2">
+          <Checkbox label={`Evento de teste (introdução manual): ${e.label}`} checked={enabledIds.includes(e.id)} onChange={(v) => setEnabled(e.id, v)} />
+          <a href={e.sourceUrl} target="_blank" rel="noreferrer" title="Aviso oficial" className="text-[var(--text-3)] hover:text-[var(--text)]"><ExternalLink className="h-3 w-3" /></a>
+        </div>
+      ))}
+      {import.meta.env.DEV && <a href="/__dev/routing-acceptance" className="block text-[13px] text-[var(--accent)] underline">Aceitação do motor de rotas (cenários sintéticos, sem guardar dados)</a>}
+      {DEV_FIXTURES_AVAILABLE ? (
+        <Checkbox label="Fontes de TESTE SINTÉTICO (só no servidor de desenvolvimento; dados não oficiais)" checked={ing.devFixturesEnabled} onChange={(v) => ing.setDevFixturesEnabled(v)} />
+      ) : (
+        <p className="text-[12px] text-[var(--text-3)]">Fontes sintéticas: disponíveis apenas no servidor de desenvolvimento.</p>
       )}
     </div>
   );
 }
 
-const INPUT_CLS =
-  "w-full rounded-xl border px-3 py-2.5 text-[13px] outline-none transition focus:ring-2 focus:ring-[#2D5F4E]/30";
-
-function TextInput({
-  value,
-  onChange,
-  placeholder,
-  type = "text",
-}: {
-  value: string;
-  onChange: (v: string) => void;
-  placeholder?: string;
-  type?: string;
-}) {
+function DemoSection() {
+  const { service } = useOperations();
+  const [confirm, setConfirm] = useState(false);
+  const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
   return (
-    <input
-      type={type}
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      placeholder={placeholder}
-      className={INPUT_CLS}
-      style={{ borderColor: "var(--app-border)", background: "var(--app-elevated)", color: "var(--app-fg)" }}
-    />
+    <div className="space-y-4">
+      <p className="text-[13px] text-[var(--text-2)]">
+        Os registos de demonstração (marcados «Demo») servem para explorar o FleetOS. Foram criados uma vez; apagar ou arquivar um registo demo é permanente até os repor aqui.
+      </p>
+      <Button variant="danger" onClick={() => setConfirm(true)}>Repor dados demo</Button>
+      {msg ? <Notice tone={msg.ok ? "ok" : "danger"} title={msg.text} /> : null}
+      {confirm ? (
+        <Modal
+          title="Repor dados demo?"
+          onClose={() => setConfirm(false)}
+          footer={
+            <>
+              <Button onClick={() => setConfirm(false)}>Cancelar</Button>
+              <Button
+                variant="danger"
+                onClick={async () => {
+                  setConfirm(false);
+                  const r = await service.resetDemo(buildDemoSeed(new Date().toISOString()));
+                  setMsg(r.ok ? { ok: true, text: `Dados demo repostos — ${r.value.removed} removidos, ${r.value.seeded} recriados.` } : { ok: false, text: r.errors.join("; ") });
+                }}
+              >
+                Repor
+              </Button>
+            </>
+          }
+        >
+          Os trabalhos, viaturas, reboques, motoristas, clientes e locais demo voltam ao estado inicial (documentos demo são removidos; os números já usados não voltam a ser atribuídos). Os seus próprios registos não são alterados.
+        </Modal>
+      ) : null}
+    </div>
   );
 }
 
-function NumberInput({
-  value,
-  onChange,
-  min,
-  max,
-}: {
-  value: number;
-  onChange: (v: number) => void;
-  min?: number;
-  max?: number;
-}) {
-  return (
-    <input
-      type="number"
-      value={value}
-      min={min}
-      max={max}
-      onChange={(e) => onChange(Number(e.target.value))}
-      className={INPUT_CLS}
-      style={{ borderColor: "var(--app-border)", background: "var(--app-elevated)", color: "var(--app-fg)" }}
-    />
-  );
-}
-
-/* ─── Main page ───────────────────────────────────────────── */
 export function SettingsPage() {
   const { settings, updateSettings, resetSettings } = useSettings();
+  const [params, setParams] = useSearchParams();
+  const group = (GROUPS.some((g) => g.value === params.get("section")) ? params.get("section") : "company") as SettingsGroup;
+  const setGroup = (g: SettingsGroup) => setParams((p) => { const n = new URLSearchParams(p); n.set("section", g); return n; }, { replace: true });
   const [local, setLocal] = useState<CompanySettings>({ ...settings });
-  const [saved, setSaved] = useState(false);
-
-  function set<K extends keyof CompanySettings>(key: K, value: CompanySettings[K]) {
-    setLocal((prev) => ({ ...prev, [key]: value }));
-    setSaved(false);
-  }
-
-  function save() {
-    updateSettings(local);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
-  }
-
-  function reset() {
-    if (!window.confirm("Repor todas as definições para os valores padrão?\n\nEsta ação não pode ser desfeita.")) return;
-    const defaults = { ...DEFAULT_SETTINGS };
-    setLocal(defaults);
-    resetSettings();
-    setSaved(false);
-  }
+  const [savedAt, setSavedAt] = useState<number | null>(null);
+  const [confirmReset, setConfirmReset] = useState(false);
+  const dirty = JSON.stringify(local) !== JSON.stringify(settings);
+  const set = <K extends keyof CompanySettings>(k: K, v: CompanySettings[K]) => setLocal((p) => ({ ...p, [k]: v }));
 
   return (
-    <div className="mx-auto flex w-full max-w-[900px] flex-col gap-6">
-      <PageHeader
-        eyebrow="Sistema"
-        title="Definições"
-        subtitle="Dados da empresa, faturação e preferências operacionais — guardados localmente neste browser."
-        action={
-          <div className="flex gap-2">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <PageHeader title="Definições" />
+      <div className="flex min-h-0 flex-1">
+        <nav aria-label="Grupos de definições" className="w-[200px] shrink-0 border-r border-[var(--border)] bg-[var(--surface)] px-3 py-4">
+          {GROUPS.map((g) => (
+            <div key={g.value}>
+            {g.heading ? <div className="mb-1 mt-4 px-2.5 text-[11px] font-medium uppercase tracking-wide text-[var(--text-3)]">{g.heading}</div> : null}
             <button
               type="button"
-              onClick={reset}
-              className="inline-flex items-center gap-1.5 rounded-xl border px-3.5 py-2 text-xs font-semibold transition hover:opacity-75"
-              style={{ borderColor: "var(--app-border)", color: "var(--app-muted)" }}
+              onClick={() => setGroup(g.value)}
+              aria-current={group === g.value}
+              className={clsx("flex h-8 w-full items-center rounded-[var(--r-md)] px-2.5 text-left text-[13px] transition-colors", group === g.value ? "bg-[var(--surface-sunken)] font-medium text-[var(--text)]" : "text-[var(--text-2)] hover:bg-[var(--surface-2)]")}
             >
-              <RotateCcw className="h-3.5 w-3.5" />
-              Repor
+              {g.label}
             </button>
-            <button
-              type="button"
-              onClick={save}
-              className="inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold text-white transition hover:opacity-90"
-              style={{ background: saved ? "#4A7C6A" : "#2D5F4E" }}
-            >
-              <Save className="h-3.5 w-3.5" />
-              {saved ? "Guardado ✓" : "Guardar"}
-            </button>
-          </div>
-        }
-      />
-
-      <div className="grid gap-6 lg:grid-cols-2">
-
-        {/* ── Company identity ── */}
-        <Card className="space-y-4">
-          <SectionTitle icon={Building2} label="Identidade da empresa" />
-
-          <Field label="Nome da empresa">
-            <TextInput value={local.name} onChange={(v) => set("name", v)} placeholder="Transportes Exemplo, Lda." />
-          </Field>
-          <Field label="NIF" hint="Número de Identificação Fiscal — 9 dígitos">
-            <TextInput value={local.nif} onChange={(v) => set("nif", v)} placeholder="500 000 000" />
-          </Field>
-          <Field label="Morada">
-            <TextInput value={local.address} onChange={(v) => set("address", v)} placeholder="Rua Exemplo, 1" />
-          </Field>
-          <Field label="Código postal + Localidade">
-            <TextInput value={local.postalCity} onChange={(v) => set("postalCity", v)} placeholder="4000-000 Porto" />
-          </Field>
-          <Field label="País">
-            <TextInput value={local.country} onChange={(v) => set("country", v)} placeholder="Portugal" />
-          </Field>
-          <Field label="Telefone">
-            <TextInput value={local.phone} onChange={(v) => set("phone", v)} type="tel" placeholder="+351 220 000 000" />
-          </Field>
-          <Field label="E-mail">
-            <TextInput value={local.email} onChange={(v) => set("email", v)} type="email" placeholder="geral@empresa.pt" />
-          </Field>
-          <Field label="Licença comunitária" hint="Número atribuído pelo IMT / ANSR">
-            <TextInput value={local.licencaComunitaria} onChange={(v) => set("licencaComunitaria", v)} placeholder="CM 123456789" />
-          </Field>
-        </Card>
-
-        {/* ── Billing ── */}
-        <div className="space-y-6">
-          <Card className="space-y-4">
-            <SectionTitle icon={CreditCard} label="Faturação" />
-
-            <Field label="IBAN" hint="Conta para recebimento">
-              <TextInput
-                value={local.iban}
-                onChange={(v) => set("iban", v)}
-                placeholder="PT50 0000 0000 0000 0000 0000 0"
-              />
-            </Field>
-            <Field label="Prefixo de fatura" hint='Ex: "FT 2026/" → FT 2026/0001'>
-              <TextInput value={local.invoicePrefix} onChange={(v) => set("invoicePrefix", v)} placeholder="FT 2026/" />
-            </Field>
-            <Field label="Próximo nº sequencial" hint="Incrementado automaticamente a cada fatura emitida">
-              <NumberInput value={local.invoiceNextSeq} onChange={(v) => set("invoiceNextSeq", v)} min={1} />
-            </Field>
-            <Field label="Taxa IVA (%)" hint="Serviços de transporte: 23% em Portugal">
-              <NumberInput value={local.vatPct} onChange={(v) => set("vatPct", v)} min={0} max={100} />
-            </Field>
-            <Field label="Prazo de pagamento (dias)">
-              <NumberInput value={local.paymentTermsDays} onChange={(v) => set("paymentTermsDays", v)} min={0} />
-            </Field>
-          </Card>
-
-          {/* ── Info box ── */}
-          <div
-            className="flex gap-3 rounded-xl border p-4 text-[12px] leading-relaxed"
-            style={{ borderColor: "#C4A882", background: "#F2EBE0", color: "#8B6F47" }}
-          >
-            <Info className="mt-0.5 h-4 w-4 shrink-0" />
-            <div>
-              <p className="font-semibold">Nota legal</p>
-              <p className="mt-1">
-                Faturas legais devem ser emitidas por <strong>software certificado pela AT</strong> (Portaria 363/2010).
-                Os documentos gerados nesta plataforma são <em>prévisualizações</em> para conferência — não têm validade fiscal.
-              </p>
-              <p className="mt-1">
-                Dados guardados apenas neste browser. Para uso em produção, integre com SAFT-PT ou faturação eletrónica.
-              </p>
+            </div>
+          ))}
+        </nav>
+        <div className="flex min-h-0 flex-1 flex-col">
+          <div className="min-h-0 flex-1 overflow-y-auto bg-[var(--surface)] scroll-thin">
+            <div className={clsx("px-8 py-6", group === "customers" || group === "sites" ? "max-w-[1100px]" : "max-w-[720px]")}>
+              {group === "company" && (
+                <section>
+                  <SectionTitle className="mb-4">Identidade da empresa</SectionTitle>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Text label="Nome da empresa" value={local.name} onChange={(v) => set("name", v)} />
+                    <Text label="NIF" help="9 dígitos" value={local.nif} onChange={(v) => set("nif", v)} />
+                    <Text label="Morada" value={local.address} onChange={(v) => set("address", v)} />
+                    <Text label="Código postal e localidade" value={local.postalCity} onChange={(v) => set("postalCity", v)} />
+                    <Text label="País" value={local.country} onChange={(v) => set("country", v)} />
+                    <Text label="Telefone" type="tel" value={local.phone} onChange={(v) => set("phone", v)} />
+                    <Text label="Email" type="email" value={local.email} onChange={(v) => set("email", v)} />
+                    <Text label="Licença comunitária" help="Atribuída pelo IMT" value={local.licencaComunitaria} onChange={(v) => set("licencaComunitaria", v)} />
+                  </div>
+                  <p className="mt-4 text-[12px] text-[var(--text-3)]">Usados na guia CMR e nas pré-visualizações de fatura.</p>
+                </section>
+              )}
+              {group === "billing" && (
+                <section className="space-y-4">
+                  <SectionTitle>Faturação</SectionTitle>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Text label="IBAN" value={local.iban} onChange={(v) => set("iban", v)} />
+                    <Text label="Prefixo de fatura" help="ex.: FT 2026/ → FT 2026/0001" value={local.invoicePrefix} onChange={(v) => set("invoicePrefix", v)} />
+                    <NextInvoiceNumber prefix={settings.invoicePrefix} />
+                    <Num label="Taxa de IVA" unit="%" help="Transporte em Portugal: 23 %" value={local.vatPct} onChange={(v) => set("vatPct", v)} />
+                    <Num label="Prazo de pagamento" unit="dias" value={local.paymentTermsDays} onChange={(v) => set("paymentTermsDays", v)} />
+                  </div>
+                  <Notice tone="info" title="Pré-visualizações sem validade fiscal">Faturas legais têm de ser emitidas por software certificado pela AT (Portaria 363/2010). Os documentos do FleetOS servem para conferência.</Notice>
+                </section>
+              )}
+              {group === "operations" && (
+                <section className="space-y-4">
+                  <SectionTitle>Operação</SectionTitle>
+                  <DataList rows={[
+                    { label: "Fuso horário operacional", value: `${OPS_TIME_ZONE} — todas as janelas e horas são mostradas e introduzidas nesta hora` },
+                    { label: "Unidades", value: "kg, t, m, km, L" },
+                    { label: "Regras de condução", value: "Regulamento (CE) 561/2006 — base de horas manual por motorista" },
+                  ]} />
+                </section>
+              )}
+              {group === "customers" && (
+                <section>
+                  <SectionTitle className="mb-4">Clientes</SectionTitle>
+                  <CustomersList />
+                </section>
+              )}
+              {group === "sites" && (
+                <section>
+                  <SectionTitle className="mb-4">Locais de carga e descarga</SectionTitle>
+                  <SitesList />
+                </section>
+              )}
+              {group === "data" && (
+                <section>
+                  <SectionTitle className="mb-4">Dados operacionais</SectionTitle>
+                  <DataSection />
+                </section>
+              )}
+              {group === "demo" && (
+                <section>
+                  <SectionTitle className="mb-4">Dados de demonstração</SectionTitle>
+                  <DemoSection />
+                  <SectionTitle className="mb-4 mt-8">Desenvolvimento</SectionTitle>
+                  <DevTools />
+                </section>
+              )}
             </div>
           </div>
+          {group === "company" || group === "billing" ? (
+            <div className="flex h-12 shrink-0 items-center gap-2 border-t border-[var(--border)] bg-[var(--surface-2)] px-8">
+              <span className="text-[12px] text-[var(--text-3)]">{dirty ? "Alterações por guardar" : savedAt ? "Guardado" : "Guardado neste navegador"}</span>
+              <Button variant="ghost" className="ml-auto" onClick={() => setConfirmReset(true)}>Repor valores padrão</Button>
+              <Button disabled={!dirty} onClick={() => setLocal({ ...settings })}>Descartar</Button>
+              <Button variant="primary" disabled={!dirty} onClick={() => (updateSettings(local), setSavedAt(Date.now()))}>Guardar</Button>
+            </div>
+          ) : null}
         </div>
       </div>
-
-      {/* Save bar */}
-      <div
-        className="sticky bottom-0 flex items-center justify-between gap-3 rounded-xl border px-5 py-3 shadow-lg"
-        style={{ background: "var(--app-card)", borderColor: "var(--app-border)" }}
-      >
-        <p className="text-[12px]" style={{ color: "var(--app-muted)" }}>
-          Alterações são guardadas localmente — clique em <strong>Guardar</strong> para aplicar.
-        </p>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => { setLocal({ ...settings }); setSaved(false); }}
-            className="rounded-xl border px-3.5 py-2 text-xs font-semibold transition hover:opacity-75"
-            style={{ borderColor: "var(--app-border)", color: "var(--app-muted)" }}
-          >
-            Descartar
-          </button>
-          <button
-            type="button"
-            onClick={save}
-            className="rounded-xl px-4 py-2 text-xs font-bold text-white transition hover:opacity-90"
-            style={{ background: saved ? "#4A7C6A" : "#2D5F4E" }}
-          >
-            {saved ? "Guardado ✓" : "Guardar definições"}
-          </button>
-        </div>
-      </div>
+      {confirmReset ? (
+        <Modal
+          title="Repor definições padrão?"
+          onClose={() => setConfirmReset(false)}
+          footer={<><Button onClick={() => setConfirmReset(false)}>Cancelar</Button><Button variant="danger" onClick={() => { setLocal({ ...DEFAULT_SETTINGS }); resetSettings(); setConfirmReset(false); }}>Repor</Button></>}
+        >
+          Os dados da empresa e de faturação voltam aos valores padrão.
+        </Modal>
+      ) : null}
     </div>
   );
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SYNTHETIC TEST DATA — NOT AN OFFICIAL PUBLICATION.
+  FleetOS Phase 3C development fixture (discovered via dev-fixture search, source proposal
+  prop-* on domain fleetos-dev-fixtures.invalid). Served only by the Vite dev server.
+  Line: ~3 km of the A1 near Mealhada/Cantanhede taken from a real TomTom route
+  (Vieira do Minho → Faro, fastest). Resembles a planned night-works closure notice.
+-->
+<con:messageContainer xmlns:con="http://datex2.eu/schema/3/messageContainer" xmlns:com="http://datex2.eu/schema/3/common" xmlns:loc="http://datex2.eu/schema/3/locationReferencing" xmlns:sit="http://datex2.eu/schema/3/situation">
+  <con:payload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sit:SituationPublication">
+    <com:publicationTime>2026-10-01T09:45:00Z</com:publicationTime>
+    <sit:situation id="fleetos-dev-a1-mealhada-1">
+      <sit:situationRecord id="fleetos-dev-a1-mealhada-1" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2026-10-01T00:00:00Z</com:overallStartTime>
+            <com:overallEndTime>2026-10-08T00:00:00Z</com:overallEndTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment><sit:comment><com:values><com:value lang="pt">[TESTE SINTÉTICO] A1 — corte total da faixa entre Mealhada e Cantanhede para trabalhos de beneficiação (fixture FleetOS, não oficial)</com:value></com:values></sit:comment></sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:LinearLocation">
+          <loc:gmlLineString><loc:posList>40.39928 -8.49095 40.39838 -8.49072 40.39715 -8.49033 40.39539 -8.48976 40.39456 -8.48953 40.39383 -8.48936 40.39292 -8.48918 40.39257 -8.48912 40.39169 -8.48903 40.39091 -8.48899 40.39075 -8.48899 40.39047 -8.48899 40.38951 -8.489 40.38854 -8.48909 40.38768 -8.4892 40.38714 -8.4893 40.38611 -8.48953 40.38574 -8.48964 40.38523 -8.48979 40.38459 -8.49002 40.3835 -8.49044 40.38316 -8.49059 40.38188 -8.49118 40.38127 -8.49145 40.37991 -8.49204 40.37934 -8.49227 40.37831 -8.49262 40.37818 -8.49267 40.37777 -8.49279 40.37686 -8.49303 40.37651 -8.49312 40.3762 -8.49317 40.37564 -8.4933 40.3745 -8.49348 40.37425 -8.49352 40.37418 -8.49352 40.37396 -8.49355 40.37276 -8.49363</loc:posList></loc:gmlLineString>
+        </sit:locationReference>
+        <sit:roadOrCarriagewayOrLaneManagementType>roadClosed</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+    </sit:situation>
+    <sit:situation id="fleetos-dev-a17-montemor-1">
+      <sit:situationRecord id="fleetos-dev-a17-montemor-1" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2026-10-01T00:00:00Z</com:overallStartTime>
+            <com:overallEndTime>2026-10-08T00:00:00Z</com:overallEndTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment><sit:comment><com:values><com:value lang="pt">[TESTE SINTÉTICO] A17 — corte total entre Montemor-o-Velho e Figueira da Foz (fixture FleetOS, não oficial; força uma 2.ª iteração do solver)</com:value></com:values></sit:comment></sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:LinearLocation">
+          <loc:gmlLineString><loc:posList>40.29785 -8.74058 40.29704 -8.74087 40.2962 -8.74112 40.29578 -8.74124 40.29461 -8.74154 40.29359 -8.74183 40.29351 -8.74185 40.29335 -8.7419 40.29305 -8.74199 40.2923 -8.74228 40.29198 -8.74243 40.29189 -8.74247 40.29163 -8.74257 40.29105 -8.74287 40.29045 -8.74321 40.28972 -8.74369 40.28922 -8.74405 40.28834 -8.74478 40.28798 -8.74512 40.28783 -8.74525 40.28735 -8.74573 40.28678 -8.74636 40.2854 -8.74805 40.28495 -8.74867 40.28352 -8.75057 40.28264 -8.75168 40.28196 -8.75249 40.28131 -8.75321 40.28097 -8.75356 40.28037 -8.75414 40.27945 -8.75499 40.27905 -8.75533 40.2786 -8.75567 40.27787 -8.75621 40.2772 -8.75666 40.27672 -8.75697 40.27588 -8.75746 40.27583 -8.75748 40.27522 -8.75781 40.27445 -8.75817</loc:posList></loc:gmlLineString>
+        </sit:locationReference>
+        <sit:roadOrCarriagewayOrLaneManagementType>roadClosed</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+    </sit:situation>
+  </con:payload>
+</con:messageContainer>

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>FleetTracker — Vehicles & Drivers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="public/css/core.css?v=31">
+    <link rel="stylesheet" href="public/css/sidebar.css?v=31">
+    <link rel="stylesheet" href="public/css/layout.css?v=31">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#070b10">
+</head>
+
+<body>
+    <button class="mobile-menu-btn" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+    <aside class="sidebar"></aside>
+
+    <main class="main-content">
+        <!-- ─── HEADER ─── -->
+        <header class="page-header">
+            <div class="page-header-left">
+                <h1 class="page-title">Vehicles & Drivers</h1>
+                <p class="page-subtitle">Manage your fleet assets, driver assignments, HOS compliance, and safety scores.</p>
+            </div>
+            <div class="page-header-actions">
+                <button class="btn-secondary btn-sm"><i class="fas fa-file-export"></i> Export</button>
+                <button class="btn-primary btn-sm"><i class="fas fa-plus"></i> Add vehicle</button>
+            </div>
+        </header>
+
+        <!-- ─── TABS ─── -->
+        <div class="tabs" id="fleetTabs">
+            <button class="tab active" data-tab="vehicles"><i class="fas fa-truck-front"></i> Vehicles</button>
+            <button class="tab" data-tab="drivers"><i class="fas fa-id-card"></i> Drivers</button>
+        </div>
+
+        <!-- ═══════════ VEHICLES TAB ═══════════ -->
+        <div class="tab-panel active" id="tab-vehicles">
+            <!-- KPI Strip -->
+            <section class="kpi-strip">
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="fa-solid fa-truck-front"></i></div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">Total vehicles</div>
+                        <div class="kpi-value">10</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-icon--success"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">Active</div>
+                        <div class="kpi-value">8</div>
+                        <div class="kpi-delta kpi-delta--up">80%</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-icon--warning"><i class="fa-solid fa-wrench"></i></div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">In maintenance</div>
+                        <div class="kpi-value">2</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-icon--info"><i class="fa-solid fa-road"></i></div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">Avg mileage</div>
+                        <div class="kpi-value">487,200 km</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="fa-solid fa-calendar"></i></div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">Fleet age (avg)</div>
+                        <div class="kpi-value">3.2 yrs</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Toolbar -->
+            <div class="page-toolbar">
+                <div class="page-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search plate, model..." id="vehicleSearch">
+                </div>
+                <select class="page-filter">
+                    <option>All statuses</option>
+                    <option>Active</option>
+                    <option>Maintenance</option>
+                    <option>Inactive</option>
+                </select>
+            </div>
+
+            <!-- Vehicles Table -->
+            <div class="data-table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Plate</th>
+                            <th>Model</th>
+                            <th>Year</th>
+                            <th>Status</th>
+                            <th>Current driver</th>
+                            <th>Mileage</th>
+                            <th>Next service</th>
+                            <th>Fuel level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cell-mono">23-AB-47</td>
+                            <td>Volvo FH 460</td>
+                            <td>2022</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">Active</span></td>
+                            <td>Miguel Ferreira</td>
+                            <td class="cell-mono">512,340 km</td>
+                            <td>12 Apr 2026</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:78%;background:var(--success)"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-mono">56-CD-89</td>
+                            <td>Scania R 450</td>
+                            <td>2023</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">Active</span></td>
+                            <td>Ana Santos</td>
+                            <td class="cell-mono">287,610 km</td>
+                            <td>28 Apr 2026</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:65%;background:var(--success)"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-mono">12-EF-34</td>
+                            <td>MAN TGX 18.510</td>
+                            <td>2021</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">Active</span></td>
+                            <td>Carlos Oliveira</td>
+                            <td class="cell-mono">645,200 km</td>
+                            <td>5 Apr 2026</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:42%;background:var(--warning)"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-mono">78-GH-56</td>
+                            <td>DAF XF 480</td>
+                            <td>2022</td>
+                            <td><span class="cell-status" style="--dot:var(--status-stopped)">Maintenance</span></td>
+                            <td>—</td>
+                            <td class="cell-mono">398,750 km</td>
+                            <td>In shop</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:90%;background:var(--success)"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-mono">34-IJ-12</td>
+                            <td>Mercedes Actros 1845</td>
+                            <td>2023</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">Active</span></td>
+                            <td>Rui Mendes</td>
+                            <td class="cell-mono">189,430 km</td>
+                            <td>15 May 2026</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:55%;background:var(--success)"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-mono">90-KL-78</td>
+                            <td>Volvo FH 500</td>
+                            <td>2024</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">Active</span></td>
+                            <td>Joana Almeida</td>
+                            <td class="cell-mono">62,100 km</td>
+                            <td>22 Jun 2026</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:88%;background:var(--success)"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-mono">45-MN-23</td>
+                            <td>Scania S 520</td>
+                            <td>2021</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">Active</span></td>
+                            <td>Pedro Costa</td>
+                            <td class="cell-mono">723,890 km</td>
+                            <td>8 Apr 2026</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:31%;background:var(--danger)"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-mono">67-OP-45</td>
+                            <td>MAN TGX 26.510</td>
+                            <td>2022</td>
+                            <td><span class="cell-status" style="--dot:var(--status-stopped)">Maintenance</span></td>
+                            <td>—</td>
+                            <td class="cell-mono">534,670 km</td>
+                            <td>In shop</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:72%;background:var(--success)"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-mono">89-QR-67</td>
+                            <td>DAF XG+ 530</td>
+                            <td>2024</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">Active</span></td>
+                            <td>Tiago Nunes</td>
+                            <td class="cell-mono">45,230 km</td>
+                            <td>30 Jul 2026</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:95%;background:var(--success)"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td class="cell-mono">01-ST-89</td>
+                            <td>Mercedes Actros 2653</td>
+                            <td>2023</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">Active</span></td>
+                            <td>Sofia Rodrigues</td>
+                            <td class="cell-mono">213,780 km</td>
+                            <td>18 May 2026</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:60%;background:var(--success)"></div></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ═══════════ DRIVERS TAB ═══════════ -->
+        <div class="tab-panel" id="tab-drivers">
+            <!-- KPI Strip -->
+            <section class="kpi-strip">
+                <div class="kpi-card">
+                    <div class="kpi-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">Total drivers</div>
+                        <div class="kpi-value">14</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-icon--success"><i class="fa-solid fa-steering-wheel"></i></div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">On duty</div>
+                        <div class="kpi-value">10</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-icon--info"><i class="fa-solid fa-bed"></i></div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">Off duty</div>
+                        <div class="kpi-value">4</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-icon--warning"><i class="fa-solid fa-clock"></i></div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">HOS warnings</div>
+                        <div class="kpi-value">2</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-icon kpi-icon--success"><i class="fa-solid fa-shield-check"></i></div>
+                    <div class="kpi-body">
+                        <div class="kpi-label">Avg safety score</div>
+                        <div class="kpi-value">94.2</div>
+                        <div class="kpi-delta kpi-delta--up">+1.8</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Toolbar -->
+            <div class="page-toolbar">
+                <div class="page-search">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search driver name, CDL..." id="driverSearch">
+                </div>
+                <select class="page-filter">
+                    <option>All statuses</option>
+                    <option>On duty</option>
+                    <option>Off duty</option>
+                    <option>HOS warning</option>
+                </select>
+            </div>
+
+            <!-- Drivers Table -->
+            <div class="data-table-wrap">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>CDL</th>
+                            <th>Status</th>
+                            <th>Vehicle</th>
+                            <th>HOS remaining</th>
+                            <th>Safety score</th>
+                            <th>Phone</th>
+                            <th>Location</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="font-semibold">Miguel Ferreira</td>
+                            <td>CE</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">On duty</span></td>
+                            <td class="cell-mono">23-AB-47</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:72%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--green">96</span></td>
+                            <td class="cell-mono">+351 912 345 678</td>
+                            <td>A1, km 234 — Santarém</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Ana Santos</td>
+                            <td>CE + ADR</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">On duty</span></td>
+                            <td class="cell-mono">56-CD-89</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:58%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--green">98</span></td>
+                            <td class="cell-mono">+351 923 456 789</td>
+                            <td>A2, km 112 — Almodôvar</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Carlos Oliveira</td>
+                            <td>CE</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">On duty</span></td>
+                            <td class="cell-mono">12-EF-34</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:35%;background:var(--warning)"></div></div></td>
+                            <td><span class="cell-score cell-score--yellow">87</span></td>
+                            <td class="cell-mono">+351 934 567 890</td>
+                            <td>IP5, km 89 — Viseu</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Rui Mendes</td>
+                            <td>CE + ADR</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">On duty</span></td>
+                            <td class="cell-mono">34-IJ-12</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:85%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--green">95</span></td>
+                            <td class="cell-mono">+351 945 678 901</td>
+                            <td>A4, km 56 — Vila Real</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Joana Almeida</td>
+                            <td>C</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">On duty</span></td>
+                            <td class="cell-mono">90-KL-78</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:92%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--green">99</span></td>
+                            <td class="cell-mono">+351 956 789 012</td>
+                            <td>A1, km 310 — Coimbra</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Pedro Costa</td>
+                            <td>CE</td>
+                            <td><span class="cell-status" style="--dot:var(--status-idle)">HOS warning</span></td>
+                            <td class="cell-mono">45-MN-23</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:12%;background:var(--danger)"></div></div></td>
+                            <td><span class="cell-score cell-score--yellow">82</span></td>
+                            <td class="cell-mono">+351 967 890 123</td>
+                            <td>Rest area — Mealhada</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Tiago Nunes</td>
+                            <td>CE + ADR</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">On duty</span></td>
+                            <td class="cell-mono">89-QR-67</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:68%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--green">93</span></td>
+                            <td class="cell-mono">+351 978 901 234</td>
+                            <td>A3, km 45 — Palmela</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Sofia Rodrigues</td>
+                            <td>CE</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">On duty</span></td>
+                            <td class="cell-mono">01-ST-89</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:48%;background:var(--warning)"></div></div></td>
+                            <td><span class="cell-score cell-score--green">91</span></td>
+                            <td class="cell-mono">+351 989 012 345</td>
+                            <td>IC2, km 67 — Leiria</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Bruno Lopes</td>
+                            <td>C</td>
+                            <td><span class="cell-status" style="--dot:var(--status-offline)">Off duty</span></td>
+                            <td>—</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:100%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--green">90</span></td>
+                            <td class="cell-mono">+351 913 234 567</td>
+                            <td>Lisbon (home)</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Marta Ribeiro</td>
+                            <td>CE + ADR</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">On duty</span></td>
+                            <td class="cell-mono">23-AB-47</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:55%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--green">97</span></td>
+                            <td class="cell-mono">+351 924 345 678</td>
+                            <td>A22, km 34 — Albufeira</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Francisco Dias</td>
+                            <td>CE</td>
+                            <td><span class="cell-status" style="--dot:var(--status-offline)">Off duty</span></td>
+                            <td>—</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:100%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--yellow">85</span></td>
+                            <td class="cell-mono">+351 935 456 789</td>
+                            <td>Porto (home)</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Inês Martins</td>
+                            <td>C</td>
+                            <td><span class="cell-status" style="--dot:var(--status-moving)">On duty</span></td>
+                            <td class="cell-mono">56-CD-89</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:78%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--green">94</span></td>
+                            <td class="cell-mono">+351 946 567 890</td>
+                            <td>A25, km 78 — Guarda</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">André Pereira</td>
+                            <td>CE</td>
+                            <td><span class="cell-status" style="--dot:var(--status-offline)">Off duty</span></td>
+                            <td>—</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:100%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--green">92</span></td>
+                            <td class="cell-mono">+351 957 678 901</td>
+                            <td>Faro (home)</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold">Catarina Silva</td>
+                            <td>CE + ADR</td>
+                            <td><span class="cell-status" style="--dot:var(--status-offline)">Off duty</span></td>
+                            <td>—</td>
+                            <td><div class="cell-hos"><div class="cell-hos-bar" style="width:100%;background:var(--success)"></div></div></td>
+                            <td><span class="cell-score cell-score--red">76</span></td>
+                            <td class="cell-mono">+351 968 789 012</td>
+                            <td>Braga (home)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="public/js/components/sidebar.js?v=31"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof Sidebar !== 'undefined') Sidebar.init('fleet');
+
+            // Tab switching
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+                    tab.classList.add('active');
+                    document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+                });
+            });
+
+            // ── Vehicle search & filter ──
+            var vehicleSearch = document.getElementById('vehicleSearch');
+            var vehicleFilter = document.querySelector('#tab-vehicles .page-filter');
+            var vehicleRows = document.querySelectorAll('#tab-vehicles .data-table tbody tr');
+
+            function filterVehicles() {
+                var q = vehicleSearch.value.toLowerCase();
+                var status = vehicleFilter.value;
+                vehicleRows.forEach(function (tr) {
+                    var cells = tr.cells;
+                    var plate = cells[0].textContent.toLowerCase();
+                    var model = cells[1].textContent.toLowerCase();
+                    var driver = cells[4].textContent.toLowerCase();
+                    var rowStatus = cells[3].textContent.trim();
+
+                    var matchSearch = !q || plate.indexOf(q) !== -1 || model.indexOf(q) !== -1 || driver.indexOf(q) !== -1;
+                    var matchFilter = status === 'All statuses' || rowStatus === status;
+                    tr.style.display = (matchSearch && matchFilter) ? '' : 'none';
+                });
+            }
+
+            vehicleSearch.addEventListener('input', filterVehicles);
+            vehicleFilter.addEventListener('change', filterVehicles);
+
+            // ── Driver search & filter ──
+            var driverSearch = document.getElementById('driverSearch');
+            var driverFilter = document.querySelector('#tab-drivers .page-filter');
+            var driverRows = document.querySelectorAll('#tab-drivers .data-table tbody tr');
+
+            function filterDrivers() {
+                var q = driverSearch.value.toLowerCase();
+                var status = driverFilter.value;
+                driverRows.forEach(function (tr) {
+                    var cells = tr.cells;
+                    var name = cells[0].textContent.toLowerCase();
+                    var vehicle = cells[3].textContent.toLowerCase();
+                    var location = cells[7].textContent.toLowerCase();
+                    var rowStatus = cells[2].textContent.trim();
+
+                    var matchSearch = !q || name.indexOf(q) !== -1 || vehicle.indexOf(q) !== -1 || location.indexOf(q) !== -1;
+                    var matchFilter = status === 'All statuses' || rowStatus === status;
+                    tr.style.display = (matchSearch && matchFilter) ? '' : 'none';
+                });
+            }
+
+            driverSearch.addEventListener('input', filterDrivers);
+            driverFilter.addEventListener('change', filterDrivers);
+        });
+    </script>
+</body>
+
+</html>

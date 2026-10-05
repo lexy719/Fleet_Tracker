@@ -1,127 +1,63 @@
-import { lazy, Suspense } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import { AppShell } from "./components/layout/AppShell";
-import { PageLoading } from "./components/ui/PageLoading";
+import { lazy, Suspense, type ReactNode } from "react";
+import { Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
+import { AppShell } from "./ui/shell/AppShell";
+import { SkeletonRows } from "./ui/kit";
+import { legacyTarget } from "./lib/legacyRoutes";
 
-const MarketingPage = lazy(async () => {
-  const m = await import("./pages/MarketingPage");
-  return { default: m.MarketingPage };
-});
-const TodayPage = lazy(async () => {
-  const m = await import("./pages/TodayPage");
-  return { default: m.TodayPage };
-});
-const JobsPage = lazy(async () => {
-  const m = await import("./pages/JobsPage");
-  return { default: m.JobsPage };
-});
-const DispatchPage = lazy(async () => {
-  const m = await import("./pages/DispatchPage");
-  return { default: m.DispatchPage };
-});
-const FleetMapPage = lazy(async () => {
-  const m = await import("./pages/FleetMapPage");
-  return { default: m.FleetMapPage };
-});
-const DriversPage = lazy(async () => {
-  const m = await import("./pages/DriversPage");
-  return { default: m.DriversPage };
-});
-const FleetPage = lazy(async () => {
-  const m = await import("./pages/FleetPage");
-  return { default: m.FleetPage };
-});
-const ReportsPage = lazy(async () => {
-  const m = await import("./pages/ReportsPage");
-  return { default: m.ReportsPage };
-});
-const SettingsPage = lazy(async () => {
-  const m = await import("./pages/SettingsPage");
-  return { default: m.SettingsPage };
-});
+const page = <T extends Record<string, unknown>>(load: () => Promise<T>, name: keyof T) =>
+  lazy(async () => ({ default: (await load())[name] as React.ComponentType }));
+
+const OverviewPage = page(() => import("./pages/OverviewPage"), "OverviewPage");
+const WorkPage = page(() => import("./pages/WorkPage"), "WorkPage");
+const JobWorkspacePage = page(() => import("./pages/JobWorkspacePage"), "JobWorkspacePage");
+const DispatchPage = page(() => import("./pages/DispatchPage"), "DispatchPage");
+const FleetPage = page(() => import("./pages/FleetPage"), "FleetPage");
+const TruckPage = page(() => import("./pages/TruckPage"), "TruckPage");
+const TrailerPage = page(() => import("./pages/TrailerPage"), "TrailerPage");
+const DriversPage = page(() => import("./pages/DriversPage"), "DriversPage");
+const DriverPage = page(() => import("./pages/DriverPage"), "DriverPage");
+const RoadIntelligencePage = page(() => import("./pages/RoadIntelligencePage"), "RoadIntelligencePage");
+const SettingsPage = page(() => import("./pages/SettingsPage"), "SettingsPage");
+const DocumentsPage = page(() => import("./pages/DocumentsPage"), "DocumentsPage");
+const CompliancePage = page(() => import("./pages/CompliancePage"), "CompliancePage");
+const RoutingAcceptancePage = import.meta.env.DEV ? page(() => import("./pages/RoutingAcceptancePage"), "RoutingAcceptancePage") : null;
+
+function S({ children }: { children: ReactNode }) {
+  return <Suspense fallback={<SkeletonRows className="bg-[var(--surface)]" />}>{children}</Suspense>;
+}
+
+/** Old /app/* URLs (Phase ≤5) keep working. */
+function LegacyRedirect() {
+  const { pathname, search } = useLocation();
+  return <Navigate to={legacyTarget(pathname, search)} replace />;
+}
+
+function JobRoute() {
+  const { jobId } = useParams();
+  return <JobWorkspacePage key={jobId} />;
+}
 
 export default function App() {
   return (
     <Routes>
-      <Route
-        index
-        element={
-          <Suspense fallback={<PageLoading label="A carregar…" />}>
-            <MarketingPage />
-          </Suspense>
-        }
-      />
-      <Route path="app" element={<AppShell />}>
-        <Route
-          index
-          element={
-            <Suspense fallback={<PageLoading />}>
-              <TodayPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="jobs"
-          element={
-            <Suspense fallback={<PageLoading />}>
-              <JobsPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="dispatch"
-          element={
-            <Suspense fallback={<PageLoading />}>
-              <DispatchPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="map"
-          element={
-            <Suspense fallback={<PageLoading />}>
-              <FleetMapPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="drivers"
-          element={
-            <Suspense fallback={<PageLoading />}>
-              <DriversPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="fleet"
-          element={
-            <Suspense fallback={<PageLoading />}>
-              <FleetPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="reports"
-          element={
-            <Suspense fallback={<PageLoading />}>
-              <ReportsPage />
-            </Suspense>
-          }
-        />
-        <Route
-          path="settings"
-          element={
-            <Suspense fallback={<PageLoading />}>
-              <SettingsPage />
-            </Suspense>
-          }
-        />
+      <Route element={<AppShell />}>
+        <Route index element={<S><OverviewPage /></S>} />
+        <Route path="work" element={<S><WorkPage /></S>} />
+        <Route path="work/:jobId" element={<S><JobRoute /></S>} />
+        <Route path="dispatch" element={<S><DispatchPage /></S>} />
+        <Route path="fleet" element={<S><FleetPage /></S>} />
+        <Route path="fleet/trailers" element={<S><FleetPage /></S>} />
+        <Route path="fleet/trucks/:truckId" element={<S><TruckPage /></S>} />
+        <Route path="fleet/trailers/:trailerId" element={<S><TrailerPage /></S>} />
+        <Route path="drivers" element={<S><DriversPage /></S>} />
+        <Route path="drivers/:driverId" element={<S><DriverPage /></S>} />
+        <Route path="documents" element={<S><DocumentsPage /></S>} />
+        <Route path="compliance" element={<S><CompliancePage /></S>} />
+        <Route path="intelligence" element={<S><RoadIntelligencePage /></S>} />
+        <Route path="settings" element={<S><SettingsPage /></S>} />
+        {RoutingAcceptancePage ? <Route path="__dev/routing-acceptance" element={<S><RoutingAcceptancePage /></S>} /> : null}
       </Route>
-      <Route path="map" element={<Navigate to="/app/map" replace />} />
-      <Route path="routes" element={<Navigate to="/app/dispatch" replace />} />
-      <Route path="cargo" element={<Navigate to="/app/dispatch" replace />} />
-      <Route path="drivers" element={<Navigate to="/app/drivers" replace />} />
-      <Route path="fuel" element={<Navigate to="/app/reports" replace />} />
+      <Route path="app/*" element={<LegacyRedirect />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

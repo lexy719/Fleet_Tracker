@@ -25,3 +25,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local IDE state and generated development artifacts
+.vs/
+*.tsbuildinfo
+tmpclaude-*-cwd
+/tomtom-sdk-bundle.js.map

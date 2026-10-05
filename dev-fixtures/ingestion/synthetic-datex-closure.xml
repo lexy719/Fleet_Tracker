@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SYNTHETIC TEST DATA — NOT AN OFFICIAL PUBLICATION.
+  FleetOS development fixture, served only by the Vite dev server at
+  /__dev/ingestion/synthetic-datex-closure.xml (source "dev-test-datex-closure").
+  Same DATEX II v3 structure as Porto's feed. The line follows ~2.5 km of the route
+  saved for job J-4201 in the 2026-09-30 browser acceptance run.
+-->
+<con:messageContainer xmlns:con="http://datex2.eu/schema/3/messageContainer" xmlns:com="http://datex2.eu/schema/3/common" xmlns:loc="http://datex2.eu/schema/3/locationReferencing" xmlns:sit="http://datex2.eu/schema/3/situation">
+  <con:payload xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="sit:SituationPublication">
+    <com:publicationTime>2026-09-30T21:10:00Z</com:publicationTime>
+    <sit:situation id="fleetos-dev-test-closure-1">
+      <sit:situationRecord id="fleetos-dev-test-closure-1" version="1.0" xsi:type="sit:RoadOrCarriagewayOrLaneManagement">
+        <sit:validity>
+          <com:validityStatus>definedByValidityTimeSpec</com:validityStatus>
+          <com:validityTimeSpecification>
+            <com:overallStartTime>2026-09-30T00:00:00Z</com:overallStartTime>
+            <com:overallEndTime>2026-10-03T00:00:00Z</com:overallEndTime>
+          </com:validityTimeSpecification>
+        </sit:validity>
+        <sit:generalPublicComment><sit:comment><com:values><com:value lang="pt">[TESTE SINTÉTICO] Corte total da via — fixture de desenvolvimento FleetOS, não oficial</com:value></com:values></sit:comment></sit:generalPublicComment>
+        <sit:locationReference xsi:type="loc:LinearLocation">
+          <loc:gmlLineString><loc:posList>41.34184 -8.50655 41.34322 -8.50595 41.34402 -8.50568 41.3449 -8.50553 41.34596 -8.50553 41.34708 -8.50576 41.34915 -8.50665 41.35028 -8.507 41.35177 -8.50707 41.35294 -8.50681 41.35415 -8.50623 41.35533 -8.50535 41.35611 -8.50453 41.35787 -8.50212 41.35878 -8.50122 41.36023 -8.50032 41.36133 -8.49996 41.36254 -8.49986</loc:posList></loc:gmlLineString>
+        </sit:locationReference>
+        <sit:roadOrCarriagewayOrLaneManagementType>roadClosed</sit:roadOrCarriagewayOrLaneManagementType>
+      </sit:situationRecord>
+    </sit:situation>
+  </con:payload>
+</con:messageContainer>

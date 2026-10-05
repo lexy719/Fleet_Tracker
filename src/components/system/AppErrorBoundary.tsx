@@ -31,26 +31,23 @@ export class AppErrorBoundary extends Component<{ children: ReactNode }, ErrorBo
     if (!this.state.hasError) return this.props.children;
 
     return (
-      <main className="flex min-h-dvh items-center justify-center bg-[var(--app-bg)] px-4 py-10 text-[var(--app-fg)]">
-        <div className="w-full max-w-lg rounded-3xl border border-[var(--app-border)] bg-[var(--app-card)] p-7 shadow-xl shadow-black/10">
-          <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-red-500/15 text-red-600 dark:text-red-300">
-            <AlertTriangle className="h-5 w-5" />
+      <main className="flex min-h-dvh items-center justify-center bg-[var(--bg)] px-4 py-10 text-[var(--text)]">
+        <div role="alert" className="w-full max-w-md rounded-[var(--r-lg)] border border-[var(--border)] bg-[var(--surface)] p-6 shadow-[var(--shadow-md)]">
+          <div className="flex items-center gap-2 text-[var(--danger)]">
+            <AlertTriangle className="h-4 w-4" />
+            <h1 className="text-[15px] font-semibold">O FleetOS encontrou um erro inesperado</h1>
           </div>
-          <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--app-muted)]">System status</p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight">Something went wrong</h1>
-          <p className="mt-3 text-sm text-[var(--app-muted)]">
-            The application hit an unexpected state. Reload to recover the command center session.
+          <p className="mt-2 text-[13px] text-[var(--text-2)]">
+            Os dados operacionais estão guardados neste navegador e não foram afetados. Recarregue a página para continuar.
           </p>
-          <p className="mt-2 rounded-xl border border-[var(--app-border)] bg-[var(--app-elevated)] px-3 py-2 text-xs text-[var(--app-muted)]">
-            {this.state.message}
-          </p>
+          <p className="mt-3 rounded-[var(--r-md)] bg-[var(--surface-2)] px-3 py-2 font-mono text-[11.5px] text-[var(--text-3)]">{this.state.message}</p>
           <button
             type="button"
             onClick={this.handleReload}
-            className="mt-5 inline-flex items-center gap-2 rounded-xl bg-brand-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-700"
+            className="mt-4 inline-flex h-8 items-center gap-2 rounded-[var(--r-md)] bg-[var(--accent)] px-3 text-[13px] font-medium text-white hover:bg-[var(--accent-hover)]"
           >
-            <RefreshCw className="h-4 w-4" />
-            Reload app
+            <RefreshCw className="h-3.5 w-3.5" />
+            Recarregar
           </button>
         </div>
       </main>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>FleetTracker — Reports & Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="public/css/core.css?v=31">
+    <link rel="stylesheet" href="public/css/sidebar.css?v=31">
+    <link rel="stylesheet" href="public/css/layout.css?v=31">
+    <link rel="stylesheet" href="public/css/reports.css?v=31">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#070b10">
+</head>
+<body>
+    <button class="mobile-menu-btn" aria-label="Toggle menu"><i class="fas fa-bars"></i></button>
+    <aside class="sidebar"></aside>
+
+    <main class="main-content">
+        <header class="page-header">
+            <div class="page-header-left">
+                <h1 class="page-title">Reports & Analytics</h1>
+                <p class="page-subtitle">Fleet performance dashboards, cost analysis, and exportable reports.</p>
+            </div>
+            <div class="page-header-actions">
+                <select class="page-filter">
+                    <option>Last 30 days</option>
+                    <option>Last 7 days</option>
+                    <option>Last 90 days</option>
+                    <option>Year to date</option>
+                </select>
+                <button class="btn-primary btn-sm"><i class="fas fa-file-export"></i> Export PDF</button>
+            </div>
+        </header>
+
+        <!-- ─── KPI Summary ─── -->
+        <section class="kpi-strip">
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-icon--success"><i class="fa-solid fa-euro-sign"></i></div>
+                <div class="kpi-body">
+                    <div class="kpi-label">Total revenue</div>
+                    <div class="kpi-value">€487,200</div>
+                    <div class="kpi-delta kpi-delta--up">+8.4% vs prev period</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon"><i class="fa-solid fa-truck-front"></i></div>
+                <div class="kpi-body">
+                    <div class="kpi-label">Fleet utilization</div>
+                    <div class="kpi-value">82%</div>
+                    <div class="kpi-delta kpi-delta--up">+3.1%</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-icon--warning"><i class="fa-solid fa-gas-pump"></i></div>
+                <div class="kpi-body">
+                    <div class="kpi-label">Fuel efficiency</div>
+                    <div class="kpi-value">7.8 L/100km</div>
+                    <div class="kpi-delta kpi-delta--up">-0.3 improved</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-icon--info"><i class="fa-solid fa-route"></i></div>
+                <div class="kpi-body">
+                    <div class="kpi-label">Total distance</div>
+                    <div class="kpi-value">142,800 km</div>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon kpi-icon--success"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div class="kpi-body">
+                    <div class="kpi-label">On-time delivery</div>
+                    <div class="kpi-value">94.2%</div>
+                    <div class="kpi-delta kpi-delta--up">+1.8%</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ─── Widget Grid (2x3) ─── -->
+        <div class="grid-2">
+            <!-- Fleet Utilization -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-solid fa-chart-pie rpt-icon rpt-icon--accent"></i>Fleet utilization</div>
+                    <a href="#" class="text-accent rpt-detail-link">View details</a>
+                </div>
+                <div class="card-body">
+                    <div class="rpt-donut-wrap">
+                        <div class="rpt-donut">
+                            <div class="rpt-donut-center">82%</div>
+                        </div>
+                        <div class="rpt-donut-legend">
+                            <div class="rpt-donut-legend-item">
+                                <span class="rpt-donut-legend-dot rpt-donut-legend-dot--success"></span>
+                                <span class="rpt-donut-legend-label">Active</span>
+                                <span class="rpt-donut-legend-value">65%</span>
+                            </div>
+                            <div class="rpt-donut-legend-item">
+                                <span class="rpt-donut-legend-dot rpt-donut-legend-dot--warning"></span>
+                                <span class="rpt-donut-legend-label">Idle</span>
+                                <span class="rpt-donut-legend-value">15%</span>
+                            </div>
+                            <div class="rpt-donut-legend-item">
+                                <span class="rpt-donut-legend-dot rpt-donut-legend-dot--danger"></span>
+                                <span class="rpt-donut-legend-label">Maintenance</span>
+                                <span class="rpt-donut-legend-value">8%</span>
+                            </div>
+                            <div class="rpt-donut-legend-item">
+                                <span class="rpt-donut-legend-dot rpt-donut-legend-dot--muted"></span>
+                                <span class="rpt-donut-legend-label">Offline</span>
+                                <span class="rpt-donut-legend-value">12%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Revenue Trend -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-solid fa-chart-line rpt-icon rpt-icon--success"></i>Revenue trend (monthly)</div>
+                    <a href="#" class="text-accent rpt-detail-link">View details</a>
+                </div>
+                <div class="card-body rpt-bar-chart">
+                    <div class="rpt-bar">
+                        <div class="rpt-bar-fill" style="height:57%"></div>
+                        <span class="rpt-bar-label">Oct</span>
+                    </div>
+                    <div class="rpt-bar">
+                        <div class="rpt-bar-fill" style="height:68%"></div>
+                        <span class="rpt-bar-label">Nov</span>
+                    </div>
+                    <div class="rpt-bar">
+                        <div class="rpt-bar-fill" style="height:63%"></div>
+                        <span class="rpt-bar-label">Dec</span>
+                    </div>
+                    <div class="rpt-bar">
+                        <div class="rpt-bar-fill" style="height:79%"></div>
+                        <span class="rpt-bar-label">Jan</span>
+                    </div>
+                    <div class="rpt-bar">
+                        <div class="rpt-bar-fill" style="height:89%"></div>
+                        <span class="rpt-bar-label">Feb</span>
+                    </div>
+                    <div class="rpt-bar">
+                        <div class="rpt-bar-fill rpt-bar-fill--current" style="height:100%"></div>
+                        <span class="rpt-bar-label">Mar</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fuel Efficiency -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-solid fa-gas-pump rpt-icon rpt-icon--warning"></i>Fuel efficiency (L/100km)</div>
+                    <a href="fuel.html" class="text-accent rpt-detail-link">View details</a>
+                </div>
+                <div class="card-body">
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead><tr><th>Vehicle</th><th>Avg L/100km</th><th>Trend</th><th>Rating</th></tr></thead>
+                            <tbody>
+                                <tr><td class="cell-mono">90-KL-78</td><td>6.5</td><td class="kpi-delta kpi-delta--up">-0.4</td><td><span class="cell-score cell-score--green">A+</span></td></tr>
+                                <tr><td class="cell-mono">56-CD-89</td><td>6.9</td><td class="kpi-delta kpi-delta--up">-0.2</td><td><span class="cell-score cell-score--green">A</span></td></tr>
+                                <tr><td class="cell-mono">23-AB-47</td><td>7.2</td><td class="kpi-delta kpi-delta--flat">0.0</td><td><span class="cell-score cell-score--green">A</span></td></tr>
+                                <tr><td class="cell-mono">01-ST-89</td><td>7.5</td><td class="kpi-delta kpi-delta--up">-0.1</td><td><span class="cell-score cell-score--yellow">B</span></td></tr>
+                                <tr><td class="cell-mono">34-IJ-12</td><td>9.2</td><td class="kpi-delta kpi-delta--down">+0.4</td><td><span class="cell-score cell-score--red">D</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Customers -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-solid fa-building rpt-icon rpt-icon--info"></i>Top 5 customers by revenue</div>
+                    <a href="customers.html" class="text-accent rpt-detail-link">View all</a>
+                </div>
+                <div class="card-body">
+                    <div class="rpt-hbar-list">
+                        <div class="rpt-hbar-row">
+                            <span class="rpt-hbar-name">Sonae MC</span>
+                            <div class="rpt-hbar-track"><div class="rpt-hbar-fill" style="width:100%"></div></div>
+                            <span class="rpt-hbar-value">€42,300</span>
+                        </div>
+                        <div class="rpt-hbar-row">
+                            <span class="rpt-hbar-name">J. Martins</span>
+                            <div class="rpt-hbar-track"><div class="rpt-hbar-fill" style="width:90%"></div></div>
+                            <span class="rpt-hbar-value">€38,100</span>
+                        </div>
+                        <div class="rpt-hbar-row">
+                            <span class="rpt-hbar-name">Log. Norte</span>
+                            <div class="rpt-hbar-track"><div class="rpt-hbar-fill" style="width:67%"></div></div>
+                            <span class="rpt-hbar-value">€28,500</span>
+                        </div>
+                        <div class="rpt-hbar-row">
+                            <span class="rpt-hbar-name">TransIberica</span>
+                            <div class="rpt-hbar-track"><div class="rpt-hbar-fill" style="width:47%"></div></div>
+                            <span class="rpt-hbar-value">€19,800</span>
+                        </div>
+                        <div class="rpt-hbar-row">
+                            <span class="rpt-hbar-name">Lidl PT</span>
+                            <div class="rpt-hbar-track"><div class="rpt-hbar-fill" style="width:36%"></div></div>
+                            <span class="rpt-hbar-value">€15,270</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Driver Safety Leaderboard -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-solid fa-shield-halved rpt-icon rpt-icon--success"></i>Driver safety leaderboard</div>
+                    <a href="fleet.html" class="text-accent rpt-detail-link">View all</a>
+                </div>
+                <div class="card-body">
+                    <div class="data-table-wrap">
+                        <table class="data-table">
+                            <thead><tr><th>#</th><th>Driver</th><th>Score</th><th>Trend</th></tr></thead>
+                            <tbody>
+                                <tr><td>1</td><td class="font-semibold">Joana Almeida</td><td><span class="cell-score cell-score--green">99</span></td><td class="kpi-delta kpi-delta--up">+2</td></tr>
+                                <tr><td>2</td><td class="font-semibold">Ana Santos</td><td><span class="cell-score cell-score--green">98</span></td><td class="kpi-delta kpi-delta--up">+1</td></tr>
+                                <tr><td>3</td><td class="font-semibold">Marta Ribeiro</td><td><span class="cell-score cell-score--green">97</span></td><td class="kpi-delta kpi-delta--flat">0</td></tr>
+                                <tr><td>4</td><td class="font-semibold">Miguel Ferreira</td><td><span class="cell-score cell-score--green">96</span></td><td class="kpi-delta kpi-delta--up">+1</td></tr>
+                                <tr><td>5</td><td class="font-semibold">Rui Mendes</td><td><span class="cell-score cell-score--green">95</span></td><td class="kpi-delta kpi-delta--up">+3</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Compliance Status -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fa-solid fa-file-shield rpt-icon rpt-icon--danger"></i>Compliance status</div>
+                </div>
+                <div class="card-body">
+                    <div class="rpt-compliance-list">
+                        <div class="rpt-compliance-item rpt-compliance-item--danger">
+                            <div>
+                                <div class="rpt-compliance-title">HOS violations</div>
+                                <div class="rpt-compliance-sub">Pedro Costa — exceeded daily limit</div>
+                            </div>
+                            <span class="badge-red">1 active</span>
+                        </div>
+                        <div class="rpt-compliance-item rpt-compliance-item--warning">
+                            <div>
+                                <div class="rpt-compliance-title">Documents expiring</div>
+                                <div class="rpt-compliance-sub">2 driver licenses due in 30 days</div>
+                            </div>
+                            <span class="badge-yellow">2 warnings</span>
+                        </div>
+                        <div class="rpt-compliance-item rpt-compliance-item--success">
+                            <div>
+                                <div class="rpt-compliance-title">Insurance</div>
+                                <div class="rpt-compliance-sub">All 10 vehicles covered — renews Aug 2026</div>
+                            </div>
+                            <span class="badge-green">Valid</span>
+                        </div>
+                        <div class="rpt-compliance-item rpt-compliance-item--success">
+                            <div>
+                                <div class="rpt-compliance-title">ADR certifications</div>
+                                <div class="rpt-compliance-sub">4 drivers ADR certified — all current</div>
+                            </div>
+                            <span class="badge-green">OK</span>
+                        </div>
+                        <div class="rpt-compliance-item rpt-compliance-item--warning">
+                            <div>
+                                <div class="rpt-compliance-title">Vehicle inspections</div>
+                                <div class="rpt-compliance-sub">78-GH-56 inspection due 15 Apr</div>
+                            </div>
+                            <span class="badge-yellow">1 due soon</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="public/js/components/sidebar.js?v=31"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof Sidebar !== 'undefined') Sidebar.init('reports');
+        });
+    </script>
+</body>
+</html>

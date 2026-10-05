@@ -22,17 +22,16 @@ export function getTomTomKey(): string | undefined {
   return key.length > 0 ? key : undefined;
 }
 
-/** Map Maker cloud style (MapLibre JSON). Same id as in the style URL from Map Maker. */
-export const TOMTOM_CUSTOM_STYLE_ID =
-  "dG9tdG9tQEBAMnd3a0xya00xTXhUMDI5YTubFV-0ezNAsaGyK1wWq3-2";
-
 /**
  * TomTom Map Styles v2 — custom style from Map Maker.
  * Use with MapLibre (`@maplibre/maplibre-gl-leaflet`), not as a Leaflet raster `TileLayer` URL.
  * @see https://developer.tomtom.com/map-maker/documentation/cloud-styles/using-style-in-the-application
  */
-export function tomTomMapStyleUrl(key: string): string {
-  return `https://api.tomtom.com/style/2/custom/style/${TOMTOM_CUSTOM_STYLE_ID}.json?key=${encodeURIComponent(key)}`;
+export function tomTomMapStyleUrl(key: string): string | null {
+  const configured = import.meta.env.VITE_TOMTOM_CUSTOM_STYLE_ID as string | undefined;
+  return configured?.trim()
+    ? `https://api.tomtom.com/style/2/custom/style/${encodeURIComponent(configured.trim())}.json?key=${encodeURIComponent(key)}`
+    : null;
 }
 
 export const TOMTOM = {

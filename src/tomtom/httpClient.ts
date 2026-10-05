@@ -1,5 +1,7 @@
 type RequestOptions = {
   signal?: AbortSignal;
+  /** When set, the request is a POST with this JSON body. */
+  jsonBody?: unknown;
   timeoutMs?: number;
   retries?: number;
 };
@@ -26,7 +28,12 @@ export async function tomtomFetchJson<T>(url: string, opts: RequestOptions = {})
     opts.signal?.addEventListener("abort", abortListener);
 
     try {
-      const res = await fetch(url, { signal: controller.signal });
+      const res = await fetch(
+        url,
+        opts.jsonBody === undefined
+          ? { signal: controller.signal }
+          : { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(opts.jsonBody), signal: controller.signal },
+      );
       if (!res.ok) {
         const body = await res.text();
         const short = body.slice(0, 220);
