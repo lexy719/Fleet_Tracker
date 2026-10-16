@@ -3,6 +3,7 @@
    ───────────────────────────────────────────────────── */
 
 import type { FactValue, RouteComplianceRecord } from "../regulations/types";
+import type { JobExecution, Economics } from "../domain/planning/types";
 
 export type TruckStatus =
   | "in_transit"
@@ -120,6 +121,9 @@ export interface Job {
   routeCompliance?:    RouteComplianceRecord;
   /** Dispatcher-facing conclusions recorded when the plan was confirmed (Phase 5.6B). */
   planDecision?:       PlanDecisionSummary;
+  /** Immutable execution snapshot produced by the operational planner, separate from demand. */
+  operationalPlan?: { planId: string; confirmedAt: string; execution: JobExecution; economics: Economics; compliance: RouteComplianceRecord[]; datasetVersion: string; truckSpecification: ReturnType<typeof import("../domain/planning/state").truckPlanningSpecification>; driverSpecification: ReturnType<typeof import("../domain/planning/state").driverPlanningSpecification>; trailerSpecification?: ReturnType<typeof import("../domain/planning/state").trailerPlanningSpecification> };
+  operationalRequirements?: { trailerRequired?: boolean; trailerTypes?: TrailerType[]; lengthM?: number; widthM?: number; heightM?: number; serviceSecByStop?: Record<string, number> };
   /** Earlier decisions replaced by re-planning (audit trail, newest last, capped). */
   routeComplianceHistory?: RouteComplianceRecord[];
   /** ADR — dangerous goods (EU Reg. ADR / Directiva 2008/68/CE). */
@@ -203,6 +207,8 @@ export interface Truck {
   /** Payload capacity (kg). */
   payloadKg?: number;
   axleCount?: number;
+  /** Explicit scope for coupled planning; legacy axle counts have unspecified scope. */
+  axleCountScope?: "POWER_UNIT" | "COMBINATION";
   maxAxleWeightKg?: number;
   /** Height measured vertically at the first axle (m). */
   firstAxleHeightM?: number;

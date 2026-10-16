@@ -12,6 +12,10 @@ import { confirmPlan, setStopCompleted, transitionJob, updateNotes, type PlanCon
 import { deriveSla } from "../domain/jobs/sla";
 import { ConcurrencyError, type CommitBatch, type OperationalStore, type OpsSnapshot } from "../repositories/operationalStore";
 import { resetDemoData, type DemoSeed } from "../repositories/bootstrap";
+import type { PlanningResult, PlanningRecommendation, ConfirmedOperationalPlan } from "../domain/planning/types";
+import type { RegulationDataset } from "../regulations/types";
+import { inventoryFingerprint } from "../domain/planning/state";
+import { confirmOperationalPlan } from "../domain/planning/confirmation";
 
 /*
  * Application service — the ONLY write path for jobs, resources, documents, customers and sites.
@@ -137,6 +141,32 @@ export class OperationsService {
       return ok({ ...this.jobsCommit(s.jobs, r.value.jobs, r.value.events), value: r.value.jobs.find((j) => j.id === id)! });
     });
   }
+
+  savePlanningRecommendation(result: PlanningResult): Promise<Result<PlanningRecommendation>> {
+    return this.write((s,now)=>{
+      if(result.recommended&&result.recommended.inventoryFingerprint!==inventoryFingerprint(s.jobs,s.trucks,s.drivers,s.trailers))return fail("Entradas alteradas durante o planeamento; recalcule.");
+      const value:PlanningRecommendation={id:newId(),createdAt:now.toISOString(),result:structuredClone(result)};
+      return ok({batch:{meta:{[`planning:recommendation:${value.id}`]:value}},next:{},value});
+    });
+  }
+
+  confirmOperationalRecommendation(recommendationId:string,selectedPlanId:string,dataset:RegulationDataset,acknowledgeUncertainty=false):Promise<Result<ConfirmedOperationalPlan>> {
+    return this.write(async(s,now)=>{
+      const recommendation=await this.store.getMeta<PlanningRecommendation>(`planning:recommendation:${recommendationId}`);
+      const recommended=recommendation?.result?.recommended;
+      const selected=[recommended,...(recommendation?.result?.alternatives??[])].find(p=>p?.id===selectedPlanId);
+      if(!recommended||!selected)return fail("Recomendação/alternativa não encontrada no histórico guardado.");
+      const r=confirmOperationalPlan({selected,recommended,jobs:s.jobs,trucks:s.trucks,drivers:s.drivers,trailers:s.trailers,dataset,now,id:newId(),acknowledgeUncertainty});
+      if(!r.ok)return r;
+      const commit=this.jobsCommit(s.jobs,r.value.jobs,r.value.events);
+      commit.batch.expectJobRevisions=Object.fromEntries(s.jobs.map(j=>[j.id,j.revision]));
+      commit.batch.expectResourceUpdates={trucks:Object.fromEntries(s.trucks.map(t=>[t.id,t.updatedAt])),drivers:Object.fromEntries(s.drivers.map(d=>[d.id,d.updatedAt])),trailers:Object.fromEntries(s.trailers.map(t=>[t.id,t.updatedAt]))};
+      commit.batch.meta={[`planning:confirmed:${r.value.record.id}`]:{...r.value.record,recommendationId}};
+      return ok({...commit,value:r.value.record});
+    });
+  }
+
+  readConfirmedOperationalPlan(id:string){return this.store.getMeta<ConfirmedOperationalPlan>(`planning:confirmed:${id}`);}
 
   setStopCompleted(id: string, stopId: string, completed: boolean): Promise<Result<Job>> {
     return this.write((s, now) => {

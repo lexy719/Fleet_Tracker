@@ -143,10 +143,10 @@ describe("generic evaluator — missing facts never become a match", () => {
     expect(r.reasons.map((x) => x.text).join("\n")).toMatch(/primeiro eixo: valor desconhecid/);
   });
 
-  it("an absent fact key is UNKNOWN", () => {
+  it("an absent exemption-only fact does not suspend an established base prohibition", () => {
     const facts = { ...FULL_FACTS };
     delete facts["authorization.pt-imt-aet"];
-    expect(evaluateRegulation(vci, ds, input(facts)).outcome).toBe("UNKNOWN");
+    expect(evaluateRegulation(vci, ds, input(facts)).outcome).toBe("APPLIES");
   });
 
   it("a known non-matching fact decides DOES_NOT_APPLY even when others are unknown", () => {

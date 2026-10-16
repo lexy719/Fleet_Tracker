@@ -1,0 +1,487 @@
+/* One scene, with authored destinations. Geometry retargets from its current
+   interpolated position, so a second click never restarts from a stale frame. */
+.fx-route-management {
+  padding: 16px 20px 18px;
+}
+.fx-route-management .fx-answer {
+  margin-bottom: 14px;
+}
+.fx-route-management .fx-answer h1 {
+  font-size: clamp(21px, 2.1vw, 31px);
+}
+.fx-route-eyebrow {
+  font: 9px var(--mono, monospace);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.fx-route-itinerary {
+  display: flex;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 16px;
+}
+.fx-route-destination {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  gap: 4px 9px;
+  border: 0;
+  border-right: 1px solid var(--line);
+  padding: 12px 12px 11px;
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.fx-route-destination:last-child {
+  border-right: 0;
+}
+.fx-route-destination[data-next="true"] {
+  box-shadow: inset 0 3px var(--ink);
+}
+.fx-route-destination[data-done="true"] {
+  color: var(--muted);
+}
+.fx-route-order {
+  font: 16px var(--mono, monospace);
+  grid-row: 1 / 3;
+}
+.fx-route-destination b {
+  font-size: 13px;
+}
+.fx-route-destination strong {
+  font: 17px var(--mono, monospace);
+}
+.fx-route-destination small {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  padding-top: 3px;
+}
+.fx-route-destination em {
+  grid-column: 2 / 4;
+  font: 10px var(--mono, monospace);
+}
+.fx-route-destination[data-tone="action"] em {
+  color: var(--red, #b44434);
+}
+.fx-route-control {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  margin-bottom: 14px;
+}
+.fx-route-management h2 {
+  font-size: 15px;
+  margin: 0 0 7px;
+}
+.fx-route-next p,
+.fx-route-resources p {
+  font-size: 12px;
+  line-height: 1.5;
+  margin: 0 0 10px;
+  max-width: 58ch;
+}
+.fx-route-actions {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.fx-route-conditions > button {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  text-align: left;
+  padding: 5px 0;
+  gap: 2px 12px;
+  cursor: pointer;
+}
+.fx-route-conditions b {
+  font-size: 11px;
+}
+.fx-route-conditions span {
+  font-size: 10px;
+}
+.fx-route-conditions small {
+  grid-column: 1 / 3;
+  font-size: 9px;
+  color: var(--muted);
+}
+.fx-route-conditions [data-tone="unknown"] span {
+  text-decoration: underline dotted;
+}
+.fx-route-conditions [data-tone="action"] span {
+  color: var(--red, #b44434);
+}
+.fx-route-resources {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr 1fr;
+  gap: 16px;
+  border-top: 1px solid var(--line);
+  padding-top: 11px;
+}
+.fx-route-resources > button {
+  text-align: left;
+  border: 0;
+  background: transparent;
+  padding: 0 0 0 12px;
+  border-left: 1px solid var(--line);
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.fx-route-resources > button:disabled {
+  cursor: default;
+  opacity: 1;
+}
+.fx-route-resources small {
+  color: var(--muted);
+  font-size: 10px;
+}
+.fx-route-resources b {
+  font-size: 12px;
+}
+.fx-route-resources span {
+  font-size: 10px;
+  line-height: 1.5;
+}
+.fx-route-management .fx-footnote {
+  font-size: 9px;
+  margin-top: 9px;
+}
+.fx-route-comparison {
+  border-top: 1px solid var(--line);
+  padding: 12px 0;
+}
+.fx-route-comparison > div {
+  display: grid;
+  grid-template-columns: 1.1fr 0.4fr 1.2fr auto;
+  gap: 14px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+}
+.fx-route-comparison small {
+  display: block;
+  font-weight: normal;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+@media (max-width: 1250px) {
+  .fx-route-destination {
+    grid-template-columns: 22px 1fr;
+    padding: 10px 8px;
+  }
+  .fx-route-destination strong {
+    grid-column: 2;
+    font-size: 15px;
+  }
+  .fx-route-destination em {
+    grid-column: 2;
+  }
+  .fx-route-control {
+    gap: 16px;
+  }
+  .fx-route-resources {
+    grid-template-columns: 1.1fr 1fr 1fr 1fr;
+    gap: 9px;
+  }
+}
+.fx-workspace-tabs {
+  position: absolute;
+  left: 104px;
+  right: 22px;
+  top: 47px;
+  height: 24px;
+  z-index: 8;
+}
+.fx-workspace-tabs [role="tablist"] {
+  display: flex;
+  align-items: stretch;
+  gap: 3px;
+  height: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.fx-workspace-tab {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  max-width: 240px;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+}
+.fx-workspace-tab[data-selected="true"] {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.fx-workspace-tab button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  font-size: 11.5px;
+  padding: 3px 9px;
+}
+.fx-workspace-tab [role="tab"] {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fx-workspace-tab [role="tab"] span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fx-workspace-tab[data-selected="true"] [role="tab"] {
+  font-weight: 650;
+}
+.fx-workspace-tab .fx-tab-close {
+  padding: 2px 5px;
+  opacity: 0.5;
+  font-size: 16px;
+}
+.fx-workspace-tab .fx-tab-close:hover {
+  opacity: 1;
+  background: var(--paper-2);
+}
+.fx .fx-rail-main span {
+  background: none;
+  width: auto;
+  height: auto;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+.fx .fx-rail-main:hover span {
+  background: none;
+}
+@media (min-width: 1700px) {
+  .fx-workspace-tabs {
+    top: 55px;
+    right: 32px;
+  }
+}
+@media (max-width: 799px) {
+  .fx-workspace-tabs {
+    left: 76px;
+  }
+}
+.fx .fx-living-surface {
+  clip-path: inset(0);
+  transition:
+    left var(--environment-motion-compose) var(--environment-motion-ease),
+    top var(--environment-motion-compose) var(--environment-motion-ease),
+    width var(--environment-motion-compose) var(--environment-motion-ease),
+    height var(--environment-motion-compose) var(--environment-motion-ease),
+    opacity var(--environment-motion-compose) var(--environment-motion-ease),
+    clip-path var(--environment-motion-compose) var(--environment-motion-ease),
+    visibility 0s;
+}
+.fx-merge-question {
+  position: absolute;
+  margin: 0;
+  right: 22px;
+  font-size: 13px;
+  line-height: 24px;
+  color: var(--muted);
+}
+.fx [data-morph-form="joined"] > .fx-answer h1 {
+  max-width: none;
+  font-size: 24px;
+}
+.fx [data-morph-form="joined"] > .fx-answer p {
+  max-width: none;
+  margin-top: 5px;
+  font-size: 12.5px;
+}
+.fx [data-morph-form="joined"] .fx-answer-meta {
+  margin-top: 8px;
+}
+.fx .fx-driver[data-morph-form="joined"] > .fx-axis {
+  margin-top: 10px;
+}
+.fx .fx-truck[data-morph-form="joined"] .fx-vehicle-stage {
+  margin-top: 8px;
+  gap: 12px;
+}
+.fx .fx-truck[data-morph-form="joined"] .fx-vd svg {
+  max-height: 180px;
+}
+.fx:is([data-recipe="TRUCK_WITH_DRIVER"], [data-recipe="DRIVER_AND_VEHICLE"])
+  .fx-context-card {
+  display: flex;
+  gap: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+.fx:is([data-recipe="TRUCK_WITH_DRIVER"], [data-recipe="DRIVER_AND_VEHICLE"])
+  .fx-context-card
+  > div {
+  flex: 1;
+  min-width: 0;
+}
+.fx .fx-living-surface[data-visible="false"] {
+  clip-path: inset(0 0 100% 0);
+  transition-delay: 0s, 0s, 0s, 0s, 0s, 0s, var(--environment-motion-compose);
+}
+.fx .fx-region > .gw-zone-content > * {
+  animation: none;
+}
+.fx [hidden] {
+  display: none !important;
+}
+
+/* The day/elevation themselves stay in the DOM. Detail withdraws as their
+   existing instrument becomes a compact support; it is not a replacement card. */
+.fx [data-morph-form] > .fx-answer {
+  max-height: 420px;
+  overflow: hidden;
+  transition:
+    max-height var(--environment-motion-compose) var(--environment-motion-ease),
+    opacity var(--environment-motion-compose) ease,
+    padding var(--environment-motion-compose) ease;
+}
+.fx [data-morph-form="compact"] > .fx-answer {
+  max-height: 0;
+  opacity: 0;
+  padding: 0;
+}
+.fx [data-morph-form="compact"] > .fx-columns,
+.fx [data-morph-form="compact"] > .fx-loadplan,
+.fx [data-morph-form="compact"] > .fx-consequence,
+.fx [data-morph-form="compact"] > .fx-focus-line,
+.fx [data-morph-form="compact"] .fx-bound-rules {
+  display: none;
+}
+.fx [data-morph-form="compact"] {
+  padding: 14px 16px;
+}
+.fx .fx-driver[data-morph-form="compact"] {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.fx .fx-driver[data-morph-form="compact"] .fx-compact-summary,
+.fx .fx-driver[data-morph-form="compact"] .fx-ent-driver {
+  display: contents;
+}
+.fx .fx-driver[data-morph-form="compact"] .fx-ent-driver > header {
+  order: 0;
+}
+.fx .fx-driver[data-morph-form="compact"] > .fx-axis {
+  --gutter: 0px;
+  order: 1;
+  margin: 6px 0 0;
+  padding: 24px 0 0;
+}
+.fx .fx-driver[data-morph-form="compact"] .fx-ent-meter {
+  order: 2;
+}
+.fx .fx-driver[data-morph-form="compact"] .fx-ent-stops {
+  order: 3;
+}
+.fx .fx-driver[data-morph-form="compact"] .fx-ent-driver > .fx-link {
+  order: 4;
+}
+.fx .fx-driver[data-morph-form="compact"] .fx-ent-day,
+.fx .fx-driver[data-morph-form="compact"] .fx-moments,
+.fx .fx-driver[data-morph-form="compact"] .fx-axis > .fx-rule,
+.fx .fx-driver[data-morph-form="compact"] .fx-axis > .fx-now,
+.fx .fx-driver[data-morph-form="compact"] .fx-lane:not([data-lane="activity"]),
+.fx .fx-driver[data-morph-form="compact"] .fx-axis .fx-note-tick,
+.fx .fx-driver[data-morph-form="compact"] .fx-axis .fx-time-focus {
+  display: none;
+}
+.fx .fx-driver[data-morph-form="compact"] .fx-axis-hours span:nth-child(even),
+.fx .fx-driver[data-morph-form="compact"] .fx-duty > span,
+.fx .fx-driver[data-morph-form="compact"] .fx-duty > small {
+  display: none;
+}
+.fx .fx-driver[data-morph-form="compact"] .fx-axis-hours {
+  top: 0;
+}
+.fx .fx-driver[data-morph-form="compact"] .fx-lane[data-lane="activity"] {
+  margin: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+.fx .fx-driver[data-morph-form="compact"] .fx-lane-label {
+  display: none;
+}
+.fx .fx-truck[data-morph-form="compact"] .fx-ent-vehicle {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.fx .fx-truck[data-morph-form="compact"] .fx-vehicle-stage {
+  display: block;
+  margin: 12px 0 0;
+  padding: 0;
+}
+.fx .fx-truck[data-morph-form="compact"] .fx-vehicle-stage > * {
+  min-width: 0;
+}
+.fx .fx-truck[data-morph-form="compact"] .vd-label,
+.fx .fx-truck[data-morph-form="compact"] .vd-groups,
+.fx .fx-truck[data-morph-form="compact"] .vd-tip {
+  display: none;
+}
+.fx .fx-driver[data-morph-form="passages"] > .fx-columns {
+  display: none;
+}
+.fx .fx-driver[data-morph-form="passages"] > .fx-axis {
+  --gutter: 0px;
+  margin-top: 14px;
+  padding-top: 28px;
+}
+.fx .fx-driver[data-morph-form="passages"] .fx-lane[data-lane="activity"] {
+  margin: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+.fx .fx-driver[data-morph-form="passages"] .fx-lane:not([data-lane="activity"]),
+.fx .fx-driver[data-morph-form="passages"] .fx-lane-label,
+.fx .fx-driver[data-morph-form="passages"] .fx-moments,
+.fx .fx-driver[data-morph-form="passages"] .fx-axis > .fx-rule,
+.fx .fx-driver[data-morph-form="passages"] .fx-axis > .fx-now {
+  display: none;
+}
+.fx .fx-driver[data-morph-form="passages"] .fx-passage-summary .fx-ent > header,
+.fx .fx-driver[data-morph-form="passages"] .fx-passage-summary .fx-ent-day {
+  display: none;
+}
+.fx[data-reduced-motion="true"] .fx-living-surface,
+.fx[data-reduced-motion="true"] [data-morph-form] > .fx-answer {
+  transition: none;
+}
+
+.fx .fx-context-card button:disabled {
+  opacity: 1;
+  color: inherit;
+  cursor: default;
+}
+.fx-unavailable p { line-height: 1.6; }
+@media (max-width: 999px) {
+  .fx:is([data-recipe="TRUCK_WITH_DRIVER"], [data-recipe="DRIVER_AND_VEHICLE"]) .fx-context-card {
+    display: grid;
+    gap: 16px;
+    padding: 12px 14px;
+  }
+  .fx .fx-context-card > div { min-width: 0; }
+  .fx .fx-context-card button { white-space: normal; overflow-wrap: anywhere; }
+}

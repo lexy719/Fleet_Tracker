@@ -1,0 +1,1309 @@
+/* ═══ 5.7K · Living operational workspace ═══════════════════════════════════
+   Interaction grammar, proposals, in-place editors, facets and spatial mode.
+   Same visual DNA as 5.7J: depth from relationships, selection is ink. */
+
+.fx {
+  --propose: #9c6410;
+  --propose-bg: #f7efdd;
+  --ix-hover: rgba(20, 31, 27, 0.045);
+}
+
+/* ─── Interaction grammar ─────────────────────────────────────────────────
+   informational  · no affordance
+   inspect        · dotted underline, reveals in place
+   follow         · solid underline + arrow, carries the object elsewhere
+   edit           · field-like dashed edge, opens an in-place editor
+   propose        · amber outline, creates a reversible pending change
+   commit         · solid ink (only inside the pending bar)
+   spatial        · location mark, changes the map question */
+.fx [data-ix] {
+  cursor: pointer;
+  transition: background-color 120ms ease, box-shadow 120ms ease, color 120ms ease;
+}
+.fx [data-ix="inspect"]:hover {
+  background-color: var(--ix-hover);
+}
+.fx .fx-inline[data-ix="inspect"]:hover,
+.fx .fx-link[data-ix="inspect"]:hover {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+}
+.fx [data-ix="follow"]:hover {
+  background-color: var(--ix-hover);
+}
+.fx .fx-inline[data-ix="follow"]:hover,
+.fx .fx-link[data-ix="follow"]:hover,
+.fx .fx-follow-text[data-ix="follow"]:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  background: none;
+}
+.fx [data-ix="edit"]:not(.fx-btn):not(.fx-choice):not(.fx-field) {
+  box-shadow: inset 0 -1px 0 0 transparent;
+}
+.fx [data-ix="edit"]:not(.fx-btn):not(.fx-choice):not(.fx-field):hover {
+  box-shadow: inset 0 -1px 0 0 var(--ink);
+  background: none;
+}
+.fx .fx-link[data-ix="edit"]::before,
+.fx .fx-inline[data-ix="edit"]::after {
+  content: "✎";
+  font-weight: 500;
+  margin-right: 4px;
+  color: var(--propose);
+}
+.fx .fx-inline[data-ix="edit"]::after {
+  margin: 0 0 0 4px;
+  font-size: 11px;
+}
+.fx [data-ix="spatial"]:not(.fx-map-caption button:not(.fx-map-exit)):not(.fx-map-request):not(.environment-synthetic-pin):not(.fx-rail button)::before {
+  content: "◎";
+  margin-right: 5px;
+  font-size: 11px;
+  color: var(--brand);
+}
+.fx-instrument .fx-btn[data-kind="quiet"],
+.fx-spatial .fx-btn[data-kind="quiet"],
+.fx-context-card .fx-btn[data-kind="quiet"] {
+  border-color: var(--line-2);
+  color: var(--ink) !important;
+  background: var(--surface);
+}
+.fx-instrument .fx-btn[data-kind="primary"],
+.fx-spatial .fx-btn {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper) !important;
+}
+.fx-instrument .fx-btn[data-ix="propose"],
+.fx-spatial .fx-btn[data-ix="propose"] {
+  background: var(--propose-bg);
+  border-color: var(--propose);
+  color: var(--ink) !important;
+}
+.fx-instrument .fx-btn[data-ix="propose"][data-kind="primary"] {
+  background: var(--propose);
+  color: #fff !important;
+}
+.fx-instrument .fx-btn[data-ix="propose"][data-kind="quiet"] {
+  background: transparent;
+}
+.fx-relations {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: 10px;
+}
+.fx-rel {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  padding: 1px 9px;
+  font-size: 11.5px !important;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+.fx-rel::after {
+  content: " ↗";
+  color: var(--brand);
+  font-weight: 500;
+}
+
+/* Proposed values preview everywhere before Confirm; never look committed. */
+.fx [data-proposed="true"] {
+  background: var(--propose-bg);
+  box-shadow: inset 0 0 0 1px var(--propose);
+  border-radius: 4px;
+}
+.fx-proposed-tag {
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 3px;
+  background: var(--propose);
+  color: #fff;
+  font: 600 9.5px / 16px var(--font-text);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-style: normal;
+  vertical-align: middle;
+}
+.fx [data-changed="true"] {
+  box-shadow: inset 0 0 0 1.5px var(--propose);
+  background: var(--propose-bg);
+  border-radius: 4px;
+}
+.fx-preview-note {
+  display: inline-block;
+  margin: 12px 0 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--propose-bg);
+  border: 1px dashed var(--propose);
+  font-size: 13px;
+}
+[data-focused="true"] {
+  background: var(--paper-2);
+  box-shadow: inset 3px 0 0 0 var(--ink);
+}
+
+/* ─── Pending change instrument ───────────────────────────────────────── */
+.fx-pending {
+  grid-template-columns: minmax(230px, 0.9fr) minmax(280px, 1.4fr) minmax(220px, 1fr) auto;
+  align-items: start;
+  gap: 22px;
+  width: min(1240px, calc(100% - 180px));
+  max-height: 42vh;
+  overflow: auto;
+}
+.fx-pending-what small {
+  color: rgba(243, 242, 236, 0.62);
+  font-size: 11.5px;
+}
+.fx-pending-what s {
+  opacity: 0.55;
+  font-weight: 500;
+}
+.fx-pending-what ins {
+  text-decoration: none;
+  color: #f3d9a9;
+}
+.fx-pending-effects li {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 6px;
+}
+.fx-pending-effects li i {
+  font-style: normal;
+  font-weight: 700;
+}
+.fx-pending-effects li[data-tone="ok"] i {
+  color: #9fd3ac;
+}
+.fx-pending-effects li[data-tone="unknown"] i {
+  color: #cfd3d0;
+}
+.fx-pending-effects li[data-tone="action"] i {
+  color: #f0a37f;
+}
+.fx-pending-effects li[data-tone="history"] i {
+  color: #b9c6d6;
+}
+.fx-pending-side {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  gap: 4px 10px;
+  font-size: 11.5px;
+  color: rgba(243, 242, 236, 0.8);
+}
+.fx-pending-side small {
+  color: rgba(243, 242, 236, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 9.5px;
+  padding-top: 2px;
+}
+.fx-pending-side code {
+  font: 10.5px var(--font-mono);
+  color: rgba(243, 242, 236, 0.7);
+}
+.fx-pending-domains {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.fx-pending-domains button {
+  border: 1px solid rgba(243, 242, 236, 0.3);
+  border-radius: 999px;
+  background: none;
+  padding: 0 8px;
+  font-size: 11px !important;
+  color: var(--paper) !important;
+}
+.fx-pending-domains button[aria-pressed="true"] {
+  background: rgba(243, 242, 236, 0.16);
+}
+.fx-pending .fx-accept {
+  grid-column: 1 / -2;
+  font-size: 12px;
+}
+.fx-pending-actions {
+  align-self: end;
+}
+.fx-pending .fx-btn[data-kind="primary"] {
+  background: var(--paper);
+  color: var(--ink) !important;
+}
+
+/* ─── In-place editors ─────────────────────────────────────────────────── */
+.fx-edit-head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 16px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--propose);
+  background: var(--propose-bg);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 14px;
+}
+.fx-edit-head > * {
+  grid-column: 1;
+}
+.fx-edit-head > button {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  align-self: center;
+}
+.fx-edit-kicker {
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--propose);
+  font-weight: 600;
+}
+.fx-edit-head b {
+  font-size: 15px;
+}
+.fx-edit-head small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.fx-editor {
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+.fx-field {
+  display: grid;
+  grid-template-columns: auto minmax(70px, 140px) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px dashed var(--propose);
+  border-radius: 6px;
+  background: var(--sheet);
+}
+.fx-field span {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.fx-field input[type="number"] {
+  font: 600 18px var(--font-display);
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  background: transparent;
+  width: 100%;
+  padding: 2px 0;
+}
+.fx-field input[type="range"] {
+  width: 100%;
+  accent-color: var(--propose);
+}
+.fx-field em {
+  font-style: normal;
+  color: var(--muted);
+}
+.fx-edit-preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+}
+.fx-editor .fx-btn {
+  justify-self: start;
+}
+.fx-edit-choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 10px;
+  align-content: start;
+}
+.fx-choice {
+  display: grid;
+  gap: 3px;
+  padding: 14px 16px;
+  border: 1px solid var(--line-2);
+  border-radius: 8px;
+  background: var(--surface);
+  text-align: left;
+}
+.fx-choice b {
+  font-size: 14px;
+}
+.fx-choice span {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.fx-choice[data-ix="edit"] {
+  border-style: dashed;
+}
+.fx-choice[data-ix="edit"]:hover {
+  border-color: var(--ink);
+}
+.fx-choice[data-ix="propose"]:hover,
+.fx-choice[aria-pressed="true"] {
+  border-color: var(--propose);
+  background: var(--propose-bg);
+}
+
+/* Assignment surfaces: the workspace becomes the comparison. */
+.fx-assign-stage {
+  display: grid;
+  grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.6fr);
+  gap: 32px;
+  margin-top: 22px;
+  align-items: start;
+}
+@container instrument (max-width: 980px) {
+  .fx-assign-stage {
+    grid-template-columns: 1fr;
+  }
+}
+.fx-assign-current {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+.fx-assign-current .vd {
+  max-height: 260px;
+}
+.fx-assign-caption {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 2px 6px;
+  justify-self: start;
+}
+.fx-assign-name {
+  font: 600 22px var(--font-display);
+}
+.fx-compare {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.fx-compare th {
+  text-align: left;
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 0 8px 8px 0;
+  border-bottom: 1px solid var(--line-2);
+}
+.fx-compare td {
+  padding: 10px 8px 10px 0;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.fx-compare td small {
+  color: var(--muted);
+}
+.fx-compare tr[data-conflict="true"] td {
+  color: var(--muted);
+}
+.fx-compare tr[data-chosen="true"] td {
+  background: var(--propose-bg);
+}
+.fx-compare .fx-tri {
+  margin-right: 4px;
+}
+
+/* Maintenance */
+.fx-maint {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 1fr);
+  gap: 36px;
+  margin-top: 24px;
+}
+@container instrument (max-width: 900px) {
+  .fx-maint {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Driver facets ───────────────────────────────────────────────────── */
+.fx-legal {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+  gap: 40px;
+  margin-top: 22px;
+}
+.fx-legal-counters {
+  display: grid;
+  gap: 22px;
+}
+.fx-legal-counters .fx-meter-head {
+  font-size: 15px;
+}
+.fx-legal-counters .fx-meter-bar {
+  height: 12px;
+}
+.fx-rules-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  display: grid;
+  gap: 4px;
+}
+@container instrument (max-width: 900px) {
+  .fx-legal {
+    grid-template-columns: 1fr;
+  }
+}
+.fx-axis[data-compact="true"] .fx-lane[data-lane="stops"] {
+  display: none;
+}
+.fx-qualgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+.fx-qualcard {
+  display: grid;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  text-align: left;
+}
+.fx-qualcard[data-state="EXPIRED"] {
+  border-color: var(--action);
+  box-shadow: inset 4px 0 0 var(--action);
+}
+.fx-qualcard[data-state="EXPIRING"] {
+  box-shadow: inset 4px 0 0 var(--risk);
+}
+.fx-qualcard-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+.fx-qualcard b {
+  font: 600 20px var(--font-display);
+}
+.fx-qualcard small {
+  color: var(--muted);
+}
+.fx-qualcard em {
+  font-style: normal;
+  font-size: 11.5px;
+  color: var(--brand);
+  font-weight: 600;
+}
+.fx-qual-assign {
+  grid-column: 1 / -1;
+  max-width: 520px;
+}
+.fx-quals li .fx-inline {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  width: 100%;
+  gap: 2px 8px;
+  padding: 3px 4px;
+  border-radius: 4px;
+}
+.fx-quals li .fx-inline small {
+  grid-column: 1 / -1;
+}
+.fx-focus-time {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 2px solid var(--ink);
+  z-index: 3;
+  pointer-events: none;
+}
+.fx-focus-time b {
+  position: absolute;
+  top: -22px;
+  left: 4px;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 6px;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 3px;
+}
+.fx-sequence li[data-focused="true"] {
+  border-radius: 4px;
+}
+.fx-follow-text {
+  cursor: pointer;
+}
+
+/* ─── Documents facets ───────────────────────────────────────────────── */
+.fx-qualdoc {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(280px, 1fr);
+  gap: 40px;
+  margin-top: 24px;
+}
+.fx-qualdoc-main {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+.fx-qualdoc-card {
+  display: grid;
+  gap: 4px;
+  padding: 18px 20px;
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  background: var(--sheet);
+}
+.fx-qualdoc-card[data-state="EXPIRED"] {
+  box-shadow: inset 4px 0 0 var(--action);
+}
+.fx-qualdoc-card b {
+  font: 600 26px var(--font-display);
+}
+.fx-qualdoc-side p {
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.fx-issue-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 1fr);
+  gap: 36px;
+  margin-top: 22px;
+  align-items: start;
+}
+.fx-dossier-body[data-facet="diff"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.fx-dossier-body[data-facet="diff"] .fx-ledger,
+.fx-dossier-body[data-facet="diff"] .fx-paper-col,
+.fx-dossier-body[data-facet="diff"] .fx-events,
+.fx-dossier-body[data-facet="diff"] .fx-snapshot > h2.fx-sub {
+  display: none;
+}
+.fx-dossier-body[data-facet="diff"] .fx-diff {
+  font-size: 15px;
+}
+.fx-dossier-body[data-facet="diff"] .fx-diff td,
+.fx-dossier-body[data-facet="diff"] .fx-diff th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.fx-dossier-body[data-facet="history"] {
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.4fr);
+}
+.fx-dossier-body[data-facet="history"] .fx-paper-col,
+.fx-dossier-body[data-facet="history"] .fx-diff,
+.fx-dossier-body[data-facet="history"] .fx-diff-summary,
+.fx-dossier-body[data-facet="history"] .fx-snapshot > .fx-facts,
+.fx-dossier-body[data-facet="history"] .fx-snapshot > h2:first-child {
+  display: none;
+}
+.fx-dossier-body[data-facet="history"] .fx-events {
+  font-size: 14px;
+}
+.fx-ledger li > .fx-link {
+  margin: 0 0 8px 12px;
+}
+.fx-diff th .fx-inline {
+  font-weight: 600;
+}
+
+/* ─── Restrictions facets ─────────────────────────────────────────────── */
+.fx-missing,
+.fx-physical,
+.fx-evidence-view {
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+  max-width: 880px;
+}
+.fx-missing-row {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  text-align: left;
+}
+.fx-missing-row[data-outcome="unknown"] {
+  background-image: var(--hatch);
+  background-color: var(--surface);
+}
+.fx-missing-row div {
+  display: grid;
+  gap: 2px;
+}
+.fx-missing-row b {
+  font-size: 14px;
+}
+.fx-missing-row span {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.fx-missing-row code {
+  font: 10.5px var(--font-mono);
+  color: var(--faint);
+}
+.fx-missing-row em {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--brand);
+  font-weight: 600;
+}
+.fx-alternative {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 24px;
+}
+.fx-alternative section {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+}
+.fx-alternative section[data-path="alt"] {
+  border-style: dashed;
+}
+.fx-alternative b {
+  font: 600 20px var(--font-display);
+}
+.fx-alternative small {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.fx-evidence-view > div {
+  display: grid;
+  gap: 2px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+.fx-mini-verdict {
+  display: grid;
+  gap: 2px;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--line-2);
+  border-radius: 8px;
+  background: var(--sheet);
+  text-align: left;
+}
+.fx-mini-verdict small {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.fx-mini-verdict b {
+  font-size: 15px;
+}
+.fx-mini-verdict b s {
+  color: var(--muted);
+  font-weight: 500;
+  margin-right: 4px;
+}
+.fx-mini-verdict span {
+  font-size: 12px;
+  color: var(--brand);
+  font-weight: 600;
+}
+.fx-mini-verdict[data-result="DOES_NOT_APPLY"] {
+  box-shadow: inset 3px 0 0 var(--ok);
+}
+.fx-mini-verdict[data-result="APPLIES"] {
+  box-shadow: inset 3px 0 0 var(--action);
+}
+.fx-mini-verdict[data-result="UNKNOWN"] {
+  box-shadow: inset 3px 0 0 var(--unknown);
+}
+.fx-bound-rules .fx-editor {
+  margin-top: 6px;
+}
+.fx-bound-rules > .fx-btn {
+  margin-top: 8px;
+  justify-self: start;
+}
+
+/* ─── Route facets ────────────────────────────────────────────────────── */
+.fx-route[data-facet="stops"] {
+  display: flex;
+  flex-direction: column;
+}
+.fx-route[data-facet="stops"] > .fx-answer {
+  order: 0;
+}
+.fx-route[data-facet="stops"] > .fx-decision {
+  order: 1;
+  margin-top: 18px;
+}
+.fx-route[data-facet="stops"] > .fx-journey {
+  order: 2;
+}
+.fx-route[data-facet="window"] .fx-j-layer[data-layer="Viatura"],
+.fx-route[data-facet="window"] .fx-j-layer[data-layer="Estrada"] {
+  display: none;
+}
+.fx-route[data-facet="segment"] .fx-j-layer[data-layer="Motorista"],
+.fx-route[data-facet="segment"] .fx-j-layer[data-layer="Viatura"],
+.fx-route[data-facet="segment"] .fx-j-layer[data-layer="Entrega"] {
+  display: none;
+}
+.fx-route[data-facet="segment"] .fx-j-layer[data-layer="Estrada"] {
+  min-height: 90px !important;
+}
+button.fx-j-band {
+  border: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+button.fx-j-window,
+button.fx-j-pos {
+  border: 0;
+  background: none;
+  padding-top: 0;
+  padding-bottom: 0;
+  font: inherit;
+  text-align: left;
+}
+button.fx-j-window[data-edge="end"] {
+  text-align: right;
+}
+.fx-why {
+  display: block;
+  max-width: 220px;
+  white-space: normal;
+  margin-top: 4px;
+  color: var(--action) !important;
+}
+.fx-windows,
+.fx-segments {
+  display: grid;
+  gap: 8px;
+  margin-top: 22px;
+}
+.fx-window-row {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) 220px;
+  gap: 16px;
+  align-items: center;
+  padding: 10px 6px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  text-align: left;
+}
+.fx-window-name {
+  display: grid;
+}
+.fx-window-name small,
+.fx-window-text small {
+  display: block;
+  color: var(--muted);
+  font-size: 11.5px;
+}
+.fx-window-track {
+  position: relative;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--paper-2);
+}
+.fx-window-span {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  border-radius: 2px;
+  background: var(--ok-bg);
+  box-shadow: inset 0 0 0 1px var(--ok);
+}
+.fx-window-eta {
+  position: absolute;
+  top: -2px;
+  bottom: -2px;
+  width: 3px;
+  margin-left: -1px;
+  background: var(--ok);
+}
+.fx-window-eta[data-tone="risk"] {
+  background: var(--risk);
+}
+.fx-window-eta[data-tone="action"] {
+  background: var(--action);
+}
+.fx-window-now {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  border-left: 1px dashed var(--ink);
+}
+.fx-window-row[data-done="true"] {
+  opacity: 0.6;
+}
+.fx-segment-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 6px;
+  border-bottom: 1px solid var(--line);
+}
+.fx-segment-row .fx-inline {
+  display: grid;
+}
+.fx-segment-row small {
+  color: var(--muted);
+}
+
+/* ─── Load plan focus ─────────────────────────────────────────────────── */
+.lp-slot[data-soft="true"],
+.lp-bracket[data-soft="true"] {
+  opacity: 0.28;
+}
+button.lp-bracket {
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  padding: 0;
+}
+.fx-focus-line {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--ink);
+  background: var(--paper-2);
+  font-size: 13px;
+}
+
+/* ─── Overview ────────────────────────────────────────────────────────── */
+button.fx-story-stop {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+}
+.fx-story-stop[data-focused="true"] b {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+.fx-story-proposal {
+  display: grid;
+  grid-template-columns: 130px 1fr auto;
+  gap: 12px;
+  align-items: baseline;
+  margin: 22px 0 0;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--propose-bg);
+  border: 1px dashed var(--propose);
+}
+.fx-story-proposal[data-kind="revision"] {
+  background: var(--paper-2);
+  border: 1px solid var(--line-2);
+}
+.fx-story-proposal p {
+  margin: 0;
+}
+.fx-story [data-focused="true"] {
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+/* ─── Rail roles: lead · active support · available · reserved ───────── */
+.fx-rail button[data-role="support"] {
+  box-shadow: inset 0 0 0 1.5px var(--ink-2);
+}
+
+/* ─── Spatial mode ────────────────────────────────────────────────────── */
+.fx[data-map-full="true"] .gw-zone-content {
+  padding: 0;
+  height: 100%;
+}
+.fx-spatial,
+.fx-context-card {
+  height: 100%;
+  overflow: auto;
+  padding: 16px 18px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(251, 250, 246, 0.97);
+  box-shadow: 0 18px 40px -24px rgba(20, 31, 27, 0.45);
+  box-sizing: border-box;
+}
+.fx-spatial header small,
+.fx-context-card small {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.fx-spatial header h2 {
+  margin: 4px 0 2px;
+  font: 600 19px / 1.2 var(--font-display);
+}
+.fx-spatial header p {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.fx-spatial-meter {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.fx-spatial-meter span b {
+  font: 600 26px var(--font-display);
+}
+.fx-spatial-meter i {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--ink-2);
+}
+.fx-spatial-meter i[data-near="true"] {
+  background: var(--risk);
+}
+.fx-spatial-meter small {
+  color: var(--muted);
+}
+.fx-spatial-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+.fx-spatial-list button,
+.fx-spatial-facts button,
+.fx-spatial-logic button,
+.fx-context-card button {
+  display: grid;
+  gap: 1px;
+  width: 100%;
+  padding: 8px 6px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  text-align: left;
+}
+.fx-spatial-list small,
+.fx-spatial-facts small {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.fx-spatial-list span,
+.fx-spatial-facts span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.fx-spatial-facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 14px;
+  margin-bottom: 10px;
+}
+.fx-spatial-verdict {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--sheet);
+  border: 1px solid var(--line);
+}
+.fx-spatial-verdict p {
+  margin: 4px 0 0;
+  font-size: 13px;
+}
+.fx-spatial-logic {
+  list-style: none;
+  margin: 10px 0;
+  padding: 0;
+}
+.fx-spatial-logic button {
+  grid-template-columns: 20px 1fr;
+  align-items: start;
+}
+.fx-spatial-logic span {
+  display: grid;
+  font-size: 13px;
+}
+.fx-spatial-logic em {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--muted);
+}
+.fx-spatial-cons {
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+.fx-spatial-context {
+  margin-top: 12px;
+}
+.fx-context-card {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  padding: 12px 14px;
+}
+.fx-context-card button {
+  font-size: 12.5px;
+  border-bottom: 0;
+  padding: 2px 0;
+  display: block;
+}
+/* Route strip in spatial mode */
+.fx-spatial-strip {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+.fx-spatial-strip header {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.fx-spatial-strip header h2 {
+  margin: 0;
+}
+.fx-spatial-strip header p {
+  margin: 0;
+}
+.fx-spatial-track {
+  position: relative;
+  margin: 14px 40px 6px;
+  min-height: 120px;
+}
+.fx-spatial-line,
+.fx-spatial-done {
+  position: absolute;
+  left: 0;
+  top: 52px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line-2);
+  right: 0;
+}
+.fx-spatial-done {
+  right: auto;
+  background: var(--ink);
+}
+.fx-spatial-node,
+.fx-spatial-stop,
+.fx-spatial-road {
+  position: absolute;
+  transform: translateX(-50%);
+  border: 0;
+  background: none;
+  padding: 0;
+  display: grid;
+  justify-items: center;
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+.fx-spatial-node {
+  top: 44px;
+}
+.fx-spatial-node i {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--sheet);
+  border: 2.5px solid var(--ink);
+}
+.fx-spatial-node small,
+.fx-spatial-stop small {
+  color: var(--muted);
+}
+.fx-spatial-stop {
+  top: 0;
+}
+.fx-spatial-stop[data-row="1"] {
+  top: 18px;
+}
+.fx-spatial-stop i {
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  border: 2px solid var(--ink-2);
+  background: var(--sheet);
+  order: 3;
+  margin-top: 2px;
+}
+.fx-spatial-stop[data-chosen="true"] i {
+  background: var(--ink);
+}
+.fx-spatial-stop[data-chosen="true"] b {
+  text-decoration: underline;
+}
+.fx-spatial-stop[data-fits="false"] {
+  color: var(--action);
+}
+.fx-spatial-road {
+  top: 86px;
+  transform: none;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.fx-spatial-road i {
+  width: 16px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--risk);
+}
+.fx-spatial-road[data-result="UNKNOWN"] i {
+  background: repeating-linear-gradient(135deg, rgba(187, 65, 25, 0.8) 0 2px, rgba(187, 65, 25, 0.15) 2px 5px);
+}
+.fx-spatial-road[data-result="DOES_NOT_APPLY"] i {
+  background: var(--line-2);
+}
+.fx-spatial-road[data-selected="true"] {
+  font-weight: 700;
+}
+.fx-spatial-now {
+  position: absolute;
+  top: 66px;
+  transform: translateX(-50%);
+  font: 600 10.5px var(--font-mono);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0 4px;
+  border-radius: 3px;
+}
+.fx-spatial-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.fx-map-exit {
+  display: inline-flex !important;
+  gap: 6px;
+  width: auto !important;
+  padding: 0 10px !important;
+  font-size: 12px !important;
+  font-weight: 600;
+}
+
+/* Editing inside the vehicle stage widens the rule column; the drawing stays. */
+.fx-truck[data-editing] .fx-vehicle-stage[data-rule="true"],
+.fx-truck[data-aspect="fuel"] .fx-vehicle-stage {
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+}
+.fx-bound-rules .fx-edit-head,
+.fx-qualdoc-side .fx-edit-head,
+.fx-missing .fx-edit-head {
+  grid-template-columns: 1fr;
+}
+.fx-bound-rules .fx-edit-head > button,
+.fx-qualdoc-side .fx-edit-head > button,
+.fx-missing .fx-edit-head > button {
+  grid-column: 1;
+  grid-row: auto;
+  justify-self: start;
+  margin-top: 4px;
+}
+
+/* A staged proposal reserves room so the bar never hides what it describes. */
+.fx:not([data-pending="none"]) .gw-zone-content {
+  padding-bottom: 230px;
+}
+.fx-context-card {
+  height: auto;
+  max-height: 100%;
+}
+.fx-spatial-road[data-row="1"] {
+  top: 104px;
+}
+.fx-spatial-road[data-edge="end"] {
+  transform: translateX(-100%);
+  flex-direction: row-reverse;
+}
+@container instrument (max-width: 1000px) {
+  .fx-truck[data-aspect="fuel"] .fx-vehicle-stage,
+  .fx-truck[data-editing] .fx-vehicle-stage[data-rule="true"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* A previewed document is never mistaken for an issued one. */
+.fx-dossier[data-preview="true"] .fx-paper {
+  outline: 2px dashed var(--propose);
+  outline-offset: 4px;
+}
+.fx-dossier[data-preview="true"] .fx-paper::after {
+  content: "PRÉ-VISUALIZAÇÃO";
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-18deg);
+  font: 700 28px var(--font-display);
+  letter-spacing: 0.12em;
+  color: rgba(156, 100, 16, 0.32);
+  pointer-events: none;
+}
+.fx-dossier[data-preview="true"] .fx-paper {
+  position: relative;
+}
+.fx-spatial-road[data-row="2"] {
+  top: 122px;
+}
+.fx-spatial-track {
+  min-height: 140px;
+}
+
+/* The current facet is a statement, not a control. */
+.fx-aspects button[aria-current="true"]:disabled {
+  opacity: 1;
+  cursor: default;
+}
+.fx-inline:disabled {
+  cursor: default;
+  opacity: 1;
+}
+.environment-synthetic-pin[role="button"] {
+  cursor: pointer;
+}
+
+.fx-delivery {
+  margin: 22px 0 0;
+  padding: 16px 18px;
+  border: 1px solid var(--line-2);
+  border-left: 3px solid var(--ink);
+  border-radius: 0 10px 10px 0;
+  background: var(--sheet);
+  display: grid;
+  gap: 10px;
+}
+.fx-delivery-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 14px;
+}
+.fx-delivery-head b {
+  font: 600 18px var(--font-display);
+}
+.fx-delivery-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+button.fx-story-stop:disabled {
+  cursor: default;
+}
+
+.fx-compare .fx-btn:disabled[data-kind="primary"],
+.fx-pending-domains button:disabled {
+  opacity: 1;
+  cursor: default;
+}

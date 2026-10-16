@@ -1,0 +1,506 @@
+FleetOS — Phase 5.7G: Interaction Graph, Cross-Domain Transitions & Spatial Questions
+Mission
+Phase 5.7F established a much stronger composition architecture:
+- Anchor
+- Active lenses
+- Lead lens
+- Semantic groups
+- Participation contracts
+- Guided composition families
+- Explicit map actions
+- Temporary takeover
+- Exact Esc restoration
+Keep those foundations.
+Do NOT reset the architecture.
+However, Phase 5.7F still proves mostly states, not the full network of transitions between states.
+The product must now become convincing when the operator moves laterally through the workspace:
+Driver → Documents
+Driver → Fuel
+Fuel → Driver
+Truck → Documents
+Restrictions → Driver
+Documents → Map
+Fuel → Restrictions
+etc.
+
+These paths are the real product.
+Also, the current map behavior is still too often tied directly to the domain:
+Driver → local zoom
+Truck → local zoom
+Restrictions → segment
+Fuel → route/stations
+
+That is too simplistic.
+A domain does not uniquely determine the map.
+The map must answer the current spatial question.
+1. Preserve the 5.7F composition model
+Continue using:
+Anchor
+Active lenses
+Lead lens
+Semantic groups
+Participation contracts
+Composition family
+Temporary takeover
+History
+
+Do not bring back:
+- random topology generation;
+- one rectangle per lens;
+- fixed page per domain;
+- floating fallback;
+- generic domain focus modes.
+2. Distinguish lens activation from lead change
+This is critical.
+Clicking a domain in the rail means:
+add/remove this lens from the CURRENT scene
+
+It must NOT automatically mean:
+navigate to that domain's main view
+
+Example:
+Current state:
+anchor = Job J-4217
+lead = Driver
+active = Jobs, Driver, Truck, Fuel
+
+User clicks:
+Documents
+
+Expected:
+- Driver remains lead;
+- Documents joins the current Driver-led composition;
+- Documents contributes the most relevant document/status information for the current Driver/Job context;
+- map behavior does not reset just because Documents was activated;
+- existing spatial and semantic context is preserved.
+Only if the user explicitly presses:
+Expand Documents
+
+should Documents become lead.
+Strong principle:
+Click adds context. Expand changes the question.
+3. Build an explicit Interaction Graph
+Create a deterministic interaction graph for transitions between important leads/lenses.
+Do not model only destination states.
+Model:
+current context
++ user action
+→ semantic transition
+→ composition update
+
+At minimum cover:
+- Job → Driver
+- Job → Fuel
+- Job → Documents
+- Job → Restrictions
+- Driver → Fuel
+- Driver → Documents
+- Driver → Restrictions
+- Driver → Truck
+- Fuel → Driver
+- Fuel → Truck
+- Fuel → Documents
+- Fuel → Restrictions
+- Truck → Driver
+- Truck → Fuel
+- Truck → Documents
+- Restrictions → Driver
+- Restrictions → Fuel
+- Restrictions → Documents
+- Documents → Driver
+- Documents → Fuel
+- Documents → Restrictions
+These do not need 21 unique full-screen layouts.
+They need 21 well-defined semantic transition behaviors.
+4. Transition contracts
+Each lens should define:
+onEnterAsSupport(currentLead, anchor)
+onBecomeLead(previousLead, anchor)
+onLeave(currentLead, anchor)
+
+Or equivalent architecture.
+These contracts should define:
+- what information becomes relevant;
+- what information is suppressed;
+- which semantic group changes;
+- whether map usefulness changes;
+- whether selected related entities should persist;
+- whether the composition family should remain or change.
+Do not hardcode every exact lens combination.
+5. Preserve context across cross-domain transitions
+Example:
+Fuel lead
+selected station = F-07
+Driver active
+Truck active
+Documents active
+
+User expands Driver.
+The result must preserve:
+- anchor Job J-4217;
+- F-07 if still relevant;
+- active lenses;
+- relevant Fuel information;
+- related Truck;
+- document state.
+Fuel should no longer show the full station comparison.
+It should become:
+next / selected stop context
+
+This behavior already exists partially in 5.7F and must become systematic across the graph.
+6. Introduce Spatial Questions
+Stop defining map behavior primarily by domain.
+Instead define a spatial-question model.
+Suggested spatial questions:
+NONE
+CURRENT_ENTITY
+NEXT_LEG
+FULL_ROUTE
+ROUTE_AND_STOP
+ORIGIN_DESTINATION
+AFFECTED_SEGMENT
+MULTI_ENTITY
+RESOURCE_AND_JOB
+USER_REQUESTED
+
+These are semantic intents, not camera presets.
+The current lead, selection and user action determine the spatial question.
+7. Driver must support multiple spatial questions
+Driver must NOT always mean:
+zoom into current Driver location
+
+Test at least:
+Driver / current location
+Question:
+Where is the Driver now?
+
+Map:
+local area around current position.
+Driver / next work
+Question:
+What is the Driver doing next?
+
+Map:
+current position + next stop/destination.
+Driver / legal reachability
+Question:
+Can the Driver reach the next planned stop before required rest?
+
+Map:
+relevant route corridor + stop.
+Driver / Job context
+Question:
+Show the Driver in context of the whole Job.
+
+Map:
+full relevant Job route.
+Driver / no spatial question
+Map:
+may disappear.
+Strong principle:
+Driver is not a camera preset. Driver is a context that can generate different spatial questions.
+8. Truck must support multiple spatial questions
+Same rule.
+Examples:
+Where is the Truck?
+
+What route is the Truck executing?
+
+Can the Truck reach the next Fuel stop?
+
+Which restriction affects this Truck?
+
+These should produce different map framing.
+9. Fuel must support multiple spatial questions
+Examples:
+compare candidate stops along route
+
+inspect selected station
+
+show detour from route
+
+show selected station relative to Driver position
+
+show whole Job route
+
+Fuel should not always resolve to one route+stations map.
+10. Restrictions must support multiple spatial questions
+Examples:
+exact affected segment
+
+restriction relative to current Job
+
+restriction relative to selected Fuel stop
+
+all relevant restrictions across route
+
+Again:
+one domain ≠ one camera.
+11. Documents and non-spatial leads
+Documents should normally be capable of:
+spatialQuestion = NONE
+
+But if the user explicitly asks:
+Open map
+
+then set:
+spatialQuestion = USER_REQUESTED
+
+and preserve Documents as lead.
+Do not change lead merely because map became visible.
+12. Map controls must reflect the current spatial question
+Contextual map actions can include:
+- Open map
+- Expand map
+- Fit route
+- Show current entity
+- Show next leg
+- Show full Job
+- Show selected stop
+- Show affected segment
+Only show actions that make sense in the current state.
+Do not expose every map command everywhere.
+13. Camera framing should be data-bound, not domain-bound
+Camera target should derive from:
+- selected entities;
+- route/segment geometry;
+- current spatial question;
+- current map region dimensions;
+- padding created by visible content.
+Avoid hardcoded behavior such as:
+if lead === Driver → zoom 11.5
+
+Use bounds / relevant points / route geometry where possible.
+Pitch/bearing should also be justified.
+Do not use pitch merely to make the map look dynamic.
+14. Fix weak Driver map behavior
+Explicitly review the existing Driver map behavior.
+The current local zoom often does not communicate enough operational context.
+Replace generic local zoom with spatial-question-driven framing.
+Acceptance should compare at least:
+Driver current location
+Driver + selected Fuel stop
+Driver + full Job
+Driver + relevant restriction
+
+These should be visibly different and each should answer a clear question.
+15. Composition transition should be continuous
+Cross-domain transitions should feel like the same page changing meaning.
+Example:
+Driver lead
+→ activate Documents
+
+Documents information should enter the current composition naturally.
+Then:
+→ Expand Documents
+
+- document region grows;
+- Driver becomes identity/status support;
+- map may shrink/disappear;
+- other supports reorganize;
+- no page reset.
+Reverse with Esc.
+16. Explicit cross-domain test flows
+Test these exact flows:
+Flow A
+Job
+→ Driver active
+→ Driver lead
+→ Documents active
+→ Documents lead
+→ Esc
+→ Driver lead
+
+Flow B
+Job
+→ Fuel lead
+→ select F-07
+→ Driver lead
+→ Documents active
+→ Fuel lead
+
+F-07 should persist when semantically relevant.
+Flow C
+Driver lead
+→ Fuel active
+→ select station
+→ Restrictions active
+→ inspect restriction
+→ Map takeover
+→ Esc
+
+Flow D
+Truck lead
+→ Documents active
+→ Fuel active
+→ Fuel lead
+→ Truck lead
+
+Flow E
+Documents lead
+→ Open map
+→ Show full Job
+→ Show selected stop
+→ Esc
+→ Documents lead
+
+17. Pairwise transition coverage
+Add a DEV diagnostic matrix.
+For each important lead:
+Job
+Driver
+Truck
+Fuel
+Documents
+Restrictions
+
+show whether transitions to every other lens have:
+- semantic contract;
+- browser exercise;
+- screenshot evidence;
+- return test.
+Do not claim full coverage unless each pair has actually been exercised.
+18. Do not explode into handcrafted layouts
+The Interaction Graph defines semantic behavior, not unique page templates.
+Reuse:
+- existing semantic groups;
+- composition families;
+- participation roles;
+- adaptive forms.
+A transition may keep the same family and only change:
+- content;
+- emphasis;
+- map question;
+- support role.
+That is valid.
+19. Add transition relevance rules
+Some lenses may be active but contribute almost nothing in a given state.
+Example:
+Driver lead + Documents:
+Documents may contribute only:
+Driver docs OK
+CMR available
+
+unless expanded.
+This is better than forcing a large Documents region.
+20. Add semantic persistence rules
+Define which selections persist across lead changes.
+Examples:
+- selected Fuel station;
+- selected restriction;
+- selected document;
+- selected resource.
+Each selection should declare:
+persistsIfRelevant
+clearsWhenAnchorChanges
+clearsWhenLensRemoved
+
+Do not rely on ad hoc logic.
+21. Preserve temporary takeover
+Keep:
+map takeover
+document takeover
+station detail
+segment detail
+resource detail
+
+But takeover must use the current semantic context.
+Example:
+Map takeover from Driver + F-07 should show:
+- Driver;
+- selected stop;
+- relevant route;
+not a generic full Job route unless requested.
+22. Visual acceptance
+Produce screenshots proving:
+1. Driver lead + Documents support
+2. Driver → Documents lead
+3. Documents → Driver lead
+4. Driver current-location map
+5. Driver next-leg map
+6. Driver full-Job map
+7. Driver + Fuel-stop map
+8. Truck + Fuel context
+9. Fuel → Restrictions context
+10. Restrictions → Driver context
+11. Documents + explicit map
+12. Map takeover preserving selected context
+13. Return via Esc
+14. Same composition family, different semantic transition
+15. Different family triggered by meaningful context change
+23. Browser acceptance
+Test:
+- 1440×900
+- 1920×1080
+- ~1199×900
+Verify:
+- no horizontal overflow;
+- no map corruption;
+- same map instance;
+- exact restore where viewport is unchanged;
+- selection persistence rules;
+- lead persistence;
+- active lens persistence;
+- camera driven by spatial question;
+- no late camera snap.
+24. Tests
+Add tests for:
+- interaction graph contracts;
+- pairwise transition semantics;
+- lens activation vs lead change;
+- spatial-question selection;
+- selection persistence;
+- map intent persistence;
+- takeover context;
+- Esc restoration;
+- anchor change clearing rules.
+Do not create fake claims of exhaustive browser coverage from pure-state tests.
+25. What to keep
+KEEP:
+- Anchor
+- Active lenses
+- Lead
+- Semantic groups
+- Participation contracts
+- Composition families
+- Map intent actions
+- Temporary takeover
+- Exact history
+- Same-page composition
+26. What to redesign
+REDESIGN:
+- cross-domain transitions;
+- pairwise interaction coverage;
+- map semantics;
+- Driver/Truck map behavior;
+- selection persistence rules;
+- contextual map actions.
+27. What NOT to do
+DO NOT:
+- add more random layout families merely for visual variety;
+- equate domain with map camera preset;
+- hardcode Driver = local zoom;
+- automatically make a clicked lens lead;
+- navigate to separate pages;
+- create one UI template for each pairwise transition;
+- reset selections unnecessarily.
+Success condition
+Phase 5.7G succeeds when the operator can move naturally across the FleetOS information graph:
+Job
+↔ Driver
+↔ Truck
+↔ Fuel
+↔ Documents
+↔ Restrictions
+
+without the product feeling like separate pages or canned focus states.
+The map must answer the actual spatial question, not simply react to the domain name.
+Final principles:
+Click adds context. Expand changes the question.
+A domain is not a camera preset.
+The map answers a spatial question.
+Cross-domain transitions are product behavior, not just links between finished screens.
+Selections persist when they remain semantically relevant.
+Same workspace, continuous context.
+Stop after DEV visual and interaction review.
+Do not integrate production data yet.

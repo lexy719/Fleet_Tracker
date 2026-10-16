@@ -13,6 +13,9 @@ import type { FieldEvidence } from "../research/types";
 
 export type SourceType =
   | "ARCGIS_FEATURE_SERVICE"
+  | "OGC_WFS"
+  | "GEOJSON_API"
+  | "JSON_API"
   | "DATEX_II"
   | "CKAN"
   | "RSS"
@@ -45,6 +48,10 @@ export type ParserId =
   | "datex2-situations"
   | "ckan-package"
   | "dr-rss"
+  | "lisboa-closures"
+  | "oeiras-wfs"
+  | "ip-alertas-jsonapi"
+  | "wp-notices"
   | "html-notice-ai"
   | "research-agent"
   | "static-curated";

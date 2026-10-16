@@ -28,6 +28,7 @@ export type CommitBatch = {
   meta?: Record<string, unknown>;
   /** Abort unless the stored job revision still equals the expected one (null = must not exist). */
   expectJobRevisions?: Record<string, number | null>;
+  expectResourceUpdates?: Partial<Record<"trucks" | "drivers" | "trailers", Record<string, string | null>>>;
 };
 
 export class ConcurrencyError extends Error {
@@ -70,6 +71,11 @@ export class MemoryOperationalStore implements OperationalStore {
     for (const [id, rev] of Object.entries(b.expectJobRevisions ?? {})) {
       const cur = this.data.jobs.get(id);
       if ((cur?.revision ?? null) !== rev) throw new ConcurrencyError(id);
+    }
+    for (const kind of ["trucks", "drivers", "trailers"] as const) {
+      for (const [id, at] of Object.entries(b.expectResourceUpdates?.[kind] ?? {})) {
+        if ((this.data[kind].get(id)?.updatedAt ?? null) !== at) throw new ConcurrencyError(id);
+      }
     }
     for (const s of ENTITY_STORES) {
       // Removals first: a batch may remove and re-put the same id (demo reset).
@@ -163,7 +169,10 @@ export class IdbOperationalStore implements OperationalStore {
     const tx = this.db.transaction([...ENTITY_STORES, "events", "meta"], "readwrite");
     const finished = done(tx);
     let conflict: ConcurrencyError | null = null;
-    const expectations = Object.entries(b.expectJobRevisions ?? {});
+    const expectations: {store:"jobs"|"trucks"|"drivers"|"trailers";id:string;expected:number|string|null;field:"revision"|"updatedAt"}[] = [
+      ...Object.entries(b.expectJobRevisions ?? {}).map(([id,expected])=>({store:"jobs" as const,id,expected,field:"revision" as const})),
+      ...(["trucks","drivers","trailers"] as const).flatMap(store=>Object.entries(b.expectResourceUpdates?.[store]??{}).map(([id,expected])=>({store,id,expected,field:"updatedAt" as const}))),
+    ];
     const write = () => {
       for (const s of ENTITY_STORES) {
         const os = tx.objectStore(s);
@@ -180,12 +189,12 @@ export class IdbOperationalStore implements OperationalStore {
     else {
       // Read-check-write inside the SAME transaction (IndexedDB serialises overlapping readwrite tx).
       let pending = expectations.length;
-      for (const [id, rev] of expectations) {
-        const g = tx.objectStore("jobs").get(id);
+      for (const {store,id,expected,field} of expectations) {
+        const g = tx.objectStore(store).get(id);
         g.onsuccess = () => {
           if (conflict) return;
-          const cur = (g.result as Job | undefined)?.revision ?? null;
-          if (cur !== rev) {
+          const cur = (g.result as Record<string,unknown> | undefined)?.[field] ?? null;
+          if (cur !== expected) {
             conflict = new ConcurrencyError(id);
             tx.abort();
             return;

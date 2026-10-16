@@ -6,6 +6,7 @@
  * - In production, defaults to `https://api.tomtom.com` unless `VITE_TOMTOM_REST_BASE` is set (e.g. your own proxy path).
  */
 export function getTomTomRestBase(): string {
+  if (typeof window === "undefined") return "https://api.tomtom.com";
   const fromEnv = import.meta.env.VITE_TOMTOM_REST_BASE as string | undefined;
   if (typeof fromEnv === "string" && fromEnv.trim().length > 0) {
     return fromEnv.trim().replace(/\/$/, "");

@@ -1,3 +1,4 @@
+import type { RefuelPlan } from "../domain/fuelPlanning/refuelPlanner";
 /**
  * TomTom Routing API — dynamic route alternatives (no static strategy placeholders).
  * @see https://developer.tomtom.com/routing-api/documentation/tomtom-maps/calculate-route
@@ -31,6 +32,8 @@ export type RouteStopArrival = {
 export type RouteComparisonRole = "fastest" | "lowest_toll" | "most_fuel" | "other" | "single";
 
 export type RoutePlanOption = {
+  /** Guidance belongs to this exact, unsimplified route, including after solver detours. */
+  navigation?: { instructions: NavigationInstruction[]; sections: NavigationSection[] };
   id: RouteOptionId;
   title: string;
   subtitle: string;
@@ -65,9 +68,14 @@ export type RoutePlanOption = {
   colorIndex: number;
   /** Visual role for comparison coloring (set after planning). */
   comparisonRole?: RouteComparisonRole;
+  /** Where the €/L behind `fuelCostEur` came from (measured corridor median vs default). */
+  fuelPriceBasis?: { eurPerL: number; source: "MEASURED" | "DEFAULT"; basis: string; sample: number };
+  /** Fuel Intelligence refuel plan for this route (stops, detours, pause merges, saving vs naive). */
+  refuelPlan?: RefuelPlan;
 };
 
-export const DEFAULT_FUEL_EUR_PER_L = 1.52;
+/** Last-resort €/L when no measured pump prices cover the trip (PT/ES diesel, Oct 2026 order of magnitude). */
+export const DEFAULT_FUEL_EUR_PER_L = 2.0;
 
 /** Stroke colors — cycle by `colorIndex` */
 export const ROUTE_OPTION_PALETTE = ["#0d9488", "#ea580c", "#059669", "#6366f1", "#8b5cf6", "#dc2626"] as const;
@@ -117,7 +125,11 @@ type TomTomRouteResponse = {
   routes?: (TomTomRouteCore & { sections?: TomTomSection[] })[];
 };
 
+export type NavigationInstruction = { routeOffsetInMeters: number; maneuver: string; message: string; street?: string; roadNumbers?: string[]; signpostText?: string; roundaboutExitNumber?: number; exitNumber?: string; point?: { latitude: number; longitude: number } };
+export type NavigationSection = { sectionType?: string; startPointIndex?: number; endPointIndex?: number; maxSpeedLimitInKmh?: number; lanes?: { directions: string[]; follow?: string }[] };
+
 type TomTomRouteCore = {
+  guidance?: { instructions?: NavigationInstruction[] };
   summary: {
     lengthInMeters: number;
     travelTimeInSeconds: number;
@@ -131,7 +143,7 @@ type TomTomRouteCore = {
 
 type TomTomRoute = TomTomRouteCore & { sections?: TomTomSection[] };
 
-type TomTomSection = {
+type TomTomSection = NavigationSection & {
   sectionType?: string;
   /** Section length when available — used to estimate tolls if no priced toll. */
   lengthInMeters?: number;
@@ -520,7 +532,7 @@ async function calculateRoutes(
   const search = cloneSearchParams(queryParams);
   search.set("key", key);
   const url = `${getTomTomRestBase()}/routing/1/calculateRoute/${path}/json?${search.toString()}`;
-  if (import.meta.env.DEV) {
+  if (import.meta.env?.DEV) {
     const safeUrl = url.replace(/([?&])key=[^&]*/i, "$1key=***");
     console.debug(`[TomTom] ${debugLabel ?? "calculateRoute"} request URL`, safeUrl);
   }
@@ -545,12 +557,12 @@ async function calculateRoutes(
     const message = error instanceof Error ? error.message : "Routing request failed";
     return { error: message.slice(0, 200) };
   }
-  if (import.meta.env.DEV) {
+  if (import.meta.env?.DEV) {
     console.debug(`[TomTom] ${debugLabel ?? "calculateRoute"} raw JSON`, data);
   }
   const routes = data.routes ?? [];
   if (routes.length === 0) return { error: "No route returned" };
-  if (import.meta.env.DEV) {
+  if (import.meta.env?.DEV) {
     routes.forEach((r, i) => {
       const sections = r.sections ?? [];
       console.debug(`[TomTom] ${debugLabel ?? "route"} [${i}]`, {
@@ -713,6 +725,7 @@ export type PlanRouteTruckOpts = {
 };
 
 export type PlanRoutePlanningOpts = {
+  navigationLanguage?: "pt-PT" | "es-ES" | "en-GB";
   lPer100kmFallback?: number;
   fuelEurPerL?: number;
   departAt?: Date;
@@ -815,10 +828,10 @@ export async function planRouteOptions(
   }
 
   const invalid = collected.filter((r) => !tomtomRouteValid(r.route)).length;
-  if (invalid && import.meta.env.DEV) console.warn(`[TomTom] ${invalid} route(s) with invalid geometry dropped`);
+  if (invalid && import.meta.env?.DEV) console.warn(`[TomTom] ${invalid} route(s) with invalid geometry dropped`);
   let candidates = collected.filter((r) => tomtomRouteValid(r.route)).map((r, idx) => {
     const c = toCandidate(r, lPer, fuelEur, totalWeightKg);
-    if (import.meta.env.DEV && idx === 0) {
+    if (import.meta.env?.DEV && idx === 0) {
       const secs = allSectionsFromRoute(c.route);
       console.debug("[TomTom] parsed internal route [0] (post-fetch)", {
         tollDataQuality: c.tollDataQuality,
@@ -993,6 +1006,12 @@ export async function planStrategyRoute(
   const departAtIso = toTomTomDateTime(departAt);
   baseQuery.set("departAt", departAtIso);
   const query = mergeRoutingParams(baseQuery, { maxAlternatives: "0", ...(strategy === "NO_TOLLS" ? { avoid: "tollRoads" } : {}) });
+  if (planning.navigationLanguage) {
+    query.set("instructionsType", "text");
+    query.set("language", planning.navigationLanguage);
+    query.append("sectionType", "speedLimit");
+    query.append("sectionType", "lanes");
+  }
   const res = await calculateRoutes(key, waypoints, query, `strategy:${strategy}`, planning.avoidAreas);
   if (!("routes" in res) || !res.routes[0]) return emptyOption(id, "error" in res ? res.error : "No route returned");
   const route = res.routes[0];
@@ -1024,5 +1043,6 @@ export async function planStrategyRoute(
     routing,
     colorIndex: 20,
     comparisonRole: "other",
+    ...(planning.navigationLanguage ? { navigation: { instructions: route.guidance?.instructions ?? [], sections: route.sections ?? [] } } : {}),
   };
 }

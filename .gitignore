@@ -31,3 +31,4 @@ dist-ssr
 *.tsbuildinfo
 tmpclaude-*-cwd
 /tomtom-sdk-bundle.js.map
+/.cache/

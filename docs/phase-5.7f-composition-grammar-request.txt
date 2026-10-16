@@ -1,0 +1,564 @@
+leetOS — Phase 5.7F: Guided Composition Grammar, Semantic Groups & Spatial Takeover
+Mission
+Phase 5.7E finally established the correct product foundation:
+- Anchor
+- Active lenses
+- Lead lens
+- Same-page recomposition
+- Supporting information changing meaning according to the lead
+- Map visible only when useful
+- Driver/Truck and Documents/Restrictions able to contribute as grouped or integrated information instead of one box per domain
+- Adaptive information density
+- Exact Esc/history restoration
+- Continuous map resize/camera choreography
+The report confirms that 5.7E replaced autonomous topology generation with deliberately authored paths, and that one active lens does not necessarily correspond to one visible host.     FleetOS-5.7E-Relatorio-Visual-C…     FleetOS-5.7E-Relatorio-Visual-C…
+Keep these foundations. Do not reset them.
+However, the next limitation is now clear:
+the path system itself does not scale well enough.
+The current demo works because a relatively small number of specific paths were authored around Jobs → selected Job → Fuel/Driver/Truck/Documents/Restrictions.     FleetOS-5.7E-Relatorio-Visual-C…
+FleetOS will eventually contain many more lenses and combinations.
+We must now replace:
+authored path per domain combination
+
+with:
+authored composition grammar
++
+semantic participation rules
+
+The system must remain:
+highly designed, guided and predictable
+but no longer require a unique path for every combination of active lenses.
+1. Do not return to autonomous/random layout generation
+This phase is NOT:
+- random topology generation;
+- layout scoring across hundreds of candidates;
+- topology hashes;
+- procedural UI invention;
+- arbitrary movement;
+- one generic solver deciding everything.
+We already tried that direction and rejected it.
+The workspace should still use authored composition families and authored interaction rules.
+Strong principle:
+The system adapts inside designed rules. It does not invent product behavior.
+2. Preserve the 5.7E mental model
+Continue to model:
+Anchor
+What object is being worked on.
+Examples:
+Jobs collection
+Job J-4217
+Driver D-14
+Truck T-08
+
+Active lenses
+Which information domains currently participate.
+Examples:
+Fuel
+Driver
+Truck
+Documents
+Restrictions
+
+Lead lens
+Which perspective currently organizes the page.
+Example:
+anchor = J-4217
+lead = Fuel
+active lenses = Fuel, Driver, Truck, Documents, Restrictions
+
+Keep this model exactly.
+3. Replace combination-specific paths with semantic participation contracts
+Do NOT write separate layout logic for:
+Job + Fuel + Driver
+Job + Fuel + Driver + Truck
+Job + Fuel + Documents
+Job + Driver + Restrictions
+Job + Fuel + Driver + Truck + Documents
+...
+
+This will not scale.
+Instead, each domain must declare how it participates in the workspace in a small number of meaningful roles:
+LEAD
+SUPPORTING
+COMPACT / INLINE
+HIDDEN-BUT-ACTIVE
+
+Each domain contract should define:
+- what information it shows as lead;
+- what information it contributes as support;
+- what minimal information survives in compact/inline form;
+- which semantic groups it belongs to;
+- whether it benefits from the map;
+- whether it can merge with another lens;
+- what exceptions can promote it.
+Strong principle:
+Do not author paths for combinations. Author rules for how information participates in a path.
+4. Introduce semantic groups
+Active lenses should not be treated as isolated UI units.
+Create semantic groups such as:
+Core operation
+- Job / selected transport
+- timing
+- progress
+- delivery window
+Resources
+- Driver
+- Truck
+- Trailer
+Journey
+- Map
+- Fuel
+- Restrictions
+- route-related context
+Assurance
+- Documents
+- compliance/status
+- authorizations
+These names are conceptual and may be refined.
+The important part is:
+multiple active lenses may contribute to one visual region
+
+instead of:
+one lens = one panel
+
+Example:
+Driver + Truck should often render as one coherent Resources area.
+Fuel + Restrictions may both enrich a Journey area.
+Documents may become an inline status inside another region when it is not lead.
+5. Rail interaction remains simple
+Clicking a domain in the rail means:
+add/remove this lens from the current workspace
+
+It does NOT mean:
+create/remove one rectangle
+
+When a lens is activated:
+1. update semantic groups;
+2. recalculate which information regions are needed;
+3. adapt existing regions;
+4. change representations where necessary;
+5. use available white space intelligently.
+Existing regions may move and resize.
+They must not be frozen.
+6. Expand means “make this lens lead”
+Preserve the 5.7E interaction:
+normal
+expanded / lead
+
+But improve its implementation.
+Expand must not primarily mean:
+width = 55%
+
+It means:
+this lens now defines the question the whole page answers
+
+Example:
+Fuel lead
+Fuel:
+- comparison;
+- proposed stop;
+- route impact;
+- detour;
+- timing.
+Resources support:
+- Driver: legal time / rest compatibility;
+- Truck: fuel level / range / consumption.
+Assurance support:
+- authorization / documentation state.
+Journey:
+- route + stations + restrictions.
+Driver lead
+Driver:
+- duty;
+- remaining legal time;
+- next work;
+- break/rest.
+Resources:
+- assigned Truck/Trailer.
+Fuel:
+- next useful stop, not generic station list.
+Restrictions:
+- only relevant execution constraints.
+Map:
+- current geography / next leg.
+Documents lead
+Documents:
+- main working area.
+Resources:
+- identities/status only.
+Fuel:
+- authorization/proof if relevant.
+Restrictions:
+- compact assurance context.
+Map:
+- hidden unless spatially necessary.
+Strong principle:
+Supporting lenses answer the question created by the lead lens.
+7. Add explicit map intent back into the product
+5.7E correctly made map presence automatic based on usefulness.
+Keep that.
+But the operator must also be able to explicitly request more geography.
+Reintroduce map actions such as:
+- Open map
+- Expand map
+- Fit current route/entity
+Do NOT reintroduce old “focus mode” architecture.
+Map expansion is a temporary spatial takeover.
+Example:
+anchor = J-4217
+lead = Fuel
+active = Driver, Truck, Documents, Restrictions
+
+User presses:
+Expand map
+
+Result:
+- map occupies nearly/all usable workspace;
+- route / selected stop / relevant restriction stays visible;
+- contextual controls remain minimal;
+- current lead and active lenses remain in state;
+- Esc returns exactly to the Fuel-led composition.
+This is NOT navigation to another page.
+Strong path:
+Fuel lead
+→ Map takeover
+→ Esc
+→ Fuel lead
+
+8. Add temporary detail takeover as a general interaction primitive
+Similar to map takeover, some content may temporarily need maximum space.
+Examples:
+- Map
+- Document
+- Route segment
+- maybe timeline/detail later
+This is temporary and reversible.
+It must not become another permanent mode system.
+Model:
+current workspace
+→ temporary takeover
+→ Esc
+→ exact previous workspace
+
+Use the existing real-state history system.
+5.7E already proved restoration of state, geometry, camera and scroll across tested flows.     FleetOS-5.7E-Relatorio-Visual-C…
+9. Composition families, not one fixed left/right structure
+The current 5.7E layouts are directionally correct but still frequently resolve to:
+large primary area left
++
+map/support stack right
+
+Expand the guided composition grammar.
+Create a small number of well-designed composition families such as:
+Family A — Primary + support stack
+Large lead region + related support column.
+Family B — Spatial dominant
+Large map + operational strip / compact semantic groups.
+Family C — Horizontal journey
+Lead or route information above/below with a wide map or route region.
+Family D — Centered work area
+Main content central, support information around it, map optional.
+Family E — No-map assurance
+Document/compliance work using full content width.
+Family F — Split decision
+Comparison / operation approximately balanced with geography or related analysis.
+These are authored families.
+The selection between them depends on:
+- lead lens;
+- semantic groups currently active;
+- map relevance;
+- viewport;
+- content density;
+- selected entity.
+Do NOT select randomly.
+10. Separate “composition family” from exact geometry
+A family defines structure.
+Example:
+SPLIT_DECISION
+
+Exact dimensions remain adaptive.
+Do not hardcode every family to one percentage.
+Use ranges and content demand.
+Example:
+lead preferred range: 48–68%
+support area: demand-based
+map minimum useful width: domain-specific
+
+The current report contains fixed ratios such as Jobs 51%, Fuel 55%+, Documents 69–72%. Treat those as current implementation values, not product laws.     FleetOS-5.7E-Relatorio-Visual-C…
+11. High-lens-count behavior
+Explicitly design for future cases with many active lenses.
+Example:
+Job
++ Fuel
++ Driver
++ Truck
++ Documents
++ Restrictions
++ Pricing
++ Compliance
+
+Do NOT attempt to show eight separate surfaces.
+Priority rules:
+1. Anchor identity must remain clear.
+2. Lead gets primary workspace.
+3. Map gets meaningful space only if useful.
+4. Related lenses merge into semantic groups.
+5. Lower-priority supports become inline summaries.
+6. Active lenses may exist without owning visible regions.
+7. Critical exceptions may temporarily promote themselves.
+Build synthetic placeholder lenses if needed to test scaling, but do not implement production Pricing/Compliance logic.
+12. Exception promotion
+Introduce the concept of an operational exception that can temporarily increase prominence.
+Example:
+lead = Fuel
+Driver remaining legal driving time = critical
+
+The Driver support should be allowed to become more prominent.
+Do NOT automatically change the lead.
+Possible effects:
+- alert strip;
+- larger support block;
+- map highlight;
+- warning integrated into the lead region.
+This must be deterministic and guided.
+Exception promotion is important because future real data will frequently need to interrupt normal hierarchy.
+13. Adaptive forms for each important domain
+Continue the good 5.7E behavior where Jobs changes information architecture according to available width.
+The report already demonstrates distinct Jobs forms across narrow, medium and wide widths.     FleetOS-5.7E-Relatorio-Visual-C…
+Extend that principle to:
+- Fuel
+- Driver
+- Truck
+- Documents
+- Restrictions
+Do NOT create arbitrary “15 variants”.
+Create only forms with functional meaning, for example:
+INLINE
+SUPPORT
+MEDIUM
+LEAD
+
+where each form has genuinely different information hierarchy.
+14. Path grammar
+Define interaction paths by intent category rather than domain combination.
+Suggested grammar:
+Collection paths
+browse
+expand collection
+select entity
+
+Anchor paths
+add/remove lens
+change lead
+select related entity
+
+Spatial paths
+open map
+expand map
+fit route
+inspect segment
+
+Detail paths
+inspect document
+inspect station
+inspect resource
+
+Return paths
+Esc
+restore previous workspace
+
+Domains participate in these path types through contracts.
+Do not define a unique full path for every active-lens combination.
+15. Explicit test: same lead, different active groups
+This is mandatory.
+Test Fuel lead under different compositions:
+Case A
+Job + Fuel
+
+Case B
+Job + Fuel + Driver + Truck
+
+Case C
+Job + Fuel + Driver + Truck + Documents + Restrictions
+
+Fuel must remain recognizably the same product concept, but supporting composition must adapt.
+Do not create three unrelated pages.
+Do not create six boxes in Case C.
+16. Explicit test: map takeover
+Test:
+selected Job
+→ Fuel lead
+→ select Fuel station
+→ Expand map
+→ pan/zoom
+→ Esc
+
+Verify:
+- selected station preserved;
+- Fuel remains lead;
+- active lenses preserved;
+- exact previous composition restored;
+- camera restore behavior correct;
+- same map instance remains active.
+17. Explicit test: many lenses
+Create a synthetic stress composition with at least:
+Jobs
+Fuel
+Driver
+Truck
+Documents
+Restrictions
++ two placeholder future lenses
+
+Purpose:
+- test semantic grouping;
+- test inline supports;
+- test lead priority;
+- test composition family selection;
+- prove the system does not degenerate into card soup.
+The future lenses may use clearly DEV-only labels such as:
+Pricing DEV
+Compliance DEV
+
+Do not build domain logic for them.
+18. Visual continuity
+Preserve the current 5.7E philosophy:
+the same page reorganizes itself.
+When lead changes:
+- regions move continuously;
+- content hierarchy changes;
+- map resizes/reframes simultaneously;
+- supports transform rather than disappear/reappear arbitrarily.
+When entering map takeover:
+- map should expand from its current region if visible;
+- camera should reframe during expansion;
+- returning should reverse naturally.
+Avoid:
+- page flash;
+- modal feeling;
+- detached floating cards;
+- late camera snap.
+19. White space
+Continue treating white space as meaningful.
+But avoid both:
+card soup
+
+and:
+highly compressed content surrounded by huge unused space
+
+Semantic groups should help use the workspace more naturally.
+The composition family should determine:
+- which region deserves space;
+- which information becomes inline;
+- whether map should shrink or disappear.
+20. What to keep from 5.7E
+KEEP:
+- GuidedEnvironment direction
+- anchor
+- lenses
+- lead
+- same-page recomposition
+- grouped Driver/Truck
+- integrated assurance
+- map optionality
+- adaptive information architecture
+- persistent map instance
+- camera/resize synchronization
+- Esc history
+- synthetic DEV isolation
+21. What to redesign
+REDESIGN:
+- combination-specific path logic;
+- high-lens-count behavior;
+- composition family selection;
+- map explicit controls;
+- semantic grouping rules;
+- support priority rules;
+- exception promotion.
+22. What NOT to reintroduce
+DO NOT:
+- restore autonomous topology generation;
+- use random layout variation;
+- use topology scoring as the main UX engine;
+- create one rectangle per lens;
+- use floating fallback panels;
+- freeze existing regions;
+- create one fixed focus layout per domain;
+- create separate pages for lead changes;
+- hardcode every domain combination.
+23. Implementation order
+Do this incrementally.
+Step A
+Refactor active lens participation into semantic groups/contracts without changing the successful Jobs/Fuel flow unnecessarily.
+Step B
+Add composition families and choose between them based on lead + groups + viewport.
+Step C
+Add explicit Map Expand / spatial takeover.
+Step D
+Add high-lens-count stress case.
+Step E
+Add exception promotion.
+Stop after browser/visual review.
+Do not integrate production data.
+24. Required screenshots
+Produce screenshots of:
+1. Base
+2. Jobs normal
+3. Selected Job
+4. Fuel lead — minimal supports
+5. Fuel lead — Resources active
+6. Fuel lead — Resources + Assurance + Restrictions
+7. Driver lead
+8. Documents lead
+9. Restrictions lead
+10. Map takeover from Fuel
+11. Map takeover from Driver
+12. Return from map takeover
+13. High-lens-count normal state
+14. High-lens-count Fuel lead
+15. One exception-promotion example
+16. 1920 × 1080 wide composition
+17. ~1200 px desktop composition
+These should demonstrate composition grammar, not merely responsive resizing.
+25. Acceptance questions
+For every state ask:
+A
+Does the operator clearly understand:
+- what the anchor is;
+- what lens is lead;
+- what supporting information is participating?
+B
+Does adding another lens enrich/recompose the page rather than create another box?
+C
+If many lenses are active, do semantic groups prevent visual fragmentation?
+D
+Does changing the lead genuinely change the question the page answers?
+E
+Can the operator explicitly request full spatial context when needed?
+F
+Does Esc reliably return to the exact working composition?
+G
+Does the product still feel like one continuous FleetOS environment?
+Success condition
+Phase 5.7F succeeds when FleetOS no longer depends on handcrafted paths for every active-domain combination.
+Instead:
+- the Anchor defines the object of work;
+- the Lead defines the question;
+- Active lenses contribute information;
+- Semantic groups combine related information;
+- Composition families define the overall structure;
+- Domain contracts define how information participates;
+- Viewport/content determine density;
+- Map can be automatic or explicitly expanded;
+- Exceptions may temporarily increase prominence;
+- Esc preserves continuity.
+Final principles:
+Do not author paths for combinations. Author rules for how information participates in a path.
+One active lens does not require one visible region.
+Expand changes the question of the page, not the page itself.
+Map behavior can be automatic, but the operator must also be able to explicitly ask for spatial focus.
+Many active domains should create richer semantic composition, not more boxes.
+Highly variable, but guided.
+Same workspace, different questions.
+Stop after DEV visual review.
+Do not integrate production data yet.

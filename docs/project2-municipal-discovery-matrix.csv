@@ -1,0 +1,309 @@
+﻿ine,municipality,district_region,population,deep_sample,website,site_reachable,cms,dedicated_traffic_page,roadworks_page,gis_arcgis_geoserver_ogc,gis_rest_or_wfs_hosts,open_data_portal,datex,json_api,wp_traffic_posts,traffic_pdfs,traffic_mentions,latest_traffic_notice,tier,licence,evidence_url
+0101,Águeda,Aveiro,46131,logistics_industrial,https://www.cm-agueda.pt/,True,,False,False,False,,True,False,,0,0,5,2027-01-10,D,website terms (not reviewed),https://www.cm-agueda.pt/viver/avisos-e-informacoes/avisos
+0102,Albergaria-a-Velha,Aveiro,25252,,https://www.cm-albergaria.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0103,Anadia,Aveiro,27532,corridor,https://www.cm-anadia.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0104,Arouca,Aveiro,22359,,https://www.cm-arouca.pt,True,wordpress,True,False,False,,False,False,wp-json,10,0,5,2026-09-11,D,website terms (not reviewed),https://www.cm-arouca.pt/condicionamento-ao-transito-durante-a-feira-das-colheitas-2026/
+0105,Aveiro,Aveiro,78450,district_capital,https://www.cm-aveiro.pt/,True,,True,False,False,,False,False,,0,0,68,,D,website terms (not reviewed),https://www.cm-aveiro.pt/visitantes/eventos/maratona-da-europa/maratona-da-europa-2025/condicionamentos-de-transito
+0106,Castelo de Paiva,Aveiro,16733,,https://www.cm-castelo-paiva.pt/,True,,False,False,True,,False,False,,0,0,0,,E,website terms (not reviewed),
+0107,Espinho,Aveiro,31786,,https://portal.cm-espinho.pt/pt/,True,,False,False,False,,False,False,,0,0,25,2026-10-07,D,website terms (not reviewed),https://portal.cm-espinho.pt/pt/noticias/
+0108,Estarreja,Aveiro,26997,logistics_industrial,https://www.cm-estarreja.pt/,True,,True,False,False,,False,False,,0,1,2,,D,website terms (not reviewed),https://www.cm-estarreja.pt/comissao_municipal_de_transito
+0109,Santa Maria da Feira,Aveiro,136674,logistics_industrial,https://cm-feira.pt/,True,liferay,True,False,False,,False,False,,0,0,25,2027-03-19,C,website terms (not reviewed),https://cm-feira.pt/-/condicionamento-de-transito-caminhada-na-rota-do-paralelo-argoncilhe-e-sanguedo-10-de-outubro-de-2026-
+0110,Ílhavo,Aveiro,40349,port,https://www.cm-ilhavo.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0111,Mealhada,Aveiro,20428,corridor,http://www.cm-mealhada.pt/,False,,False,False,False,,False,False,,0,0,0,,X,website terms (not reviewed),
+0112,Murtosa,Aveiro,10585,,https://www.cm-murtosa.pt,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0113,Oliveira de Azeméis,Aveiro,68611,logistics_industrial,https://www.cm-oaz.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),https://www.cm-oaz.pt/faq.5/transito_e_sinalizacao.306.html
+0114,Oliveira do Bairro,Aveiro,23028,,https://www.cm-olb.pt,True,,False,False,True,sig.cm-olb.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0115,Ovar,Aveiro,55398,logistics_industrial,https://www.cm-ovar.pt/pt/Default.aspx,True,,False,False,True,websig.cm-ovar.pt,False,False,,0,0,0,,B,website terms (not reviewed),
+0116,São João da Madeira,Aveiro,21713,,https://www.cm-sjm.pt/,True,,False,False,False,,False,False,,0,0,1,2026-09-02,D,website terms (not reviewed),https://www.cm-sjm.pt/pt/noticias
+0117,Sever do Vouga,Aveiro,12356,,https://www.cm-sever.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0118,Vagos,Aveiro,22851,,https://www.cm-vagos.pt/,True,,False,False,True,sig.cm-vagos.pt,False,False,,0,0,4,,D,website terms (not reviewed),https://www.cm-vagos.pt/municipio/comunicacao/noticias/noticia-80/aviso-interrupcao-de-transito-rua-de-sto-isidro-vagos
+0119,Vale de Cambra,Aveiro,22864,,https://www.cm-valedecambra.pt/pages/1,True,,False,False,False,,False,False,,0,0,17,2026-10-11,D,website terms (not reviewed),https://www.cm-valedecambra.pt/pages/627
+0201,Aljustrel,Beja,9257,,https://www.mun-aljustrel.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0202,Almodôvar,Beja,7449,corridor,https://cm-almodovar.pt/,True,wordpress,False,False,True,sig.cm-almodovar.pt,False,False,wp-json,10,0,35,2026-09-23,D,website terms (not reviewed),https://cm-almodovar.pt/municipio/autarquia/camara-municipal-almodovar/editais/
+0203,Alvito,Beja,2504,,https://www.cm-alvito.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0204,Barrancos,Beja,1834,rural_interior,https://cm-barrancos.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0205,Beja,Beja,35854,district_capital,https://www.cm-beja.pt/pt/Default.aspx,True,,True,False,True,geoportal.cm-beja.pt,False,False,,0,0,9,2026-10-13,C,website terms (not reviewed),https://cm-beja.pt/pt/menu/685/avisos.aspx
+0206,Castro Verde,Beja,7276,,https://cm-castroverde.pt/,True,,False,False,True,geoportal.cm-castroverde.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0207,Cuba,Beja,4878,,https://www.cm-cuba.pt/,True,wordpress,True,False,False,,False,False,wp-json,10,0,6,2026-09-15,D,website terms (not reviewed),https://www.cm-cuba.pt/condicionamento-de-transito-sinalizacao-horizontal/
+0208,Ferreira do Alentejo,Beja,8255,,https://ferreiradoalentejo.pt/,True,wordpress,False,False,True,geoportal.ferreiradoalentejo.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0209,Mértola,Beja,7274,rural_interior,https://www.cm-mertola.pt/,True,,False,False,True,sig.cm-mertola.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0210,Moura,Beja,15167,,https://www.cm-moura.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,4,24,2023-11-02,D,website terms (not reviewed),https://www.cm-moura.pt/editais
+0211,Odemira,Beja,26066,,https://www.cm-odemira.pt/,True,,False,False,False,,False,False,,0,0,13,,D,website terms (not reviewed),https://www.cm-odemira.pt/municipio/comunicacao-e-informacao/alertas-cmo/noticia/aviso-de-condicionamento-de-transito-reabilitacao-e-aplicacao-de-edificios-cedi-sw-na-vila-de-odemira
+0212,Ourique,Beja,4840,,https://cm-ourique.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0213,Serpa,Beja,15623,,https://www.cm-serpa.pt/pt/Default.aspx,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0214,Vidigueira,Beja,5176,,https://cm-vidigueira.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0301,Amares,Braga,18889,,https://amares.pt/,True,wordpress,False,False,False,,False,False,,0,0,1,,D,website terms (not reviewed),
+0302,Barcelos,Braga,116752,,https://www.cm-barcelos.pt/,True,wordpress,True,False,False,,False,False,wp-json,10,0,2,2026-09-03,C,website terms (not reviewed),https://www.cm-barcelos.pt/viver/mobilidade/alteracoes-de-transito/
+0303,Braga,Braga,193324,district_capital,https://www.cm-braga.pt/pt,True,,False,False,True,sig.cm-braga.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0304,Cabeceiras de Basto,Braga,16710,,https://cabeceirasdebasto.pt/,True,,False,False,True,geoportal.cabeceirasdebasto.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0305,Celorico de Basto,Braga,20098,,https://www.mun-celoricodebasto.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,0,0,,D,website terms (not reviewed),
+0306,Esposende,Braga,34254,,http://www.municipio.esposende.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0307,Fafe,Braga,50633,,https://www.cm-fafe.pt/,True,,True,False,True,sig.cm-fafe.pt,False,False,,0,37,49,2026-01-12,D,website terms (not reviewed),https://www.cm-fafe.pt/educacao/escola-de-transito
+0308,Guimarães,Braga,156830,logistics_industrial,https://www.cm-guimaraes.pt/,True,,False,False,False,,True,False,,0,0,0,,E,website terms (not reviewed),
+0309,Póvoa de Lanhoso,Braga,21886,,http://www.cm-povoadelanhoso.pt/,False,,False,False,False,,False,False,,0,0,0,,X,website terms (not reviewed),
+0310,Terras de Bouro,Braga,7253,,https://www.cm-terrasdebouro.pt/,True,joomla,False,False,False,,False,False,,0,2,3,,D,website terms (not reviewed),https://www.cm-terrasdebouro.pt/noticias/avisos
+0311,Vieira do Minho,Braga,12997,,https://cm-vminho.pt/pt/,True,wordpress,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0312,Vila Nova de Famalicão,Braga,133534,logistics_industrial,https://www.famalicao.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0313,Vila Verde,Braga,47888,,https://www.cm-vilaverde.pt/,True,wordpress,False,False,False,,False,False,wp-json,3,0,0,2024-08-30,D,website terms (not reviewed),
+0314,Vizela,Braga,23736,,https://www.cm-vizela.pt/,True,wordpress,False,False,True,sig.cm-vizela.pt,False,False,wp-json,10,0,0,2026-07-29,D,website terms (not reviewed),
+0401,Alfândega da Fé,Bragança,5104,,https://www.cm-alfandegadafe.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0402,Bragança,Bragança,35341,district_capital,https://www.cm-braganca.pt/cm-braganca,True,,True,False,False,,True,False,,0,0,10,2026-10-07,C,website terms (not reviewed),https://www.cm-braganca.pt/servicos/logistica-e-mobilidade/contratacao-publica
+0403,Carrazeda de Ansiães,Bragança,6373,,https://www.cm-carrazedadeansiaes.pt/,True,,False,False,False,,False,False,,0,2,1,,D,website terms (not reviewed),https://www.cm-carrazedadeansiaes.pt/balcao-virtual/documentos-online/editais-publicos
+0404,Freixo de Espada à Cinta,Bragança,3780,,https://www.cm-freixoespadacinta.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0405,Macedo de Cavaleiros,Bragança,15776,,https://www.cm-macedodecavaleiros.pt/,True,,False,False,False,,False,False,,0,0,8,,D,website terms (not reviewed),https://www.cm-macedodecavaleiros.pt/informar/ambiente/avisos-e-ocorrencias
+0406,Miranda do Douro,Bragança,7482,border,https://www.cm-mdouro.pt/,True,,False,False,False,,False,False,,0,0,1,,D,website terms (not reviewed),https://www.cm-mdouro.pt/municipio/comunicacao/noticias
+0407,Mirandela,Bragança,23850,corridor,https://www.cm-mirandela.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0408,Mogadouro,Bragança,9542,,https://www.mogadouro.pt/,True,,False,False,False,,False,False,,0,0,4,,D,website terms (not reviewed),https://www.mogadouro.pt/municipio/noticias
+0409,Torre de Moncorvo,Bragança,8572,,https://www.cm-moncorvo.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0410,Vila Flor,Bragança,6697,,https://www.cm-vilaflor.pt/,True,,False,False,False,,False,False,,0,0,2,2026-07-28,D,website terms (not reviewed),https://www.cm-vilaflor.pt/viver/comunicacao-e-ligacoes-uteis/comunicacao/noticias
+0411,Vimioso,Bragança,4669,,https://www.cm-vimioso.pt/,True,,False,False,False,,True,False,,0,0,5,,D,website terms (not reviewed),https://www.cm-vimioso.pt/viver/comunicacao/noticias
+0412,Vinhais,Bragança,9066,rural_interior,https://www.cm-vinhais.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0501,Belmonte,Castelo Branco,6859,,https://www.cm-belmonte.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,0,0,2026-08-13,D,website terms (not reviewed),
+0502,Castelo Branco,Castelo Branco,56109,district_capital,https://www.cm-castelobranco.pt/,True,,False,False,True,sig.cm-castelobranco.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0503,Covilhã,Castelo Branco,51797,corridor,https://www.cm-covilha.pt,True,,False,False,False,,False,False,,0,0,0,,D,website terms (not reviewed),
+0504,Fundão,Castelo Branco,29213,corridor,https://www.cm-fundao.pt/,True,joomla,True,False,True,geoportal.cm-fundao.pt,False,False,,0,0,5,2026-01-26,D,website terms (not reviewed),https://www.cm-fundao.pt/index.php/home/avisos/1213-transito-cortado-na-rua-jose-vaz-de-carvalho
+0505,Idanha-a-Nova,Castelo Branco,9716,,https://www.cm-idanhanova.pt,True,,False,False,False,,False,False,,0,0,5,,D,website terms (not reviewed),http://www.idanha.pt/media/noticias/
+0506,Oleiros,Castelo Branco,5721,rural_interior,https://cm-oleiros.pt/,True,wordpress,False,False,True,sig.cm-oleiros.pt,False,False,wp-json,7,0,0,2022-09-07,D,website terms (not reviewed),
+0507,Penamacor,Castelo Branco,5682,rural_interior,https://www.cm-penamacor.pt/,True,,False,False,False,,False,False,,0,1,1,,D,website terms (not reviewed),
+0508,Proença-a-Nova,Castelo Branco,8314,,https://www.cm-proencanova.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0509,Sertã,Castelo Branco,15880,,https://cm-serta.pt/,True,joomla,False,False,False,,False,False,,0,1,8,,D,website terms (not reviewed),https://cm-serta.pt/editais-avisos
+0510,Vila de Rei,Castelo Branco,3452,,https://www.cm-viladerei.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),https://www.cm-viladerei.pt/index.php/viver/protecao-civil/comissao-municipal-de-transito
+0511,Vila Velha de Ródão,Castelo Branco,3521,,https://www.cm-vvrodao.pt/,True,,False,False,False,,False,False,,0,1,0,,D,website terms (not reviewed),
+0601,Arganil,Coimbra,11065,,https://www.cm-arganil.pt/,True,wordpress,False,False,True,sig.cm-arganil.pt,False,False,wp-json,10,0,0,2025-04-16,D,website terms (not reviewed),
+0602,Cantanhede,Coimbra,38860,,https://www.cm-cantanhede.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0603,Coimbra,Coimbra,140816,district_capital,https://www.cm-coimbra.pt/,True,wordpress,False,False,True,sig.cm-coimbra.pt,True,False,wp-json,0,0,0,,D,website terms (not reviewed),https://www.cm-coimbra.pt/areas/viver/mobilidade-transportes-e-transito
+0604,Condeixa-a-Nova,Coimbra,17080,corridor,https://www.cm-condeixa.pt/,False,,False,False,False,,False,False,,0,0,0,,X,website terms (not reviewed),
+0605,Figueira da Foz,Coimbra,62125,port,https://www.cm-figfoz.pt/,True,,False,False,True,sig.cm-figfoz.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0606,Góis,Coimbra,4260,,https://www.cm-gois.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0607,Lousã,Coimbra,17604,,https://cm-lousa.pt/,True,wordpress,False,False,True,sig.cm-lousa.pt,False,False,wp-json,7,0,0,2026-04-23,D,website terms (not reviewed),
+0608,Mira,Coimbra,12465,,https://www.cm-mira.pt/,False,,False,False,False,,False,False,,0,0,0,,X,website terms (not reviewed),
+0609,Miranda do Corvo,Coimbra,13098,,https://cm-mirandadocorvo.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0610,Montemor-o-Velho,Coimbra,26171,,https://www.cm-montemorvelho.pt/,True,joomla,True,False,False,,False,False,,0,0,16,,D,website terms (not reviewed),https://www.cm-montemorvelho.pt/index.php/municipio/comunicacao/item/12037-a-estrada-entre-a-ponte-de-formoselha-e-a-ponte-de-pereira-reabriu-ao-transito
+0611,Oliveira do Hospital,Coimbra,20855,,https://www.cm-oliveiradohospital.pt/,True,wordpress,False,False,False,,False,False,wp-json,6,0,0,2022-06-17,D,website terms (not reviewed),
+0612,Pampilhosa da Serra,Coimbra,4481,rural_interior,https://www.cm-pampilhosadaserra.pt/,True,,False,False,False,,False,False,,0,1,0,,D,website terms (not reviewed),
+0613,Penacova,Coimbra,15251,,https://www.cm-penacova.pt/,True,,False,False,True,sig.cm-penacova.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0614,Penela,Coimbra,5983,,https://www.cm-penela.pt/,True,,False,False,True,websig.cm-penela.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0615,Soure,Coimbra,19245,,https://cm-soure.pt/,True,wordpress,False,False,False,,False,False,wp-json,4,5,1,2026-06-19,D,website terms (not reviewed),
+0616,Tábua,Coimbra,12071,,https://cm-tabua.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,0,1,,D,website terms (not reviewed),https://cm-tabua.pt/viver/cidadao/notificacoes/avisos-editais-informacoes-e-consulta-discussao-publica/
+0617,Vila Nova de Poiares,Coimbra,7281,,https://www.cm-vilanovadepoiares.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0701,Alandroal,Évora,5843,,https://www.cm-alandroal.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,0,0,,E,website terms (not reviewed),
+0702,Arraiolos,Évora,7363,,https://www.cm-arraiolos.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,0,0,,E,website terms (not reviewed),
+0703,Borba,Évora,7333,,https://www.cm-borba.pt/,True,wordpress,True,False,False,,False,False,wp-json,10,1,5,2026-10-09,D,website terms (not reviewed),https://www.cm-borba.pt/informacao-a-populacao-interrupcao-de-transito-5/
+0704,Estremoz,Évora,14318,corridor,https://www.cm-estremoz.pt/,True,,False,False,False,,False,False,,0,0,2,,D,website terms (not reviewed),https://www.cm-estremoz.pt/noticias
+0705,Évora,Évora,53577,district_capital,https://www.cm-evora.pt,True,wordpress,False,False,False,,False,False,wp-json,6,0,0,2025-06-03,D,website terms (not reviewed),https://www.cm-evora.pt/municipe/camara-municipal/regulamentos/regulamentos-de-transito/
+0706,Montemor-o-Novo,Évora,17437,corridor,https://www.cm-montemornovo.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,1,0,2023-08-01,D,website terms (not reviewed),
+0707,Mora,Évora,4978,rural_interior,https://www.cm-mora.pt/,True,wordpress,False,False,False,,False,False,wp-json,4,3,4,2023-07-12,D,website terms (not reviewed),https://www.cm-mora.pt/municipe/camara-municipal/avisoseditais/
+0708,Mourão,Évora,2663,,https://www.cm-mourao.pt/,True,wordpress,False,False,False,,False,False,wp-json,1,0,0,2026-04-20,D,website terms (not reviewed),
+0709,Portel,Évora,6428,,https://www.cm-portel.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,0,0,,E,website terms (not reviewed),
+0710,Redondo,Évora,7031,,https://www.cm-redondo.pt/,True,wordpress,False,False,False,,False,False,wp-json,3,0,0,2026-10-02,D,website terms (not reviewed),
+0711,Reguengos de Monsaraz,Évora,10828,,https://www.cm-reguengos-monsaraz.pt/,True,wordpress,True,False,False,,False,False,wp-json,6,2,3,2026-09-25,D,website terms (not reviewed),https://www.cm-reguengos-monsaraz.pt/municipe/comissoes-e-conselhos-municipais/comissao-municipal-de-transito/
+0712,Vendas Novas,Évora,11846,corridor,https://www.cm-vendasnovas.pt/,True,wordpress,False,False,False,,False,False,wp-json,6,0,0,2026-05-27,D,website terms (not reviewed),
+0713,Viana do Alentejo,Évora,5743,,,False,,False,False,False,,False,False,,0,0,0,,X,website terms (not reviewed),
+0714,Vila Viçosa,Évora,8319,,https://www.cm-vilavicosa.pt/,True,wordpress,True,False,False,,False,False,wp-json,1,3,1,2021-01-26,D,website terms (not reviewed),https://www.cm-vilavicosa.pt/servicos/balcao-unico/outros-regulamentos/transito/
+0801,Albufeira,Faro,44168,corridor,https://www.cm-albufeira.pt/,True,drupal,False,False,False,,False,False,,0,11,0,,E,website terms (not reviewed),https://www.cm-albufeira.pt/escola-de-transito-de-albufeira
+0802,Alcoutim,Faro,2917,rural_interior,https://cm-alcoutim.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0803,Aljezur,Faro,5884,,https://cm-aljezur.pt/pt/Default.aspx,True,,False,False,False,,False,False,,0,0,6,2026-07-16,D,website terms (not reviewed),https://cm-aljezur.pt/pt/menu/108/editais.aspx
+0804,Castro Marim,Faro,6747,border,http://cm-castromarim.pt/site/,True,drupal,True,False,False,,False,False,,0,1,167,2026-10-07,C,website terms (not reviewed),http://cm-castromarim.pt/site/avisos-e-editais/condicionamento-do-transito-e-ao-passeio-com-animais-de-companhia-no-azinhal-27-de
+0805,Faro,Faro,64560,district_capital,https://www.cm-faro.pt/pt/Default.aspx,True,,True,False,True,mapas.cm-faro.pt,False,False,,0,0,5,2026-10-07,D,website terms (not reviewed),https://www.cm-faro.pt/pt/destaques/91645/feira-de-santa-iria-2026-alteracoes-ao-transito-e-estacionamento.aspx
+0806,Lagoa,Faro,22975,,https://www.cm-lagoa.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0807,Lagos,Faro,31049,tourism,https://www.cm-lagos.pt/,True,joomla,False,False,False,,False,False,,0,0,1,,D,website terms (not reviewed),https://www.cm-lagos.pt/balcao-virtual/documentos/editais-avisos-anuncios
+0808,Loulé,Faro,70622,corridor,https://www.cm-loule.pt/pt/Default.aspx,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0809,Monchique,Faro,6045,,https://www.cm-monchique.pt/pt/Default.aspx,True,,False,False,True,,False,False,,0,0,0,,E,website terms (not reviewed),
+0810,Olhão,Faro,45396,,https://cm-olhao.pt/,True,,False,False,True,websig.cm-olhao.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+0811,Portimão,Faro,59845,port,https://www.cm-portimao.pt/,True,joomla,False,True,False,,True,False,,0,0,0,,E,website terms (not reviewed),https://www.cm-portimao.pt/rodape/contactos/camara-municipal-de-portimao/164-departamento-de-obras-gestao-urbanistica-ambiente-urbano-transito-e-manutencao
+0812,São Brás de Alportel,Faro,10662,,https://www.cm-sbras.pt/pt/Default.aspx,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0813,Silves,Faro,37126,,https://www.cm-silves.pt/pt/Default.aspx,True,,False,True,False,,False,False,,0,0,0,,E,website terms (not reviewed),https://www.cm-silves.pt/pt/menu/1030/obras-municipais-e-transito.aspx
+0814,Tavira,Faro,26167,tourism,https://cm-tavira.pt/site/,True,wordpress,True,False,False,,False,False,,0,0,9,,C,website terms (not reviewed),https://cm-tavira.pt/site/cortes-e-condicionamentos-de-transito/
+0815,Vila do Bispo,Faro,5258,,https://www.cm-viladobispo.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0816,Vila Real de Santo António,Faro,19156,border,https://www.cm-vrsa.pt/pt/Default.aspx,True,,False,False,False,,False,False,,0,0,0,,D,website terms (not reviewed),https://www.cm-vrsa.pt/pt/noticias/58272/alteracoes-de-transito---feira-da-praia-2026.aspx
+0901,Aguiar da Beira,Guarda,5473,,https://www.cm-aguiardabeira.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+0902,Almeida,Guarda,7242,border,https://www.cm-almeida.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,0,0,2026-08-11,D,website terms (not reviewed),
+0903,Celorico da Beira,Guarda,7693,,https://www.cm-celoricodabeira.pt/,True,wordpress,False,False,False,,False,False,wp-json,6,0,9,2026-08-26,D,website terms (not reviewed),https://www.cm-celoricodabeira.pt/tipo-de-documento/assembleia-municipal/editais-da-assembleia-municipal/
+0904,Figueira de Castelo Rodrigo,Guarda,6260,,https://www.cm-fcr.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,0,0,,E,website terms (not reviewed),
+0905,Fornos de Algodres,Guarda,4989,,https://www.cm-fornosdealgodres.pt/,True,wordpress,False,False,False,,False,False,wp-json,1,2,3,2017-08-18,D,website terms (not reviewed),https://www.cm-fornosdealgodres.pt/tipo-de-documento/camara-municipal/avisos-camara-municipal/
+0906,Gouveia,Guarda,14046,,https://www.cm-gouveia.pt/,True,wordpress,True,False,False,,False,False,wp-json,0,1,2,,D,website terms (not reviewed),http://www.cm-gouveia.pt/regime-transitorio-de-procedimentos-administrativos/
+0907,Guarda,Guarda,42541,district_capital,https://www.mun-guarda.pt/,True,wordpress,False,False,False,,False,False,wp-json,1,0,0,2026-06-25,D,website terms (not reviewed),
+0908,Manteigas,Guarda,3430,,https://cm-manteigas.pt/,True,wordpress,False,False,False,,False,False,wp-json,2,0,0,2019-09-23,D,website terms (not reviewed),
+0909,Mêda,Guarda,5202,,https://www.cm-meda.pt/,True,wordpress,False,False,False,,False,False,wp-json,5,0,21,2026-10-02,D,website terms (not reviewed),https://www.cm-meda.pt/categoria/noticias/
+0910,Pinhel,Guarda,9627,,https://www.cm-pinhel.pt/,True,wordpress,False,False,False,,False,False,wp-json,1,0,0,2023-04-21,D,website terms (not reviewed),
+0911,Sabugal,Guarda,12544,rural_interior,https://www.cm-sabugal.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,0,2,2025-10-20,D,website terms (not reviewed),https://www.cm-sabugal.pt/documentos/editais-outros-2026/
+0912,Seia,Guarda,24702,,https://cm-seia.pt/,True,wordpress,True,False,True,sig.cm-seia.pt,False,False,wp-json,0,1,1,,D,website terms (not reviewed),https://cm-seia.pt/alertas/transito-interdito-em-paranhos-da-beira/
+0913,Trancoso,Guarda,9878,,https://www.cm-trancoso.pt/,True,wordpress,False,False,False,,False,False,wp-json,2,0,0,2022-10-18,D,website terms (not reviewed),
+0914,Vila Nova de Foz Côa,Guarda,7312,,https://www.cm-fozcoa.pt/,True,wordpress,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1001,Alcobaça,Leiria,56693,,https://cm-alcobaca.pt/,True,,False,False,True,sig.cm-alcobaca.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+1002,Alvaiázere,Leiria,7287,,https://www.cm-alvaiazere.pt,True,,False,False,False,,False,False,,0,0,6,,D,website terms (not reviewed),https://www.cm-alvaiazere.pt/municipio/comunicacao/noticias
+1003,Ansião,Leiria,18309,,https://www.cm-ansiao.pt/,True,,False,False,True,geoportal.cm-ansiao.pt,False,False,,0,0,8,,D,website terms (not reviewed),https://www.cm-ansiao.pt/concelho/comunicacao/noticias/noticia/condicionamento-de-transito-no-ic8-entre-12-e-16-de-outubro
+1004,Batalha,Leiria,15805,,https://www.cm-batalha.pt/,True,,False,False,False,,False,False,,0,0,2,,D,website terms (not reviewed),https://www.cm-batalha.pt/municipe/comunicacao/noticias
+1005,Bombarral,Leiria,13193,,https://www.cm-bombarral.pt/,True,,False,False,False,,False,False,,0,0,4,,D,website terms (not reviewed),https://www.cm-bombarral.pt/mapadosite
+1006,Caldas da Rainha,Leiria,51729,corridor,https://www.mcr.pt/,True,,False,False,False,,False,False,,0,0,42,,D,website terms (not reviewed),https://www.mcr.pt/mapadosite
+1007,Castanheira de Pera,Leiria,3191,,https://www.cm-castanheiradepera.pt/,True,,False,False,True,,False,False,,0,124,53,2024-12-16,D,website terms (not reviewed),https://www.cm-castanheiradepera.pt/PT/autarquia-editais
+1008,Figueiró dos Vinhos,Leiria,6169,,https://www.cm-figueirodosvinhos.pt/,True,joomla,False,False,False,,False,False,,0,111,39,2026-09-19,D,website terms (not reviewed),https://www.cm-figueirodosvinhos.pt/index.php/apoio-do-municipe/avisos
+1009,Leiria,Leiria,126897,district_capital,https://www.cm-leiria.pt,True,,True,True,False,,False,False,,0,0,315,,C,website terms (not reviewed),https://www.cm-leiria.pt/areas-de-atividade/obras-municipais/concluidas/rua-capitao-mouzinho-de-albuquerque-2023/alteracoes-ao-transito-12-set-22
+1010,Marinha Grande,Leiria,38681,logistics_industrial,https://www.cm-mgrande.pt/,True,,False,False,False,,False,False,,0,0,10,2026-10-03,D,website terms (not reviewed),https://www.cm-mgrande.pt/comunicar/noticias
+1011,Nazaré,Leiria,15158,tourism,https://www.cm-nazare.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),https://www.cm-nazare.pt/servicos/mobilidade-e-transito
+1012,Óbidos,Leiria,11689,tourism,https://www.cm-obidos.pt/,True,,False,False,False,,False,False,,0,1,3,2026-09-30,D,website terms (not reviewed),https://www.cm-obidos.pt/municipio/transparencia-e-participacao-publica/avisos-editais-anuncios
+1013,Pedrógão Grande,Leiria,3915,,https://www.cm-pedrogaogrande.pt/,True,,False,False,True,sig.cm-pedrogaogrande.pt,True,False,,0,0,0,,E,website terms (not reviewed),
+1014,Peniche,Leiria,27753,,https://www.cm-peniche.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1015,Pombal,Leiria,55217,logistics_industrial,https://www.cm-pombal.pt/,True,,False,True,True,sig.cm-pombal.pt,False,False,,0,1,3,,D,website terms (not reviewed),https://www.cm-pombal.pt/ficha-tecnica/mapa-do-site
+1016,Porto de Mós,Leiria,23202,,https://www.municipio-portodemos.pt/,True,,False,False,True,,False,False,,0,0,2,,D,website terms (not reviewed),https://www.municipio-portodemos.pt/p/noticias
+1101,Alenquer,Lisboa,43267,,https://www.alenquer.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1102,Arruda dos Vinhos,Lisboa,13391,,https://www.cm-arruda.pt/,True,,True,False,False,,False,False,,0,0,25,,C,website terms (not reviewed),https://www.cm-arruda.pt/comunicar/condicionamento-de-transito
+1103,Azambuja,Lisboa,21814,logistics_industrial,https://www.cm-azambuja.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1104,Cadaval,Lisboa,14228,,https://www.cm-cadaval.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1105,Cascais,Lisboa,214124,tourism,https://www.cascais.pt/,True,drupal,True,False,False,,True,False,,0,0,15,,C,website terms (not reviewed),https://www.cascais.pt/avisos
+1106,Lisboa,Lisboa,,district_capital,,False,,True,False,True,lisboa.city-platform.com;services.arcgis.com(geodados_CML),True,False,City Platform GeoJSON API,0,0,0,2026-10-10,A,blank/unknown,https://lisboa.city-platform.com/percursos/ws/app/public/traffic/closures/
+1107,Loures,Lisboa,201590,logistics_industrial,https://www.cm-loures.pt,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1108,Lourinhã,Lisboa,25735,,https://cm-lourinha.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1109,Mafra,Lisboa,76685,,https://www.cm-mafra.pt/,True,,False,False,True,,True,False,,0,0,0,,E,website terms (not reviewed),
+1110,Oeiras,Lisboa,171658,logistics_industrial,https://www.oeiras.pt/,False,,False,False,True,oeirasinterativa.oeiras.pt,True,False,WFS (GeoJSON),0,0,0,2026-10-09,A,CC BY 4.0,https://oeirasinterativa.oeiras.pt/gis/services/dados_abertos/w_condicionalismos_via_publica/wfs
+1111,Sintra,Lisboa,385606,logistics_industrial,https://cm-sintra.pt/,True,joomla,False,False,True,sig.cm-sintra.pt,False,False,,0,0,0,,E,website terms (not reviewed),https://cm-sintra.pt/informacoes-e-servicos/formularios/transito
+1112,Sobral de Monte Agraço,Lisboa,10156,,https://www.cm-sobral-monte-agraco.pt/,True,,False,False,True,sig.cm-sobral-monte-agraco.pt;geo.cm-sobral-monte-agraco.pt;geoportal.cm-sobral-monte-agraco.pt;websig.cm-sobral-monte-agraco.pt;mapas.cm-sobral-monte-agraco.pt;gis.cm-sobral-monte-agraco.pt;sigweb.cm-sobral-monte-agraco.pt;dadosabertos.cm-sobral-monte-agraco.pt;opendata.cm-sobral-monte-agraco.pt,True,False,,0,0,0,,E,website terms (not reviewed),
+1113,Torres Vedras,Lisboa,79465,corridor,https://www.cm-tvedras.pt/,True,,True,False,False,,False,False,,0,0,17,2026-10-09,C,website terms (not reviewed),https://www.cm-tvedras.pt/artigos/detalhes/avisos-de-transito-concelho-torres-vedras
+1114,Vila Franca de Xira,Lisboa,137529,logistics_industrial,https://www.cm-vfxira.pt/,True,,False,False,False,,False,False,,0,0,105,,D,website terms (not reviewed),https://www.cm-vfxira.pt/municipio/camara-municipal/comunicacao/avisos/alhandra-sao-joao-dos-montes-e-calhandriz
+1115,Amadora,Lisboa,171454,logistics_industrial,https://www.cm-amadora.pt/pt/,True,joomla,False,False,True,sig.cm-amadora.pt;geoportal.cm-amadora.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+1116,Odivelas,Lisboa,148034,,https://www.cm-odivelas.pt/,True,,False,False,True,geo.cm-odivelas.pt,False,False,,0,0,2,,D,website terms (not reviewed),
+1201,Alter do Chão,Portalegre,3562,,https://cm-alter-chao.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,0,0,,E,website terms (not reviewed),https://cm-alter-chao.pt/viver/servicos-municipais/protecao-civil/comissao-municipal-de-transito/
+1202,Arronches,Portalegre,3165,rural_interior,https://cm-arronches.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1203,Avis,Portalegre,4571,,https://cm-avis.pt/,True,wordpress,False,False,True,,False,False,wp-json,10,0,62,2026-09-24,D,website terms (not reviewed),https://cm-avis.pt/apoio-ao-municipe/documentos/avisos-e-editais/
+1204,Campo Maior,Portalegre,8456,border,https://www.cm-campo-maior.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1205,Castelo de Vide,Portalegre,3407,,https://www.cm-castelo-vide.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1206,Crato,Portalegre,3708,,https://cm-crato.pt/,True,wordpress,False,False,False,,False,False,wp-json,5,65,4,2026-03-30,D,website terms (not reviewed),https://cm-crato.pt/viver/documentos-municipais/camara-municipal/editais/
+1207,Elvas,Portalegre,20706,corridor,https://cm-elvas.pt/,True,wordpress,False,False,False,,False,False,wp-json,7,0,0,2024-01-10,D,website terms (not reviewed),
+1208,Fronteira,Portalegre,3410,,https://cm-fronteira.pt/pt/,True,wordpress,False,False,True,sig.cm-fronteira.pt,False,False,wp-json,4,7,10,2026-08-07,D,website terms (not reviewed),https://cm-fronteira.pt/pt/atividade-municipal/informacao-geral/avisos-e-editais/
+1209,Gavião,Portalegre,4252,,https://cm-gaviao.pt/,True,wordpress,False,False,False,,False,False,wp-json,8,0,14,2026-02-05,D,website terms (not reviewed),https://cm-gaviao.pt/municipio/editais-e-avisos/
+1210,Marvão,Portalegre,3512,,https://www.cm-marvao.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,0,0,2026-09-02,D,website terms (not reviewed),
+1211,Monforte,Portalegre,3329,,https://cm-monforte.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,188,1,2021-10-07,D,website terms (not reviewed),https://cm-monforte.pt/documentos/aviso-editais-despachos-e-informacoes/
+1212,Nisa,Portalegre,7450,,https://www.cm-nisa.pt/,True,joomla,False,False,True,sig.cm-nisa.pt,False,False,,0,0,4,,D,website terms (not reviewed),https://www.cm-nisa.pt/index.php/imagem/noticias/381-noticias-2026/5101-informacao-corte-e-condicionamento-de-transito-velada
+1213,Ponte de Sor,Portalegre,16722,,https://www.cm-pontedesor.pt/,True,wordpress,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1214,Portalegre,Portalegre,24930,district_capital,https://www.cm-portalegre.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,50,49,2026-10-09,D,website terms (not reviewed),https://www.cm-portalegre.pt/municipes/documentos/editais-e-avisos/
+1215,Sousel,Portalegre,5074,,https://cm-sousel.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,0,0,2025-10-16,D,website terms (not reviewed),
+1301,Amarante,Porto,56264,corridor,https://www.cm-amarante.pt/,True,wordpress,True,False,False,,True,False,wp-json,1,0,48,2027-02-20,C,website terms (not reviewed),https://www.cm-amarante.pt/servicos/avisos-e-editais/corte-condicionamento-de-transito/
+1302,Baião,Porto,20522,,https://cm-baiao.pt/,True,wordpress,False,False,False,,False,False,wp-json,4,0,0,2026-08-26,D,website terms (not reviewed),
+1303,Felgueiras,Porto,58065,,https://cm-felgueiras.pt/,True,wordpress,False,False,False,,False,False,wp-json,8,1,0,2025-08-07,D,website terms (not reviewed),
+1304,Gondomar,Porto,164257,logistics_industrial,https://www.cm-gondomar.pt/,True,wordpress,False,False,True,gis.cm-gondomar.pt,False,False,wp-json,6,3,2,2026-09-25,B,website terms (not reviewed),
+1305,Lousada,Porto,47387,,https://www.cm-lousada.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1306,Maia,Porto,134977,logistics_industrial,https://www.cm-maia.pt/,True,,True,False,False,,True,False,,0,0,96,,C,website terms (not reviewed),https://www.cm-maia.pt/institucional/seguranca-e-protecao/policia-municipal/transito-cortes-na-via-publica
+1307,Marco de Canaveses,Porto,53450,,https://www.cm-marco-canaveses.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,0,0,2026-09-10,D,website terms (not reviewed),
+1308,Matosinhos,Porto,172557,logistics_industrial,https://www.cm-matosinhos.pt/,True,,True,True,True,utility.arcgis.com (ArcGIS Online proxy),False,False,ArcGIS REST,0,0,9,2026-10-26,A,blank/unknown,https://www.cm-matosinhos.pt/urbanismo/obras-e-projetos/condicionamentos-de-transito
+1309,Paços de Ferreira,Porto,56340,,https://www.cm-pacosdeferreira.pt/,True,,True,False,False,,False,False,,0,0,13,2026-10-16,D,website terms (not reviewed),https://www.cm-pacosdeferreira.pt/3806/aviso-prova-de-automobilismo-7-rampa-capital-do-movel-corte-de-transito
+1310,Paredes,Porto,86854,corridor,https://www.cm-paredes.pt/,True,,False,False,True,sig.cm-paredes.pt,False,False,,0,0,2,,D,website terms (not reviewed),
+1311,Penafiel,Porto,72265,corridor,https://www.cm-penafiel.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1312,Porto,Porto,273979,district_capital,https://www.cm-porto.pt/,True,,False,False,True,,True,True,DATEX II / CKAN,0,0,0,2026-09-04,A,blank/unknown,https://dadosabertos.cm-porto.pt/dataset/condicionamentos-de-transito
+1313,Póvoa de Varzim,Porto,63408,,https://www.cm-pvarzim.pt/,True,,False,False,True,,False,False,wp-json,10,0,0,2026-09-25,D,website terms (not reviewed),
+1314,Santo Tirso,Porto,71530,logistics_industrial,https://www.cm-stirso.pt/,True,,True,False,False,,False,False,,0,2,1,,C,website terms (not reviewed),
+1315,Valongo,Porto,101464,logistics_industrial,https://www.cm-valongo.pt/,True,,False,False,True,sig.cm-valongo.pt,False,False,,0,1,0,,B,website terms (not reviewed),https://www.cm-valongo.pt/diretorio-servicos/comunicacao/alertas-e-avisos/noticia/condicionamento-a-circulacao-automovel-desmontagem-e-remocao-de-grua-rua-augusto-cesar-mendonca-em-ermesinde
+1316,Vila do Conde,Porto,79533,,https://www.cm-viladoconde.pt/,True,,False,False,True,,True,False,,0,0,0,,D,website terms (not reviewed),
+1317,Vila Nova de Gaia,Porto,303824,logistics_industrial,https://www.cm-gaia.pt/pt/,True,,True,False,False,,False,False,,0,0,162,2027-10-24,C,website terms (not reviewed),https://www.cm-gaia.pt/pt/informacao/interrupcoes-de-transito/
+1318,Trofa,Porto,38999,logistics_industrial,https://mun-trofa.pt/,True,,False,False,True,sig.mun-trofa.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+1401,Abrantes,Santarém,39325,logistics_industrial,https://www.cm-abrantes.pt/,True,,False,False,True,sig.cm-abrantes.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+1402,Alcanena,Santarém,13868,,https://cm-alcanena.pt/,True,joomla,False,False,False,,False,False,,0,209,337,2026-11-04,D,website terms (not reviewed),https://cm-alcanena.pt/index.php/editais
+1403,Almeirim,Santarém,23376,,https://www.cm-almeirim.pt/,True,joomla,True,False,False,,False,False,,0,0,2,,D,website terms (not reviewed),https://www.cm-almeirim.pt/atividade-municipal/transito-e-transportes
+1404,Alpiarça,Santarém,7702,,https://www.cm-alpiarca.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1405,Benavente,Santarém,29019,corridor,https://www.cm-benavente.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,0,0,2026-06-23,D,website terms (not reviewed),
+1406,Cartaxo,Santarém,24462,corridor,https://www.cm-cartaxo.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1407,Chamusca,Santarém,10120,,https://www.cm-chamusca.pt/,True,,False,False,False,,False,False,,0,3,0,,D,website terms (not reviewed),https://www.cm-chamusca.pt/informacoes/condicionamento-transito
+1408,Constância,Santarém,4056,,https://www.cm-constancia.pt/,True,joomla,False,False,False,,False,False,,0,3,2,2023-06-21,D,website terms (not reviewed),https://www.cm-constancia.pt/editais/editais-da-camara-municipal
+1409,Coruche,Santarém,19944,,https://www.cm-coruche.pt/,True,joomla,False,False,False,,False,False,,0,0,1,,D,website terms (not reviewed),https://www.cm-coruche.pt/autarquia/comunicados-avisos-editais-editos/comunicados
+1410,Entroncamento,Santarém,20206,logistics_industrial,https://www.cm-entroncamento.pt/,True,joomla,True,False,True,,False,False,,0,4,49,,D,website terms (not reviewed),https://www.cm-entroncamento.pt/index.php/informacao-ao-municipe/06-de-outubro-rua-baden-powell-rua-prof-jose-francisco-corujo-corte-de-transito
+1411,Ferreira do Zêzere,Santarém,8619,,https://cm-ferreiradozezere.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1412,Golegã,Santarém,5465,,https://www.cm-golega.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1413,Mação,Santarém,7338,,https://www.cm-macao.pt/,True,joomla,False,False,False,,False,False,,0,0,21,2026-09-09,D,website terms (not reviewed),https://www.cm-macao.pt/index.php/comunicacao/noticias
+1414,Rio Maior,Santarém,21192,,https://www.cm-riomaior.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1415,Salvaterra de Magos,Santarém,22159,,https://www.cm-salvaterrademagos.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1416,Santarém,Santarém,62200,district_capital,https://www.cm-santarem.pt/,True,,False,False,False,,False,False,,0,0,0,2026-09-28,D,website terms (not reviewed),
+1417,Sardoal,Santarém,3939,rural_interior,https://www.cm-sardoal.pt/,True,joomla,True,False,False,,False,False,,0,25,79,2025-05-02,C,website terms (not reviewed),https://www.cm-sardoal.pt/viver/transito
+1418,Tomar,Santarém,40677,,https://www.cm-tomar.pt/,True,joomla,False,False,True,,False,False,,0,0,0,,E,website terms (not reviewed),https://www.cm-tomar.pt/comunicacao/noticias/novos-condicionamentos-a-circulacao-devido-aos-trabalhos-de-desassoreamento-do-rio-nabao
+1419,Torres Novas,Santarém,36717,logistics_industrial,https://cm-torresnovas.pt/,True,joomla,False,False,True,sig.cm-torresnovas.pt,False,False,,0,70,76,,D,website terms (not reviewed),https://cm-torresnovas.pt/index.php/municipio/editais
+1420,Vila Nova da Barquinha,Santarém,7322,,https://www.cm-vnbarquinha.pt/,True,joomla,False,False,False,,False,False,,0,36,51,2026-09-23,D,website terms (not reviewed),https://www.cm-vnbarquinha.pt/index.php/servicos/documentos-online/avisos-e-despachos
+1421,Ourém,Santarém,45932,tourism,https://www.ourem.pt/,True,wordpress,False,False,False,,True,False,wp-json,7,0,0,2024-08-13,D,website terms (not reviewed),
+1501,Alcácer do Sal,Setúbal,13046,corridor,https://cm-alcacerdosal.pt/,True,wordpress,False,False,True,geoportal.cm-alcacerdosal.pt,False,False,wp-json,10,0,0,2026-07-28,D,website terms (not reviewed),
+1502,Alcochete,Setúbal,17569,logistics_industrial,https://www.cm-alcochete.pt/,True,,False,False,False,,True,False,,0,0,3,2026-10-14,D,website terms (not reviewed),https://www.cm-alcochete.pt/ListaConteudos/noticias
+1503,Almada,Setúbal,177238,,https://www.cm-almada.pt/,True,drupal,True,False,False,,True,False,,0,0,4,2026-10-21,D,website terms (not reviewed),https://www.cm-almada.pt/condicionamentos-de-transito-no-ambito-da-reabilitacao-da-rede-de-abastecimento-de-agua-na-rua-uniao-piedense-em-almada-de-8-a-21-de-outubro-de-2026
+1504,Barreiro,Setúbal,78764,logistics_industrial,https://www.cm-barreiro.pt/,True,wordpress,False,False,False,,False,False,,0,0,2,,D,website terms (not reviewed),
+1505,Grândola,Setúbal,14826,corridor,https://www.cm-grandola.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1506,Moita,Setúbal,66029,,https://www.cm-moita.pt/,True,,False,False,False,,False,False,,0,8,0,,D,website terms (not reviewed),https://www.cm-moita.pt/viver/informacao-municipal/noticia/aviso-a-populacao-condicionamento-na-circulacao-viaria-28-de-setembro-a-10-de-outubro
+1507,Montijo,Setúbal,51222,logistics_industrial,https://www.mun-montijo.pt/,True,,False,False,False,,False,False,,0,6,8,2026-10-16,D,website terms (not reviewed),https://www.mun-montijo.pt/municipio/camara-municipal/avisos-despachos-e-editais/editais
+1508,Palmela,Setúbal,62831,logistics_industrial,https://www.cm-palmela.pt/,True,,False,False,True,geoportal.cm-palmela.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+1509,Santiago do Cacém,Setúbal,29749,,https://www.cm-santiagocacem.pt/,True,wordpress,False,False,True,sig.cm-santiagocacem.pt,False,False,wp-json,10,4,3,2026-10-09,D,website terms (not reviewed),
+1510,Seixal,Setúbal,166507,logistics_industrial,https://www.cm-seixal.pt/,True,drupal,False,False,True,sig.cm-seixal.pt,False,False,,0,0,2,,D,website terms (not reviewed),https://www.cm-seixal.pt/noticia/abertura-de-procedimentos-concursais-3
+1511,Sesimbra,Setúbal,52465,,https://www.sesimbra.pt/,True,,False,False,False,,False,False,,0,0,19,,D,website terms (not reviewed),https://www.sesimbra.pt/noticia-74/obra-na-rua-candido-dos-reis-alteracao-ao-transito
+1512,Setúbal,Setúbal,123496,district_capital,https://www.mun-setubal.pt/,True,wordpress,True,False,False,,False,False,wp-json,1,0,0,2025-11-06,C,website terms (not reviewed),https://www.mun-setubal.pt/restricoes-de-transito/
+1513,Sines,Setúbal,14238,port,https://www.sines.pt/,True,,False,False,False,,False,False,,0,3,16,2026-10-18,D,website terms (not reviewed),https://www.sines.pt/pages/862?news_id=5293
+1601,Arcos de Valdevez,Viana do Castelo,22847,,https://www.cmav.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1602,Caminha,Viana do Castelo,16684,,https://www.cm-caminha.pt/,True,,False,False,True,sig.cm-caminha.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+1603,Melgaço,Viana do Castelo,9213,,https://www.cm-melgaco.pt/,True,wordpress,False,False,False,,False,False,wp-json,1,0,0,2017-11-30,D,website terms (not reviewed),
+1604,Monção,Viana do Castelo,19230,border,https://www.cm-moncao.pt/pt/Default.aspx,True,,True,False,False,,False,False,,0,0,1,,C,website terms (not reviewed),http://cm-moncao.pt/pt/site-map.aspx
+1605,Paredes de Coura,Viana do Castelo,9198,,https://www.paredesdecoura.pt,True,wordpress,False,False,False,,False,False,wp-json,0,0,0,,E,website terms (not reviewed),
+1606,Ponte da Barca,Viana do Castelo,12061,,https://www.cmpb.pt/,True,,False,False,False,,False,False,,0,1,1,,D,website terms (not reviewed),https://www.cmpb.pt/institucional/publicacao/editais
+1607,Ponte de Lima,Viana do Castelo,43498,,https://www.cm-pontedelima.pt/,True,,False,False,False,,False,False,,0,1,0,,D,website terms (not reviewed),
+1608,Valença,Viana do Castelo,14127,border,https://cm-valenca.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,9,26,2026-08-01,D,website terms (not reviewed),https://cm-valenca.pt/editais-discussoes-publicas/
+1609,Viana do Castelo,Viana do Castelo,88725,district_capital,https://www.cm-viana-castelo.pt/,True,,False,False,True,,False,False,,0,0,0,,D,website terms (not reviewed),https://www.cm-viana-castelo.pt/balcao-online/condicionamentos-da-via-publica
+1610,Vila Nova de Cerveira,Viana do Castelo,9253,,https://www.cm-vncerveira.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1701,Alijó,Vila Real,11942,,https://www.cm-alijo.pt/,True,,False,False,False,,False,False,,0,9,1,,D,website terms (not reviewed),https://www.cm-alijo.pt/municipio/documentacao/editais
+1702,Boticas,Vila Real,5750,,https://www.cm-boticas.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1703,Chaves,Vila Real,41243,corridor,https://www.chaves.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1704,Mesão Frio,Vila Real,4433,,https://www.cm-mesaofrio.pt/,True,,False,False,False,,False,False,,0,0,7,2027-03-31,D,website terms (not reviewed),https://www.cm-mesaofrio.pt/pages/1136?news_id=2641
+1705,Mondim de Basto,Vila Real,7493,rural_interior,https://municipio.mondimdebasto.pt/,True,joomla,False,False,False,,False,False,,0,35,58,2026-08-06,D,website terms (not reviewed),https://municipio.mondimdebasto.pt/index.php/municipio-informacao/editais.html
+1706,Montalegre,Vila Real,10537,,https://www.cm-montalegre.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1707,Murça,Vila Real,5952,,https://www.cm-murca.pt/,True,,False,False,True,,True,False,,0,0,0,,E,website terms (not reviewed),
+1708,Peso da Régua,Vila Real,17131,,https://www.cm-pesoregua.pt/,True,,False,False,False,,False,False,,0,2,0,,D,website terms (not reviewed),
+1709,Ribeira de Pena,Vila Real,6544,,https://www.cm-rpena.pt,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1710,Sabrosa,Vila Real,6361,,https://www.sabrosa.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1711,Santa Marta de Penaguião,Vila Real,7356,,https://www.cm-smpenaguiao.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,0,0,,E,website terms (not reviewed),
+1712,Valpaços,Vila Real,16882,,https://valpacos.pt/,True,,False,False,False,,False,False,,0,2,0,,D,website terms (not reviewed),
+1713,Vila Pouca de Aguiar,Vila Real,13187,,https://cm-vpaguiar.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,21,0,,D,website terms (not reviewed),
+1714,Vila Real,Vila Real,51850,district_capital,https://www.cm-vilareal.pt,True,joomla,False,False,True,,False,False,,0,0,0,,E,website terms (not reviewed),https://www.cm-vilareal.pt/index.php/component/content/article/escola-fixa-de-transito?catid=16:educacao&Itemid=585
+1801,Armamar,Viseu,6297,,https://www.cm-armamar.pt/,True,,False,False,False,,False,False,,0,0,1,,D,website terms (not reviewed),https://www.cm-armamar.pt/comunicar/noticias
+1802,Carregal do Sal,Viseu,9835,,https://www.cm-carregal.pt/,True,,False,False,True,sig.cm-carregal.pt,False,False,,0,0,0,,E,website terms (not reviewed),https://www.cm-carregal.pt/conhecer/comunicacao/noticias/noticia/edital-transito-proibido-ou-condicionado
+1803,Castro Daire,Viseu,15339,,https://www.cm-castrodaire.pt/,True,wordpress,False,False,True,sig.cm-castrodaire.pt,False,False,wp-json,0,0,0,,E,website terms (not reviewed),
+1804,Cinfães,Viseu,20427,,https://cm-cinfaes.pt/,True,joomla,False,False,True,websig.cm-cinfaes.pt,False,False,,0,0,3,,D,website terms (not reviewed),https://cm-cinfaes.pt/noticias
+1805,Lamego,Viseu,26691,,https://www.cm-lamego.pt/,True,,False,False,True,sig.cm-lamego.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+1806,Mangualde,Viseu,19880,corridor,https://www.cmmangualde.pt/,True,,False,False,True,mapas.cmmangualde.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+1807,Moimenta da Beira,Viseu,10212,,https://www.cm-moimenta.pt/,True,,False,False,True,sig.cm-moimenta.pt,True,False,,0,0,0,,E,website terms (not reviewed),
+1808,Mortágua,Viseu,9607,,https://www.cm-mortagua.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1809,Nelas,Viseu,14037,,https://www.cm-nelas.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,3,0,2026-09-29,D,website terms (not reviewed),
+1810,Oliveira de Frades,Viseu,10261,,https://www.cm-ofrades.com/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1811,Penalva do Castelo,Viseu,7956,,https://www.cm-penalvadocastelo.pt/,True,wordpress,False,False,False,,False,False,wp-json,4,0,0,2026-08-07,D,website terms (not reviewed),
+1812,Penedono,Viseu,2952,,https://www.cm-penedono.pt/,True,,False,False,False,,True,False,,0,0,0,,E,website terms (not reviewed),
+1813,Resende,Viseu,11364,,https://cm-resende.pt/,True,wordpress,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1814,Santa Comba Dão,Viseu,11597,,https://cm-santacombadao.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1815,São João da Pesqueira,Viseu,7874,,https://www.sjpesqueira.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),https://www.sjpesqueira.pt/noticia-33/transito-condicionado-barragem-da-valeira-49
+1816,São Pedro do Sul,Viseu,16851,,https://www.cm-spsul.pt/,True,,False,False,True,sig.cm-spsul.pt,False,False,,0,0,1,,D,website terms (not reviewed),
+1817,Sátão,Viseu,12444,,https://www.cm-satao.pt/,True,,False,False,False,,True,False,,0,0,0,,E,website terms (not reviewed),
+1818,Sernancelhe,Viseu,5671,,https://www.cm-sernancelhe.pt/,True,,False,False,False,,True,False,,0,0,0,,E,website terms (not reviewed),
+1819,Tabuaço,Viseu,6350,,https://www.cm-tabuaco.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1820,Tarouca,Viseu,8048,,https://www.cm-tarouca.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1821,Tondela,Viseu,28946,,https://www.cm-tondela.pt/,True,,False,False,False,,False,False,,0,0,3,,D,website terms (not reviewed),https://www.cm-tondela.pt/mapadosite
+1822,Vila Nova de Paiva,Viseu,5176,,https://www.cm-vnpaiva.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+1823,Viseu,Viseu,99274,district_capital,https://www.cm-viseu.pt/pt/,True,,True,False,False,,False,False,,0,0,35,2026-10-09,C,website terms (not reviewed),https://www.cm-viseu.pt/pt/noticias/
+1824,Vouzela,Viseu,10564,,https://www.cm-vouzela.pt/,True,wordpress,False,False,False,,False,False,wp-json,10,0,0,2026-09-13,D,website terms (not reviewed),
+3101,Calheta,Madeira,11268,,https://www.cmcalheta.pt/pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+3102,Câmara de Lobos,Madeira,32018,islands_other,https://www.cm-camaradelobos.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+3103,Funchal,Madeira,112290,island_capital,https://www.funchal.pt/,True,wordpress,False,False,True,,False,False,wp-json,10,0,0,2026-07-06,D,website terms (not reviewed),
+3104,Machico,Madeira,20034,islands_other,https://cm-machico.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+3105,Ponta do Sol,Madeira,8862,,https://www.cm-pontadosol.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+3106,Porto Moniz,Madeira,2593,,https://www.portomoniz.pt/pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+3107,Ribeira Brava,Madeira,13375,,https://cm-ribeirabrava.pt/,True,wordpress,False,False,False,,False,False,wp-json,6,32,527,2026-07-31,D,website terms (not reviewed),https://cm-ribeirabrava.pt/editais-despachos-2/
+3108,Santa Cruz,Madeira,43005,islands_other,https://www.cm-santacruz.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+3109,Santana,Madeira,6498,,https://www.cm-santana.com/,True,joomla,False,False,False,,True,False,,0,0,0,,E,website terms (not reviewed),
+3110,São Vicente,Madeira,3136,,https://cm-saovicente.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+3201,Porto Santo,Madeira,5149,,https://cm-portosanto.pt/,True,wordpress,False,False,True,,False,False,wp-json,5,0,0,2023-09-21,D,website terms (not reviewed),
+4101,Vila do Porto,Açores,5552,,https://www.cm-viladoporto.pt/,True,wordpress,False,False,True,sigweb.cm-viladoporto.pt,False,False,,0,0,0,,E,website terms (not reviewed),
+4201,Lagoa,Açores,14442,,https://lagoa-acores.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+4202,Nordeste,Açores,4937,,https://cmnordeste.pt,True,wordpress,False,False,True,sigweb.cmnordeste.pt,False,False,wp-json,1,61,59,2026-06-05,D,website terms (not reviewed),https://cmnordeste.pt/publicacoes/editais/
+4203,Ponta Delgada,Açores,68809,island_capital,https://www.cm-pontadelgada.pt/,True,,True,False,False,,False,False,,0,0,1,,C,website terms (not reviewed),https://www.cm-pontadelgada.pt/municipe/transportes-e-mobilidade/mini-bus
+4204,Povoação,Açores,6327,,https://www.cm-povoacao.pt/,True,joomla,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+4205,Ribeira Grande,Açores,32112,islands_other,https://www.cm-ribeiragrande.pt/,True,,True,False,False,,False,False,,0,0,1,,C,website terms (not reviewed),https://www.cm-ribeiragrande.pt/areas-de-atividade/transito
+4206,Vila Franca do Campo,Açores,10323,,https://cmvfc.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,9,0,,D,website terms (not reviewed),
+4301,Angra do Heroísmo,Açores,34774,island_capital,https://angradoheroismo.pt/,True,wordpress,True,False,False,,False,False,wp-json,10,1,2,2026-10-12,D,website terms (not reviewed),https://angradoheroismo.pt/aviso-n-o-202-2026-condicionamento-suspensao-do-transito/
+4302,Praia da Vitória,Açores,21035,port,https://www.cmpv.pt/,True,,False,False,True,,True,False,,0,0,0,,E,website terms (not reviewed),
+4401,Santa Cruz da Graciosa,Açores,4391,,https://www.cm-graciosa.pt//,True,,False,False,False,,True,False,,0,0,0,,E,website terms (not reviewed),
+4501,Calheta,Açores,3773,,https://cm-calheta.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+4502,Velas,Açores,5398,,https://cmvelas.pt/,True,wordpress,False,False,False,,False,False,wp-json,1,0,0,2019-09-02,D,website terms (not reviewed),
+4601,Lajes do Pico,Açores,4711,,https://cm-lajesdopico.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+4602,Madalena,Açores,6049,,https://www.cm-madalena.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+4603,São Roque do Pico,Açores,3388,,https://www.cm-saoroquedopico.pt/,True,,False,False,True,sig.cm-saoroquedopico.pt,False,False,,0,0,2,,D,website terms (not reviewed),https://www.cm-saoroquedopico.pt/editais
+4701,Horta,Açores,14331,island_capital,https://www.cmhorta.pt/,True,wordpress,True,False,True,sig.cmhorta.pt,False,False,,0,0,108,2026-10-08,C,website terms (not reviewed),https://www.cmhorta.pt/index.php/informacao/avisos/6241-condicionamento-de-transito-rua-de-jesus-freguesia-da-matriz
+4801,Lajes das Flores,Açores,1504,,,False,,False,False,False,,False,False,,0,0,0,,X,website terms (not reviewed),
+4802,Santa Cruz das Flores,Açores,2289,,https://www.cmscflores.pt/,True,,False,False,False,,False,False,,0,0,0,,E,website terms (not reviewed),
+4901,Município do Corvo,Açores,430,,https://cm-corvo.pt/,True,wordpress,False,False,False,,False,False,wp-json,0,0,3,2026-09-21,D,website terms (not reviewed),https://cm-corvo.pt/municipio/documentos-transparencia/avisos/

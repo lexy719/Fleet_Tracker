@@ -1,0 +1,494 @@
+FleetOS — Phase 5.7E: Guided Dynamic Workspace
+Goal
+We are resetting the interaction model.
+The previous approach became too focused on:
+- autonomous topology generation;
+- generic representation libraries;
+- layout scoring;
+- many synthetic variants;
+- floating fallback panels;
+- preserving old rectangles.
+It produced complexity without producing a convincing product.
+This phase must build something much more deliberate:
+an extremely advanced but guided operating workspace.
+Not random.
+Not a dashboard grid.
+Not one layout per page.
+Not autonomous visual generation.
+Instead:
+carefully authored interaction paths that adapt strongly to available space, active context and selected entities.
+1. Keep only the core shell
+Base environment:
+- small floating domain rail/sidebar;
+- map occupies the main usable area initially;
+- substantial clean white space is acceptable;
+- no traditional header;
+- no permanent large navigation panel.
+The rail contains domains such as:
+- Jobs
+- Drivers
+- Trucks
+- Fuel
+- Restrictions
+- Documents
+Clicking a rail item introduces/removes that domain from the current workspace.
+The rail itself must remain small.
+It is not the content area.
+2. Domain opening behavior
+When a domain is activated:
+do not open a fixed panel in a fixed place.
+The workspace should inspect:
+- current active domains;
+- currently selected entity;
+- current lead/expanded domain;
+- available white space;
+- current map importance;
+- content quantity;
+- useful minimum/preferred size of each active domain;
+- existing composition.
+Then choose one of a small number of carefully designed valid arrangements.
+Existing content may:
+- move;
+- resize;
+- change internal arrangement;
+- compress;
+- expand;
+- merge visually with related information;
+- disappear if temporarily unnecessary.
+Do NOT freeze existing surfaces.
+Do NOT randomly reshuffle everything either.
+Strong principle:
+Highly variable, but through authored paths — never arbitrary.
+3. There are only two main domain states
+Keep the interaction language simple.
+A domain has primarily:
+Normal
+The domain is present in the workspace.
+Expanded / Lead
+The user explicitly asks to work more deeply with this domain.
+Avoid unnecessary concepts such as:
+- focus mode;
+- explore mode;
+- fullscreen mode;
+- separate detail mode;
+- floating fallback mode.
+A domain can have internal selected entities, but the main workspace interaction should remain understandable:
+domain active
+domain expanded
+entity selected
+
+4. Expand does NOT open another page
+This is fundamental.
+Imagine:
+selected Job: J-4217
+
+active:
+Fuel
+Driver
+Truck
+Documents
+Restrictions
+
+If the user expands Fuel:
+the whole existing page recomposes around Fuel.
+Fuel becomes the lead domain.
+Driver, Truck, Documents and Restrictions remain part of the SAME page.
+They do not open as separate windows.
+They do not disappear unless intentionally irrelevant.
+They do not remain detached around the lead domain.
+Their representation changes so they support the current lead context.
+Strong rule:
+Expand changes which context leads the composition; it does not navigate away.
+5. Anchor + active lenses + lead lens
+Model the workspace explicitly with three concepts.
+Anchor
+The object currently being worked on.
+Examples:
+Jobs collection
+Job J-4217
+Driver D-14
+Truck T-08
+
+Active lenses
+Domains introduced into the workspace:
+Fuel
+Driver
+Truck
+Documents
+Restrictions
+
+Lead lens
+One active lens may become the primary perspective.
+Example:
+anchor = Job J-4217
+active = Fuel, Driver, Truck, Documents
+lead = Fuel
+
+The anchor remains the same while the lead lens changes.
+6. Supporting lenses must change meaning
+When one lens becomes lead, the others must not merely become smaller versions of themselves.
+They should answer the question created by the lead lens.
+Example:
+Lead = Fuel
+Fuel becomes the main working area.
+Supporting Driver may emphasize:
+- remaining legal driving time;
+- current rest state;
+- whether the proposed stop fits timing.
+Supporting Truck may emphasize:
+- fuel level;
+- range;
+- consumption;
+- relevant vehicle constraints.
+Supporting Restrictions may emphasize:
+- restrictions affecting the fuel stop or route.
+Supporting Documents may reduce to only relevant documentation/status.
+Map likely remains useful and may grow.
+Lead = Documents
+Documents becomes the main workspace.
+Supporting Driver and Truck may become identity/status summaries.
+Map may shrink dramatically or disappear.
+Job/document state becomes more prominent.
+Lead = Driver
+Driver becomes primary.
+Supporting Truck becomes tightly related.
+Fuel may show upcoming fuel requirement.
+Restrictions may show only relevant operational constraints.
+Map may become important again.
+Strong principle:
+Supporting lenses should answer the question created by the lead lens.
+7. Do not force one visible box per domain
+A critical rule:
+active domain does NOT mean:
+one domain = one rectangle
+
+Related information may combine naturally.
+Example:
+Driver + Truck might appear as one cohesive composition:
+MIGUEL COSTA
+Driving 3h42 remaining
+
+DAF XG 480 · AA-42-ZP
+Fuel 61% · Trailer PT-3821
+
+If Truck becomes lead, hierarchy can invert:
+DAF XG 480
+AA-42-ZP
+
+Driver
+Miguel Costa · 3h42 remaining
+
+The information remains connected.
+Do not create card soup merely because multiple lenses are active.
+8. Jobs should be the first fully designed path
+Build Jobs first and use it to prove the architecture before generalizing.
+We want several deliberate Jobs paths.
+Jobs — normal / narrow
+When Jobs has limited width:
+Show a compact operational list.
+Possible content:
+- Job ID
+- origin → destination
+- status
+- ETA/window
+Map remains dominant if useful.
+Jobs — normal / medium
+With more space:
+Add:
+- driver/truck summary;
+- progress;
+- exception indicator;
+- more rows.
+Jobs — normal / wide
+With significant space:
+Internal composition can change.
+Examples:
+- richer list;
+- two-column structure;
+- grouped jobs;
+- operational timeline;
+- route summary.
+Do NOT simply stretch the narrow version.
+Jobs — expanded
+A likely major state:
+approximately:
+Jobs workspace | Map
+
+Often near 50/50, but not hardcoded.
+Jobs receives much richer information.
+Map shows the relevant jobs/routes.
+Internal Jobs composition adapts to available dimensions.
+Single Job selected
+Clicking a Job changes the anchor:
+Jobs collection
+→
+Job J-4217
+
+The generic Jobs list may disappear or reduce dramatically.
+The page becomes a coordinated Job workspace.
+Map shows only the relevant job geography if map is useful.
+Related active lenses remain in the same page.
+9. One selected Job must support lens switching
+Explicitly implement and demonstrate:
+select Job J-4217
+activate Fuel
+activate Driver
+activate Truck
+activate Documents
+
+Then test:
+Expand Fuel
+Expand Driver
+Expand Truck
+Expand Documents
+
+For every expansion:
+- same Job remains anchor;
+- expanded lens becomes primary;
+- other active lenses remain in the same composed page;
+- their internal representation changes appropriately;
+- map adapts based on relevance;
+- no page navigation occurs.
+10. Adaptive internal information architecture
+A domain at different sizes must not be the same component resized.
+Example Jobs:
+300px
+J-4217
+Porto → Madrid
+In transit · 18:40
+
+600px
+Add:
+- driver;
+- truck;
+- progress;
+- delivery window.
+1000px+
+May change structure completely:
+- multi-column;
+- grouped sections;
+- route/timeline;
+- exception areas;
+- richer overview.
+Do this using authored responsive compositions.
+Apply the same philosophy later to other domains.
+11. White space should actively influence composition
+White space is an input to the design.
+When a domain opens:
+determine:
+- where useful free regions exist;
+- what shape they have;
+- which existing element can reasonably give up space;
+- whether the map needs to remain large.
+The environment should make strong use of available space.
+Avoid both extremes:
+- filling everything;
+- leaving half the screen empty while active information is compressed.
+Strong rule:
+Intentional white space is good. Wasted white space is not.
+12. The map is contextual, not mandatory
+The map remains a major FleetOS material, but it must not be forced into every state.
+Use it when geography matters.
+Examples:
+Useful:
+- Job routes;
+- Driver current location;
+- Truck location;
+- Fuel stop;
+- Restrictions.
+Potentially unnecessary:
+- document-heavy workspace;
+- certain commercial/admin states.
+The map may:
+- dominate;
+- share the page;
+- become narrow;
+- become a route strip;
+- move;
+- disappear.
+Do not automatically use:
+map fullscreen + floating card
+
+That pattern should not become a universal focus template.
+13. No floating fallback as default behavior
+If the workspace becomes crowded:
+do NOT simply open the newest domain as a floating panel.
+Instead:
+1. reassess all active domains;
+2. choose lower-density forms where appropriate;
+3. resize/reposition;
+4. merge related information where appropriate;
+5. reduce map area if geography is less important.
+Floating UI may exist for specific interaction needs, but it must not be the generic no-space solution.
+14. Designed paths, adaptive results
+We are NOT building a fully procedural composition generator.
+Create authored path families.
+Example:
+Jobs normal
+↓
+Jobs expanded
+↓
+single Job
+↓
+Fuel lead
+↓
+Driver lead
+↓
+Documents lead
+
+Inside each path/state, geometry and information layout adapt according to:
+- viewport;
+- active lenses;
+- data quantity;
+- map relevance.
+This gives variation without randomness.
+Strong principle:
+The system adapts within a designed interaction path; it does not invent the path itself.
+15. Motion
+Transitions must preserve visual continuity.
+When something becomes lead:
+- its current presence should naturally grow/recompose;
+- supporting information should move/restructure;
+- map geometry should change at the same time;
+- map camera should reframe continuously if needed.
+Avoid:
+- instant panel replacement;
+- resize then camera snap;
+- disappearing everything and rendering a new screen;
+- modal-like takeover.
+It should feel like:
+the same workspace reorganizing itself.
+16. Esc / back
+Preserve exact composition history.
+Example:
+Job
+→ Fuel lead
+→ select fuel stop
+→ Driver lead
+
+Esc should unwind real states:
+Driver lead
+→ fuel stop state
+→ Fuel lead
+→ Job
+
+Preserve:
+- anchor;
+- active lenses;
+- lead lens;
+- selection;
+- geometry;
+- map camera;
+- scroll where practical.
+17. DEV content
+Use realistic synthetic content sufficient to judge the UI.
+We need actual:
+- Jobs rows;
+- Drivers;
+- Trucks;
+- Fuel stations;
+- Documents;
+- Restrictions.
+But do not connect production repositories yet.
+The purpose is to evaluate:
+- information hierarchy;
+- adaptive composition;
+- lens interaction;
+- expanded states;
+- selected entity states.
+18. Do not generalize too early
+Important implementation order:
+Step A
+Build and visually perfect:
+Base
+→ Jobs normal
+→ Jobs expanded
+→ single Job
+
+Step B
+Add:
+Job + Fuel
+→ Fuel expanded
+
+Step C
+Add:
+Driver
+Truck
+Documents
+Restrictions
+
+Do NOT immediately build a giant generic engine for every domain.
+Learn from the Jobs path first.
+Extract abstractions only after the interaction proves itself visually.
+19. Required demonstration flows
+Produce screenshots and browser evidence for:
+Flow 1
+Base
+→ Jobs
+→ Expand Jobs
+→ Select Job
+
+Flow 2
+Selected Job
+→ Fuel active
+→ Driver active
+→ Truck active
+→ Documents active
+
+Flow 3
+Selected Job
++ Fuel + Driver + Truck + Documents
+→ Expand Fuel
+
+Flow 4
+Same state:
+→ Expand Driver
+
+Flow 5
+→ Expand Documents
+
+These must visibly demonstrate different whole-page compositions.
+20. Acceptance test: the critical question
+For every screenshot ask:
+Does this feel like the same FleetOS workspace intelligently reorganizing itself around what the operator is currently doing?
+
+If instead it feels like:
+- another dashboard;
+- a modal;
+- a different page;
+- a floating card;
+- resized rectangles;
+- a generic grid;
+then the interaction is not complete.
+21. What NOT to build
+Do NOT build:
+- arbitrary procedural layout generation;
+- topology diversity metrics;
+- hundreds of topology hashes;
+- 15 artificial variants per domain;
+- random layout variation;
+- generic floating no-space panels;
+- fixed “focus layout” templates;
+- a giant generic solver before proving Jobs;
+- production data integration.
+Success condition
+This phase succeeds when:
+1. the base map + rail feels calm;
+2. adding Jobs uses available space naturally;
+3. Jobs changes internal structure according to available dimensions;
+4. expanding Jobs transforms the entire workspace;
+5. selecting one Job creates a coherent Job workspace;
+6. Fuel/Driver/Truck/Documents can coexist within that same Job workspace;
+7. expanding any one of them makes it the lead perspective without navigating away;
+8. supporting lenses change their information to support the lead lens;
+9. map presence/size is driven by usefulness;
+10. the whole environment feels highly variable but clearly designed.
+Final principles:
+Highly variable, but through authored paths — never arbitrary.
+Expand changes the lead perspective, not the page.
+Supporting lenses answer the question created by the lead lens.
+A domain does not own a rectangle; it contributes information to the current workspace.
+The system adapts within a designed interaction path; it does not invent the path itself.
+The same workspace reorganizes itself rather than navigating to disconnected screens.
+Stop after the DEV interaction lab is visually reviewed.
+Do not integrate production data yet.

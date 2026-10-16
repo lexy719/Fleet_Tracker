@@ -1,8 +1,21 @@
-import { getPassageWindow, type PassageWindow, type TimingModel } from "./timeline";
+import {
+  getPassageWindow,
+  type PassageWindow,
+  type TimingModel,
+} from "./timeline";
 import { classifyDay, inAnyWindow, localParts } from "./calendar";
-import { assertValidRoute, MAX_ROUTE_GAP_M, routeExposure, timeAtPos } from "./geometry";
+import {
+  assertValidRoute,
+  prepareRouteGeometry,
+  MAX_ROUTE_GAP_M,
+  routeExposure,
+  timeAtPos,
+} from "./geometry";
+import { combineApplicability } from "./applicability";
 import { factLabel } from "./factLabels";
 import type {
+  ApplicabilityEvaluation,
+  PredicateEvaluation,
   ComplianceReport,
   ComplianceStatus,
   Condition,
@@ -34,7 +47,11 @@ export function triOr(values: Tri[]): Tri {
 }
 
 export function triNot(v: Tri): Tri {
-  return v === "APPLIES" ? "DOES_NOT_APPLY" : v === "DOES_NOT_APPLY" ? "APPLIES" : "UNKNOWN";
+  return v === "APPLIES"
+    ? "DOES_NOT_APPLY"
+    : v === "DOES_NOT_APPLY"
+      ? "APPLIES"
+      : "UNKNOWN";
 }
 
 /* ─── Condition evaluation ───────────────────────────── */
@@ -49,41 +66,105 @@ type Eval = {
 
 type Ctx = { input: EvaluationInput; dataset: RegulationDataset };
 
-const OP_TEXT: Record<FactOperator, string> = { gt: ">", gte: "≥", lt: "<", lte: "≤", eq: "=", in: "∈" };
+const OP_TEXT: Record<FactOperator, string> = {
+  gt: ">",
+  gte: "≥",
+  lt: "<",
+  lte: "≤",
+  eq: "=",
+  in: "∈",
+};
 
-function compareKnown(op: FactOperator, actual: FactValue, expected: FactValue | FactValue[]): Tri {
-  if (op === "in") return (expected as FactValue[]).includes(actual) ? "APPLIES" : "DOES_NOT_APPLY";
+function compareKnown(
+  op: FactOperator,
+  actual: FactValue,
+  expected: FactValue | FactValue[],
+): Tri {
+  if (op === "in")
+    return (expected as FactValue[]).includes(actual)
+      ? "APPLIES"
+      : "DOES_NOT_APPLY";
   if (op === "eq") return actual === expected ? "APPLIES" : "DOES_NOT_APPLY";
-  if (typeof actual !== "number" || typeof expected !== "number") return "UNKNOWN";
+  if (typeof actual !== "number" || typeof expected !== "number")
+    return "UNKNOWN";
   const ok =
-    op === "gt" ? actual > expected : op === "gte" ? actual >= expected : op === "lt" ? actual < expected : actual <= expected;
+    op === "gt"
+      ? actual > expected
+      : op === "gte"
+        ? actual >= expected
+        : op === "lt"
+          ? actual < expected
+          : actual <= expected;
   return ok ? "APPLIES" : "DOES_NOT_APPLY";
 }
 
 /** A numeric range [min, max] decides a comparison only when every value in it agrees. */
-function compareRange(op: FactOperator, min: number | undefined, max: number | undefined, expected: number): Tri {
+function compareRange(
+  op: FactOperator,
+  min: number | undefined,
+  max: number | undefined,
+  expected: number,
+): Tri {
   const lo = min ?? -Infinity;
   const hi = max ?? Infinity;
   switch (op) {
-    case "gt":  return lo > expected ? "APPLIES" : hi <= expected ? "DOES_NOT_APPLY" : "UNKNOWN";
-    case "gte": return lo >= expected ? "APPLIES" : hi < expected ? "DOES_NOT_APPLY" : "UNKNOWN";
-    case "lt":  return hi < expected ? "APPLIES" : lo >= expected ? "DOES_NOT_APPLY" : "UNKNOWN";
-    case "lte": return hi <= expected ? "APPLIES" : lo > expected ? "DOES_NOT_APPLY" : "UNKNOWN";
-    default:    return lo === hi && lo === expected ? "APPLIES" : "UNKNOWN";
+    case "gt":
+      return lo > expected
+        ? "APPLIES"
+        : hi <= expected
+          ? "DOES_NOT_APPLY"
+          : "UNKNOWN";
+    case "gte":
+      return lo >= expected
+        ? "APPLIES"
+        : hi < expected
+          ? "DOES_NOT_APPLY"
+          : "UNKNOWN";
+    case "lt":
+      return hi < expected
+        ? "APPLIES"
+        : lo >= expected
+          ? "DOES_NOT_APPLY"
+          : "UNKNOWN";
+    case "lte":
+      return hi <= expected
+        ? "APPLIES"
+        : lo > expected
+          ? "DOES_NOT_APPLY"
+          : "UNKNOWN";
+    default:
+      return lo === hi && lo === expected ? "APPLIES" : "UNKNOWN";
   }
 }
 
-function evalFact(c: Extract<Condition, { kind: "fact" }>, facts: EvaluationInput["facts"]): Eval {
+function evalFact(
+  c: Extract<Condition, { kind: "fact" }>,
+  facts: EvaluationInput["facts"],
+): Eval {
   const fact: Fact | undefined = facts[c.fact];
   const name = factLabel(c.fact);
   if (!fact || fact.status === "unknown") {
-    const why = fact?.status === "unknown" ? fact.reason : "não registado no FleetOS";
-    return { value: "UNKNOWN", unknowns: [{ kind: "missing_fact", text: `${name}: valor desconhecido — ${why}`, evidence: c.evidence }], decisive: [] };
+    const why =
+      fact?.status === "unknown" ? fact.reason : "não registado no FleetOS";
+    return {
+      value: "UNKNOWN",
+      unknowns: [
+        {
+          kind: "missing_fact",
+          text: `${name}: valor desconhecido — ${why}`,
+          evidence: c.evidence,
+        },
+      ],
+      decisive: [],
+    };
   }
   let value: Tri;
   let shown: string;
   if (fact.status === "range") {
-    value = typeof c.value === "number" ? compareRange(c.op, fact.min, fact.max, c.value) : "UNKNOWN";
+    value =
+      typeof c.value === "number"
+        ? compareRange(c.op, fact.min, fact.max, c.value)
+        : "UNKNOWN";
     shown = `${fact.min ?? "?"}–${fact.max ?? "?"}`;
   } else {
     value = compareKnown(c.op, fact.value, c.value);
@@ -92,36 +173,73 @@ function evalFact(c: Extract<Condition, { kind: "fact" }>, facts: EvaluationInpu
   if (value === "UNKNOWN") {
     return {
       value,
-      unknowns: [{ kind: "missing_fact", text: `${name} insuficiente para decidir "${c.label}" (${shown}; ${fact.source})`, evidence: c.evidence }],
+      unknowns: [
+        {
+          kind: "missing_fact",
+          text: `${name} insuficiente para decidir "${c.label}" (${shown}; ${fact.source})`,
+          evidence: c.evidence,
+        },
+      ],
       decisive: [],
     };
   }
-  const expected = Array.isArray(c.value) ? c.value.join(", ") : String(c.value);
+  const expected = Array.isArray(c.value)
+    ? c.value.join(", ")
+    : String(c.value);
   const verdict = value === "APPLIES" ? "cumpre" : "não cumpre";
   return {
     value,
     unknowns: [],
-    decisive: [{ kind: "info", text: `${name} ${verdict} ${OP_TEXT[c.op]} ${expected} (${shown}; ${fact.source})`, evidence: c.evidence }],
+    decisive: [
+      {
+        kind: "info",
+        text: `${name} ${verdict} ${OP_TEXT[c.op]} ${expected} (${shown}; ${fact.source})`,
+        evidence: c.evidence,
+      },
+    ],
   };
 }
 
-function selectStops(stops: RouteStopInput[], sel: Extract<Condition, { kind: "stopInArea" }>): RouteStopInput[] {
+function selectStops(
+  stops: RouteStopInput[],
+  sel: Extract<Condition, { kind: "stopInArea" }>,
+): RouteStopInput[] {
   if (stops.length === 0) return [];
   const byRole =
-    sel.stops === "origin" ? [stops[0]!]
-    : sel.stops === "destination" ? [stops[stops.length - 1]!]
-    : sel.stops === "originOrDestination" ? (stops.length === 1 ? [stops[0]!] : [stops[0]!, stops[stops.length - 1]!])
-    : stops;
+    sel.stops === "origin"
+      ? [stops[0]!]
+      : sel.stops === "destination"
+        ? [stops[stops.length - 1]!]
+        : sel.stops === "originOrDestination"
+          ? stops.length === 1
+            ? [stops[0]!]
+            : [stops[0]!, stops[stops.length - 1]!]
+          : stops;
   // Intermediate stops ("stop") never match a pickup/delivery selector (conservative).
-  return sel.stopTypes ? byRole.filter((s) => (sel.stopTypes as string[]).includes(s.type)) : byRole;
+  return sel.stopTypes
+    ? byRole.filter((s) => (sel.stopTypes as string[]).includes(s.type))
+    : byRole;
 }
 
-function evalStopInArea(c: Extract<Condition, { kind: "stopInArea" }>, ctx: Ctx): Eval {
+function evalStopInArea(
+  c: Extract<Condition, { kind: "stopInArea" }>,
+  ctx: Ctx,
+): Eval {
   const area = ctx.dataset.areas.find((a) => a.id === c.areaId);
   const areaName = area?.label ?? c.areaId;
   const stops = selectStops(ctx.input.stops, c);
   if (stops.length === 0) {
-    return { value: "DOES_NOT_APPLY", unknowns: [], decisive: [{ kind: "info", text: `Nenhuma paragem elegível para "${c.label}"`, evidence: c.evidence }] };
+    return {
+      value: "DOES_NOT_APPLY",
+      unknowns: [],
+      decisive: [
+        {
+          kind: "info",
+          text: `Nenhuma paragem elegível para "${c.label}"`,
+          evidence: c.evidence,
+        },
+      ],
+    };
   }
   const values: Tri[] = [];
   const unknowns: Reason[] = [];
@@ -129,7 +247,11 @@ function evalStopInArea(c: Extract<Condition, { kind: "stopInArea" }>, ctx: Ctx)
     const f = s.areas?.[c.areaId];
     if (!f || f.status !== "known" || typeof f.value !== "boolean") {
       values.push("UNKNOWN");
-      unknowns.push({ kind: "missing_fact", text: `Paragem ${s.id}: pertença a ${areaName} desconhecida`, evidence: c.evidence });
+      unknowns.push({
+        kind: "missing_fact",
+        text: `Paragem ${s.id}: pertença a ${areaName} desconhecida`,
+        evidence: c.evidence,
+      });
     } else {
       values.push(f.value ? "APPLIES" : "DOES_NOT_APPLY");
     }
@@ -137,7 +259,17 @@ function evalStopInArea(c: Extract<Condition, { kind: "stopInArea" }>, ctx: Ctx)
   const value = triOr(values);
   return value === "UNKNOWN"
     ? { value, unknowns, decisive: [] }
-    : { value, unknowns: [], decisive: [{ kind: "info", text: `${c.label}: ${value === "APPLIES" ? "sim" : "não"}`, evidence: c.evidence }] };
+    : {
+        value,
+        unknowns: [],
+        decisive: [
+          {
+            kind: "info",
+            text: `${c.label}: ${value === "APPLIES" ? "sim" : "não"}`,
+            evidence: c.evidence,
+          },
+        ],
+      };
 }
 
 export function evalCondition(c: Condition, ctx: Ctx): Eval {
@@ -148,23 +280,59 @@ export function evalCondition(c: Condition, ctx: Ctx): Eval {
       return evalStopInArea(c, ctx);
     case "not": {
       const r = evalCondition(c.of, ctx);
-      return { value: triNot(r.value), unknowns: r.unknowns, decisive: r.decisive };
+      return {
+        value: triNot(r.value),
+        unknowns: r.unknowns,
+        decisive: r.decisive,
+      };
     }
     case "all":
     case "any": {
       const rs = c.of.map((x) => evalCondition(x, ctx));
-      const value = c.kind === "all" ? triAnd(rs.map((r) => r.value)) : triOr(rs.map((r) => r.value));
-      const decidingValue: Tri = c.kind === "all" ? "DOES_NOT_APPLY" : "APPLIES";
+      const value =
+        c.kind === "all"
+          ? triAnd(rs.map((r) => r.value))
+          : triOr(rs.map((r) => r.value));
+      const decidingValue: Tri =
+        c.kind === "all" ? "DOES_NOT_APPLY" : "APPLIES";
       return {
         value,
-        unknowns: value === "UNKNOWN" ? rs.filter((r) => r.value === "UNKNOWN").flatMap((r) => r.unknowns) : [],
+        unknowns:
+          value === "UNKNOWN"
+            ? rs.filter((r) => r.value === "UNKNOWN").flatMap((r) => r.unknowns)
+            : [],
         decisive:
           value === decidingValue
-            ? rs.filter((r) => r.value === decidingValue).flatMap((r) => r.decisive)
-            : value === "UNKNOWN" ? [] : rs.flatMap((r) => r.decisive),
+            ? rs
+                .filter((r) => r.value === decidingValue)
+                .flatMap((r) => r.decisive)
+            : value === "UNKNOWN"
+              ? []
+              : rs.flatMap((r) => r.decisive),
       };
     }
   }
+}
+
+/** Leaf outcomes stay separate even when a compound condition is undecidable. */
+function predicateEvaluations(c: Condition, ctx: Ctx): PredicateEvaluation[] {
+  if (c.kind === "all" || c.kind === "any")
+    return c.of.flatMap((x) => predicateEvaluations(x, ctx));
+  if (c.kind === "not")
+    return predicateEvaluations(c.of, ctx).map((p) => ({
+      ...p,
+      negated: !p.negated,
+    }));
+  const r = evalCondition(c, ctx);
+  return [
+    {
+      kind: c.kind,
+      label: c.label,
+      ...(c.kind === "fact" ? { factId: c.fact } : {}),
+      outcome: r.value,
+      reasons: [...r.decisive, ...r.unknowns],
+    },
+  ];
 }
 
 /* ─── Temporal evaluation over an exposure ───────────── */
@@ -181,7 +349,10 @@ export type EvaluateOptions = {
   timing?: TimingModel;
 };
 
-export const DEFAULT_EVALUATE_OPTIONS: EvaluateOptions = { timeToleranceMin: 15, sampleStepMin: 5 };
+export const DEFAULT_EVALUATE_OPTIONS: EvaluateOptions = {
+  timeToleranceMin: 15,
+  sampleStepMin: 5,
+};
 
 type InstantEval = { value: Tri; reason?: Reason };
 
@@ -204,14 +375,24 @@ function evalInstant(reg: RegulationRecord, ctx: Ctx, ms: number): InstantEval {
   const w = reg.when;
   const p = localParts(ms, w.timeZone);
   if (p.isoDate < reg.effective.from) return { value: "DOES_NOT_APPLY" };
-  if (reg.effective.to && p.isoDate >= reg.effective.to) return { value: "DOES_NOT_APPLY" };
+  if (reg.effective.to && p.isoDate >= reg.effective.to)
+    return { value: "DOES_NOT_APPLY" };
   const parts: Tri[] = [];
   if (w.activePeriods) {
     const local = `${p.isoDate}T${String(Math.floor(p.minutes / 60)).padStart(2, "0")}:${String(p.minutes % 60).padStart(2, "0")}`;
-    parts.push(w.activePeriods.some((ap) => local >= ap.start && local < ap.end) ? "APPLIES" : "DOES_NOT_APPLY");
+    parts.push(
+      w.activePeriods.some((ap) => local >= ap.start && local < ap.end)
+        ? "APPLIES"
+        : "DOES_NOT_APPLY",
+    );
   }
-  if (w.windows) parts.push(inAnyWindow(p.minutes, w.windows) ? "APPLIES" : "DOES_NOT_APPLY");
-  const day = w.days ? classifyDay(w.days, ctx.dataset.calendars, p) : undefined;
+  if (w.windows)
+    parts.push(
+      inAnyWindow(p.minutes, w.windows) ? "APPLIES" : "DOES_NOT_APPLY",
+    );
+  const day = w.days
+    ? classifyDay(w.days, ctx.dataset.calendars, p)
+    : undefined;
   if (day) parts.push(day.outcome);
   const value = triAnd(parts);
   if (value === "UNKNOWN" && day?.matchedCalendar && w.days) {
@@ -239,7 +420,12 @@ type RuleGrid = {
   unknown: Int32Array;
 };
 
-function buildGrid(reg: RegulationRecord, ctx: Ctx, fromMs: number, toMs: number): RuleGrid {
+function buildGrid(
+  reg: RegulationRecord,
+  ctx: Ctx,
+  fromMs: number,
+  toMs: number,
+): RuleGrid {
   const startMs = Math.floor(fromMs / MINUTE_MS) * MINUTE_MS;
   const n = Math.max(1, Math.floor((toMs - startMs) / MINUTE_MS) + 2);
   const values: Tri[] = new Array(n);
@@ -259,7 +445,10 @@ function buildGrid(reg: RegulationRecord, ctx: Ctx, fromMs: number, toMs: number
 /** State of the rule anywhere within [aMs, bMs] (inclusive minute cells). */
 function stateOver(g: RuleGrid, aMs: number, bMs: number): Tri {
   const lo = Math.max(0, Math.floor((aMs - g.startMs) / MINUTE_MS));
-  const hi = Math.min(g.values.length - 1, Math.floor((bMs - g.startMs) / MINUTE_MS));
+  const hi = Math.min(
+    g.values.length - 1,
+    Math.floor((bMs - g.startMs) / MINUTE_MS),
+  );
   if (hi < lo) return "DOES_NOT_APPLY";
   if (g.applies[hi + 1]! - g.applies[lo]! > 0) return "APPLIES";
   if (g.unknown[hi + 1]! - g.unknown[lo]! > 0) return "UNKNOWN";
@@ -274,7 +463,13 @@ function stateOver(g: RuleGrid, aMs: number, bMs: number): Tri {
  *  - otherwise UNKNOWN.
  * This covers short events, entering before / leaving after a boundary, and overnight periods.
  */
-function intervalUnderUncertainty(g: RuleGrid, aMs: number, bMs: number, minShiftMs: number, maxShiftMs: number): Tri {
+function intervalUnderUncertainty(
+  g: RuleGrid,
+  aMs: number,
+  bMs: number,
+  minShiftMs: number,
+  maxShiftMs: number,
+): Tri {
   const lo = Math.min(0, Math.round(minShiftMs / MINUTE_MS));
   const hi = Math.max(0, Math.round(maxShiftMs / MINUTE_MS));
   let allApply = true;
@@ -288,11 +483,18 @@ function intervalUnderUncertainty(g: RuleGrid, aMs: number, bMs: number, minShif
   return allApply ? "APPLIES" : allNone ? "DOES_NOT_APPLY" : "UNKNOWN";
 }
 
-function calendarReasonsWithin(g: RuleGrid, aMs: number, bMs: number): Reason[] {
+function calendarReasonsWithin(
+  g: RuleGrid,
+  aMs: number,
+  bMs: number,
+): Reason[] {
   const out: Reason[] = [];
   const seen = new Set<string>();
   const lo = Math.max(0, Math.floor((aMs - g.startMs) / MINUTE_MS));
-  const hi = Math.min(g.values.length - 1, Math.floor((bMs - g.startMs) / MINUTE_MS));
+  const hi = Math.min(
+    g.values.length - 1,
+    Math.floor((bMs - g.startMs) / MINUTE_MS),
+  );
   for (let i = lo; i <= hi; i++) {
     const r = g.reasons[i];
     if (r && !seen.has(r.text)) {
@@ -324,11 +526,16 @@ export function evaluateRegulation(
 ): RegulationResult {
   const ctx: Ctx = { input, dataset };
   if (!isValidTimeZone(reg.when?.timeZone)) {
-    throw new ConstraintDataError(`fuso horário inválido ou em falta na restrição (${String(reg.when?.timeZone)})`);
+    throw new ConstraintDataError(
+      `fuso horário inválido ou em falta na restrição (${String(reg.when?.timeZone)})`,
+    );
   }
   const caveats = [...reg.openQuestions];
-  const interpreted = reg.evidence.filter((e) => e.verification === "INTERPRETED");
-  for (const e of interpreted) caveats.push(`Interpretação: ${e.note ?? e.locator ?? e.id}`);
+  const interpreted = reg.evidence.filter(
+    (e) => e.verification === "INTERPRETED",
+  );
+  for (const e of interpreted)
+    caveats.push(`Interpretação: ${e.note ?? e.locator ?? e.id}`);
 
   /* 1. Vehicle / cargo applicability */
   const target = evalCondition(reg.appliesTo, ctx);
@@ -339,11 +546,16 @@ export function evaluateRegulation(
   let whereWhen: Tri;
   const tolMs = Math.max(0, opts.timeToleranceMin) * MINUTE_MS;
 
-  const exposure = geom ? routeExposure(input.route, geom) : ({ kind: "noRoute" } as const);
+  const exposure = geom
+    ? routeExposure(input.route, geom)
+    : ({ kind: "noRoute" } as const);
   let exposureSummary: ExposureSummary | undefined;
   if (!geom) {
     whereWhen = "UNKNOWN";
-    locationReasons.push({ kind: "geometry", text: `Geometria ${reg.location.geometryId} em falta no conjunto de dados` });
+    locationReasons.push({
+      kind: "geometry",
+      text: `Geometria ${reg.location.geometryId} em falta no conjunto de dados`,
+    });
   } else if (exposure.kind === "none") {
     whereWhen = "DOES_NOT_APPLY";
     locationReasons.push({
@@ -352,25 +564,46 @@ export function evaluateRegulation(
         exposure.via === "resolvedGeometry"
           ? `A rota não passa em ${geom.label}`
           : `A rota não entra na área de triagem de ${geom.label} (área não verificada legalmente — ${geom.screeningArea?.method ?? ""})`,
-      evidence: exposure.via === "screeningArea" ? geom.screeningArea?.evidence : geom.resolved?.evidence,
+      evidence:
+        exposure.via === "screeningArea"
+          ? geom.screeningArea?.evidence
+          : geom.resolved?.evidence,
     });
   } else {
     // Time intervals during which the vehicle may be on the element, each with its own
     // shift range: the local passage window (timeline) or, for legacy inputs, ±tolerance.
     const times = input.route.pointTimesMs;
-    const timing = input.route.timing && input.route.timing.expectedMs.length === times.length ? input.route.timing : undefined;
+    const timing =
+      input.route.timing &&
+      input.route.timing.expectedMs.length === times.length
+        ? input.route.timing
+        : undefined;
     let intervals: [number, number][] = [];
     let positions: [number, number][] = [];
     if (exposure.kind === "noRoute") {
       const w = input.route.tripWindowMs;
-      if (w && Number.isFinite(w[0]) && Number.isFinite(w[1]) && w[1] >= w[0]) intervals = [[w[0], w[1]]];
-      locationReasons.push({ kind: "geometry", text: "Geometria da rota indisponível — não é possível saber se a rota usa o troço restrito" });
+      if (w && Number.isFinite(w[0]) && Number.isFinite(w[1]) && w[1] >= w[0])
+        intervals = [[w[0], w[1]]];
+      locationReasons.push({
+        kind: "geometry",
+        text: "Geometria da rota indisponível — não é possível saber se a rota usa o troço restrito",
+      });
     } else if (exposure.kind === "exact") {
-      positions = exposure.runs.map((r) => [r.fromPos, r.toPos] as [number, number]);
-      intervals = exposure.runs.map((r) => [timeAtPos(times, r.fromPos), timeAtPos(times, r.toPos)] as [number, number]);
+      positions = exposure.runs.map(
+        (r) => [r.fromPos, r.toPos] as [number, number],
+      );
+      intervals = exposure.runs.map(
+        (r) =>
+          [timeAtPos(times, r.fromPos), timeAtPos(times, r.toPos)] as [
+            number,
+            number,
+          ],
+      );
     } else {
       positions = indexRanges(exposure.indices);
-      intervals = positions.map(([i, j]) => [times[i]!, times[j]!] as [number, number]);
+      intervals = positions.map(
+        ([i, j]) => [times[i]!, times[j]!] as [number, number],
+      );
       locationReasons.push({
         kind: "geometry",
         text:
@@ -382,33 +615,74 @@ export function evaluateRegulation(
         evidence: geom.legalDescriptionEvidence,
       });
       if (geom.diagnosticHints && input.routeRoadNumbers) {
-        const seen = geom.diagnosticHints.roadNumbers.filter((r) => input.routeRoadNumbers!.includes(r));
+        const seen = geom.diagnosticHints.roadNumbers.filter((r) =>
+          input.routeRoadNumbers!.includes(r),
+        );
         if (seen.length > 0) {
-          locationReasons.push({ kind: "info", text: `Indício (diagnóstico, não decisivo): a rota inclui ${seen.join(", ")} — ${geom.diagnosticHints.note}` });
+          locationReasons.push({
+            kind: "info",
+            text: `Indício (diagnóstico, não decisivo): a rota inclui ${seen.join(", ")} — ${geom.diagnosticHints.note}`,
+          });
         }
       }
     }
 
-    const windows = intervals.map((_, k) => (timing && positions[k] ? getPassageWindow(timing, positions[k]![0], positions[k]![1]) : undefined));
-    const shifts = intervals.map((_, k) => (windows[k] ? [windows[k]!.minShiftMs, windows[k]!.maxShiftMs] : [-tolMs, tolMs]) as [number, number]);
+    const windows = intervals.map((_, k) =>
+      timing && positions[k]
+        ? getPassageWindow(timing, positions[k]![0], positions[k]![1])
+        : undefined,
+    );
+    // A fractional point must not interpolate a mandatory stop across the road segment.
+    intervals = intervals.map((interval, k) =>
+      windows[k]
+        ? ([windows[k]!.expectedFromMs, windows[k]!.expectedToMs] as [
+            number,
+            number,
+          ])
+        : interval,
+    );
+    const shifts = intervals.map(
+      (_, k) =>
+        (windows[k]
+          ? [windows[k]!.minShiftMs, windows[k]!.maxShiftMs]
+          : [-tolMs, tolMs]) as [number, number],
+    );
     let timeTri: Tri = "UNKNOWN";
     let grid: RuleGrid | undefined;
-    if (intervals.length > 0) {
+    if (
+      intervals.length > 0 &&
+      intervals.every(
+        ([a, b]) => Number.isFinite(a) && Number.isFinite(b) && b >= a,
+      )
+    ) {
       const lo = Math.min(...intervals.map((x, k) => x[0] + shifts[k]![0]));
       const hi = Math.max(...intervals.map((x, k) => x[1] + shifts[k]![1]));
       grid = buildGrid(reg, ctx, lo, hi);
-      timeTri = triOr(intervals.map(([a, b], k) => intervalUnderUncertainty(grid!, a, b, shifts[k]![0], shifts[k]![1])));
+      timeTri = triOr(
+        intervals.map(([a, b], k) =>
+          intervalUnderUncertainty(grid!, a, b, shifts[k]![0], shifts[k]![1]),
+        ),
+      );
     }
     const win = windows.filter((w): w is PassageWindow => !!w);
     const windowSummary = win.length
       ? {
-          earliestIso: new Date(Math.min(...win.map((w) => w.earliestMs))).toISOString(),
-          latestIso: new Date(Math.max(...win.map((w) => w.latestMs))).toISOString(),
+          earliestIso: new Date(
+            Math.min(...win.map((w) => w.earliestMs)),
+          ).toISOString(),
+          latestIso: new Date(
+            Math.max(...win.map((w) => w.latestMs)),
+          ).toISOString(),
           // One ETA-margin line (the widest, i.e. the latest stretch) + the distinct other reasons.
           sources: [
             ...new Set([
-              ...win.flatMap((w) => w.uncertaintySources).filter((x) => x.startsWith("margem de ETA")).slice(-1),
-              ...win.flatMap((w) => w.uncertaintySources).filter((x) => !x.startsWith("margem de ETA")),
+              ...win
+                .flatMap((w) => w.uncertaintySources)
+                .filter((x) => x.startsWith("margem de ETA"))
+                .slice(-1),
+              ...win
+                .flatMap((w) => w.uncertaintySources)
+                .filter((x) => !x.startsWith("margem de ETA")),
             ]),
           ],
         }
@@ -422,7 +696,9 @@ export function evaluateRegulation(
     let geometryReason: Reason | undefined;
     if (exposure.kind === "exact" && geom.resolved && intervals.length > 0) {
       exposureSummary = {
-        fromIso: new Date(Math.min(...intervals.map((x) => x[0]))).toISOString(),
+        fromIso: new Date(
+          Math.min(...intervals.map((x) => x[0])),
+        ).toISOString(),
         toIso: new Date(Math.max(...intervals.map((x) => x[1]))).toISOString(),
         lengthM: exposure.matchedLengthM,
         timeZone: reg.when.timeZone,
@@ -446,7 +722,10 @@ export function evaluateRegulation(
       });
     } else if (timeTri === "UNKNOWN") {
       if (intervals.length === 0) {
-        locationReasons.push({ kind: "timing", text: "Sem horários estimados para a passagem" });
+        locationReasons.push({
+          kind: "timing",
+          text: "Sem horários estimados para a passagem",
+        });
       } else {
         const lo = Math.min(...intervals.map((x, k) => x[0] + shifts[k]![0]));
         const hi = Math.max(...intervals.map((x, k) => x[1] + shifts[k]![1]));
@@ -469,49 +748,177 @@ export function evaluateRegulation(
         });
       }
       if (input.route.timesAreEstimates) {
-        locationReasons.push({ kind: "timing", text: `Horário de passagem baseado em ETA estimada — em vigor em toda a ${uncertaintyText}` });
+        locationReasons.push({
+          kind: "timing",
+          text: `Horário de passagem baseado em ETA estimada — em vigor em toda a ${uncertaintyText}`,
+        });
       }
     }
   }
 
   /* 3. Exceptions — any exception that holds lifts the restriction */
-  const exEvals = reg.exceptions.map((x) => ({ x, r: evalCondition(x.condition, ctx) }));
-  const exceptionHolds = triOr(exEvals.map((e) => e.r.value));
+  const exEvals = reg.exceptions.map((x) => ({
+    x,
+    r: evalCondition(x.condition, ctx),
+  }));
+  const baseOutcome = triAnd([target.value, whereWhen]);
+  const applicability: ApplicabilityEvaluation = {
+    base: {
+      outcome: baseOutcome,
+      target: target.value,
+      locationAndTime: whereWhen,
+      predicates: predicateEvaluations(reg.appliesTo, ctx),
+    },
+    exceptions: exEvals.map(({ x, r }) => {
+      const authoritative =
+        x.evidence.length > 0 &&
+        x.evidence.every((id) =>
+          reg.evidence.some(
+            (e) => e.id === id && e.verification === "VERIFIED",
+          ),
+        );
+      const proof = authoritative
+        ? (x.proof ?? "affirmative")
+        : "indeterminate";
+      return {
+        id: x.id,
+        label: x.label,
+        proof,
+        outcome: r.value,
+        // A vacuous condition or an uncited counter-rule is not affirmative exemption evidence.
+        confirmed:
+          proof === "affirmative" &&
+          r.value === "APPLIES" &&
+          r.decisive.length > 0,
+        predicates: predicateEvaluations(x.condition, ctx),
+        reasons: [...r.decisive, ...r.unknowns],
+      };
+    }),
+    reasonCodes: [
+      baseOutcome === "APPLIES"
+        ? "BASE_RULE_APPLIES"
+        : baseOutcome === "DOES_NOT_APPLY"
+          ? "BASE_RULE_NOT_APPLICABLE"
+          : "BASE_APPLICABILITY_UNKNOWN",
+    ],
+  };
+  const confirmedIds = new Set(
+    applicability.exceptions.filter((e) => e.confirmed).map((e) => e.id),
+  );
+  const exceptionHolds: Tri = confirmedIds.size ? "APPLIES" : "DOES_NOT_APPLY";
 
   /* 4. Combine */
-  let outcome = triAnd([target.value, whereWhen, triNot(exceptionHolds)]);
+  const outcome = combineApplicability(
+    baseOutcome,
+    reg.legalStatus,
+    applicability.exceptions,
+  );
   const reasons: Reason[] = [];
 
-  if (outcome === "APPLIES" && reg.legalStatus !== "VERIFIED") {
-    outcome = "UNKNOWN";
-    reasons.push({ kind: "legal_status", text: `Regra legal com estado ${reg.legalStatus} — não pode determinar uma violação` });
+  if (baseOutcome === "APPLIES" && reg.legalStatus !== "VERIFIED") {
+    applicability.reasonCodes.push("LEGAL_SEMANTICS_UNKNOWN");
+    reasons.push({
+      kind: "legal_status",
+      code: "LEGAL_SEMANTICS_UNKNOWN",
+      text: `Regra legal com estado ${reg.legalStatus} — não pode determinar uma violação`,
+    });
+  }
+  for (const e of applicability.exceptions) {
+    const code = e.confirmed
+      ? "EXEMPTION_CONFIRMED"
+      : "EXEMPTION_NOT_ESTABLISHED";
+    applicability.reasonCodes.push(code);
+    if (e.outcome === "UNKNOWN")
+      applicability.reasonCodes.push("EXEMPTION_FACT_UNKNOWN");
+    if (e.proof === "indeterminate" && e.outcome !== "DOES_NOT_APPLY")
+      applicability.reasonCodes.push("LEGAL_SEMANTICS_UNKNOWN");
   }
 
   if (outcome === "DOES_NOT_APPLY") {
     if (target.value === "DOES_NOT_APPLY") reasons.push(...target.decisive);
     if (whereWhen === "DOES_NOT_APPLY") reasons.push(...locationReasons);
     if (exceptionHolds === "APPLIES") {
-      for (const e of exEvals.filter((e) => e.r.value === "APPLIES")) {
-        reasons.push({ kind: "info", text: `Exceção aplicável: ${e.x.label}`, evidence: e.x.evidence });
+      for (const e of exEvals.filter((e) => confirmedIds.has(e.x.id))) {
+        reasons.push({
+          kind: "info",
+          code: "EXEMPTION_CONFIRMED",
+          text: `Exceção aplicável: ${e.x.label}`,
+          evidence: e.x.evidence,
+        });
       }
     }
   } else if (outcome === "UNKNOWN") {
     if (target.value === "UNKNOWN") reasons.push(...target.unknowns);
     if (whereWhen === "UNKNOWN") reasons.push(...locationReasons);
-    if (exceptionHolds === "UNKNOWN") {
+    if (
+      applicability.exceptions.some(
+        (e) => e.proof === "indeterminate" && e.outcome !== "DOES_NOT_APPLY",
+      )
+    ) {
+      reasons.push({
+        kind: "legal_status",
+        code: "LEGAL_SEMANTICS_UNKNOWN",
+        text: "Classificação legal de uma exceção indeterminada — requer revisão.",
+      });
+    }
+    if (applicability.exceptions.some((e) => e.outcome === "UNKNOWN")) {
       for (const e of exEvals.filter((e) => e.r.value === "UNKNOWN")) {
-        reasons.push({ kind: "missing_fact", text: `Exceção por confirmar: ${e.x.label}`, evidence: e.x.evidence });
-        reasons.push(...e.r.unknowns.map((u) => ({ ...u, text: `  · ${u.text}` })));
+        reasons.push({
+          kind: "missing_fact",
+          text: `Exceção por confirmar: ${e.x.label}`,
+          evidence: e.x.evidence,
+        });
+        reasons.push(
+          ...e.r.unknowns.map((u) => ({ ...u, text: `  · ${u.text}` })),
+        );
       }
     }
   } else {
     reasons.push(...target.decisive, ...locationReasons);
     for (const e of exEvals) {
-      reasons.push({ kind: "info", text: `Exceção não aplicável: ${e.x.label}`, evidence: e.x.evidence });
-      reasons.push(...e.r.decisive.map((d) => ({ ...d, text: `  · ${d.text}` })));
+      if (e.r.value === "DOES_NOT_APPLY") {
+        reasons.push({
+          kind: "info",
+          code: "EXEMPTION_NOT_ESTABLISHED",
+          text: `Exceção não aplicável: ${e.x.label}`,
+          evidence: e.x.evidence,
+        });
+        reasons.push(
+          ...e.r.decisive.map((d) => ({ ...d, text: `  · ${d.text}` })),
+        );
+      } else {
+        reasons.push({
+          kind: "info",
+          code:
+            e.r.value === "UNKNOWN"
+              ? "EXEMPTION_FACT_UNKNOWN"
+              : "EXEMPTION_NOT_ESTABLISHED",
+          text: `Isenção não demonstrada: ${e.x.label}. A proibição base está estabelecida; a falta de prova da isenção não a suspende.`,
+          evidence: e.x.evidence,
+        });
+        reasons.push(...e.r.unknowns);
+      }
     }
   }
 
+  // Preserve base evidence even when an exemption defeats it, or a base fact is unknown.
+  reasons.push({
+    kind: "info",
+    code: applicability.reasonCodes[0],
+    text:
+      baseOutcome === "APPLIES"
+        ? "Predicados da proibição base estabelecidos."
+        : baseOutcome === "DOES_NOT_APPLY"
+          ? "A regra base não corresponde ao transporte/passagem."
+          : "Aplicabilidade da regra base por confirmar.",
+  });
+  if (outcome !== "APPLIES")
+    reasons.push(...target.decisive, ...target.unknowns, ...locationReasons);
+  if (exceptionHolds === "APPLIES" && baseOutcome === "APPLIES") {
+    for (const e of applicability.exceptions.filter((e) => e.confirmed))
+      reasons.push(...e.reasons);
+  }
+  applicability.reasonCodes = [...new Set(applicability.reasonCodes)];
   const evidenceIds = [...new Set(reasons.flatMap((r) => r.evidence ?? []))];
   return {
     regulationId: reg.id,
@@ -519,8 +926,12 @@ export function evaluateRegulation(
     regulationVersion: reg.version,
     title: reg.title,
     outcome,
+    applicability,
     reasons: dedupeReasons(reasons),
-    caveats: outcome === "DOES_NOT_APPLY" && target.value === "DOES_NOT_APPLY" ? [] : caveats,
+    caveats:
+      outcome === "DOES_NOT_APPLY" && target.value === "DOES_NOT_APPLY"
+        ? []
+        : caveats,
     evidenceIds,
     exposure: exposureSummary,
   };
@@ -530,9 +941,15 @@ export function evaluateRegulation(
 export function describeWhen(reg: RegulationRecord): string {
   const w = reg.when;
   const parts: string[] = [];
-  if (w.activePeriods) parts.push(w.activePeriods.map((p) => `${p.start.replace("T", " ")} → ${p.end.replace("T", " ")}`).join("; "));
+  if (w.activePeriods)
+    parts.push(
+      w.activePeriods
+        .map((p) => `${p.start.replace("T", " ")} → ${p.end.replace("T", " ")}`)
+        .join("; "),
+    );
   if (w.days) parts.push(w.days.label);
-  if (w.windows) parts.push(w.windows.map((x) => `${x.start}–${x.end}`).join(", "));
+  if (w.windows)
+    parts.push(w.windows.map((x) => `${x.start}–${x.end}`).join(", "));
   return `${parts.join(", ")}; ${w.timeZone}`;
 }
 
@@ -545,7 +962,16 @@ function whenEvidence(reg: RegulationRecord): string[] {
   ];
 }
 
-const WEEKDAY_PT = ["", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado", "domingo"];
+const WEEKDAY_PT = [
+  "",
+  "segunda-feira",
+  "terça-feira",
+  "quarta-feira",
+  "quinta-feira",
+  "sexta-feira",
+  "sábado",
+  "domingo",
+];
 
 function hhmm(minutes: number): string {
   return `${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`;
@@ -554,26 +980,38 @@ function hhmm(minutes: number): string {
 /** "quarta-feira 2026-10-07, 10:12–10:19 (Europe/Lisbon)" */
 /** "HH:MM" local time of an ISO instant (dd/mm added when the day differs is left to formatWindow). */
 export function formatClock(iso: string, timeZone: string): string {
-  return new Intl.DateTimeFormat("pt-PT", { timeZone, hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).format(new Date(iso));
+  return new Intl.DateTimeFormat("pt-PT", {
+    timeZone,
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).format(new Date(iso));
 }
 
 export function formatWindow(e: ExposureSummary): string {
   const a = localParts(Date.parse(e.fromIso), e.timeZone);
   const b = localParts(Date.parse(e.toIso), e.timeZone);
   const day = `${WEEKDAY_PT[a.weekday]} ${a.isoDate}`;
-  const range = a.isoDate === b.isoDate ? `${hhmm(a.minutes)}–${hhmm(b.minutes)}` : `${hhmm(a.minutes)}–${b.isoDate} ${hhmm(b.minutes)}`;
+  const range =
+    a.isoDate === b.isoDate
+      ? `${hhmm(a.minutes)}–${hhmm(b.minutes)}`
+      : `${hhmm(a.minutes)}–${b.isoDate} ${hhmm(b.minutes)}`;
   return `${day}, ${range} (${e.timeZone})`;
 }
 
 function dedupeReasons(rs: Reason[]): Reason[] {
   const seen = new Set<string>();
-  return rs.filter((r) => (seen.has(r.text) ? false : (seen.add(r.text), true)));
+  return rs.filter((r) =>
+    seen.has(r.text) ? false : (seen.add(r.text), true),
+  );
 }
 
 export function summarizeStatus(results: RegulationResult[]): ComplianceStatus {
-  if (results.some((r) => r.outcome === "APPLIES" && r.effect !== "advisory")) return "ROUTE_AFFECTED";
+  if (results.some((r) => r.outcome === "APPLIES" && r.effect !== "advisory"))
+    return "ROUTE_AFFECTED";
   if (results.some((r) => r.error)) return "EVALUATION_ERROR";
-  if (results.some((r) => r.outcome === "UNKNOWN")) return "POTENTIALLY_AFFECTED";
+  if (results.some((r) => r.outcome === "UNKNOWN"))
+    return "POTENTIALLY_AFFECTED";
   return "ROUTE_COMPLIANT";
 }
 
@@ -583,7 +1021,12 @@ function errorResult(reg: RegulationRecord, message: string): RegulationResult {
     regulationVersion: reg.version,
     title: reg.title,
     outcome: "UNKNOWN",
-    reasons: [{ kind: "error", text: `Não foi possível avaliar esta restrição: ${message}` }],
+    reasons: [
+      {
+        kind: "error",
+        text: `Não foi possível avaliar esta restrição: ${message}`,
+      },
+    ],
     caveats: [],
     evidenceIds: [],
     error: message,
@@ -596,6 +1039,9 @@ export function evaluateCompliance(
   opts: EvaluateOptions = DEFAULT_EVALUATE_OPTIONS,
   now: Date = new Date(),
 ): ComplianceReport {
+  // Validate exact geometry content before reusing the spatial index.
+  // Constraints within this evaluation still share one index.
+  prepareRouteGeometry(input.route.points);
   // A malformed route must never read as "not affected": every constraint becomes an error.
   let routeError: string | undefined;
   try {
@@ -612,7 +1058,7 @@ export function evaluateCompliance(
     }
   });
   return {
-    status: summarizeStatus(results),
+    status: routeError ? "EVALUATION_ERROR" : summarizeStatus(results),
     datasetId: dataset.id,
     datasetVersion: dataset.version,
     evaluatedAt: now.toISOString(),

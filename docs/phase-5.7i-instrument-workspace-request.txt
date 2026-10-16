@@ -1,0 +1,196 @@
+FleetOS — Phase 5.7I: Instrument-Driven Operational Workspace & Attention-First Productization
+(Request as supplied by the user, 2026-10-06. Section headings and rules preserved; formatting normalised.)
+
+Mission
+Phase 5.7H successfully preserved and strengthened the semantic workspace architecture: Anchor; Active lenses; Lead lens; Semantic groups; Sparse interaction overrides; Spatial questions; Spatially adaptive map geometry; Temporary takeover; Selection relevance/invalidation; Exact Esc restoration; Cross-domain support; Adaptive information depth.
+Keep those foundations. Do NOT reset the interaction architecture.
+However, the visual review identified a much more fundamental product-design problem: the workspace still looks like one shared template with different content. Different domains have different data, but they still use the same visual container language: eyebrow; title; anchor line; controls top-right; divider; large metric; support card; map block.
+As long as that structure remains dominant, FleetOS will continue to look like a polished wireframe rather than a finished operational product. Phase 5.7I must break that pattern.
+The core design move is: Each lead gets its own operational instrument. Differentiation should come from the geometry of the work itself, not from swapping text inside the same panel.
+
+1. Preserve the semantic workspace
+KEEP: anchor; active lenses; lead; semantic groups; generic interaction contracts; sparse pair overrides; spatial questions; explicit map requests; temporary takeover; selection persistence/invalidation; real history frames; same-page recomposition.
+Do NOT bring back: page-per-domain navigation; random topology generation; one card per lens; floating fallback panels; generic focus modes; fixed domain camera presets.
+
+2. The shared panel template must stop being the default visual primitive
+Current leads/supports repeatedly use: eyebrow, title, anchor, expand/close, divider. This repeated chrome is one of the main reasons the screens look alike. Remove or drastically reduce that structure. A domain should not automatically render as PanelHeader + PanelBody.
+Strong rule: Do not let the visual component hierarchy dictate the product hierarchy.
+
+3. Introduce one persistent Anchor Strip
+Replace repeated Job context/header lines with one shared persistent context strip. Example: J-4217 · Porto → Madrid · Em trânsito · SLA ok · Planeado. It may also communicate: current anchor; lifecycle; plan state; priority; current active lead; quiet lens/context trail where useful. It must remain visually restrained. Do NOT turn it into: a conventional app header; a breadcrumb bar; a large toolbar. Its job is orientation.
+Strong principle: State the transport context once. Do not repeat it inside every region.
+
+4. Lead headings should state the operational answer
+Do not make the main headline merely the entity/domain name. Driver — weak: "Miguel Costa"; better: "Pausa obrigatória até 15:35" with supporting line "Bragança às 14:55 deixa 40 min de margem". Fuel / Route & Stops — weak: "Abastecimento"; better: "Mirandela é a melhor paragem antes da pausa". The lead should foreground the decision or state the operator needs to understand.
+
+5. Supports must stop looking like miniature leads
+Replace support presentation with only three primary forms:
+- Margin note — attached directly to the relevant place in the lead instrument (e.g. Truck range annotation at the Driver planned fuel stop).
+- Fact column — compact structured facts; no full panel header; expand/remove controls may appear on hover/focus.
+- Consequence line — a short statement explaining operational impact plus an action (e.g. "CMR disponível · identidade conferida — View document →").
+Strong principle: Support information should attach to the lead's question, not open a second mini-page.
+
+6. Driver gets a real operational instrument
+Driver is fundamentally temporal. Its primary instrument should be a full operational time axis, not a large 3h42 metric. The axis should be capable of showing: current time / now marker; driving periods; other work; breaks; rest; next planned stop; planned mandatory break; delivery-window relationship; current driving spell; daily usage; weekly usage; legal thresholds; uncertainty/staleness of the hours baseline. Relevant thresholds may include 4h30 continuous driving; daily driving limit; weekly driving state. Do not imply legal certainty from synthetic values.
+
+7. Driver data honesty
+Production driver-hours state is manually entered and can become stale. Do NOT show 3h42 as if it were live telemetry. Show provenance naturally (e.g. "3h42 available · manual baseline · 06:30" or "baseline stale · entered yesterday"). Provenance should be typographic, quiet and understandable — not a giant badge. Driver qualification states must eventually support: licence; CPC; ADR; tachograph card; VALID; EXPIRING; EXPIRED; MISSING; NOT_HELD. Use synthetic values in DEV, but design the information architecture honestly.
+
+8. Driver lead should no longer be dominated by one hero number
+3h42 may remain important, but it should be a value on the temporal instrument. The primary graphic is time progression + constraints + next action, not a metric card.
+
+9. Truck gets a fundamentally different instrument
+Truck must stop looking like Driver with the order reversed. Truck is an asset/capability problem. Create a vehicle/combo elevation instrument (tractor + trailer side elevation) with meaningful annotations: overall length; height; axle positions/count; gross weight; load/capacity; pallet occupancy; trailer type; ADR equipment; emission class; current assignment; availability; maintenance/attention. Preserve and integrate the pallet strip idea.
+
+10. Restriction relationships should appear on the Truck instrument
+Height restriction: a limit line against the vehicle elevation. Weight: actual/assumed vehicle fact beside legal threshold. Axles: highlight the relevant axle rule. Support attached directly to the lead's geometry.
+
+11. Truck readings must show provenance
+Production fuel and odometer are manually measured. "31% / 530 km / 29 L" looks like telemetry — fix it (e.g. "Fuel 31% · manual · 06:30 · depot"). If range is derived from synthetic assumptions, say so. Never visually imply a live signal when there is none.
+
+12. Rename/reframe Fuel as Route & Stops in the lab
+Fuel-stop data is not currently a real production domain. Evolve the lens toward Route & Stops: fuel opportunity; breaks/rest; stop suitability; parking; detour; timing; restrictions; delivery-window impact; route consequences. Do not pretend the stop dataset is production-real.
+
+13. Route & Stops gets a route-strip instrument
+An abstract route strip (Porto ───── Madrid, 0 km … 560 km) carrying: pickup; intermediate stops; selected candidate; fuel candidates; break/rest window; delivery window; restrictions; route incidents; current resource position; destination. Detours may branch as short spurs. Not a replacement for the map; it is the operational instrument.
+
+14. Route & Stops must foreground trade-offs
+Show: arrival; route km; detour; fuel cost; required break compatibility; parking; restriction impact; available margin. Make the system recommendation visually distinct from operator selection and alternatives. Selection must NOT rely only on green fill.
+
+15. Documents keeps the paper, but becomes a dossier system
+Requirements ledger (issued; missing; cannot issue yet; void; draft where applicable), CMR, invoices, numbering/series, relationship to Job/resources. Snapshot vs current: production documents use immutable issued snapshots — distinguish issued snapshot vs current operational data.
+
+16. Document preview should not consume half the workspace by default
+Give ledger/status/history more importance. Preview can scale, become a secondary column, or expand via temporary detail takeover.
+
+17. Restrictions gets a logic instrument
+Start from "Does this restriction apply?" Represent conditions as ✓ known satisfied / ✕ known not satisfied / ? missing-unknown. Then show missing facts; exemptions; authorisations; legal source; validity window; verification state; operational impact.
+
+18. Do not use "Compatible" as an overconfident generic answer
+Production semantics: APPLIES; DOES_NOT_APPLY; UNKNOWN, with trust/verification state. The UI must be able to say "Unknown — first axle height missing".
+
+19. Show evidence/provenance naturally in Restrictions
+e.g. "DL 155-A/2026 · art. 2–3 · official · verified" or "interpreted · source updated 2d ago". Calm and readable.
+
+20. Reserve the visual language for Plan now
+Do NOT implement the full Plan lens yet. Plan is comparative (Route A/B/C aligned against common axes: time; cost; restriction impact; driver feasibility; empty km; margin). The visual system must not block this.
+
+21. Base state becomes Attention-first
+Answer "What needs me?" instead of "What transports exist?": BLOCKERS; ACTION REQUIRED; RISK; then IN PROGRESS. Calm; not a notification center.
+
+22. Attention items should be direct entry points
+e.g. "J-4217 · REPLAN_REQUIRED · route facts changed": selecting sets anchor, activates relevant lenses, chooses the lead and the spatial question. Expiring Driver qualification → Driver lead. Road restriction conflict → Restrictions or Plan context.
+
+23. Base map should become honest fleet context
+Known positions; simulated positions; unknown positions. Unknown must not be silently placed on the map. Simulated positions visually marked. Synthetic data explicitly in the lab.
+
+24. Create a real visual language for status
+Selection: ink outline / typography weight / subtle marker (not success green). OK: muted green. Risk: amber. Action required: vermilion. Blocker: deep red. Unknown: dashed or hatched. Stale: reduced intensity + clock/time. Simulated/demo: dotted typographic underline or equivalent. Must work across Driver, Truck, Route & Stops, Documents, Restrictions, Attention.
+
+25. Provenance should be typography, not badge soup
+e.g. "31% · manual · 06:30", "Driver hours · baseline entered · today 06:30", "Simulated location". Avoid a pill/badge for every fact.
+
+26. Typography overhaul
+A strong grotesk for general UI; tabular figures for time/numbers; optional mono/technical styling for IDs. Differentiate prose; Job IDs; plates; times; distances; legal references. Plates read as plates. IDs do not look like prose.
+
+27. Remove most small-caps eyebrows
+Reserve small caps for the anchor strip and rare group labels.
+
+28. Fix wide-screen typography
+Do not place label and value 1000+ px apart. Use label above value; local grouped facts; controlled label column widths; logical clusters.
+
+29. Restyle the TomTom map
+Quieter land; less saturated roads; restrained labels; stronger hierarchy for operational overlays. Not monochrome to the point of losing readability.
+
+30. Stop using straight-line fake routes where road-following geometry exists
+Use recorded TomTom route fixtures or existing restriction geometries. If necessary move the synthetic Job corridor to one represented by fixture geometry; clearly mark remaining synthetic geometry. A visually beautiful fake road line is still worse than a plain honest route.
+
+31. Restriction geometry must follow roads
+Do not draw RI-042 as an arbitrary straight bar. Use stored road geometry.
+
+32. Make the spatial question visible
+A quiet map-context label (e.g. "Próxima etapa · Amarante → Bragança · 112 km"; "Restrição · segmento A4 · access condition").
+
+33. Reduce prominence of "Expand map"
+Quiet icon/action; contextual spatial controls; low-friction keyboard option. The map's question is more prominent than Expand.
+
+34. Rail redesign
+Group by semantic group: Operation (Jobs, eventually Plan); Resources (Driver, Truck, eventually Trailer); Journey (Route & Stops, Restrictions); Assurance (Documents, eventually Compliance). Spacing/separators, not large labels.
+
+35. Active versus lead in the rail
+Active lens = subtle dot/mark; lead = stronger filled treatment.
+
+36. Remove DEV tools from the domain rail
+Stress, exception toggles, matrix/debug, Reset → DEV drawer or separate DEV surface.
+
+37. Related-domain links must stop looking like a footer
+Integrate them contextually: on the Driver timeline; beside a Truck fact; inside the restriction logic; beside a stop on Route & Stops.
+
+38. Cross-domain transitions must reflect instrument changes
+Driver → Documents: the temporal instrument recedes; dossier/paper/ledger emerges; anchor strip stays; supports attach to the new instrument.
+
+39. Motion should explain the change of question
+Lead transfer; support becoming annotation; map changing role; timeline becoming secondary; dossier entering; takeover expanding. Preserve map resize/camera choreography.
+
+40. 1920 must gain structure, not whitespace
+Driver: temporal instrument; next action; consequences in parallel. Truck: elevation; capability/spec; execution. Documents: ledger; document; history/snapshot. Do not center a 900 px workspace.
+
+41. 1199 behavior
+Fact columns collapse into margin notes; instrument remains primary; lower-priority detail moves into controlled scrolling; map shape changes appropriately. Do not convert everything into vertical cards.
+
+42. Jobs collection must become operationally deeper
+Synthetic lifecycle state; priority; SLA; plan status; REPLAN_REQUIRED; blockers; multiple stops; windows.
+
+43. Selected Job becomes Transport Overview
+anchor = job, lead = Jobs is presented as Transport Overview (a representation change, not a new domain).
+
+44. Transport Overview must become richer
+Lifecycle; plan state; priority/SLA; route/stops; cargo summary; assigned resources; open exceptions; documents status; next human action. One strong transport narrative, not a dashboard.
+
+45. Design for multi-stop Jobs now
+Pickup; delivery; intermediate stop; dated time window; completion state — influencing Transport Overview, Route & Stops, Driver, future Plan.
+
+46. Cargo must exist visually
+Cargo lines; pallets; weight; optional ADR; optional temperature — influencing Truck capability and Restrictions support. Do not connect production data yet.
+
+47. Attention-first base state
+A serious prototype with blockers; action required; risk; active work. Each item answers: What happened? Why does the operator care? What needs to happen next? Selecting one enters the relevant workspace.
+
+48. Avoid notification-center aesthetics
+Not cards with red icons, feeds or alert-bell pages. Operational triage: concise rows; grouped severity; strong next-action wording; spatial relationship where relevant.
+
+49. Editing — design only, minimal implementation
+No full CRUD. Edit on the lead's instrument where possible: Driver — move/replan break on time axis; Route & Stops — choose alternative stop; Truck — compare/replace assigned resource.
+
+50. Pending-change bar
+A bottom change-commit surface showing: what changed; consequence; whether Job becomes REPLAN_REQUIRED; whether uncertainty must be accepted; what event/history entry will be created; Confirm / Cancel. Lightweight prototype.
+
+51. Record creation remains takeover-based
+Not solved in this phase.
+
+52. Data-honesty visual states
+Every instrument must be able to represent KNOWN, UNKNOWN, ASSUMED, STALE, SIMULATED, UNCERTAIN, ERROR, LOADING, EMPTY.
+
+53. Required visual scenes
+Shared: 1 anchor strip; 2 rail with groups; 3 data-honesty visual system.
+Driver: 4 time instrument normal; 5 next required break; 6 stale/manual baseline; 7 critical margin; 8 + document support.
+Truck: 9 elevation; 10 load/capacity; 11 relevant restriction; 12 manual fuel reading/provenance.
+Route & Stops: 13 route strip; 14 candidate comparison; 15 selected stop; 16 break/rest relationship; 17 restriction on route.
+Documents: 18 dossier + ledger; 19 snapshot vs current; 20 selected document detail.
+Restrictions: 21 logic tree known/unknown; 22 exemption/authorization; 23 restriction + actual road geometry.
+Jobs/Attention: 24 attention-first base; 25 Jobs collection lifecycle/SLA/plan; 26 Transport Overview.
+Cross-domain: 27 Driver → Documents; 28 Truck → Restrictions; 29 Route & Stops → Driver.
+Map: 30 restyled TomTom map; 31 map takeover using road-following route geometry.
+
+54. Side-by-side design test — contact sheet of Driver, Truck, Route & Stops, Documents, Restrictions without external labels; distinction from geometry, instrument, hierarchy, relationships — not headings.
+55. Remove-the-title test — hide each lead's domain title; can you still tell the work? If not, redesign.
+56. Data-honesty test — stale Driver baseline; manual Truck reading; simulated location; unknown restriction applicability; uncertain planning assumption — understandable without badge noise.
+57. Map trust test — no final screenshot with route/restriction geometry that visibly ignores the road unless labelled illustrative.
+58. Visual quality bar — "Would I be comfortable using this on the product website?"
+59. Do not integrate production state yet — DEV adapters/fixtures; synthetic shapes derived from the production domain model.
+60. Do not build Plan yet.
+61. Engineering — preserve semantic tests, map persistence, Esc/history, selection invalidation, DEV isolation. Run full test suite, typecheck, lint, build. Targeted tests only where needed.
+62. Visual review before completion — look for repeated panel chrome; giant metric repetition; green overuse; empty wide layouts; support panels as mini-pages; fake route geometry; weak typographic contrast; unclear provenance; Driver/Truck mirroring; unnecessary map prominence.
+
+Success condition: the workspace looks like one coherent FleetOS visual system containing several distinct operational instruments — Driver recognisable by time; Truck by vehicle/capability geometry; Route & Stops by route progression and stop decisions; Documents by dossier/paper/ledger; Restrictions by condition/evidence logic; Transport Overview as the operational truth of one transport; Attention as human work remaining. Supports no longer look like mini-pages; the map belongs to FleetOS; road geometry is trustworthy; provenance is visible without clutter; unknown/stale/simulated values are honest; wide screens gain structure; narrow screens retain hierarchy; the rail communicates semantic groups; the anchor appears once; all 5.7G/H semantic behaviour is preserved.
+Stop after DEV visual review. Do not integrate production state. Do not implement full Plan yet.

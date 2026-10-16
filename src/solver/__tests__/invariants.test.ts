@@ -57,7 +57,8 @@ describe("Phase 3C.5 — the 18 invariants (spec numbering)", () => {
   it("INV-2 an AFFECTED route cannot be confirmed (no decision record is produced)", () => {
     expect(createComplianceRecord({ liveReport: { status: "ROUTE_AFFECTED" } } as never)).toBeNull();
     expect(createComplianceRecord({ liveReport: { status: "EVALUATION_ERROR" } } as never)).toBeNull();
-    const planner = raw(import.meta.glob<string>("../../components/dispatch/JobRoutePlanner.tsx", { query: "?raw", import: "default", eager: true }));
+    // The planning logic lives in the shared session hook used by Dispatch and the studio.
+    const planner = raw(import.meta.glob<string>("../../components/dispatch/useRoutePlanningSession.ts", { query: "?raw", import: "default", eager: true }));
     expect(planner).toMatch(/complianceBlocks = selectedCompliance\?\.status === "ROUTE_AFFECTED"/);
     expect(planner).toMatch(/canConfirmRoute =[\s\S]{0,120}!complianceBlocks/);
   });

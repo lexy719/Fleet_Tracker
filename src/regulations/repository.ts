@@ -5,7 +5,7 @@ import type { Condition, GeometryRecord, RegulationDataset, RegulationRecord } f
 /** Bump when any seeded record changes; persisted with every route decision. */
 export const REGULATION_DATASET: RegulationDataset = {
   id: "fleetos-regulations-pt",
-  version: "2026-09-30.2",
+  version: "2026-10-05.3",
   regulations: PT_REGULATIONS,
   geometries: PT_GEOMETRIES,
   areas: PT_AREAS,

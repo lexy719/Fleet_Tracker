@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { CalendarRange, Map as MapIcon, PanelRightClose, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { JobRoutePlanner } from "../components/dispatch/JobRoutePlanner";
+import { AutomaticJobPlanner } from "../components/dispatch/AutomaticJobPlanner";
 import { RoutePlannerMap, type RouteMapMarker } from "../components/routes/RoutePlannerMap";
 import { useFleetData } from "../context/FleetDataContext";
 import { useJobs } from "../context/JobsContext";
@@ -178,7 +178,7 @@ export function DispatchPage() {
         {/* Planner */}
         <div className="flex min-w-[560px] flex-[1.25] flex-col border-r border-[var(--border)] bg-[var(--surface)]" data-testid="dispatch-decision">
           {selectedJob && plannable ? (
-            <JobRoutePlanner
+            <AutomaticJobPlanner
               key={selectedJob.id + ":" + selectedJob.revision}
               job={selectedJob}
               onRoutesReady={handleRoutesReady}
@@ -196,7 +196,7 @@ export function DispatchPage() {
           ) : (
             <EmptyState
               title="Selecione um trabalho"
-              detail="Escolha um trabalho da fila para escolher recursos, comparar rotas, verificar e confirmar."
+              detail="Escolha um trabalho da fila para obter um plano automático, verificar os recursos e confirmar."
               action={<Button onClick={() => ed.openJob()}>Novo trabalho</Button>}
             />
           )}

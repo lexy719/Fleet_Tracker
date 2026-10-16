@@ -1,0 +1,859 @@
+FleetOS — Phase 5.7H: Product-Grade Adaptive Workspace, Spatial Composition & Domain Information Architecture
+Mission
+Phase 5.7G successfully established the semantic interaction layer:
+- Anchor
+- Active lenses
+- Lead lens
+- Semantic groups
+- Participation contracts
+- Guided composition families
+- Interaction graph
+- Cross-domain transitions
+- Selection persistence
+- Spatial questions
+- Explicit map intent
+- Temporary takeover
+- Exact Esc/history restoration
+These foundations must be preserved.
+Do NOT reset the architecture.
+However, the current workspace is still visibly a laboratory.
+The semantic behavior is improving faster than the actual product experience.
+Many states still look:
+- visually basic;
+- under-dense;
+- repetitive;
+- too similar across domains;
+- dominated by a small number of spatial arrangements;
+- overly dependent on HORIZONTAL_JOURNEY;
+- correct in camera framing but weak in map-region shape;
+- too close to “title + metric + rows + map strip”.
+Phase 5.7H must change that.
+This is the first phase where proof-of-concept visual quality is no longer acceptable.
+The workspace must begin to look and behave like a finished operational product for a professional fleet operator.
+1. New acceptance standard
+From this phase onward:
+passing tests is necessary but not sufficient.
+preserving state is necessary but not sufficient.
+selecting the correct spatial question is necessary but not sufficient.
+the correct camera bounds are necessary but not sufficient.
+The UI must also:
+- use space intelligently;
+- have strong information hierarchy;
+- feel specific to the task;
+- show realistic operational depth;
+- have clear relationships between information;
+- look deliberate at first glance.
+Strong rule:
+Do not confuse architectural correctness with product quality.
+2. Critical visual failure condition
+Put these screenshots side by side:
+- Driver lead
+- Truck lead
+- Fuel lead
+- Restrictions lead
+- Documents lead
+If they look like:
+same layout
++
+different title
++
+different numbers
+
+the phase has failed.
+Strong rule:
+If different operational questions look like the same screen with different labels, the design is not finished.
+3. Preserve semantic architecture
+KEEP:
+Anchor
+Active lenses
+Lead
+Semantic groups
+Participation contracts
+Composition families
+Spatial questions
+Explicit map actions
+Temporary takeover
+Selection persistence
+Real history frames
+Same-page recomposition
+
+Do not reintroduce:
+- one page per domain;
+- random layout generation;
+- floating fallback;
+- fixed focus templates;
+- one visible card per lens.
+4. Interaction Graph scalability
+Phase 5.7G defines 30 directed domain pairs across six major domains. This was useful for proving behavior, but it must not become the permanent scaling model.     FleetOS-5.7G-Relatorio-Visual-C…
+As FleetOS grows, a complete directed graph becomes too expensive:
+6 domains → 30 directed pairs
+8 domains → 56
+10 domains → 90
+12 domains → 132
+
+Refactor the Interaction Graph into:
+generic lens contracts
++
+semantic-group rules
++
+sparse pair-specific overrides
+
+Generic behavior should be derived from:
+- source semantic group;
+- target semantic group;
+- current anchor;
+- current lead;
+- selected entities;
+- relevance.
+Only use pair-specific overrides when the relationship genuinely requires special behavior.
+Example:
+Resources → Assurance
+
+should provide a useful generic relationship.
+Driver → Documents may then add Driver-specific content only where necessary.
+Strong principle:
+The interaction graph should become sparse specialization, not a complete mandatory matrix.
+5. Preserve the existing 30 pairs as evidence
+Do NOT throw away the existing contracts.
+Use them as a behavior dataset.
+For each current pair:
+classify whether its behavior can be explained by:
+- generic group rule;
+- generic target-lens rule;
+- anchor rule;
+- true pair-specific override.
+Produce a DEV diagnostic showing:
+generic
+inherited
+overridden
+
+The goal is to prove that future domains do not require N×N manual behavior.
+6. Spatial questions must influence map geometry, not only camera
+This is one of the most important changes in this phase.
+Phase 5.7G correctly made camera framing depend on the spatial question.     FleetOS-5.7G-Relatorio-Visual-C…
+Now extend the model.
+A spatial question should influence:
+camera
++
+map-region shape
++
+map prominence
++
+map position
+
+Strong rule:
+The correct camera inside the wrong-shaped map is still the wrong experience.
+7. Spatial presentation contracts
+Introduce a presentation preference for each spatial question.
+Not fixed geometry.
+A preferred spatial character.
+Example:
+CURRENT_ENTITY
+Good shapes:
+- compact square;
+- portrait local map;
+- small contextual map.
+Usually does NOT need:
+- huge route-wide map.
+NEXT_LEG
+Good shapes:
+- medium corridor;
+- wide local route;
+- supporting horizontal map.
+FULL_ROUTE
+Often prefers:
+- wide landscape region;
+- larger route-oriented map;
+- potentially dominant spatial region.
+Avoid squeezing a long Porto–Madrid route into a narrow portrait map unless layout constraints genuinely require it.
+ROUTE_AND_STOP
+Often benefits from:
+- wide route relationship;
+- enough room to show route + station + detour.
+AFFECTED_SEGMENT
+Often benefits from:
+- square/large local area;
+- strong road visibility.
+MULTI_ENTITY
+Often benefits from:
+- broad overview map;
+- potentially dominant geography.
+NONE
+Map hidden.
+These are design affinities, not hardcoded dimensions.
+8. Spatial question may trigger a composition-family variation
+Same lead, different spatial question may justify a different physical composition.
+Example Driver:
+Driver + CURRENT_ENTITY
+
+could use:
+compact local map left
++ Driver work area right
+
+while:
+Driver + FULL_ROUTE
+
+could use:
+Driver area upper/left
++ broad map below
+
+or another authored arrangement.
+Do not force all Driver spatial questions into the same map container.
+9. Composition families need internal variation
+Do NOT solve repetition by adding 12 new families.
+Keep the six existing families as conceptual structures.
+But allow each family to support authored sub-arrangements.
+Example:
+HORIZONTAL_JOURNEY
+should support different valid arrangements such as:
+lead above / map below
+map above / lead below
+lead + support above / map full width below
+map wide center band
+map bottom 30%
+map bottom 45%
+asymmetric lead/support above map
+
+Selection between sub-arrangements must depend on:
+- spatial question;
+- lead;
+- viewport;
+- information density;
+- number of supporting semantic groups.
+Not random.
+Strong principle:
+A composition family is a language, not one exact layout.
+10. HORIZONTAL_JOURNEY repetition must be explicitly reviewed
+Phase 5.7G still resolves many states to HORIZONTAL_JOURNEY.
+Audit every use of it.
+For each state ask:
+- Is this family genuinely the best answer?
+- Is the map shape appropriate?
+- Is another family better?
+- Can the same family use a different authored sub-arrangement?
+Do NOT change a family only for diversity.
+But do not keep it merely because it already exists.
+11. Domain-specific information architecture
+This phase must significantly deepen the actual domain content.
+Current synthetic content is sufficient for architecture testing, but no longer sufficient for visual/product evaluation.
+Still use synthetic DEV data.
+Do not integrate production repositories yet.
+But design each domain as if it will eventually receive real operational data.
+12. Driver — product-grade information architecture
+Driver lead should feel fundamentally temporal and operational.
+Build meaningful structures for:
+- current activity;
+- current duty state;
+- driving used / remaining;
+- timeline of driving/work/break/rest;
+- next required break;
+- next planned stop;
+- next Job/leg;
+- current Job;
+- assigned Truck;
+- assigned Trailer;
+- ETA / next window;
+- relevant restriction;
+- Fuel stop relationship;
+- documents/status;
+- exception state.
+Not all information must appear simultaneously.
+Adapt according to:
+- size;
+- spatial question;
+- active lenses;
+- exception state.
+A wide Driver workspace should gain meaningful depth.
+It must not simply stretch:
+3h42
+timeline
+truck
+
+into a huge empty page.
+13. Driver visual identity
+Driver should visually feel:
+- time-oriented;
+- execution-oriented;
+- human/resource-oriented.
+Consider:
+- timeline emphasis;
+- next-action hierarchy;
+- temporal progression;
+- duty blocks;
+- current vs upcoming state.
+Do not turn it into a generic profile page.
+14. Truck — product-grade information architecture
+Truck lead should feel asset/execution oriented.
+Useful synthetic content:
+- truck identity;
+- registration;
+- current assignment;
+- Driver;
+- Trailer;
+- current load;
+- gross/capacity context;
+- fuel level;
+- range;
+- consumption;
+- current position;
+- next stop;
+- route;
+- maintenance/attention status;
+- restriction compatibility;
+- availability state;
+- current execution progress.
+Again:
+information density should adapt to available size.
+15. Driver and Truck must not become mirrored screens
+Driver and Truck share the Resources group, but should not look like:
+Driver:
+Driver first
+Truck second
+
+Truck:
+Truck first
+Driver second
+
+with everything else identical.
+Driver is fundamentally temporal/person-execution.
+Truck is fundamentally asset-capability/execution.
+Their lead representations must reflect that difference.
+16. Fuel — product-grade information architecture
+Fuel must become a real decision workspace.
+Use synthetic data to support:
+- candidate station comparison;
+- price;
+- detour;
+- ETA;
+- route position;
+- estimated liters;
+- estimated spend;
+- parking capacity;
+- rest compatibility;
+- facility suitability;
+- selected station;
+- recommended station;
+- why it is recommended;
+- Truck range;
+- Driver timing;
+- Restrictions;
+- documentation/authorization state.
+Do not claim these are real recommendations.
+Label them clearly as DEV/synthetic where needed.
+17. Fuel needs stronger decision hierarchy
+Fuel should make visually obvious:
+recommended
+alternatives
+trade-offs
+selected option
+operational consequence
+
+Not just:
+three station rows
+
+The UI should help the operator understand why one station is better.
+18. Restrictions — product-grade information architecture
+Restrictions lead should expose:
+- restriction identity;
+- type;
+- source;
+- status;
+- affected segment;
+- time validity;
+- applicability;
+- vehicle/Job relevance;
+- operational impact;
+- whether it blocks or advises;
+- related Job/Fuel/Truck context.
+It must feel like operational road intelligence, not a generic list.
+Keep all restriction data synthetic in this lab.
+Do not pretend legal applicability is real.
+19. Documents — product-grade information architecture
+Documents should support:
+- required document list;
+- present/missing;
+- status;
+- type;
+- relation to Job;
+- relation to Driver;
+- relation to Truck;
+- preview;
+- selected document;
+- basic metadata;
+- approval/status;
+- timeline/history placeholder if useful.
+Documents lead should feel like a serious operational/document workspace, not:
+document preview
++
+empty canvas
+
+20. Jobs / selected Job semantics
+Clarify the semantic difference between:
+Jobs collection
+selected Job
+Job overview
+
+Once J-4217 becomes the Anchor:
+avoid ambiguous UI where:
+anchor = J-4217
+lead = Jobs
+
+is visually unclear.
+Consider whether the selected-Job version should be presented as:
+Overview
+
+or another contextual representation while retaining Jobs as the underlying lens.
+Do not rename blindly; solve the conceptual ambiguity.
+21. Information density must respond to gained space
+Strong rule:
+When a domain gains meaningful space, its information architecture should gain useful depth.
+Do not merely increase margins.
+Example:
+Driver with map hidden should not leave huge empty regions while useful Driver information remains hidden.
+Use progressive information depth:
+INLINE
+SUPPORT
+WORKING
+LEAD
+DEEP LEAD
+
+Naming can differ.
+These are not arbitrary variants.
+They represent real information-depth levels.
+22. But do not fill every pixel
+Preserve FleetOS restraint.
+We still want:
+- breathing room;
+- hierarchy;
+- calmness;
+- clean typography;
+- intentional negative space.
+The target is:
+dense where useful
+calm where possible
+
+not:
+dashboard full of cards
+
+23. Replace dead white space with structure, not decoration
+If empty space exists and more useful information would improve the operator's decision:
+deepen the information.
+Do NOT fill it with:
+- decorative charts;
+- meaningless cards;
+- giant icons;
+- fake analytics;
+- visual noise.
+Every additional element must answer an operational question.
+24. Selection persistence must now test invalidation
+5.7G successfully demonstrated selection persistence, particularly F-07.     FleetOS-5.7G-Relatorio-Visual-C…
+Now test when selections must clear.
+Add rules for:
+persistsIfRelevant
+invalidIfAnchorChanges
+invalidIfLensRemoved
+invalidIfEntityNoLongerRelated
+invalidIfNewSelectionConflicts
+
+Test:
+- change Job;
+- remove Fuel;
+- switch to unrelated resource;
+- select incompatible restriction;
+- change Truck if selected Fuel stop is no longer relevant.
+No stale selection should survive just because it exists in state.
+25. Selection relevance should be explicit
+Add DEV diagnostics explaining:
+selection kept because...
+selection cleared because...
+
+This should be deterministic.
+26. Cross-domain support states need visual polish
+Example:
+Driver + Documents support currently proves the semantic behavior.
+Now improve presentation.
+Supporting Documents inside Driver should look intentionally integrated:
+- clear relation;
+- compact status;
+- no oversized card;
+- potentially actionable.
+Same for:
+- Driver + Fuel;
+- Truck + Fuel;
+- Fuel + Documents;
+- Restrictions + Driver.
+27. Micro-interactions
+Add product-grade interaction detail:
+- selected row state;
+- hover hierarchy;
+- relation highlighting;
+- subtle motion when information becomes lead;
+- map marker ↔ row synchronization;
+- selected station ↔ map marker synchronization;
+- restriction ↔ affected segment synchronization;
+- Driver/Truck relation highlighting;
+- document selection feedback.
+Do not overanimate.
+Motion should explain state change.
+28. Map/content linking
+When an item has geography:
+hovering/selecting it should optionally influence map emphasis.
+Examples:
+Fuel station row:
+highlight station marker
+
+Restriction row:
+highlight affected segment
+
+Job:
+highlight route
+
+Driver:
+highlight current position
+
+This should not automatically change the spatial question unless the action requests that.
+29. Map controls need product-grade hierarchy
+Continue to support contextual map actions:
+- Current location
+- Next leg
+- Full Job
+- Selected stop
+- Restriction
+- Expand map
+- Fit
+But improve how these controls are presented.
+Avoid a row of generic debug-like buttons.
+Their availability should depend on current context.
+The primary spatial action should be obvious.
+Secondary spatial questions can live in a compact contextual control.
+30. Map takeover presentation
+Architecture is correct and should remain.
+Improve the product presentation.
+During takeover:
+- clearly communicate what geography is being shown;
+- preserve minimal operational identity;
+- preserve current selection;
+- provide low-friction return;
+- avoid cluttering fullscreen geography with unnecessary UI.
+Example:
+J-4217 · Driver
+Next leg → F-07
+
+could remain as a minimal spatial context indicator.
+Do not create a heavy header.
+31. Spatial takeover transition
+Map takeover must visually grow from the existing map region where possible.
+Camera and geometry should transition together.
+Returning should feel like the map re-enters the workspace, not like a new screen disappears.
+Preserve interruption/reversal behavior.
+32. Composition transition quality
+Improve transitions between lead changes.
+Example:
+Driver → Documents
+
+should visually communicate:
+- Driver information compresses toward identity/status;
+- document workspace gains prominence;
+- map recedes/disappears if no longer useful;
+- assurance content expands.
+Avoid:
+fade old screen
+render new screen
+
+The user should perceive continuity.
+33. Domain identity without visual fragmentation
+Each lead needs a distinct information character.
+But FleetOS must still feel like one product.
+Preserve:
+- typography;
+- spacing language;
+- restrained borders;
+- off-white neutral canvas;
+- green operational accent;
+- rail language;
+- map visual treatment.
+Vary:
+- hierarchy;
+- content structure;
+- density;
+- map relationship;
+- direction of information flow.
+Do not vary:
+- brand identity randomly.
+34. Avoid “premium wireframe”
+Current screenshots are clean, but often still feel like refined wireframes.
+Improve:
+- typographic hierarchy;
+- numeric emphasis;
+- selected-state contrast;
+- spacing rhythm;
+- dividers;
+- information grouping;
+- context cues;
+- operational status treatment.
+Avoid:
+- large shadows;
+- glass;
+- gradients everywhere;
+- giant cards;
+- sci-fi styling.
+FleetOS should look expensive because of structure and precision.
+35. Operational exception treatment
+Keep exception promotion from 5.7F.
+Improve its presentation.
+Exceptions should:
+- interrupt hierarchy appropriately;
+- remain connected to the affected entity;
+- explain why they matter;
+- potentially influence map emphasis;
+- not automatically replace the current lead.
+Example:
+Driver remaining time critical:
+- Driver support gains prominence;
+- Fuel recommendation may change emphasis;
+- NEXT_LEG map remains contextual.
+36. Responsive product behavior
+Validate:
+- 1199×900
+- 1440×900
+- 1920×1080
+Do not only scale dimensions.
+Information depth may change.
+Example:
+at 1199px:
+- some support may become inline;
+- lower-priority detail may collapse.
+at 1920px:
+- wider comparison;
+- richer Driver timeline;
+- more complete Documents workspace;
+- map geometry may change.
+37. Wide desktop must use width meaningfully
+1920×1080 should not merely:
+add more whitespace
+
+Use width for:
+- richer comparison;
+- parallel information;
+- longer timelines;
+- clearer relationships;
+- better map shape.
+But do not make everything full width.
+38. Narrow desktop must remain usable
+1199×900 should not become:
+tiny text
++
+endless cards
+
+Use:
+- inline support;
+- purposeful scrolling;
+- reduced secondary detail;
+- different map proportions.
+39. Jobs collection must remain strong
+Preserve successful Jobs adaptive behavior.
+Continue improving:
+- narrow list;
+- medium operational list;
+- wide multi-column;
+- expanded collection;
+- selected Job.
+Jobs should remain one of the strongest reference implementations for adaptive information architecture.
+40. Required product-grade scenes
+Produce visually polished versions of:
+Driver
+1. Driver lead + CURRENT_ENTITY
+2. Driver lead + NEXT_LEG
+3. Driver lead + FULL_ROUTE
+4. Driver lead + map hidden
+5. Driver lead + critical driving exception
+Truck
+6. Truck lead + current location
+7. Truck lead + full Job
+8. Truck lead + Fuel reachability
+9. Truck lead + relevant restriction
+Fuel
+10. Fuel comparison / candidates
+11. Fuel selected station
+12. Fuel selected station + Driver timing
+13. Fuel route/detour context
+Documents
+14. Documents lead
+15. Documents + explicit map
+16. selected document takeover
+Restrictions
+17. exact affected segment
+18. restriction relative to Fuel stop
+19. all relevant restrictions on Job route
+Cross-domain
+20. Driver + Documents support
+21. Driver → Documents lead
+22. Fuel → Driver lead
+23. Restrictions → Driver
+Spatial
+24. Map takeover from Driver
+25. Map takeover from Fuel
+26. return from takeover
+41. Screenshot quality gate
+For every required screenshot ask:
+Would this look credible in a product launch page?
+
+If the answer is:
+“It proves the architecture”
+
+but not:
+“It looks like a finished product”
+
+keep iterating.
+42. Side-by-side differentiation test
+Create a contact sheet containing:
+Driver
+Truck
+Fuel
+Documents
+Restrictions
+
+No labels outside the actual UI.
+A reviewer should be able to tell which operational task each screen represents from the information architecture alone.
+If not, redesign.
+43. Map-shape acceptance test
+Create another comparison:
+CURRENT_ENTITY
+NEXT_LEG
+FULL_ROUTE
+ROUTE_AND_STOP
+AFFECTED_SEGMENT
+
+The map regions should not simply have different zoom levels.
+Their physical shape/prominence should make sense for the question.
+Strong rule:
+Spatial semantics must be visible in the workspace geometry.
+44. Interaction Graph migration acceptance
+Report:
+- current number of pair-specific overrides;
+- current number of relationships handled generically;
+- semantic-group rules;
+- examples of inherited behavior.
+Goal:
+adding a future domain should NOT require explicit implementation of every directed relationship.
+45. Selection invalidation acceptance
+Demonstrate:
+F-07 preserved when relevant
+F-07 cleared when Fuel removed
+F-07 cleared when anchor Job changes
+selected restriction cleared when context changes
+selected document cleared when Documents removed
+selected resource preserved/cleared according to contract
+
+46. Browser interaction acceptance
+Exercise:
+- hover;
+- click;
+- select;
+- lead change;
+- map question change;
+- takeover;
+- Esc;
+- lens add/remove;
+- anchor change;
+- exception promotion;
+- selection invalidation.
+Test at:
+- 1199×900
+- 1440×900
+- 1920×1080
+47. Motion acceptance
+Observe and document:
+- Driver → Documents
+- Fuel → Driver
+- map compact → takeover
+- takeover → restore
+- CURRENT_ENTITY → FULL_ROUTE
+- map visible → hidden
+- hidden → explicit Open map
+Reject:
+- late map snaps;
+- disconnected fades;
+- content teleporting;
+- layout flashes.
+48. Performance
+Do not compromise interaction responsiveness.
+Measure:
+- transition duration;
+- map resize behavior;
+- expensive rerenders;
+- map renderer stability;
+- scroll performance for dense content.
+A product-grade workspace must still feel immediate.
+49. Engineering validation
+Run:
+- full tests;
+- typecheck;
+- lint;
+- build;
+- DEV isolation check.
+Preserve all existing 5.7G behavior tests.
+Add targeted tests for:
+- generic graph rules;
+- sparse overrides;
+- spatial presentation affinity;
+- map-region geometry;
+- selection invalidation;
+- adaptive information-depth selection.
+50. Do NOT integrate production data yet
+Still do not connect:
+- live Drivers;
+- real Trucks;
+- Road Intelligence;
+- actual Fuel pricing;
+- real Documents;
+- EU561 production state;
+- actual Pricing;
+- solver output.
+Synthetic data should become much richer, but remain clearly synthetic.
+The purpose is to finish the interaction and visual architecture before real operational integration.
+51. Do NOT fake real intelligence
+Synthetic recommendations and restrictions must not be presented as:
+- legally valid;
+- commercially valid;
+- real-time;
+- provider-calculated.
+Continue clearly distinguishing DEV fixtures.
+52. Stop condition
+Stop after:
+- architecture review;
+- information-design review;
+- visual review;
+- motion review;
+- browser acceptance.
+Do not integrate production.
+Do not commit/push unless separately instructed.
+Success condition
+Phase 5.7H succeeds when FleetOS stops looking like a sophisticated interaction laboratory and begins to look like a finished operational product.
+Specifically:
+- Driver feels like Driver work.
+- Truck feels like Truck work.
+- Fuel feels like a decision workspace.
+- Documents feels like operational documentation.
+- Restrictions feels like road-intelligence analysis.
+- Jobs remains a strong operational collection.
+- cross-domain context still feels continuous.
+- selections persist only when relevant.
+- map geometry matches the spatial question.
+- map camera matches the spatial question.
+- composition families no longer look repetitive.
+- empty space is intentional.
+- added detail is operationally useful.
+- no domain becomes generic card soup.
+Final principles:
+Architectural correctness is necessary, but no longer sufficient.
+The correct camera inside the wrong map shape is still wrong.
+Spatial semantics must influence both camera and composition.
+A composition family is a language, not one fixed layout.
+Different operational questions must look operationally different.
+When a domain gains space, it should gain useful depth.
+Dense where useful. Calm where possible.
+No decorative filler. Every element must answer an operational question.
+The interaction graph should scale through generic contracts and sparse overrides.
+Same product identity, different task character.
+If it still looks like a lab screenshot, keep iterating.

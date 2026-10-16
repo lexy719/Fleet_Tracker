@@ -34,14 +34,9 @@ export function canonicalJson(v: unknown): string {
   return JSON.stringify(v);
 }
 
-const geometryHashCache = new WeakMap<[number, number][], string>();
-
-/** Hash of a route geometry (memoised per points array — route arrays are never mutated). */
+/** Content hash at the read boundary. In-place edits must not reuse an identity-only cache. */
 export function routeGeometryHash(points: [number, number][]): string {
-  const hit = geometryHashCache.get(points);
-  if (hit !== undefined) return hit;
   const h = hashString(points.map((p) => `${p[0].toFixed(5)},${p[1].toFixed(5)}`).join(";"));
-  geometryHashCache.set(points, h);
   return h;
 }
 

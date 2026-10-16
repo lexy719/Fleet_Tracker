@@ -26,6 +26,24 @@ const IP_NOTICE_HOST = "https://servicos.infraestruturasdeportugal.pt/pt-pt/aler
 
 const PORTO_CODE = "1312"; // CAOP2025 DTMN — Porto
 
+/* Phase 1c additions (2026-10-11): sources found in the national source audit. */
+export const LISBOA_PROXY_PREFIX = "/api/src/lisboa-cityplatform";
+const LISBOA_HOST = "https://lisboa.city-platform.com/percursos/ws/app/public";
+export const IP_JSONAPI_PROXY_PREFIX = "/api/src/ip-jsonapi";
+const IP_JSONAPI_HOST = "https://servicos.infraestruturasdeportugal.pt/jsonapi";
+const IP_JSONAPI_QUERY =
+  "/node/servicos_viajar_na_estrada?page%5Blimit%5D=50&sort=-created&fields%5Bnode--servicos_viajar_na_estrada%5D=drupal_internal__nid,title,created,changed,path,field_alertas_destaque,field_conteudos_alerta";
+const OEIRAS_WFS =
+  "https://oeirasinterativa.oeiras.pt/gis/services/dados_abertos/w_condicionalismos_via_publica/wfs?service=WFS&version=2.0.0&request=GetFeature&typeNames=dados_abertos:w_condicionalismos_via_publica&outputFormat=application/json&srsName=EPSG:4326&CQL_FILTER=estado_obra%3C%3E%27Conclu%C3%ADdo%27";
+const wpSearch = (origin: string, term: string) =>
+  `${origin}/wp-json/wp/v2/posts?search=${encodeURIComponent(term)}&per_page=50&orderby=date&order=desc&_fields=id,date,modified,modified_gmt,link,title,content`;
+const WP_CADENCE = { checkEveryMin: 180, agingAfterMin: 30 * 24 * 60, staleAfterMin: 120 * 24 * 60 };
+const WP_GAPS = [
+  "Avisos em texto (posts WordPress): local, datas e medida lidos do texto; sem geometria.",
+  "Muitos avisos remetem para um edital em PDF anexo, que não é lido.",
+  "Só os posts devolvidos pela pesquisa da API (50 mais recentes).",
+];
+
 const IP_EVENTS_COVERAGE = {
   jurisdiction: { kind: "national" as const },
   network: "Rede rodoviária sob gestão da IP (não inclui autoestradas concessionadas)",
@@ -162,6 +180,108 @@ export const SOURCES: SourceRecord[] = [
     },
     enabled: true,
     notes: [],
+  },
+  {
+    id: "lisboa-cityplatform-closures",
+    name: "Lisboa — Condicionamentos de trânsito (City Platform)",
+    authority: "Câmara Municipal de Lisboa",
+    type: "GEOJSON_API",
+    access: { kind: "SAME_ORIGIN_PROXY", path: `${LISBOA_PROXY_PREFIX}/traffic/closures/`, upstreamUrl: `${LISBOA_HOST}/traffic/closures/` },
+    landingUrl: "https://condicionamentos-transito.cm-lisboa.pt/",
+    license: "Sem licença declarada no serviço; termos do sítio da CM Lisboa não revistos — uso de investigação até esclarecimento",
+    trustTier: 1,
+    parser: "lisboa-closures",
+    cadence: { checkEveryMin: 30, agingAfterMin: 6 * 60, staleAfterMin: 48 * 60 },
+    coverage: {
+      jurisdiction: { kind: "municipal", municipalityCodes: ["1106"] },
+      network: "Arruamentos do Município de Lisboa",
+      provides: ["temporary_events", "roadworks", "closures"],
+      gaps: [
+        "Serviço não documentado (backend do portal condicionamentos-transito.cm-lisboa.pt).",
+        "Sem data de publicação declarada — frescura pela hora da consulta.",
+        "Sem aplicabilidade por tipo de veículo; «Corte num sentido» não indica o sentido.",
+      ],
+    },
+    enabled: true,
+    notes: ["GeoJSON MultiLineString com id, pedido (COND-AAAA-N), períodos com datas e horas. 707 registos / 407 ativos em 2026-10-10. Sem CORS — via proxy da própria origem."],
+  },
+  {
+    id: "oeiras-wfs-condicionalismos",
+    name: "Oeiras — Condicionalismos na via pública (WFS)",
+    authority: "Câmara Municipal de Oeiras",
+    type: "OGC_WFS",
+    access: { kind: "DIRECT_CORS", url: OEIRAS_WFS },
+    landingUrl: "https://dados.gov.pt/pt/datasets/condicionalismos-na-via-publica",
+    license: "CC BY 4.0 (dados.gov.pt)",
+    trustTier: 1,
+    parser: "oeiras-wfs",
+    cadence: { checkEveryMin: 120, agingAfterMin: 14 * 24 * 60, staleAfterMin: 45 * 24 * 60 },
+    coverage: {
+      jurisdiction: { kind: "municipal", municipalityCodes: ["1110"] },
+      network: "Vias do Município de Oeiras",
+      provides: ["temporary_events", "roadworks", "closures"],
+      gaps: [
+        "Só pontos — extensão afetada não indicada.",
+        "Tipo de condicionamento só em texto («nome»); datas previstas, sem horas.",
+        "Pedido filtra estado_obra ≠ Concluído (camada completa: ~8 100 registos desde 2019).",
+      ],
+    },
+    enabled: true,
+    notes: ["GeoServer WFS 2.0 com CORS (*). O campo «requerente» (pode ser pessoa singular) não é lido."],
+  },
+  {
+    id: "ip-alertas-jsonapi",
+    name: "IP — Alertas · Rodovia (avisos de obras, JSON:API)",
+    authority: IP,
+    type: "JSON_API",
+    access: { kind: "SAME_ORIGIN_PROXY", path: `${IP_JSONAPI_PROXY_PREFIX}${IP_JSONAPI_QUERY}`, upstreamUrl: `${IP_JSONAPI_HOST}${IP_JSONAPI_QUERY}` },
+    landingUrl: "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas-ips",
+    license: "Termos do sítio da IP: uso comercial excluído sem consentimento escrito — uso de investigação",
+    trustTier: 2,
+    parser: "ip-alertas-jsonapi",
+    cadence: { checkEveryMin: 30, agingAfterMin: 3 * 24 * 60, staleAfterMin: 14 * 24 * 60 },
+    coverage: {
+      jurisdiction: { kind: "national" },
+      network: "Rede rodoviária sob gestão da IP",
+      provides: ["temporary_events", "roadworks", "closures"],
+      gaps: [
+        "Estrada, km, datas e medida só em texto; sem geometria.",
+        "Só os 50 avisos mais recentes (primeira página da JSON:API).",
+        "Avisos expirados continuam publicados — validade só pelo texto.",
+      ],
+    },
+    enabled: true,
+    notes: ["Backend Drupal distinto das camadas ArcGIS; ids estáveis (uuid/nid). JSON:API não anunciada pela IP. Sem CORS — via proxy da própria origem."],
+  },
+  {
+    id: "wp-povoa-de-lanhoso",
+    name: "Póvoa de Lanhoso — avisos de trânsito (WordPress)",
+    authority: "Câmara Municipal da Póvoa de Lanhoso",
+    type: "JSON_API",
+    access: { kind: "DIRECT_CORS", url: wpSearch("https://povoadelanhoso.pt", "trânsito") },
+    landingUrl: "https://povoadelanhoso.pt/noticias/",
+    license: "Termos do sítio não revistos — uso de investigação",
+    trustTier: 2,
+    parser: "wp-notices",
+    cadence: WP_CADENCE,
+    coverage: { jurisdiction: { kind: "municipal", municipalityCodes: ["0309"] }, network: "Vias municipais da Póvoa de Lanhoso", provides: ["temporary_events", "closures"], gaps: WP_GAPS },
+    enabled: true,
+    notes: ["API REST do WordPress com CORS."],
+  },
+  {
+    id: "wp-santiago-do-cacem",
+    name: "Santiago do Cacém — avisos de trânsito (WordPress)",
+    authority: "Câmara Municipal de Santiago do Cacém",
+    type: "JSON_API",
+    access: { kind: "DIRECT_CORS", url: wpSearch("https://www.cm-santiagocacem.pt", "condicionamento de trânsito") },
+    landingUrl: "https://www.cm-santiagocacem.pt/",
+    license: "Termos do sítio não revistos — uso de investigação",
+    trustTier: 2,
+    parser: "wp-notices",
+    cadence: WP_CADENCE,
+    coverage: { jurisdiction: { kind: "municipal", municipalityCodes: ["1509"] }, network: "Vias municipais de Santiago do Cacém", provides: ["temporary_events", "closures"], gaps: WP_GAPS },
+    enabled: true,
+    notes: ["API REST do WordPress com CORS. Município com avisos frequentes (auditoria nacional, 2026-10-10)."],
   },
   {
     id: "dr-serie1",
@@ -327,7 +447,7 @@ export function validateSources(sources: SourceRecord[] = SOURCES): string[] {
   for (const s of sources) {
     if (ids.has(s.id)) problems.push(`${s.id}: duplicate id`);
     ids.add(s.id);
-    if (s.access.kind === "SAME_ORIGIN_PROXY" && ![PORTO_PROXY_PREFIX, IP_NOTICE_PROXY_PREFIX].some((p) => s.access.kind === "SAME_ORIGIN_PROXY" && s.access.path.startsWith(`${p}/`))) {
+    if (s.access.kind === "SAME_ORIGIN_PROXY" && ![PORTO_PROXY_PREFIX, IP_NOTICE_PROXY_PREFIX, LISBOA_PROXY_PREFIX, IP_JSONAPI_PROXY_PREFIX].some((p) => s.access.kind === "SAME_ORIGIN_PROXY" && s.access.path.startsWith(`${p}/`))) {
       problems.push(`${s.id}: proxy path outside the registered relays`);
     }
     if (s.access.kind === "DEV_FIXTURE" && (!s.synthetic || !s.access.path.startsWith(DEV_FIXTURE_PREFIX))) {

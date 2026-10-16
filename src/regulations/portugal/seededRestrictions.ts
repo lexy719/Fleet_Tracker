@@ -329,7 +329,7 @@ export const PT_NATIONAL_MANDATORY_HOLIDAYS: DateCalendar = {
 const vciRestriction: RegulationRecord = {
   id: "pt-dl155a2026-vci-pesados",
   kind: "LEGAL_RESTRICTION",
-  version: 2,
+  version: 3,
   title: "VCI Porto — proibição de pesados de mercadorias em dias úteis (07h00–21h00)",
   jurisdiction: "PT",
   authority: PCM,
@@ -361,6 +361,7 @@ const vciRestriction: RegulationRecord = {
   exceptions: [
     {
       id: "carga-descarga-porto-gaia",
+      proof: "affirmative",
       label: "Origem/destino no Porto ou Gaia para carga/descarga, com habilitação na plataforma",
       evidence: ["pt-dl155a2026-art2-4a", "pt-dl155a2026-art3-1"],
       condition: {
@@ -379,12 +380,14 @@ const vciRestriction: RegulationRecord = {
     },
     {
       id: "aet-imt",
+      proof: "affirmative",
       label: "Autorização especial de trânsito emitida pelo IMT (Portaria n.º 472/2007)",
       evidence: ["pt-dl155a2026-art2-4b"],
       condition: { kind: "fact", fact: "authorization.pt-imt-aet", op: "eq", value: true, label: "autorização especial de trânsito IMT", evidence: ["pt-dl155a2026-art2-4b"] },
     },
     {
       id: "propriedade-publica",
+      proof: "affirmative",
       label: "Viatura propriedade do Estado ou dos municípios do Porto/Gaia",
       evidence: ["pt-dl155a2026-art2-5"],
       condition: {

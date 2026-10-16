@@ -22,6 +22,8 @@ const DocumentsPage = page(() => import("./pages/DocumentsPage"), "DocumentsPage
 const CompliancePage = page(() => import("./pages/CompliancePage"), "CompliancePage");
 const RoutingAcceptancePage = import.meta.env.DEV ? page(() => import("./pages/RoutingAcceptancePage"), "RoutingAcceptancePage") : null;
 
+const OperationalPlanningAcceptancePage = import.meta.env.DEV ? page(() => import("./pages/OperationalPlanningAcceptancePage"), "OperationalPlanningAcceptancePage") : null;
+
 function S({ children }: { children: ReactNode }) {
   return <Suspense fallback={<SkeletonRows className="bg-[var(--surface)]" />}>{children}</Suspense>;
 }
@@ -55,6 +57,7 @@ export default function App() {
         <Route path="compliance" element={<S><CompliancePage /></S>} />
         <Route path="intelligence" element={<S><RoadIntelligencePage /></S>} />
         <Route path="settings" element={<S><SettingsPage /></S>} />
+        {OperationalPlanningAcceptancePage ? <Route path="__dev/operational-planning" element={<S><OperationalPlanningAcceptancePage /></S>} /> : null}
         {RoutingAcceptancePage ? <Route path="__dev/routing-acceptance" element={<S><RoutingAcceptancePage /></S>} /> : null}
       </Route>
       <Route path="app/*" element={<LegacyRedirect />} />

@@ -123,10 +123,10 @@ export function JobResources({ job }: { job: Job }) {
 /* ─── Plan / Road Intelligence ─── */
 
 export function useDecisionState(job: Job): PlannedDecisionState {
-  const { getTruck } = useFleetData();
+  const { getTruck, drivers, trailers } = useFleetData();
   const { dataset } = useRoadEvents();
   const truck = getTruck(job.assignedTruckId) ?? null;
-  return useMemo(() => assessPlannedJob(job, truck, dataset), [job, truck, dataset]);
+  return useMemo(() => assessPlannedJob(job, truck, dataset,new Date(),{drivers,trailers}), [job, truck, dataset,drivers,trailers]);
 }
 
 export function decisionView(s: PlannedDecisionState): { label: string; tone: Tone; detail?: string } {

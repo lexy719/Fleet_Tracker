@@ -1,0 +1,35 @@
+{
+  "measurements": [
+    {
+      "name": "route_timing_10000_points",
+      "iterations": 30,
+      "meanMs": 3.9140866666666585,
+      "p95Ms": 6.010999999999967
+    },
+    {
+      "name": "compliance_10000_points_40_remote_restrictions",
+      "iterations": 20,
+      "meanMs": 13.35645,
+      "p95Ms": 17.76209999999992
+    },
+    {
+      "name": "execution_replay_amadora_porto",
+      "iterations": 30,
+      "meanMs": 4.57345333333332,
+      "p95Ms": 11.392900000000054
+    }
+  ],
+  "fleet": {
+    "jobs": 20,
+    "resources": 5,
+    "elapsedMs": 3487.1243000000004,
+    "search": {
+      "routeRequests": 67,
+      "cacheHits": 896,
+      "evaluatedExtensions": 504,
+      "cheapRejected": 116220,
+      "truncated": true,
+      "globallyOptimal": false
+    }
+  }
+}

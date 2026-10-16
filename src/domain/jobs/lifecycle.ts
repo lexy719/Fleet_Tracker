@@ -122,6 +122,7 @@ function unassigned(job: Job, at: string): Job {
     plannedCostEur: undefined,
     ...(job.routeCompliance ? { routeComplianceHistory: [...(job.routeComplianceHistory ?? []), job.routeCompliance].slice(-10) } : {}),
     routeCompliance: undefined,
+    operationalPlan: undefined,
     planStatus: "UNPLANNED",
     // Loading is undone: completed pickups are reopened.
     stops: job.status === "loading" ? job.stops.map((s) => ({ ...s, completed: false, completedAt: undefined, actualTime: undefined })) : job.stops,
@@ -137,6 +138,7 @@ export function transitionJob(jobs: Job[], jobId: string, to: JobStatus, ctx: Li
   const job = jobs.find((j) => j.id === jobId);
   if (!job) return fail("trabalho não encontrado");
   const blockers = transitionBlockers(job, to, ctx, ctx.reason);
+  if(job.operationalPlan&&(to==="loading"||to==="in_transit")&&jobs.some(j=>j.id!==job.id&&["loading","in_transit"].includes(j.status)&&(j.assignedTruckId===job.assignedTruckId||j.assignedDriverId===job.assignedDriverId||job.assignedTrailerId&&j.assignedTrailerId===job.assignedTrailerId)))blockers.push("um recurso do plano ainda está em execução noutro trabalho");
   if (blockers.length) return fail(...blockers);
   const at = ctx.now.toISOString();
   const source = ctx.source ?? "LOCAL_USER";
@@ -161,6 +163,16 @@ export function transitionJob(jobs: Job[], jobId: string, to: JobStatus, ctx: Li
 
 /** When a line's active job ends, the closest queued job of the same truck+driver becomes «assigned». */
 export function promoteNextQueued(jobs: Job[], ended: Job, at: string): { jobs: Job[]; events: OperationalEvent[] } {
+  const plannedQueue=jobs.filter(j=>j.status==="queued"&&j.operationalPlan&&(j.assignedTruckId===ended.assignedTruckId||j.assignedDriverId===ended.assignedDriverId||ended.assignedTrailerId&&j.assignedTrailerId===ended.assignedTrailerId)).sort((a,b)=>a.operationalPlan!.execution.startMs-b.operationalPlan!.execution.startMs||a.id.localeCompare(b.id));
+  if(plannedQueue.length){
+    let out=jobs;const events:OperationalEvent[]=[];
+    for(const candidate of plannedQueue){
+      if(out.some(j=>j.id!==candidate.id&&["assigned","loading","in_transit"].includes(j.status)&&(j.assignedTruckId===candidate.assignedTruckId||j.assignedDriverId===candidate.assignedDriverId||candidate.assignedTrailerId&&j.assignedTrailerId===candidate.assignedTrailerId)))continue;
+      out=out.map(j=>j.id===candidate.id?{...j,status:"assigned",queuedAt:undefined,...bump(j,at)}:j);
+      events.push(makeEvent({entityType:"job",entityId:candidate.id,type:"STATUS_CHANGED",at,source:"SYSTEM",fromStatus:"queued",toStatus:"assigned",reason:`sequência operacional confirmada após ${ended.jobNumber}`}));
+    }
+    return {jobs:out,events};
+  }
   if (!ended.assignedTruckId || !ended.assignedDriverId) return { jobs, events: [] };
   const stillActive = jobs.some((j) => j.id !== ended.id && j.assignedTruckId === ended.assignedTruckId && ["assigned", "loading", "in_transit"].includes(j.status));
   if (stillActive) return { jobs, events: [] };
@@ -209,6 +221,7 @@ export function confirmPlan(jobs: Job[], jobId: string, p: PlanConfirmation, ctx
     plannedCostEur: p.costEur,
     ...(job.routeCompliance ? { routeComplianceHistory: [...(job.routeComplianceHistory ?? []), job.routeCompliance].slice(-10) } : {}),
     routeCompliance: p.compliance,
+    operationalPlan: undefined,
     planDecision: p.decision,
     planStatus: "PLANNED",
     planInvalidation: undefined,

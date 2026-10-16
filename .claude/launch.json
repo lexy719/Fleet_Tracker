@@ -4,8 +4,26 @@
     {
       "name": "fleet-tracker",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev", "--", "--port", "5174"],
-      "port": 5174
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "port": 5174,
+      "autoPort": true
+    },
+    {
+      "name": "fleetos-driver",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "../fleetos-driver",
+        "run",
+        "web",
+        "--",
+        "--port",
+        "8082"
+      ],
+      "port": 8082
     }
   ]
 }

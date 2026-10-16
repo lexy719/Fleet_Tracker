@@ -6,7 +6,11 @@ import { assessFreshness } from "./freshness";
 import { parseCkanPackage } from "./parsers/ckan";
 import { parseDatex2 } from "./parsers/datex2";
 import { parseDrRss } from "./parsers/drRss";
+import { parseIpAlertasJsonapi } from "./parsers/ipAlertasJsonapi";
 import { parseIpArcgis } from "./parsers/ipArcgis";
+import { parseLisboaClosures } from "./parsers/lisboaClosures";
+import { parseOeirasWfs } from "./parsers/oeirasWfs";
+import { parseWpNotices } from "./parsers/wpNotices";
 import { fetchUrlFor } from "./sources";
 import type { IngestionStore } from "./store";
 import { sha256Hex } from "./text";
@@ -74,6 +78,14 @@ export async function parseSnapshot(
         return parseCkanPackage(snapshot);
       case "dr-rss":
         return parseDrRss(snapshot);
+      case "lisboa-closures":
+        return parseLisboaClosures(snapshot);
+      case "oeiras-wfs":
+        return parseOeirasWfs(snapshot);
+      case "ip-alertas-jsonapi":
+        return parseIpAlertasJsonapi(snapshot);
+      case "wp-notices":
+        return parseWpNotices(snapshot);
       case "html-notice-ai":
         return await extractNotice(snapshot, extractor);
       case "static-curated":

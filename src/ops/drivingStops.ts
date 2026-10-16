@@ -13,6 +13,11 @@ export type DriverState = {
 
 export type DrivingStop = { kind: "break" | "rest"; atDrivingSec: number; durationSec: number };
 export function planStops(totalDrivingSec: number, driver: DriverState): DrivingStop[] {
+  if (!Number.isFinite(totalDrivingSec) || totalDrivingSec < 0 ||
+      !Number.isFinite(driver.drivenTodaySec) || driver.drivenTodaySec < 0 ||
+      (driver.continuousSec !== undefined && (!Number.isFinite(driver.continuousSec) || driver.continuousSec < 0))) {
+    throw new RangeError("Invalid driving duration or driver baseline");
+  }
   const stops: DrivingStop[] = [];
   let driven = 0;
   let today = Math.max(0, driver.drivenTodaySec);
@@ -23,7 +28,8 @@ export function planStops(totalDrivingSec: number, driver: DriverState): Driving
         ? MAX_CONTINUOUS_SEC
         : today % MAX_CONTINUOUS_SEC;
   // Guard against pathological inputs (e.g. already over the daily limit).
-  for (let guard = 0; guard < 1000 && driven < totalDrivingSec; guard++) {
+  for (let guard = 0; driven < totalDrivingSec; guard++) {
+    if (guard >= 1000) throw new RangeError("Driving horizon exceeds supported stop schedule");
     const tillBreak = MAX_CONTINUOUS_SEC - continuous;
     const tillRest = MAX_DAILY_SEC - today;
     if (tillRest <= 0) {

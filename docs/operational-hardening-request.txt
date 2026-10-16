@@ -1,0 +1,350 @@
+FleetOS — Parallel Backend / Domain Hardening Pass
+Production Domain Logic, Operational Truth & Future 5.7L Preparation
+Claude is currently working independently on Phase 5.7K in the DEV visual/interaction laboratory.
+Do not touch the 5.7K workspace UI, its layout components, interaction surfaces, styling, or DEV visual composition.
+Your job is to work in parallel on the normal FleetOS production/domain/backend-side code and prepare the system for the next intelligence phase without creating merge conflicts with Claude.
+Mission
+Harden the real FleetOS operational core so the frontend can later consume one coherent source of truth.
+Focus on:
+- domain correctness;
+- canonical operational state;
+- route/timing infrastructure;
+- resource state;
+- restriction applicability;
+- planning inputs/outputs;
+- event/state propagation;
+- test coverage;
+- clean interfaces for future UI integration.
+Do NOT redesign UI.
+Do NOT integrate the 5.7K lab into production.
+Do NOT implement Plan UI.
+1. First inspect the existing production architecture
+Before editing:
+- map the current Job / Trip / Driver / Truck / Trailer / Route / Restriction / Document / Plan relationships;
+- locate current planning/timing functions;
+- locate canonical state ownership;
+- identify duplicated derived values;
+- identify places where one domain is manually storing data that should be derived from another.
+Pay particular attention to:
+- buildRouteTiming
+- estimatePointTimes
+- planRouteOptions
+- planStops
+- matchRouteAlongLines
+- getPassageWindow
+- route decision / planning code from Phase 5.6E
+- persistence boundaries
+- resource future-state logic
+Produce a short technical map before making changes.
+2. Establish canonical operational truth
+The system should not allow:
+Job says one thing
+Driver timeline says another
+Route says another
+Restriction says another
+
+Define or strengthen the canonical source of truth for:
+- assigned Driver;
+- assigned Truck;
+- assigned Trailer;
+- ordered stops;
+- active route;
+- selected route alternative;
+- departure time;
+- driver accumulated state;
+- delivery windows;
+- route timing;
+- restriction evaluation;
+- current plan revision.
+Derived values must be derived, not independently stored where avoidable.
+3. Strengthen Job → Trip → Resource separation
+Preserve:
+Job = commercial demand
+Trip / Operational Plan = physical execution
+Resource Assignment = who / equipment
+
+Audit the code for accidental mixing between these concepts.
+Fix only where safe and covered by tests.
+Do not perform broad speculative rewrites.
+4. Route timing pipeline
+Prepare production timing so a single route/timeline result can answer:
+- ETA at every route point / meaningful stop;
+- arrival at customer stops;
+- pause/break timing;
+- delivery-window margin;
+- expected restriction passage time;
+- route duration;
+- legal driving state propagation.
+Prefer one reusable timing result over different domains calculating their own ETA.
+Target conceptual shape:
+RouteGeometry
++ DepartureState
++ DriverState
++ Stops
++ ServiceDurations
+↓
+OperationalTimeline
+
+Then:
+Driver
+Route
+Restrictions
+Delivery windows
+Planning
+
+consume that same timeline.
+5. Audit buildRouteTiming / estimatePointTimes
+Inspect:
+- duplicated calculations;
+- inconsistent time origins;
+- timezone assumptions;
+- stop/service duration handling;
+- break insertion;
+- route-distance interpolation;
+- missing geometry behavior;
+- stale derived values;
+- ordering assumptions.
+Add tests for edge cases.
+Do not change behavior merely for elegance if it risks regressions.
+6. Route alternatives foundation
+Review planRouteOptions.
+Ensure the domain can represent alternatives such as:
+fastest
+no_tolls
+fuel_efficient
+restriction_avoiding
+
+even if not all providers generate every variant today.
+A route option should have a clean domain representation including:
+- geometry reference;
+- distance;
+- duration;
+- toll estimate where available;
+- restriction evaluation;
+- operational timing;
+- provenance/provider;
+- infeasibility reason.
+Do not create UI assumptions here.
+7. Stop planning
+Audit planStops.
+Strengthen its relationship with:
+- Driver legal state;
+- route progress;
+- delivery windows;
+- fuel/range inputs;
+- candidate-stop eligibility;
+- detour cost.
+The stop planner should return explanations, not only a chosen point.
+Example:
+recommended: F-07
+because:
+- reachable before legal break limit
+- +4 km detour
+- delivery window remains valid
+- compatible with vehicle
+
+8. Restriction passage semantics
+Audit:
+- matchRouteAlongLines
+- getPassageWindow
+- current restriction applicability pipeline.
+Restriction evaluation should be based on:
+route actually intersects restriction
++
+expected passage time
++
+vehicle facts
++
+job/cargo facts
++
+authorizations/exemptions
+
+Avoid:
+- evaluating restrictions unrelated to the actual route;
+- evaluating temporal rules without passage time;
+- treating UNKNOWN as allowed.
+Preserve existing exception semantics from 5.6D/5.6E.
+9. Resource future state
+Review how Driver / Truck / Trailer availability propagates across planned work.
+Make sure planning can answer:
+where will resource X be?
+when will it be free?
+what legal state will Driver have?
+what assignment follows?
+
+This should remain sequential and deterministic.
+Do not add advanced simultaneous consolidation/LTL unless already planned elsewhere.
+10. Plan revision model
+Strengthen the concept of operational plan revisions.
+A change to:
+- stop;
+- route;
+- Driver;
+- Truck;
+- Trailer;
+- departure time;
+should have a clean way to produce:
+previous plan
+proposed plan
+consequences
+new revision
+
+This is preparation for the pending-change UX Claude is building.
+Do not build the UI.
+11. Consequence diff
+Add or strengthen a domain-level comparison helper capable of explaining:
+ETA +18 min
+empty km +12
+toll +€8.20
+delivery margin -22 min
+restriction now UNKNOWN
+Driver remains legal
+Truck changes
+
+This should compare two operational plans / scenarios.
+Keep it structured, not prose-only.
+Example:
+{
+  timing: ...,
+  distance: ...,
+  cost: ...,
+  compliance: ...,
+  assignments: ...,
+  restrictions: ...
+}
+
+This will later power the frontend’s “proposed change” explanation.
+12. Domain events / invalidation
+Identify state changes that should invalidate derived results.
+Examples:
+route changed
+→ timing invalid
+→ passage windows invalid
+→ restriction evaluation invalid
+
+trailer changed
+→ capacity/restriction evaluation invalid
+
+driver changed
+→ EU561/timing feasibility invalid
+
+Implement clear invalidation boundaries where appropriate.
+Avoid invisible stale caches.
+13. Data provenance
+Preserve / strengthen provenance for values such as:
+- manual;
+- provider;
+- calculated;
+- assumed;
+- unknown.
+The domain should make it impossible for UI later to accidentally present an assumption as telemetry.
+14. Unknown handling
+Maintain FleetOS semantics:
+UNKNOWN != PASS
+
+Missing facts should propagate explicitly.
+Examples:
+- missing axle height;
+- unknown current position;
+- unknown fuel;
+- missing authorization;
+- unavailable route geometry.
+Never silently invent substitutes.
+15. Backend / domain interfaces for frontend
+Without touching Claude’s UI,
+expose clean, stable selectors/services for future integration.
+Prefer interfaces like:
+getOperationalTimeline(jobId)
+getRouteAlternatives(jobId)
+getRestrictionImpact(jobId, restrictionId)
+getResourceAssignment(jobId)
+compareOperationalPlans(a, b)
+getPlanConsequences(proposal)
+
+Exact names may differ.
+Do not duplicate logic merely to match these names.
+The point is a clean boundary.
+16. Keep production and lab boundaries clean
+Do not make production depend on:
+- __fleetosLab
+- DEV visual fixture components
+- 5.7K UI state
+- browser-only interaction state.
+Domain code should remain reusable independently.
+17. No UI conflicts
+Avoid editing files primarily owned by the 5.7K visual workspace.
+If an unavoidable shared file exists:
+stop and document it instead of making a risky overlapping change.
+Prefer:
+- new domain modules;
+- backend/domain tests;
+- selectors;
+- adapters;
+- planning/timing code.
+18. Tests
+Add serious tests around:
+- route timing;
+- plan revisions;
+- restriction passage timing;
+- route alternatives;
+- stop planning;
+- UNKNOWN propagation;
+- resource future state;
+- plan comparison;
+- invalidation.
+Include:
+- happy paths;
+- no geometry;
+- missing resource;
+- missing trailer;
+- unavailable Driver;
+- stale/manual data;
+- no viable route;
+- restriction UNKNOWN;
+- delivery window missed.
+19. Performance
+Benchmark important paths.
+FleetOS already targets very fast route/compliance evaluation.
+Watch for:
+- repeated geometry matching;
+- recomputing timeline unnecessarily;
+- N×M restriction scans;
+- repeated route interpolation.
+Add caching only where invalidation is explicit.
+Correctness first.
+20. Output
+At the end provide:
+1. architecture map before/after;
+2. files changed;
+3. domain invariants strengthened;
+4. bugs found;
+5. tests added;
+6. performance results;
+7. clean integration points for Claude’s future frontend;
+8. risks / remaining work;
+9. what should become Phase 5.7L.
+Run:
+- full tests;
+- typecheck;
+- lint;
+- build.
+Success condition
+This parallel task succeeds when the real FleetOS core is more coherent and prepared for the frontend without touching the 5.7K visual work.
+Specifically:
+- operational state has clearer ownership;
+- timing has a reusable canonical pipeline;
+- route alternatives have a clean model;
+- stops are explainable;
+- restriction passage evaluation has correct inputs;
+- future resource state remains coherent;
+- proposed plan changes can be compared structurally;
+- UNKNOWN remains explicit;
+- stale derived state is harder to create;
+- frontend can later consume clean operational selectors/services;
+- no 5.7K UI files are redesigned.
+Final rule:
+Claude owns the workspace. Codex owns the operational machinery underneath it.
+Do not integrate UI.
+Do not implement Plan UI.
+Do not modify 5.7K layouts.
+Stop after backend/domain implementation, tests and technical report.

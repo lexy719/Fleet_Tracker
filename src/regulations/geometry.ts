@@ -6,7 +6,9 @@ const toRad = (d: number) => (d * Math.PI) / 180;
 export function haversineM(a: [number, number], b: [number, number]): number {
   const dLat = toRad(b[0] - a[0]);
   const dLon = toRad(b[1] - a[1]);
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(a[0])) * Math.cos(toRad(b[0])) * Math.sin(dLon / 2) ** 2;
+  const h =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(a[0])) * Math.cos(toRad(b[0])) * Math.sin(dLon / 2) ** 2;
   return 2 * EARTH_R * Math.asin(Math.min(1, Math.sqrt(h)));
 }
 
@@ -15,14 +17,23 @@ export function pointInBBox(p: [number, number], b: BBox): boolean {
 }
 
 /** Distance (m) from p to segment ab — local equirectangular projection (fine at street scale). */
-export function pointToSegmentM(p: [number, number], a: [number, number], b: [number, number]): number {
+export function pointToSegmentM(
+  p: [number, number],
+  a: [number, number],
+  b: [number, number],
+): number {
   const k = Math.cos(toRad(p[0]));
-  const ax = (a[1] - p[1]) * k, ay = a[0] - p[0];
-  const bx = (b[1] - p[1]) * k, by = b[0] - p[0];
-  const dx = bx - ax, dy = by - ay;
+  const ax = (a[1] - p[1]) * k,
+    ay = a[0] - p[0];
+  const bx = (b[1] - p[1]) * k,
+    by = b[0] - p[0];
+  const dx = bx - ax,
+    dy = by - ay;
   const len2 = dx * dx + dy * dy;
-  const t = len2 === 0 ? 0 : Math.max(0, Math.min(1, -(ax * dx + ay * dy) / len2));
-  const cx = ax + t * dx, cy = ay + t * dy;
+  const t =
+    len2 === 0 ? 0 : Math.max(0, Math.min(1, -(ax * dx + ay * dy) / len2));
+  const cx = ax + t * dx,
+    cy = ay + t * dy;
   return toRad(Math.sqrt(cx * cx + cy * cy)) * EARTH_R;
 }
 
@@ -36,19 +47,46 @@ export function estimatePointTimes(
   legDurationSec: number[],
   departMs: number,
 ): number[] {
+  if (
+    !Number.isFinite(departMs) ||
+    legDurationSec.some((sec) => !Number.isFinite(sec) || sec < 0) ||
+    points.some(
+      ([lat, lng]) =>
+        !Number.isFinite(lat) ||
+        !Number.isFinite(lng) ||
+        Math.abs(lat) > 90 ||
+        Math.abs(lng) > 180,
+    )
+  ) {
+    throw new RangeError(
+      "Invalid route timing coordinates, departure or duration",
+    );
+  }
+  if (!points.length) return [];
+  const counts = legPointCounts.length > 0 ? legPointCounts : [points.length];
+  if (
+    counts.some((count) => !Number.isInteger(count) || count <= 0) ||
+    counts.reduce((sum, count) => sum + count, 0) !== points.length ||
+    (legDurationSec.length > 0 && legDurationSec.length !== counts.length)
+  ) {
+    throw new RangeError("Route leg metadata does not partition geometry");
+  }
   const out: number[] = new Array(points.length);
   let idx = 0;
   let legStartMs = departMs;
-  const counts = legPointCounts.length > 0 ? legPointCounts : [points.length];
   counts.forEach((count, leg) => {
     const legSec = legDurationSec[leg] ?? 0;
     const end = Math.min(points.length, idx + count);
     let legDist = 0;
-    for (let i = idx + 1; i < end; i++) legDist += haversineM(points[i - 1]!, points[i]!);
+    for (let i = idx + 1; i < end; i++)
+      legDist += haversineM(points[i - 1]!, points[i]!);
     let cum = 0;
     for (let i = idx; i < end; i++) {
       if (i > idx) cum += haversineM(points[i - 1]!, points[i]!);
-      out[i] = legStartMs + (legDist > 0 ? (cum / legDist) * legSec * 1000 : 0);
+      // Coincident points still carry provider travel time. A one-point leg denotes its arrival.
+      const fraction =
+        legDist > 0 ? cum / legDist : count > 1 ? (i - idx) / (count - 1) : 1;
+      out[i] = legStartMs + fraction * legSec * 1000;
     }
     legStartMs += legSec * 1000;
     idx = end;
@@ -95,14 +133,17 @@ type Seg = { a: [number, number]; b: [number, number] };
 
 function segmentsOf(lines: [number, number][][]): Seg[] {
   const out: Seg[] = [];
-  for (const l of lines) for (let i = 1; i < l.length; i++) out.push({ a: l[i - 1]!, b: l[i]! });
+  for (const l of lines)
+    for (let i = 1; i < l.length; i++) out.push({ a: l[i - 1]!, b: l[i]! });
   return out;
 }
 
 /** Bearing in degrees [0, 360). */
 function bearing360(a: [number, number], b: [number, number]): number {
   const k = Math.cos(toRad(a[0]));
-  return ((Math.atan2((b[1] - a[1]) * k, b[0] - a[0]) * 180) / Math.PI + 360) % 360;
+  return (
+    ((Math.atan2((b[1] - a[1]) * k, b[0] - a[0]) * 180) / Math.PI + 360) % 360
+  );
 }
 
 function headingDiff(a: number, b: number, directional: boolean): number {
@@ -111,15 +152,29 @@ function headingDiff(a: number, b: number, directional: boolean): number {
   return directional ? full : Math.min(full, 180 - full); // undirected: 0..90
 }
 
-function nearestSeg(p: [number, number], segs: Seg[], maxM: number): { d: number; heading: number } | null {
+function nearestSeg(
+  p: [number, number],
+  segs: Seg[],
+  maxM: number,
+): { d: number; heading: number } | null {
   const k = Math.cos(toRad(p[0]));
-  const padLat = maxM / M_PER_DEG, padLon = maxM / (M_PER_DEG * k);
+  const padLat = maxM / M_PER_DEG,
+    padLon = maxM / (M_PER_DEG * k);
   let best: { d: number; heading: number } | null = null;
   for (const s of segs) {
-    if (p[0] < Math.min(s.a[0], s.b[0]) - padLat || p[0] > Math.max(s.a[0], s.b[0]) + padLat) continue;
-    if (p[1] < Math.min(s.a[1], s.b[1]) - padLon || p[1] > Math.max(s.a[1], s.b[1]) + padLon) continue;
+    if (
+      p[0] < Math.min(s.a[0], s.b[0]) - padLat ||
+      p[0] > Math.max(s.a[0], s.b[0]) + padLat
+    )
+      continue;
+    if (
+      p[1] < Math.min(s.a[1], s.b[1]) - padLon ||
+      p[1] > Math.max(s.a[1], s.b[1]) + padLon
+    )
+      continue;
     const d = pointToSegmentM(p, s.a, s.b);
-    if (d <= maxM && (!best || d < best.d)) best = { d, heading: bearing360(s.a, s.b) };
+    if (d <= maxM && (!best || d < best.d))
+      best = { d, heading: bearing360(s.a, s.b) };
   }
   return best;
 }
@@ -134,6 +189,25 @@ export type RouteIndex = {
 };
 
 const routeIndexCache = new WeakMap<[number, number][], RouteIndex>();
+const routeIndexCoordinates = new WeakMap<[number, number][], Float64Array>();
+
+/** Mutable geometry owners must invalidate before a new evaluation; reuse is evaluation-scoped. */
+export function invalidateRouteGeometry(points: [number, number][]): void {
+  routeIndexCache.delete(points);
+  routeIndexCoordinates.delete(points);
+}
+
+/** Validate exact content once at the evaluation boundary, preserving reuse only for unchanged geometry. */
+export function prepareRouteGeometry(points: [number, number][]): void {
+  const saved = routeIndexCoordinates.get(points);
+  if (
+    saved &&
+    saved.length === points.length * 2 &&
+    points.every((p, i) => saved[i * 2] === p[0] && saved[i * 2 + 1] === p[1])
+  )
+    return;
+  invalidateRouteGeometry(points);
+}
 
 /** Route-wide geometry derived once and reused across constraints (WeakMap on the points array). */
 export function routeIndexOf(points: [number, number][]): RouteIndex {
@@ -144,7 +218,8 @@ export function routeIndexOf(points: [number, number][]): RouteIndex {
   const heading = new Float64Array(n);
   const bbox = new Float64Array(n * 4);
   for (let i = 1; i < n; i++) {
-    const a = points[i - 1]!, b = points[i]!;
+    const a = points[i - 1]!,
+      b = points[i]!;
     segLenM[i] = haversineM(a, b);
     heading[i] = bearing360(a, b);
     bbox[i * 4] = Math.min(a[0], b[0]);
@@ -154,6 +229,7 @@ export function routeIndexOf(points: [number, number][]): RouteIndex {
   }
   const idx = { segLenM, heading, bbox };
   routeIndexCache.set(points, idx);
+  routeIndexCoordinates.set(points, Float64Array.from(points.flat()));
   return idx;
 }
 
@@ -167,9 +243,12 @@ class SegGrid {
   ) {
     segs.forEach((s, i) => {
       const lat = Math.max(Math.abs(s.a[0]), Math.abs(s.b[0]));
-      const pLat = padM / M_PER_DEG, pLon = padM / (M_PER_DEG * Math.max(0.2, Math.cos(toRad(lat))));
-      const r0 = Math.floor((Math.min(s.a[0], s.b[0]) - pLat) / cellDeg), r1 = Math.floor((Math.max(s.a[0], s.b[0]) + pLat) / cellDeg);
-      const c0 = Math.floor((Math.min(s.a[1], s.b[1]) - pLon) / cellDeg), c1 = Math.floor((Math.max(s.a[1], s.b[1]) + pLon) / cellDeg);
+      const pLat = padM / M_PER_DEG,
+        pLon = padM / (M_PER_DEG * Math.max(0.2, Math.cos(toRad(lat))));
+      const r0 = Math.floor((Math.min(s.a[0], s.b[0]) - pLat) / cellDeg),
+        r1 = Math.floor((Math.max(s.a[0], s.b[0]) + pLat) / cellDeg);
+      const c0 = Math.floor((Math.min(s.a[1], s.b[1]) - pLon) / cellDeg),
+        c1 = Math.floor((Math.max(s.a[1], s.b[1]) + pLon) / cellDeg);
       for (let r = r0; r <= r1; r++)
         for (let c = c0; c <= c1; c++) {
           const k = `${r}:${c}`;
@@ -180,7 +259,9 @@ class SegGrid {
     });
   }
   candidates(p: [number, number]): Seg[] {
-    const l = this.cells.get(`${Math.floor(p[0] / this.cellDeg)}:${Math.floor(p[1] / this.cellDeg)}`);
+    const l = this.cells.get(
+      `${Math.floor(p[0] / this.cellDeg)}:${Math.floor(p[1] / this.cellDeg)}`,
+    );
     return l ? l.map((i) => this.segs[i]!) : [];
   }
 }
@@ -200,6 +281,21 @@ export function matchRouteAlongLines(
   lines: [number, number][][],
   opts: LineMatchOptions,
 ): LineMatch {
+  if (
+    ![
+      opts.toleranceM,
+      opts.minMatchLengthM,
+      opts.maxHeadingDiffDeg,
+      opts.sampleStepM ?? 20,
+    ].every(Number.isFinite) ||
+    opts.toleranceM < 0 ||
+    opts.minMatchLengthM < 0 ||
+    opts.maxHeadingDiffDeg < 0 ||
+    opts.maxHeadingDiffDeg > 180 ||
+    (opts.sampleStepM ?? 20) <= 0
+  ) {
+    throw new RangeError("Invalid corridor matching parameters");
+  }
   const segs = segmentsOf(lines);
   const step = opts.sampleStepM ?? 20;
   const directional = opts.directional === true;
@@ -209,33 +305,69 @@ export function matchRouteAlongLines(
     if (run && run.lengthM >= opts.minMatchLengthM) runs.push(run);
     run = null;
   };
-  let south = 90, north = -90, west = 180, east = -180;
+  let south = 90,
+    north = -90,
+    west = 180,
+    east = -180;
   for (const s of segs) {
-    south = Math.min(south, s.a[0], s.b[0]); north = Math.max(north, s.a[0], s.b[0]);
-    west = Math.min(west, s.a[1], s.b[1]); east = Math.max(east, s.a[1], s.b[1]);
+    south = Math.min(south, s.a[0], s.b[0]);
+    north = Math.max(north, s.a[0], s.b[0]);
+    west = Math.min(west, s.a[1], s.b[1]);
+    east = Math.max(east, s.a[1], s.b[1]);
   }
   const padLat = (opts.toleranceM * 1.01) / M_PER_DEG;
-  const padLon = (opts.toleranceM * 1.01) / (M_PER_DEG * Math.max(0.2, Math.cos(toRad(Math.max(Math.abs(south), Math.abs(north))))));
-  const env = { south: south - padLat, north: north + padLat, west: west - padLon, east: east + padLon };
+  const padLon =
+    (opts.toleranceM * 1.01) /
+    (M_PER_DEG *
+      Math.max(
+        0.2,
+        Math.cos(toRad(Math.max(Math.abs(south), Math.abs(north)))),
+      ));
+  const env = {
+    south: south - padLat,
+    north: north + padLat,
+    west: west - padLon,
+    east: east + padLon,
+  };
   const ri = routeIndexOf(points);
   const grid = new SegGrid(segs, 0.005, opts.toleranceM * 1.01);
   for (let i = 1; i < points.length; i++) {
     const segLen = ri.segLenM[i]!;
     if (segLen === 0) continue;
     const bi = i * 4;
-    if (ri.bbox[bi]! > env.north || ri.bbox[bi + 2]! < env.south || ri.bbox[bi + 1]! > env.east || ri.bbox[bi + 3]! < env.west) {
+    if (
+      ri.bbox[bi]! > env.north ||
+      ri.bbox[bi + 2]! < env.south ||
+      ri.bbox[bi + 1]! > env.east ||
+      ri.bbox[bi + 3]! < env.west
+    ) {
       close();
       continue;
     }
-    const a = points[i - 1]!, b = points[i]!;
+    const a = points[i - 1]!,
+      b = points[i]!;
     const heading = ri.heading[i]!;
     const n = Math.max(1, Math.ceil(segLen / step));
     for (let s = 0; s < n; s++) {
       const t = (s + 0.5) / n;
-      const p: [number, number] = [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1])];
+      const p: [number, number] = [
+        a[0] + t * (b[0] - a[0]),
+        a[1] + t * (b[1] - a[1]),
+      ];
       const near = nearestSeg(p, grid.candidates(p), opts.toleranceM);
-      if (near && headingDiff(near.heading, heading, directional) <= opts.maxHeadingDiffDeg) {
-        if (!run) run = { fromIndex: i - 1, toIndex: i, fromPos: i - 1 + s / n, toPos: i - 1 + (s + 1) / n, lengthM: 0 };
+      if (
+        near &&
+        headingDiff(near.heading, heading, directional) <=
+          opts.maxHeadingDiffDeg
+      ) {
+        if (!run)
+          run = {
+            fromIndex: i - 1,
+            toIndex: i,
+            fromPos: i - 1 + s / n,
+            toPos: i - 1 + (s + 1) / n,
+            lengthM: 0,
+          };
         run.toIndex = i;
         run.toPos = i - 1 + (s + 1) / n;
         run.lengthM += segLen / n;
@@ -246,7 +378,8 @@ export function matchRouteAlongLines(
   }
   close();
   const idx = new Set<number>();
-  for (const r of runs) for (let i = r.fromIndex; i <= r.toIndex; i++) idx.add(i);
+  for (const r of runs)
+    for (let i = r.fromIndex; i <= r.toIndex; i++) idx.add(i);
   return {
     matchedLengthM: runs.reduce((acc, r) => acc + r.lengthM, 0),
     indices: [...idx].sort((x, y) => x - y),
@@ -269,18 +402,32 @@ export class RouteInputError extends Error {}
  * Reject malformed route geometry instead of letting NaN produce "no intersection"
  * (which would read as "not affected").
  */
-export function assertValidRoute(points: [number, number][], times: number[]): void {
-  if (!Array.isArray(points) || !Array.isArray(times)) throw new RouteInputError("geometria da rota em falta");
+export function assertValidRoute(
+  points: [number, number][],
+  times: number[],
+): void {
+  if (!Array.isArray(points) || !Array.isArray(times))
+    throw new RouteInputError("geometria da rota em falta");
   if (points.length !== times.length) {
-    throw new RouteInputError(`geometria/tempos inconsistentes (${points.length} pontos, ${times.length} tempos)`);
+    throw new RouteInputError(
+      `geometria/tempos inconsistentes (${points.length} pontos, ${times.length} tempos)`,
+    );
   }
   for (let i = 0; i < points.length; i++) {
     const p = points[i];
-    if (!Array.isArray(p) || !Number.isFinite(p[0]) || !Number.isFinite(p[1]) || Math.abs(p[0]) > 90 || Math.abs(p[1]) > 180) {
+    if (
+      !Array.isArray(p) ||
+      !Number.isFinite(p[0]) ||
+      !Number.isFinite(p[1]) ||
+      Math.abs(p[0]) > 90 ||
+      Math.abs(p[1]) > 180
+    ) {
       throw new RouteInputError(`ponto de rota inválido no índice ${i}`);
     }
-    if (!Number.isFinite(times[i]!)) throw new RouteInputError(`tempo inválido no índice ${i}`);
-    if (i > 0 && times[i]! < times[i - 1]!) throw new RouteInputError(`tempos da rota não crescentes no índice ${i}`);
+    if (!Number.isFinite(times[i]!))
+      throw new RouteInputError(`tempo inválido no índice ${i}`);
+    if (i > 0 && times[i]! < times[i - 1]!)
+      throw new RouteInputError(`tempos da rota não crescentes no índice ${i}`);
   }
 }
 
@@ -290,8 +437,15 @@ export function assertValidRoute(points: [number, number][], times: number[]): v
  */
 export const MAX_ROUTE_GAP_M = 1_000;
 
-function longestSegmentNear(points: [number, number][], lines: [number, number][][], padM: number): number {
-  let south = 90, north = -90, west = 180, east = -180;
+function longestSegmentNear(
+  points: [number, number][],
+  lines: [number, number][][],
+  padM: number,
+): number {
+  let south = 90,
+    north = -90,
+    west = 180,
+    east = -180;
   for (const l of lines) {
     for (const p of l) {
       south = Math.min(south, p[0]);
@@ -300,13 +454,24 @@ function longestSegmentNear(points: [number, number][], lines: [number, number][
       east = Math.max(east, p[1]);
     }
   }
-  const dLat = padM / M_PER_DEG, dLon = padM / (M_PER_DEG * Math.cos(toRad((south + north) / 2)));
-  const box = { south: south - dLat, north: north + dLat, west: west - dLon, east: east + dLon };
+  const dLat = padM / M_PER_DEG,
+    dLon = padM / (M_PER_DEG * Math.cos(toRad((south + north) / 2)));
+  const box = {
+    south: south - dLat,
+    north: north + dLat,
+    west: west - dLon,
+    east: east + dLon,
+  };
   const ri = routeIndexOf(points);
   let longest = 0;
   for (let i = 1; i < points.length; i++) {
     const bi = i * 4;
-    if (ri.bbox[bi]! <= box.north && ri.bbox[bi + 2]! >= box.south && ri.bbox[bi + 1]! <= box.east && ri.bbox[bi + 3]! >= box.west) {
+    if (
+      ri.bbox[bi]! <= box.north &&
+      ri.bbox[bi + 2]! >= box.south &&
+      ri.bbox[bi + 1]! <= box.east &&
+      ri.bbox[bi + 3]! >= box.west
+    ) {
       longest = Math.max(longest, ri.segLenM[i]!);
     }
   }
@@ -316,14 +481,18 @@ function longestSegmentNear(points: [number, number][], lines: [number, number][
 /* ─── Route equivalence (de-duplicating alternatives) ─── */
 
 /** Evenly spaced samples along a polyline (every `stepM` metres), endpoints included. */
-function samplePolyline(pts: [number, number][], stepM: number): [number, number][] {
+function samplePolyline(
+  pts: [number, number][],
+  stepM: number,
+): [number, number][] {
   const out: [number, number][] = [];
   if (pts.length === 0) return out;
   out.push(pts[0]!);
   let next = stepM;
   let walked = 0;
   for (let i = 1; i < pts.length; i++) {
-    const a = pts[i - 1]!, b = pts[i]!;
+    const a = pts[i - 1]!,
+      b = pts[i]!;
     const len = haversineM(a, b);
     while (next <= walked + len && len > 0) {
       const t = (next - walked) / len;
@@ -338,7 +507,11 @@ function samplePolyline(pts: [number, number][], stepM: number): [number, number
 
 /** Share of `a`'s samples lying within `tolM` of polyline `b`. */
 /** Exhaustive reference for `coverage` (kept for equivalence tests). */
-export function coverageShareReference(a: [number, number][], b: [number, number][], tolM: number): number {
+export function coverageShareReference(
+  a: [number, number][],
+  b: [number, number][],
+  tolM: number,
+): number {
   const segs = segmentsOf([b]);
   const samples = samplePolyline(a, 50);
   if (samples.length === 0) return 0;
@@ -352,14 +525,22 @@ export function coverageShareReference(a: [number, number][], b: [number, number
  * exhaustive scan: a point within `tolM` of a segment falls in one of the grid cells of
  * that segment's tolM-padded bbox. Stops early once `minShare` can no longer be reached.
  */
-function coverage(a: [number, number][], b: [number, number][], tolM: number, minShare = 0): number {
+function coverage(
+  a: [number, number][],
+  b: [number, number][],
+  tolM: number,
+  minShare = 0,
+): number {
   const samples = samplePolyline(a, 50);
   if (samples.length === 0) return 0;
   const grid = new SegGrid(segmentsOf([b]), 0.01, tolM);
-  const allowedMisses = minShare > 0 ? Math.floor(samples.length * (1 - minShare)) : Infinity;
-  let hit = 0, miss = 0;
+  const allowedMisses =
+    minShare > 0 ? Math.floor(samples.length * (1 - minShare)) : Infinity;
+  let hit = 0,
+    miss = 0;
   for (const p of samples) {
-    if (grid.candidates(p).some((s) => pointToSegmentM(p, s.a, s.b) <= tolM)) hit++;
+    if (grid.candidates(p).some((s) => pointToSegmentM(p, s.a, s.b) <= tolM))
+      hit++;
     else if (++miss > allowedMisses) return hit / samples.length;
   }
   return hit / samples.length;
@@ -369,20 +550,35 @@ function coverage(a: [number, number][], b: [number, number][], tolM: number, mi
  * Two routes are the same path when each lies (almost entirely) on the other — a
  * geometric test, not distance/time similarity (which can merge different roads).
  */
-export function routesEquivalent(a: [number, number][], b: [number, number][], tolM = 30, share = 0.98): boolean {
+export function routesEquivalent(
+  a: [number, number][],
+  b: [number, number][],
+  tolM = 30,
+  share = 0.98,
+): boolean {
   if (a.length < 2 || b.length < 2) return false;
-  return coverage(a, b, tolM, share) >= share && coverage(b, a, tolM, share) >= share;
+  return (
+    coverage(a, b, tolM, share) >= share && coverage(b, a, tolM, share) >= share
+  );
 }
 
 /**
  * Up to `maxRects` axis-aligned rectangles (padded by `padM`) covering all line points.
  * Lines are cut into chunks of similar length; each rectangle bounds one chunk.
  */
-export function coveringRectangles(lines: [number, number][][], maxRects: number, padM: number): BBox[] {
-  const lens = lines.map((l) => l.slice(1).reduce((acc, p, i) => acc + haversineM(l[i]!, p), 0));
+export function coveringRectangles(
+  lines: [number, number][][],
+  maxRects: number,
+  padM: number,
+): BBox[] {
+  const lens = lines.map((l) =>
+    l.slice(1).reduce((acc, p, i) => acc + haversineM(l[i]!, p), 0),
+  );
   const total = lens.reduce((a, b) => a + b, 0);
   if (total === 0 || maxRects < 1) return [];
-  const perLine = lines.map((_, i) => Math.max(1, Math.round((lens[i]! / total) * maxRects)));
+  const perLine = lines.map((_, i) =>
+    Math.max(1, Math.round((lens[i]! / total) * maxRects)),
+  );
   while (perLine.reduce((a, b) => a + b, 0) > maxRects) {
     const i = perLine.indexOf(Math.max(...perLine));
     if (perLine[i]! <= 1) break;
@@ -405,15 +601,31 @@ export function coveringRectangles(lines: [number, number][][], maxRects: number
     if (cur.length > 1) chunks.push(cur);
   });
   let boxes: BBox[] = chunks.map((c) => {
-    const lat = c.map((p) => p[0]), lon = c.map((p) => p[1]);
+    const lat = c.map((p) => p[0]),
+      lon = c.map((p) => p[1]);
     const midLat = (Math.min(...lat) + Math.max(...lat)) / 2;
-    const dLat = padM / M_PER_DEG, dLon = padM / (M_PER_DEG * Math.cos(toRad(midLat)));
-    return { south: Math.min(...lat) - dLat, west: Math.min(...lon) - dLon, north: Math.max(...lat) + dLat, east: Math.max(...lon) + dLon };
+    const dLat = padM / M_PER_DEG,
+      dLon = padM / (M_PER_DEG * Math.cos(toRad(midLat)));
+    return {
+      south: Math.min(...lat) - dLat,
+      west: Math.min(...lon) - dLon,
+      north: Math.max(...lat) + dLat,
+      east: Math.max(...lon) + dLon,
+    };
   });
   // Still too many (many short lines): merge pairs until within the limit.
   while (boxes.length > maxRects) {
-    const a = boxes.shift()!, b = boxes.shift()!;
-    boxes = [...boxes, { south: Math.min(a.south, b.south), west: Math.min(a.west, b.west), north: Math.max(a.north, b.north), east: Math.max(a.east, b.east) }];
+    const a = boxes.shift()!,
+      b = boxes.shift()!;
+    boxes = [
+      ...boxes,
+      {
+        south: Math.min(a.south, b.south),
+        west: Math.min(a.west, b.west),
+        north: Math.max(a.north, b.north),
+        east: Math.max(a.east, b.east),
+      },
+    ];
   }
   return boxes;
 }
@@ -426,27 +638,57 @@ export function coveringRectangles(lines: [number, number][][], maxRects: number
  * - "noRoute": no route geometry available.
  */
 export type Exposure =
-  | { kind: "exact"; indices: number[]; matchedLengthM: number; runs: MatchRun[] }
-  | { kind: "overApprox"; indices: number[]; via: "screeningArea" | "wholeRoute" | "lowResolution" }
+  | {
+      kind: "exact";
+      indices: number[];
+      matchedLengthM: number;
+      runs: MatchRun[];
+    }
+  | {
+      kind: "overApprox";
+      indices: number[];
+      via: "screeningArea" | "wholeRoute" | "lowResolution";
+    }
   | { kind: "none"; via: "resolvedGeometry" | "screeningArea" }
   | { kind: "noRoute" };
 
-export function routeExposure(route: RouteGeometryInput, geom: GeometryRecord): Exposure {
+export function routeExposure(
+  route: RouteGeometryInput,
+  geom: GeometryRecord,
+): Exposure {
   const pts = route.points;
   if (pts.length === 0) return { kind: "noRoute" };
 
   // Negative pre-filter only: outside the screening area the element cannot be used.
   if (geom.screeningArea) {
     const bbox = geom.screeningArea.bbox;
-    if (!pts.some((p) => pointInBBox(p, bbox)) && !crossesBBox(pts, bbox)) return { kind: "none", via: "screeningArea" };
+    if (!pts.some((p) => pointInBBox(p, bbox)) && !crossesBBox(pts, bbox))
+      return { kind: "none", via: "screeningArea" };
   }
 
-  if (geom.status === "RESOLVED" && geom.resolved && geom.resolved.verification !== "UNVERIFIED") {
+  if (
+    geom.status === "RESOLVED" &&
+    geom.resolved &&
+    geom.resolved.verification !== "UNVERIFIED"
+  ) {
     const m = matchRouteAlongLines(pts, geom.resolved.lines, geom.resolved);
-    if (m.runs.length > 0) return { kind: "exact", indices: m.indices, matchedLengthM: m.matchedLengthM, runs: m.runs };
+    if (m.runs.length > 0)
+      return {
+        kind: "exact",
+        indices: m.indices,
+        matchedLengthM: m.matchedLengthM,
+        runs: m.runs,
+      };
     // A miss only counts when the route is detailed enough near the constraint.
-    if (longestSegmentNear(pts, geom.resolved.lines, geom.resolved.toleranceM) > MAX_ROUTE_GAP_M) {
-      return { kind: "overApprox", indices: pts.map((_, i) => i), via: "lowResolution" };
+    if (
+      longestSegmentNear(pts, geom.resolved.lines, geom.resolved.toleranceM) >
+      MAX_ROUTE_GAP_M
+    ) {
+      return {
+        kind: "overApprox",
+        indices: pts.map((_, i) => i),
+        via: "lowResolution",
+      };
     }
     return { kind: "none", via: "resolvedGeometry" };
   }
@@ -459,18 +701,28 @@ export function routeExposure(route: RouteGeometryInput, geom: GeometryRecord): 
     });
     return inside.length > 0
       ? { kind: "overApprox", indices: inside, via: "screeningArea" }
-      : { kind: "overApprox", indices: pts.map((_, i) => i), via: "wholeRoute" };
+      : {
+          kind: "overApprox",
+          indices: pts.map((_, i) => i),
+          via: "wholeRoute",
+        };
   }
 
-  return { kind: "overApprox", indices: pts.map((_, i) => i), via: "wholeRoute" };
+  return {
+    kind: "overApprox",
+    indices: pts.map((_, i) => i),
+    via: "wholeRoute",
+  };
 }
 
 /** Conservative: does any segment's own bounding box intersect the bbox? */
 function crossesBBox(pts: [number, number][], b: BBox): boolean {
   for (let i = 1; i < pts.length; i++) {
     const [a, c] = [pts[i - 1]!, pts[i]!];
-    const s = Math.min(a[0], c[0]), n = Math.max(a[0], c[0]);
-    const w = Math.min(a[1], c[1]), e = Math.max(a[1], c[1]);
+    const s = Math.min(a[0], c[0]),
+      n = Math.max(a[0], c[0]);
+    const w = Math.min(a[1], c[1]),
+      e = Math.max(a[1], c[1]);
     if (s <= b.north && n >= b.south && w <= b.east && e >= b.west) return true;
   }
   return false;
@@ -484,7 +736,10 @@ function crossesBBox(pts: [number, number][], b: BBox): boolean {
 export const SIMPLIFY_MAX_SEGMENT_M = 250;
 
 /** Douglas–Peucker simplification (tolerance in metres); keeps first and last points. */
-export function simplifyPolyline(pts: [number, number][], tolM: number): [number, number][] {
+export function simplifyPolyline(
+  pts: [number, number][],
+  tolM: number,
+): [number, number][] {
   if (pts.length < 3) return pts.slice();
   const keep = new Array<boolean>(pts.length).fill(false);
   keep[0] = keep[pts.length - 1] = true;
@@ -528,7 +783,8 @@ export function simplifyByLegs(
   legPointCounts: number[],
   tolM: number,
 ): { points: [number, number][]; legPointCounts: number[] } {
-  if (legPointCounts.length === 0) return { points: simplifyPolyline(pts, tolM), legPointCounts: [] };
+  if (legPointCounts.length === 0)
+    return { points: simplifyPolyline(pts, tolM), legPointCounts: [] };
   const points: [number, number][] = [];
   const counts: number[] = [];
   let idx = 0;

@@ -75,7 +75,14 @@ export function sameRouteFamily(a: RouteGeometry, b: RouteGeometry): boolean {
 }
 
 /** Exact dominance; a material toll advantage is retained even if total cost is higher. */
-export function dominates(a: DecisionCandidate, b: DecisionCandidate): boolean {
+export type OperationalRouteContext = { opportunityEurPerHour:number; preserveTollObjective?:boolean; downstreamValueEurByRoute?:Record<string,number> };
+const contextualCost = (c:DecisionCandidate, context:OperationalRouteContext) => cost(c)+c.elapsedSec/3600*context.opportunityEurPerHour-(context.downstreamValueEurByRoute?.[c.option.id]??0);
+export function dominates(a: DecisionCandidate, b: DecisionCandidate, context?:OperationalRouteContext): boolean {
+  if(context){
+    if(context.preserveTollObjective&&a.option.tollCostEur-b.option.tollCostEur>=ROUTE_DECISION_POLICY.meaningfulTollEur)return false;
+    const av=[contextualCost(a,context),complianceRank(a),windowRank[a.window],risk(a)],bv=[contextualCost(b,context),complianceRank(b),windowRank[b.window],risk(b)];
+    return av.every((v,i)=>v<=bv[i]!)&&av.some((v,i)=>v<bv[i]!);
+  }
   const tollAdvantage = a.option.tollCostEur - b.option.tollCostEur >= ROUTE_DECISION_POLICY.meaningfulTollEur;
   if (tollAdvantage) return false;
   const valuesA = [a.elapsedSec, cost(a), complianceRank(a), windowRank[a.window], risk(a)];
@@ -94,7 +101,8 @@ function reasonAgainst(a: DecisionCandidate, b: DecisionCandidate): RouteDecisio
 }
 
 /** Pure domain pipeline. All candidates are evaluated before any route becomes selectable. */
-export function decideRoutes(candidates: DecisionCandidate[], previousRecommended?: RouteGeometry): RouteDecisionSet {
+export function decideRoutes(candidates: DecisionCandidate[], previousRecommended?: RouteGeometry,context?:OperationalRouteContext): RouteDecisionSet {
+  const rank = context ? (a:DecisionCandidate,b:DecisionCandidate)=>complianceRank(a)-complianceRank(b)||windowRank[a.window]-windowRank[b.window]||risk(a)-risk(b)||contextualCost(a,context)-contextualCost(b,context)||a.elapsedSec-b.elapsedSec||a.option.id.localeCompare(b.option.id) : compare;
   const unique = [...new Map(candidates.map((c) => [c.option.id, c])).values()];
   const excluded: RouteDecisionSet["excluded"] = [];
   const executable = unique.filter((c) => {
@@ -103,18 +111,18 @@ export function decideRoutes(candidates: DecisionCandidate[], previousRecommende
     return !reasons.length;
   });
   const families: RouteDecision[] = [];
-  for (const c of [...executable].sort(compare)) {
+  for (const c of [...executable].sort(rank)) {
     const family = families.find((f) => sameRouteFamily(f.option, c.option));
     if (family) {
       family.candidateIds.push(c.option.id);
       family.provenance = [...new Set([...family.provenance, ...c.provenance])];
     } else families.push({ ...c, routeId: c.option.id, familyId: routeGeometryHash(c.option.polyline), candidateIds: [c.option.id], reason: "RECOMMENDED", explanation: "Melhor combinação de conformidade, janela, risco, tempo e custo estimado." });
   }
-  const nondominated = families.filter((c) => !families.some((a) => a !== c && dominates(a, c))).sort(compare);
+  const nondominated = families.filter((c) => !families.some((a) => a !== c && dominates(a, c,context))).sort(rank);
   let best = nondominated[0];
   const previous = previousRecommended && families.find((c) => sameRouteFamily(c.option, previousRecommended));
   // Retain a confirmed/recommended corridor only for negligible changes, never a hard-invalid plan.
-  if (best && previous && complianceRank(previous) === complianceRank(best) && windowRank[previous.window] === windowRank[best.window] && risk(previous) === risk(best) &&
+  if (best && previous && (!context || (nondominated.includes(previous) && contextualCost(previous,context)-contextualCost(best,context)<=ROUTE_DECISION_POLICY.stabilityCostEur)) && complianceRank(previous) === complianceRank(best) && windowRank[previous.window] === windowRank[best.window] && risk(previous) === risk(best) &&
       previous.elapsedSec - best.elapsedSec <= ROUTE_DECISION_POLICY.stabilityTimeSec && cost(previous) - cost(best) <= ROUTE_DECISION_POLICY.stabilityCostEur) best = previous;
   const decisions: RouteDecision[] = best ? [{ ...best, reason: "RECOMMENDED" }] : [];
   for (const c of nondominated) {

@@ -20,6 +20,14 @@
       "destination": "https://dadosabertos.cm-porto.pt/:path*"
     },
     {
+      "source": "/api/src/lisboa-cityplatform/:path*",
+      "destination": "https://lisboa.city-platform.com/percursos/ws/app/public/:path*"
+    },
+    {
+      "source": "/api/src/ip-jsonapi/:path*",
+      "destination": "https://servicos.infraestruturasdeportugal.pt/jsonapi/:path*"
+    },
+    {
       "source": "/api/src/ip-alertas/:slug",
       "destination": "https://servicos.infraestruturasdeportugal.pt/pt-pt/alertas/rodovia/:slug"
     }

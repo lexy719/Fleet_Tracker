@@ -2,6 +2,7 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { defineConfig, loadEnv, type Plugin } from "vite";
 import { researchMiddleware } from "./server/researchProxy";
+import { createDriverRoutingService, driverRoutingMiddleware } from "./server/driverRouting";
 import { registryDomains } from "./src/discovery/authorities";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -44,6 +45,12 @@ function devIngestionFixtures(): Plugin {
  * Only FLEETOS_-prefixed variables are read here; Vite exposes only VITE_* to the client,
  * so these secrets never reach the bundle.
  */
+function driverRoutingBoundary(mode: string): Plugin {
+  const env = loadEnv(mode, process.cwd(), "");
+  const middleware = driverRoutingMiddleware(createDriverRoutingService(env.FLEETOS_ROUTING_KEY || env.VITE_TOMTOM_API_KEY || env.TOMTOM_API_KEY || "", process.cwd()));
+  return { name: "fleetos-driver-routing", configureServer(server) { server.middlewares.use(middleware); }, configurePreviewServer(server) { server.middlewares.use(middleware); } };
+}
+
 function researchBoundary(mode: string): Plugin {
   const env = loadEnv(mode, process.cwd(), "FLEETOS_");
   const deps = {
@@ -77,6 +84,18 @@ const sourceRelays = {
     secure: true,
     rewrite: (path: string) => path.replace(/^\/api\/src\/porto-dados/, ""),
   },
+  "/api/src/lisboa-cityplatform": {
+    target: "https://lisboa.city-platform.com",
+    changeOrigin: true,
+    secure: true,
+    rewrite: (path: string) => path.replace(/^\/api\/src\/lisboa-cityplatform/, "/percursos/ws/app/public"),
+  },
+  "/api/src/ip-jsonapi": {
+    target: "https://servicos.infraestruturasdeportugal.pt",
+    changeOrigin: true,
+    secure: true,
+    rewrite: (path: string) => path.replace(/^\/api\/src\/ip-jsonapi/, "/jsonapi"),
+  },
   "/api/src/ip-alertas": {
     target: "https://servicos.infraestruturasdeportugal.pt",
     changeOrigin: true,
@@ -86,7 +105,7 @@ const sourceRelays = {
 };
 
 export default defineConfig(({ mode }) => ({
-  plugins: [react(), tailwindcss(), devIngestionFixtures(), researchBoundary(mode)],
+  plugins: [react(), tailwindcss(), devIngestionFixtures(), researchBoundary(mode), driverRoutingBoundary(mode)],
   build: {
     rollupOptions: {
       output: {
@@ -104,6 +123,8 @@ export default defineConfig(({ mode }) => ({
     chunkSizeWarningLimit: 700,
   },
   server: {
+    // Honour an assigned PORT (e.g. preview tooling); otherwise Vite's default.
+    ...(process.env.PORT ? { port: Number(process.env.PORT), strictPort: true, host: "127.0.0.1" } : {}),
     proxy: {
       ...sourceRelays,
       // Same-origin proxy so browser fetch() avoids CORS to api.tomtom.com (common on localhost).

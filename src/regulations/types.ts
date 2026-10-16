@@ -203,6 +203,9 @@ export type OfficialAlternative = {
  */
 export type ConstraintKind = "LEGAL_RESTRICTION" | "ROAD_CLOSURE" | "OPERATIONAL_IMPACT";
 
+/** Reviewed exceptions require affirmative proof. Indeterminate classification must be explicit. */
+export type ExceptionProof = "affirmative" | "indeterminate";
+
 export type RegulationRecord = {
   id: string;
   kind: ConstraintKind;
@@ -220,8 +223,10 @@ export type RegulationRecord = {
   appliesTo: Condition;
   location: { geometryId: string };
   when: TemporalRule;
-  /** Each exception, when it holds, lifts the restriction. */
-  exceptions: { id: string; label: string; condition: Condition; evidence: string[] }[];
+  /** Separate counter-rules: missing exception facts never become negative transport facts.
+   * Absent proof means affirmative; indeterminate preserves genuine legal/classification uncertainty.
+   */
+  exceptions: { id: string; label: string; condition: Condition; evidence: string[]; proof?: ExceptionProof }[];
   officialAlternatives?: OfficialAlternative[];
   evidence: Evidence[];
   /** Known gaps that were NOT resolved — surfaced alongside results. */
@@ -299,7 +304,14 @@ export type EvaluationInput = {
 
 export type ReasonKind = "missing_fact" | "geometry" | "calendar" | "timing" | "legal_status" | "interpretation" | "info" | "error";
 
-export type Reason = { kind: ReasonKind; text: string; evidence?: string[] };
+export type ApplicabilityReasonCode = "BASE_RULE_APPLIES" | "BASE_RULE_NOT_APPLICABLE" | "BASE_APPLICABILITY_UNKNOWN" | "EXEMPTION_CONFIRMED" | "EXEMPTION_NOT_ESTABLISHED" | "EXEMPTION_FACT_UNKNOWN" | "LEGAL_SEMANTICS_UNKNOWN";
+export type Reason = { kind: ReasonKind; text: string; evidence?: string[]; code?: ApplicabilityReasonCode };
+export type PredicateEvaluation = { kind: "fact" | "stopInArea"; label: string; factId?: string; negated?: boolean; outcome: Tri; reasons: Reason[] };
+export type ApplicabilityEvaluation = {
+  base: { outcome: Tri; target: Tri; locationAndTime: Tri; predicates: PredicateEvaluation[] };
+  exceptions: { id: string; label: string; proof: ExceptionProof; outcome: Tri; confirmed: boolean; predicates: PredicateEvaluation[]; reasons: Reason[] }[];
+  reasonCodes: ApplicabilityReasonCode[];
+};
 
 /**
  * Aggregate route status. Precedence (strongest first):
@@ -315,6 +327,8 @@ export type RegulationResult = {
   regulationVersion: number;
   title: string;
   outcome: Tri;
+  /** Absent on historical decisions; never rewrite their saved reasoning. */
+  applicability?: ApplicabilityEvaluation;
   /** Why the outcome is what it is (for UNKNOWN: what is missing). */
   reasons: Reason[];
   /** Interpretations / open questions the outcome relies on. */

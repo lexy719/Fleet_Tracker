@@ -11,7 +11,7 @@ function isTransientStatus(status: number): boolean {
 }
 
 function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => window.setTimeout(resolve, ms));
+  return new Promise((resolve) => globalThis.setTimeout(resolve, ms));
 }
 
 export async function tomtomFetchJson<T>(url: string, opts: RequestOptions = {}): Promise<T> {
@@ -22,7 +22,7 @@ export async function tomtomFetchJson<T>(url: string, opts: RequestOptions = {})
 
   while (attempt <= retries) {
     const controller = new AbortController();
-    const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs);
+    const timeoutId = globalThis.setTimeout(() => controller.abort(), timeoutMs);
 
     const abortListener = () => controller.abort();
     opts.signal?.addEventListener("abort", abortListener);
@@ -61,7 +61,7 @@ export async function tomtomFetchJson<T>(url: string, opts: RequestOptions = {})
       }
       throw lastError;
     } finally {
-      window.clearTimeout(timeoutId);
+      globalThis.clearTimeout(timeoutId);
       opts.signal?.removeEventListener("abort", abortListener);
     }
   }

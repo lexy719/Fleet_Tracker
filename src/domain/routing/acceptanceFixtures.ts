@@ -34,7 +34,7 @@ export function fixtureRoute(id: string, minutes = 42, eur = 12, path = A): Rout
   };
 }
 export const ACCEPTANCE_CASES = [
-  "Uma decisão", "Duas decisões com troca material", "Obras: direto ainda melhor", "Obras: desvio local melhor", "Proibição com desvio válido", "Nenhuma rota executável", "VCI: proibição aplicável",
+  "Uma decisão", "Duas decisões com troca material", "Obras: direto ainda melhor", "Obras: desvio local melhor", "Proibição com desvio válido", "Nenhuma rota executável", "VCI: proibição aplicável", "VCI: isenções por demonstrar", "VCI: base por confirmar",
 ] as const;
 export type AcceptanceCase = typeof ACCEPTANCE_CASES[number];
 export function acceptanceFixture(name: AcceptanceCase) {
@@ -55,10 +55,16 @@ export function acceptanceFixture(name: AcceptanceCase) {
   }
   let depart = FIXTURE_DEPART;
   let facts: FactSet = {};
-  if (name === "VCI: proibição aplicável") {
+  if (name.startsWith("VCI:")) {
     ds = REGULATION_DATASET;
     depart = Date.parse("2026-10-07T09:00:00Z");
     facts = Object.fromEntries(Object.entries({ "vehicle.grossWeightKg": 26000, "vehicle.axleCount": 5, "vehicle.firstAxleHeightM": 1.4, "vehicle.isGoodsVehicle": true, "vehicle.ownerCategory": "private", "authorization.pt-vci-habilitacao": false, "authorization.pt-imt-aet": false }).map(([k,value])=>[k,{status:"known" as const,value,source:"Transporte sintético VCI"}]));
+    if (name !== "VCI: proibição aplicável") {
+      delete facts["authorization.pt-vci-habilitacao"];
+      delete facts["authorization.pt-imt-aet"];
+      delete facts["vehicle.ownerCategory"];
+    }
+    if (name === "VCI: base por confirmar") delete facts["vehicle.firstAxleHeightM"];
     routes = [vciFixture.original, vciFixture.avoidAreas].map((r,i) => {
       const points = r.legs.flatMap(l => l.points.map(p => [p[0]!,p[1]!] as [number,number]));
       return { ...fixtureRoute(i ? "Desvio" : "VCI", r.travelTimeInSeconds / 60, 12, points), distanceM: r.lengthInMeters, departAtIso: new Date(depart).toISOString(), legPointCounts: r.legs.map(l=>l.points.length), legDurationSec: r.legs.map(l=>l.travelTimeInSeconds) };
