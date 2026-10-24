@@ -1,0 +1,27 @@
+- [Road Intelligence state](road-intelligence-state.md) — pipeline proven (deterministic); live LLM/search validation deferred; focus moved to core fleet ops
+- [Operational core (Phase 5)](operational-core-phase5.md) — jobs/fleet/drivers persisted via OperationsService + IndexedDB; mockData = demo seed; stop before Phase 6
+- [Phase 5.6B architecture](phase-56b-architecture.md) — doc numbering/migration, demo re-anchor scope, fleet.html dev shadowing
+- [FleetOS environment lab](fleetos-environment-lab.md) — 5.7I/5.7J/5.7K delivered; capture + PDF report recipe; open items
+- [Visual exploration pack](visual-exploration-pack.md) — 73 judged studies, top 10, primitives P1–P13 in docs/visual-exploration
+- [Project 2 road intelligence store](project2-road-intelligence-store.md) — source audit 2026-10-10 (name now retired, see backend rebuild)
+- [Backend rebuild, no TomTom](backend-rebuild-no-tomtom.md) — 2026-10-21: "Project 2" fused into backend, rebuilt from scratch; DGEG commercial ban removed; traffic options
+- [FleetOS design taste](fleetos-design-taste.md) — likes maps/overviews/actionable office UI; dislikes abstract diagrams, truck drawings, VCI missing-fact scenarios
+- [Product lineup](product-lineup.md) — FleetOS, shipper portal (Prozis-style), driver GPS app, maybe load platform; Project 2 = FleetOS backend
+- [Simulation claims policy](sim-claims-policy.md) — sim savings = synthetic evidence only; no annualised claims; 3-tier technical/legal/commercial
+- [FleetOS Studio](fleetos-studio.md) — now THE app (src/studio at "/", old UI at /classic); platform plan: own OSM map + routing + weekly planning
+- [Studio: keep design, consult](studio-keep-design-consult.md) — keep layout/visuals; ask before major structural changes
+- [Living composition vision](fleetos-living-composition-vision.md) — engine = things × forms × compositions driven by questions; work at idea level; no panels over map
+- [Cinema direction (LOVED)](fleetos-cinema-direction.md) — /combinar: each category combination = cinematic shot; build on this
+- [Show before build](show-before-build.md) — visual changes: images/PDF first, then code; ambiguous → check earlier artefact or ask, never remove things
+- [Palco = full page](palco-full-page.md) — a stage always fills the screen and is the focus; never half map / half stage
+- [Palcos architecture](palcos-architecture.md) — palcos by primary category (Mapa, Viagens dia/estrada, Garagem, Combustível…); combos = layers; tap a thing → other palco
+- [Check overlaps](check-overlaps.md) — after layout changes run the overlap checker over all layer/measure states; zero collisions before prints
+- [No progress recordings](no-progress-recordings.md) — don't record videos/prints of Studio work; build, check overlaps, report in text
+- [Skills audit](skills-audit.md) — 7 skills archived 2026-10-21; which design skills fit FleetOS vs landing-page only
+- [Design v2 direction](design-v2-direction.md) — palcos rejected; cinematic, alive, Apple Maps 3D, light follows hour; system first; ask questions
+- [Design review loop](design-review-loop.md) — two reviewer agents (finish + motion) must both score ≥8 before user sees; renderer + canvas
+- [Reviewers learn the founder](reviewers-learn-founder.md) — after EVERY design feedback, append to .claude/founder-taste.md (reviewers read it first)
+- [Map = free OSM](google-maps-decision.md) — display map stays OSM/MapLibre; Google only for addresses (user does it in backend elsewhere)
+- [Driver app mockups](driver-app-mockups.md) — round 1: Navegação loved; Chegada/Abastecer/Horas rejected; how mockups render
+- [Bragança pilot](braganca-pilot.md) — first customer target; visit in 1–2 months once planning+assignment+fuel+own routing run end to end
+- [Low AI dependency](low-ai-dependency.md) — founder loves it: deterministic core; AI only reads messy text/voice, validated, with fallback

@@ -32,3 +32,11 @@ dist-ssr
 tmpclaude-*-cwd
 /tomtom-sdk-bundle.js.map
 /.cache/
+
+# Generated reviews and media made for reading/sharing, not for the repository
+/output/
+/.playwright-mcp/
+/.claude/worktrees/
+*.pdf
+*.mp4
+*.mp3
