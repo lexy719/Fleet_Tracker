@@ -34,7 +34,10 @@ export interface RoutingProvider {
   describe(avoid: RoutingAvoidance[]): { ok: true; request: ProviderAvoidRequest } | { ok: false; reason: string };
 }
 
-export type ProviderAvoidRequest = { kind: "avoid_rectangles"; provider: string; rectangles: BBox[] };
+export type ProviderAvoidRequest =
+  | { kind: "avoid_rectangles"; provider: string; rectangles: BBox[] }
+  /** Own engine: narrow corridors (polygons) around the avoided paths, blocked in the request's custom model. */
+  | { kind: "avoid_corridors"; provider: string; corridors: number; bufferM: number };
 
 export type RouteSummary = {
   optionId: string;

@@ -49,9 +49,11 @@ export function tomtomRoutingProvider(apiKey: string, waypoints: { lat: number; 
     async route(strategy: RouteStrategy, avoid: RoutingAvoidance[]): Promise<RoutePlanOption> {
       const d = tomtomAvoidRequest(avoid);
       if (!d.ok) throw new Error(d.reason);
+      if (d.request.kind !== "avoid_rectangles") throw new Error("pedido de desvio inesperado para o TomTom");
+      const rectangles = d.request.rectangles;
       n++;
       provider.requests = n;
-      return planStrategyRoute(apiKey, waypoints, { ...planning, avoidAreas: d.request.rectangles.length ? d.request.rectangles : undefined }, strategy, `clean-${strategy.toLowerCase()}-${n}`);
+      return planStrategyRoute(apiKey, waypoints, { ...planning, avoidAreas: rectangles.length ? rectangles : undefined }, strategy, `clean-${strategy.toLowerCase()}-${n}`);
     },
   };
   return provider;

@@ -1,0 +1,100 @@
+{
+ "recordedAt": "2026-10-24T00:18:33.460Z",
+ "basis": "median road diesel (gasóleo simples / Gasóleo A) within 15 km, DGEG + MITECO",
+ "medianPT": 2.259,
+ "medianES": 1.919,
+ "hubs": {
+  "Bragança": {
+   "eurPerL": 2.299,
+   "stations": 10
+  },
+  "Mirandela": {
+   "eurPerL": 2.262,
+   "stations": 12
+  },
+  "Macedo de Cavaleiros": {
+   "eurPerL": 2.286,
+   "stations": 7
+  },
+  "Chaves": {
+   "eurPerL": 2.242,
+   "stations": 14
+  },
+  "Vila Real": {
+   "eurPerL": 2.262,
+   "stations": 26
+  },
+  "Leixões": {
+   "eurPerL": 2.269,
+   "stations": 170
+  },
+  "Maia": {
+   "eurPerL": 2.264,
+   "stations": 194
+  },
+  "Braga": {
+   "eurPerL": 2.244,
+   "stations": 112
+  },
+  "Aveiro": {
+   "eurPerL": 2.254,
+   "stations": 47
+  },
+  "Viseu": {
+   "eurPerL": 2.239,
+   "stations": 46
+  },
+  "Leiria": {
+   "eurPerL": 2.276,
+   "stations": 73
+  },
+  "Lisboa (Carregado)": {
+   "eurPerL": 2.259,
+   "stations": 51
+  },
+  "Zamora": {
+   "eurPerL": 1.879,
+   "stations": 21
+  },
+  "Salamanca": {
+   "eurPerL": 1.959,
+   "stations": 55
+  },
+  "Valladolid": {
+   "eurPerL": 1.854,
+   "stations": 77
+  },
+  "León": {
+   "eurPerL": 1.969,
+   "stations": 53
+  },
+  "Ourense": {
+   "eurPerL": 1.929,
+   "stations": 32
+  },
+  "Vigo": {
+   "eurPerL": 1.965,
+   "stations": 76
+  },
+  "Burgos": {
+   "eurPerL": 1.955,
+   "stations": 46
+  },
+  "Madrid (Coslada)": {
+   "eurPerL": 1.959,
+   "stations": 311
+  },
+  "Zaragoza": {
+   "eurPerL": 1.928,
+   "stations": 86
+  },
+  "Valencia": {
+   "eurPerL": 1.889,
+   "stations": 258
+  },
+  "Sevilla": {
+   "eurPerL": 1.879,
+   "stations": 206
+  }
+ }
+}

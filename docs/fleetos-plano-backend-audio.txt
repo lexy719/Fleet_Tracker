@@ -1,0 +1,137 @@
+Plano do backend do FleetOS. Versão falada. Outubro de dois mil e vinte e seis.
+
+Este é o plano do backend do FleetOS: o motor único por trás da aplicação do escritório, da aplicação do motorista e do portal do expedidor. Fala do que prometemos, a quem vendemos primeiro, do mapa e das moradas, do nosso próprio routing, das restrições para camiões, dos avisos dos motoristas, dos agentes de inteligência artificial, do trânsito, do combustível, do planeamento semanal, da carga e dos reboques, e do que fazemos esta semana.
+
+Parte um. O que prometemos.
+
+A promessa principal é uma semana melhor, não apenas uma rota melhor.
+
+Hoje, quem planeia atribui os trabalhos um a um, por ordem de chegada. O trabalho perto de Madrid vai para quem acabou primeiro. Então, o motorista que ainda está em Madrid é mandado para Gibraltar, porque é o único trabalho que sobra. Os motoristas param com uma hora de condução que não conseguem usar, porque o trabalho seguinte não cabe. E os camiões andam vazios entre trabalhos.
+
+O FleetOS planeia a semana inteira, para todos os motoristas e todos os trabalhos ao mesmo tempo, no início da semana e de novo sempre que alguma coisa muda.
+
+Isso dá cinco coisas. Menos quilómetros em vazio, porque cada trabalho vai para o camião que vai estar mais perto quando ficar livre, e as cargas são encadeadas com retornos. Menos tempo perdido, porque o plano sabe as horas que restam a cada motorista, no dia, na semana e na quinzena, e encaixa os trabalhos nelas. Mais trabalhos com a mesma frota, porque o tempo e os quilómetros poupados dão espaço para trabalho extra. Menos combustível, porque os camiões andam menos e abastecem na bomba mais barata do percurso, durante a pausa legal. E todas as rotas legais e exatas: legais para aquele camião naquela data, e a terminar no portão certo para camiões.
+
+Nunca prometemos um número antes. Medimos a poupança no histórico de viagens de cada transportadora. A frase honesta é: nos seus últimos três meses, isto é o que teria poupado.
+
+Parte dois. A quem vendemos primeiro.
+
+A transportadoras portuguesas que fazem Portugal para Espanha e viagens nacionais longas. Normalmente são as empresas maiores. O transporte de longa distância anda em autoestradas, estradas nacionais e zonas industriais, e é aí que o nosso routing já está provado.
+
+A distribuição local, para aldeias e centros de vilas com muitas entregas, vem depois. Precisa de melhores dados ao nível da rua, que vão crescer com os agentes de inteligência artificial e com os motoristas.
+
+O que levam estes camiões? Dados do Eurostat de dois mil e vinte e quatro, para transportadoras portuguesas no estrangeiro, sobretudo para Espanha. Alimentação e bebidas, cerca de catorze por cento. Peças de automóvel, cerca de onze. Agricultura e pesca, cerca de onze. Grupagem, ou seja, várias cargas no mesmo reboque, cerca de dez. Depois madeira e papel, azulejos e cerâmica, mobiliário, químicos e aço.
+
+Por isso, o reboque normal de cortina, com treze metros e sessenta e trinta e três paletes, cobre a maior parte do trabalho. Os frigoríficos vêm em segundo. Os reboques mega e os porta-bobinas vêm a seguir.
+
+Uma regra importante sobre o peso. Desde vinte e três de outubro de dois mil e vinte e cinco, Portugal e Espanha permitem quarenta e quatro toneladas em viagens dentro de um só país. Mas as viagens que atravessam a fronteira entre Portugal e Espanha continuam nas quarenta toneladas, pela diretiva europeia. Por isso, o planeamento aplica o limite a cada troço da viagem.
+
+Parte três. O mapa e as moradas.
+
+O mapa que o escritório e o motorista veem vai ser o Google Maps. O mapa normal de ruas, não o de satélite, porque o Google bloqueia as imagens de satélite para contas europeias. As nossas rotas, os nossos portões e as nossas paragens para abastecer aparecem por cima.
+
+As moradas e a pesquisa de empresas vêm do Google Places. O Google encontra uma empresa pelo nome, não só pela rua.
+
+Porque não usar o TomTom para as moradas? Testámos duzentas moradas reais de postos de combustível. O TomTom deu quase sempre uma resposta, mas cerca de uma em cada sete respostas estava a mais de cinco quilómetros. Uma estava a duzentos e vinte e quatro quilómetros. O Google também erra sem código postal. A Calle de la Plata, em Toledo, foi parar a uma rua com o mesmo nome noutra localidade. Com o código postal, encontrou a certa.
+
+Por isso, a regra é simples. Nenhum trabalho vai para um motorista com uma morada que ninguém confirmou. O Google sugere o local. O sistema verifica se fica dentro do concelho certo. O escritório toca no portão dos camiões no mapa, uma vez. A partir daí, o local fica guardado, e todos os trabalhos seguintes usam-no automaticamente. Os clientes também podem mandar coordenadas ou um link de mapa diretamente.
+
+Para confirmar portões, usamos fotografias aéreas oficiais e gratuitas. Em Portugal, as fotografias de dois mil e vinte e cinco da Direção-Geral do Território, com vinte e cinco centímetros de resolução. Em Espanha, as fotografias aéreas nacionais chamadas PNOA. Ambas são gratuitas e ambas permitem uso comercial.
+
+Parte quatro. O nosso próprio routing, sobre o OpenStreetMap.
+
+Não usamos o Google nem o TomTom para calcular rotas. O Google não vende a sua rede de estradas. O routing de camiões do Google só existe nos Estados Unidos. E a navegação do Google só segue rotas calculadas pelo próprio Google. Por isso, as nossas rotas são calculadas pelo nosso motor, sobre o OpenStreetMap, que é gratuito.
+
+O OpenStreetMap é bom o suficiente? Testámos. Em duzentas e quarenta viagens reais em Portugal e Espanha, as viagens longas deram a mesma distância que o TomTom, com menos de meio por cento de diferença. Nas viagens curtas encontrámos quatro falhas reais, todas pequenas ligações locais, como um ramal que não liga. Cada uma é corrigida uma vez, para todos os clientes. E calculámos rotas para dezassete locais reais do Google, incluindo zonas industriais, aldeias e ruas de centros históricos. As nossas rotas chegaram a catorze, no mesmo sítio que o TomTom. As outras três eram uma estrada de acesso privada, uma rua condicionada e um ponto dentro de um recinto vedado. Isso resolve-se guardando o portão dos camiões e permitindo estradas privadas apenas nos últimos metros até um portão confirmado.
+
+O TomTom também não é perfeito. O routing de camiões deles deu uma rota de seiscentos e trinta e oito quilómetros para uma viagem de vinte e cinco.
+
+O nosso perfil de camião vai preferir autoestradas e estradas nacionais, e evitar ruas estreitas, a não ser que o destino seja lá.
+
+Para a navegação passo a passo na aplicação do motorista, o mapa é o Google, a rota é nossa, e os nomes das ruas nas instruções vêm do Google, pedidos em direto para cada viragem. Assim, o motorista vê os mesmos nomes no ecrã e na voz. O nosso servidor recalcula quando o motorista sai da rota, para que um camião nunca receba uma rota de carro por uma estrada proibida.
+
+Uma regra sobre os dados de outras empresas. Nunca copiamos estradas do TomTom ou do Google para o nosso mapa. Isso viola os contratos deles e a lei europeia de bases de dados, e as empresas de mapas põem armadilhas para apanhar cópias. As comparações só nos dizem onde olhar. Corrigimos as falhas com fotografias oficiais gratuitas, redes de estradas oficiais e o GPS dos nossos motoristas.
+
+Parte cinco. Restrições para camiões.
+
+É aqui que o OpenStreetMap é fraco. Madrid publica todos os sinais de trânsito da cidade. Pegámos nos seiscentos e um sinais ativos para camiões: altura, peso, comprimento e proibição de pesados. O OpenStreetMap tinha só cerca de um em cada seis. E Madrid é uma das cidades mais bem mapeadas da Europa. Portugal tem ainda menos.
+
+Por isso, as restrições vêm de quatro sítios.
+
+Primeiro, agentes de inteligência artificial a ler todos os municípios. As regras municipais de trânsito são publicadas no Diário da República, nos sites das câmaras e nos boletins provinciais espanhóis. Os agentes transformam cada regra numa rua, numa restrição, nas datas e na fonte.
+
+Segundo, os inventários oficiais de sinais, onde existem. Em Espanha: Madrid, Barcelona, Pamplona, Navarra, Gipuzkoa, as estradas da província de Valência, Santander e Cáceres. Em Portugal, quase nada. Só Águeda.
+
+Terceiro, as fontes nacionais. O portal de obras da Infraestruturas de Portugal, que hoje está ativo com cinquenta avisos. Os incidentes da autoridade de trânsito espanhola, as zonas de baixas emissões e o calendário anual para pesados. E as regras legais, como a proibição na VCI do Porto.
+
+Quarto, os nossos motoristas.
+
+Parte seis. Avisos dos motoristas, como um Waze para camiões.
+
+Cada motorista do FleetOS melhora o mapa para todos os outros.
+
+O motorista carrega num botão, no ecrã ou num pequeno botão Bluetooth no volante, e fala. Por exemplo: ponte baixa, três metros e oitenta. O telemóvel guarda a posição GPS no momento do toque. O reconhecimento de voz transforma as palavras em texto. A inteligência artificial transforma o texto num aviso. A aplicação lê o aviso em voz alta, e o motorista diz sim ou não.
+
+Quando outro camião se aproxima desse sítio mais tarde, a aplicação pergunta, por voz: o limite de altura ainda está aqui? Com duas ou três confirmações de motoristas diferentes, o aviso entra no routing. Os avisos que ninguém confirma expiram. Os motoristas que avisam bem ganham confiança.
+
+A aplicação também aprende sem ninguém carregar em nada. Se um camião volta para trás onde a rota o mandou, pode haver uma restrição. Se um camião passa por uma estrada que não temos, encontrámos uma estrada em falta. Se um camião para num portão, ficamos a saber a posição real do portão e o tempo real de espera.
+
+Deixámos de lado a ideia de usar a câmara do telemóvel para ler sinais. O telemóvel é o ecrã de navegação junto ao para-brisas, por isso não vê bem a estrada.
+
+Os avisos ficam numa camada nossa, separada do OpenStreetMap, o que nos mantém limpos com a licença do OpenStreetMap. Esta camada, sempre a crescer, é a nossa vantagem. O TomTom, o Google e a Volvo não a têm.
+
+Parte sete. O motor de inteligência artificial.
+
+A maior parte da recolha não precisa de inteligência artificial nenhuma. O servidor vai buscar as fontes a horas certas, o que é gratuito. Só os avisos novos ou alterados vão para a inteligência artificial. Usamos o Claude Haiku, o modelo pequeno e barato, através do serviço em lote, que corta o preço a metade. Com quinhentos avisos por dia, são cerca de seis dólares por mês. Com cinco mil por dia, cerca de cinquenta e cinco. É uma estimativa, que vamos medir. E o custo não cresce com o número de clientes, porque um corte de estrada é igual para todos.
+
+Cada valor que a inteligência artificial lê tem de citar o aviso palavra por palavra, e nada bloqueia uma estrada sem revisão.
+
+Se o serviço de inteligência artificial for abaixo, os clientes não dão por isso. A inteligência artificial trabalha em segundo plano. As rotas e os planos usam dados já guardados. Os avisos novos ficam só à espera numa fila, e as nossas regras simples de texto continuam a funcionar entretanto.
+
+Parte oito. Trânsito e combustível.
+
+O trânsito não é o principal para o planeamento semanal. Testamos com o trânsito do TomTom, e depois o GPS dos motoristas mostra se as viagens andam mais depressa ou mais devagar do que o previsto, e afinamos as nossas próprias velocidades. Só compramos dados de trânsito se as horas de chegada no próprio dia precisarem.
+
+Os preços dos combustíveis já são recolhidos para cerca de catorze mil postos. Os dados do ministério espanhol permitem uso comercial. E uma boa notícia para Portugal: entre dez e dezassete de outubro de dois mil e vinte e seis, o portal de preços dos combustíveis retirou a proibição de uso comercial. Mesmo assim, vamos pedir confirmação por escrito.
+
+Parte nove. Carga e reboques.
+
+Um camião raramente faz um trabalho só, com o reboque cheio. Carrega uma carga parcial, junta outra, descarrega uma, volta a carregar. Por isso, o planeamento tem de planear o que vai dentro do reboque, e não só onde está o camião.
+
+Já verifica o peso, as paletes, as mercadorias perigosas, a carga refrigerada e os tipos de reboque. Vamos acrescentar: vários trabalhos no mesmo reboque, com o peso, as paletes e os metros lineares verificados em cada paragem. A ordem de carga, para que o que é entregue primeiro entre por último, e para que cargas que não podem viajar juntas fiquem separadas. A forma da carga, como empilhável ou não, e peças pesadas como bobinas de aço. O peso por eixo. E o limite de quarenta ou quarenta e quatro toneladas em cada troço.
+
+A troca de reboques vem mais tarde, com a distribuição local.
+
+Para aprender como as transportadoras trabalham de verdade, há uma lista de trinta perguntas em português, para o teu primo levar à transportadora de Bragança. Também pede três a seis meses de viagens reais para o piloto.
+
+Parte dez. O servidor e a ordem do trabalho.
+
+Um servidor na União Europeia, com uma base de dados Postgres, serve a aplicação do escritório, a aplicação do motorista e o portal do expedidor. A maior parte da lógica já existe no nosso código: os recolhedores, a extração por inteligência artificial, o combustível, as regras, o planeamento e as horas dos motoristas. Passa do navegador para o servidor.
+
+O trabalho segue em sete fases, e cada uma acaba com um teste medido.
+
+Fase A: o servidor, com os recolhedores a funcionar sozinhos durante uma semana.
+
+Fase B: o nosso routing para camiões sobre o OpenStreetMap, com portões, testado contra as duzentas e quarenta viagens e os locais do Google.
+
+Fase C: os agentes de inteligência artificial a cobrir todos os municípios, com um relatório semanal do que sabemos e do que não sabemos.
+
+Fase D: moradas e locais confirmados com o Google.
+
+Fase E: a ligação à aplicação do motorista, com avisos por voz e aprendizagem pelo GPS.
+
+Fase F: o produto principal, o planeamento semanal que poupa dinheiro, com carga e reboques.
+
+Fase G: o piloto com a transportadora de Bragança. Passamos todas as viagens antigas deles pelo sistema e corrigimos todos os problemas antes da demonstração. Mais os contratos: Google, dados de combustível, privacidade e a licença do OpenStreetMap.
+
+Parte onze. Esta semana.
+
+Um. Crias a chave do Google Maps, com uma conta de faturação europeia, e colocas nas definições do projeto.
+
+Dois. Escolhemos o servidor e desenhamos a base de dados.
+
+Três. Pomos o nosso motor de routing a funcionar sobre o OpenStreetMap para Portugal e Espanha, e testamo-lo contra as duzentas e quarenta viagens e os locais do Google.
+
+Quatro. Passamos cem avisos reais da Infraestruturas de Portugal pelo Claude Haiku, para medir a precisão e o custo real.
+
+É este o plano. A versão escrita, com todas as tabelas e fontes, está na pasta docs, no ficheiro do plano do backend do FleetOS.

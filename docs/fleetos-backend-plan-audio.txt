@@ -1,0 +1,137 @@
+FleetOS backend plan. The spoken version. October twenty twenty-six.
+
+This is the plan for the FleetOS backend, the one engine behind the office app, the driver app, and the shipper portal. It covers what we promise, who we sell to first, the map and addresses, our own routing, truck restrictions, driver reports, the AI agents, traffic, fuel, weekly planning, cargo and trailers, and what we do this week.
+
+Part one. What we promise.
+
+The main promise is a better week, not a better single route.
+
+Today, a dispatcher assigns jobs one at a time, first come, first served. The job near Madrid goes to whoever finished first. So the driver who is still in Madrid gets sent to Gibraltar, because that is the only job left. Drivers stop with an hour of driving time they cannot use, because the next job does not fit. And trucks drive empty between jobs.
+
+FleetOS plans the whole week, for all drivers and all jobs together, at the start of the week, and again whenever something changes.
+
+That gives five things. Fewer empty kilometres, because each job goes to the truck that will be nearest when it becomes free, and loads are chained with return trips. Less lost time, because the plan knows every driver's remaining hours, for the day, the week and the fortnight, and fits jobs into them. More jobs with the same fleet, because the time and kilometres saved become room for extra work. Less fuel, because the trucks drive less, and fill up at the cheapest pump on the route, during the legal break. And every route legal and exact, legal for that truck on that date, and ending at the right truck gate.
+
+We never promise a number in advance. We measure the saving on each carrier's own trip history. The honest pitch is: on your last three months, this is what it would have saved.
+
+Part two. Who we sell to first.
+
+Portuguese carriers doing Portugal to Spain, and long national trips. These are usually the bigger companies. Long haul runs on motorways, national roads and industrial zones, and that is where our routing is already proven.
+
+Local delivery, to villages and town centres with many drops, comes later. It needs better street level data, which will grow from the AI agents and the drivers.
+
+What do these trucks carry? Eurostat data for twenty twenty-four, for Portuguese carriers abroad, mostly to Spain. Food and drink is about fourteen percent. Car parts about eleven. Agriculture and fish about eleven. Groupage, meaning several cargoes in one trailer, about ten. Then wood and paper, tiles and ceramics, furniture, chemicals, and steel.
+
+So the standard curtain-side trailer, thirteen point six metres and thirty-three pallets, covers most of the work. Refrigerated trailers come second. Mega trailers and steel coil trailers come after that.
+
+One important rule on weight. Since the twenty-third of October twenty twenty-five, Portugal and Spain both allow forty-four tonnes for trips inside one country. But trips that cross the border between Portugal and Spain stay at forty tonnes, under the European directive. So the planner applies the limit to each leg of the trip.
+
+Part three. The map and the addresses.
+
+The map the office and the driver see will be Google Maps. The normal street map, not satellite, because Google blocks satellite tiles for European accounts. Our routes, our truck gates and our fuel stops are drawn on top.
+
+Addresses and company search come from Google Places. Google finds a company by its name, not only by its street.
+
+Why not TomTom for addresses? We tested two hundred real fuel station addresses. TomTom almost always gave an answer, but about one in seven answers was more than five kilometres away. One was two hundred and twenty-four kilometres off. Google also gets it wrong without a postcode. Calle de la Plata in Toledo went to a street with the same name in another town. With the postcode, it found the right one.
+
+So the rule is simple. No job goes to a driver with an address that nobody confirmed. Google suggests the place. The system checks that it falls inside the right municipality. The office taps the truck gate on the map, once. After that, the site is saved, and every future job uses it automatically. Clients can also send coordinates or a map link directly.
+
+For checking gates, we use free official aerial photos. In Portugal, the twenty twenty-five photos from the Direção-Geral do Território, at twenty-five centimetres. In Spain, the national aerial photos called PNOA. Both are free, and both allow commercial use.
+
+Part four. Our own routing, on OpenStreetMap.
+
+We do not use Google or TomTom to calculate routes. Google does not sell its road network. Its truck routing only exists in the United States. And its navigation only follows routes that Google calculated itself. So our routes are calculated by our own engine, on OpenStreetMap, which is free.
+
+Is OpenStreetMap good enough? We tested it. On two hundred and forty real trips in Portugal and Spain, long trips came out at the same distance as TomTom, within half a percent. On short trips we found four real gaps, all small local connections, like a ramp that does not connect. Each one gets fixed once, for every client. And we routed seventeen real Google places, including industrial sites, villages and old town streets. Our routes reached fourteen of them, at the same spot as TomTom. The other three were a private access road, a restricted street, and a pin inside a fenced site. Those are solved by saving the truck gate, and allowing private roads only for the last metres to a confirmed gate.
+
+TomTom is not perfect either. Its truck routing gave a six hundred and thirty-eight kilometre route for a twenty-five kilometre trip.
+
+Our truck profile will prefer motorways and national roads, and avoid narrow streets, unless the destination is there.
+
+For turn by turn in the driver app, the map is Google, the route is ours, and the street names in the instructions come from Google, fetched live for each turn. So the driver sees the same names on the screen and in the voice. Our server recalculates when the driver goes off route, so a truck never gets a car route through a banned road.
+
+One rule about other companies' data. We never copy TomTom or Google roads into our map. That breaks their contracts and European database law, and map companies plant traps to catch copying. Comparisons only tell us where to look. We fix gaps using free official photos, official road networks, and our own drivers' GPS.
+
+Part five. Truck restrictions.
+
+This is where OpenStreetMap is weak. Madrid publishes every traffic sign in the city. We took the six hundred and one active truck signs, for height, weight, length, and no trucks. OpenStreetMap had only about one in six of them. And Madrid is one of the best mapped cities in Europe. Portugal has even less.
+
+So restrictions come from four places.
+
+First, AI agents reading every municipality. Municipal traffic rules are published in the Diário da República, on municipal websites, and in Spanish provincial bulletins. The agents turn each rule into a street, a restriction, the dates, and the source.
+
+Second, official sign inventories where they exist. In Spain: Madrid, Barcelona, Pamplona, Navarra, Gipuzkoa, the Valencia province roads, Santander and Cáceres. In Portugal, almost nothing. Only Águeda.
+
+Third, the national sources. The works portal of Infraestruturas de Portugal, which is live today with fifty current notices. The Spanish traffic authority's incidents, low emission zones, and the yearly truck calendar. And the legal rules like the VCI ban in Porto.
+
+Fourth, our drivers.
+
+Part six. Driver reports, like Waze for trucks.
+
+Every FleetOS driver improves the map for every other driver.
+
+The driver presses one button, on the screen or on a small Bluetooth button on the steering wheel, and just speaks. For example, low bridge, three metres eighty. The phone saves the GPS position at the moment of the press. Speech recognition turns the words into text. The AI turns the text into a report. The app reads it back out loud, and the driver says yes or no.
+
+When another truck approaches that spot later, the app asks, by voice, is the height limit still there. Two or three confirmations from different drivers, and it goes into routing. Reports that nobody confirms expire. Drivers who report well gain trust.
+
+The app also learns without anyone pressing anything. If a truck turns back where the route sent it, there may be a restriction. If a truck drives a road we do not have, we found a missing road. If a truck stops at a gate, we learn the real gate position and the real waiting time.
+
+We dropped the idea of using the phone camera to read signs. The phone is the navigation screen next to the windscreen, so it cannot see the road well.
+
+The reports are kept as our own layer, separate from OpenStreetMap, which keeps us clean on the OpenStreetMap licence. This growing layer is our advantage. TomTom, Google and Volvo do not have it.
+
+Part seven. The AI engine.
+
+Most of the collecting needs no AI at all. The server fetches sources on a schedule, which is free. Only new or changed notices go to the AI. We use Claude Haiku, the small and cheap model, through the batch service, which halves the price. At five hundred notices a day, that is roughly six dollars a month. At five thousand a day, roughly fifty-five. That is an estimate, to be measured. And the cost does not grow with the number of clients, because one road closure is the same for everyone.
+
+Every value the AI reads must quote the notice word for word, and nothing blocks a road without review.
+
+If the AI service goes down, clients do not notice. The AI works in the background. Routes and plans use data already saved. New notices just wait in a queue, and our simple text rules keep working meanwhile.
+
+Part eight. Traffic and fuel.
+
+Traffic is not the main thing for weekly planning. We test with TomTom traffic, then the drivers' GPS shows whether trips run faster or slower than planned, and we tune our own speeds. We buy a traffic feed only if same day arrival times need it.
+
+Fuel prices are already collected for about fourteen thousand stations. The Spanish ministry data allows commercial use. And good news for Portugal: between the tenth and seventeenth of October twenty twenty-six, the fuel price portal removed its ban on commercial use. We will still ask them to confirm in writing.
+
+Part nine. Cargo and trailers.
+
+A truck rarely does one job with a full trailer. It picks up a part load, adds another, drops one, picks up again. So the planner must plan what is inside the trailer, not only where the truck is.
+
+It already checks weight, pallets, dangerous goods, refrigerated cargo and trailer types. We will add several jobs in one trailer, with weight, pallets and load metres checked at every stop. Loading order, so what is delivered first goes in last, and cargo that cannot travel together stays apart. Cargo shape, like stackable or not, and heavy items like steel coils. Weight per axle. And the forty or forty-four tonne limit on each leg.
+
+Trailer swaps come later, with local delivery.
+
+To learn how carriers really work, there is a list of thirty questions in Portuguese, for your cousin to take to the carrier in Bragança. It also asks for three to six months of real trips for the pilot.
+
+Part ten. The server, and the order of work.
+
+One server in the European Union, with a Postgres database, serves the office app, the driver app and the shipper portal. Most of the logic already exists in our code, the collectors, the AI extraction, fuel, rules, the planner and driver hours. It moves from the browser to the server.
+
+The work goes in seven phases, and each one ends with a measured test.
+
+Phase A, the server, with collectors running on their own for a week.
+
+Phase B, our truck routing on OpenStreetMap, with truck gates, tested against the two hundred and forty trips and the Google places.
+
+Phase C, the AI agents covering every municipality, with a weekly report of what we know and what we do not.
+
+Phase D, addresses and confirmed sites with Google.
+
+Phase E, the driver app connection, with voice reports and learning from GPS.
+
+Phase F, the core product, weekly planning that saves money, with cargo and trailers.
+
+Phase G, the pilot with the Bragança carrier. We run all their past trips through the system and fix every problem before the demo. Plus the contracts: Google, the fuel data, privacy, and the OpenStreetMap licence.
+
+Part eleven. This week.
+
+One. You create the Google Maps key, with a European billing account, and put it in the project settings.
+
+Two. We choose the server and design the database.
+
+Three. We run our own routing engine on OpenStreetMap for Portugal and Spain, and test it against the two hundred and forty trips and the Google places.
+
+Four. We run one hundred real notices from Infraestruturas de Portugal through Claude Haiku, to measure accuracy and real cost.
+
+That is the plan. The written version, with all the tables and sources, is in the docs folder, in the file called FleetOS backend plan.
