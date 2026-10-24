@@ -1,47 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { validateDriverTimeline } from "../../legal/driverLegality";
-import { BENCH_WEEK_START, bragancaInstance } from "../bench/bragancaInstance";
-import { scorePlan } from "../bench/evaluate";
+import { bragancaInstance } from "../bench/bragancaInstance";
 import { exactPlan } from "../bench/exact";
 import { appendLoad, initialState, scheduleRoute } from "../crewSchedule";
 import { dispatcherPlan } from "../greedy";
-import { syntheticTravel, type Crew, type Instance, type LatLng, type Load, type Solution } from "../model";
 import { planObjective, solveWeek } from "../solver";
+import { scorePlan } from "../bench/evaluate";
+import { H, W, checkPlan, crew, done, load, travel, week } from "./kit";
 
 /*
  * Trap weeks, each built to break a specific weakness, from easy to nasty. Every plan the search
  * returns must also pass the invariants: each load at most once, every week feasible and legal.
  */
-
-const H = 3_600_000, D = 24 * H, W = BENCH_WEEK_START; // Monday 2 Nov 2026, 06:00 Lisbon
-const P: Record<string, LatLng> = {
-  Braganca: [41.806, -6.757], Mirandela: [41.485, -7.181], Porto: [41.185, -8.7], Madrid: [40.424, -3.561], Zamora: [41.5, -5.75],
-  Valladolid: [41.652, -4.725], Burgos: [42.344, -3.697], Leon: [42.599, -5.567], Sevilla: [37.389, -5.985], Vigo: [42.241, -8.721],
-};
-const ES = new Set(["Madrid", "Zamora", "Valladolid", "Burgos", "Leon", "Sevilla", "Vigo"]);
-const travel = syntheticTravel();
-
-function crew(id: string, home: string, over: Partial<Crew> = {}): Crew {
-  return { id, truckId: `T-${id}`, driverId: `M-${id}`, trailerId: `R-${id}`, equipment: "CURTAIN", homeName: home, home: P[home]!, start: P[home]!,
-    availableFromMs: W, homeByMs: W + 5 * D + 8 * H, driving: { dayDriveSec: 0, continuousDriveSec: 0, weekDriveSec: 0, previousWeekDriveSec: 0 }, ...over };
-}
-/** Pickup window [fromH, toH] hours after Monday 06:00; delivery open until two days later. */
-function load(id: string, from: string, to: string, fromH: number, toH: number, over: Partial<Load> = {}): Load {
-  return { id, fromName: from, toName: to, from: P[from]!, to: P[to]!, fromCountry: ES.has(from) ? "ES" : "PT", toCountry: ES.has(to) ? "ES" : "PT",
-    pickupStartMs: W + fromH * H, pickupEndMs: W + toH * H, deliveryStartMs: W + fromH * H, deliveryEndMs: W + (toH + 48) * H,
-    pickupServiceSec: 3600, deliveryServiceSec: 3600, equipment: "CURTAIN", weightKg: 20_000, rateEur: Math.round(150 + 1.3 * travel(P[from]!, P[to]!).km), ...over };
-}
-const week = (crews: Crew[], loads: Load[]): Instance => ({ name: "armadilha", weekStartMs: W, crews, loads, travel, costEurPerKm: 0.77 });
-const done = (s: Solution) => s.routes.flatMap((r) => r.loadIds);
-
-/** Invariants every returned plan must keep. */
-function checkPlan(inst: Instance, sol: Solution) {
-  const ids = [...done(sol), ...sol.unassigned].sort();
-  expect(ids).toEqual(inst.loads.map((l) => l.id).sort());
-  const score = scorePlan("v2", inst, sol, 0);
-  expect(score.infeasibleRoutes).toBe(0);
-  expect(score.violations).toEqual({});
-}
 
 describe("trap weeks — level 1: the dispatcher's blind spots", () => {
   it("nearest-crew trap: taking the nearest crew strands a load only it could reach", () => {
@@ -64,6 +34,21 @@ describe("trap weeks — level 1: the dispatcher's blind spots", () => {
     const sol = solveWeek(inst, { iterations: 50 });
     checkPlan(inst, sol);
     expect(done(sol).sort()).toEqual(["ida", "volta"]);
+  });
+
+  it("backhaul polish (optional): the load home instead of a better-paid one that leaves the crew 560 km away", () => {
+    const inst = week([crew("A", "Braganca")], [
+      load("ida", "Braganca", "Madrid", 72, 76),
+      load("rica", "Madrid", "Zaragoza", 98, 102, { rateEur: 1000 }),
+      load("casa", "Madrid", "Braganca", 98, 102, { rateEur: 700 }),
+    ]);
+    const plain = solveWeek(inst, { iterations: 50 }), back = solveWeek(inst, { iterations: 50, backhaul: true });
+    checkPlan(inst, back);
+    expect(done(plain)).toEqual(["ida", "rica"]); // the objective weighs the undone load by what it pays
+    expect(done(back)).toEqual(["ida", "casa"]);
+    const a = scorePlan("", inst, plain, 0), b = scorePlan("", inst, back, 0);
+    expect(b.marginEur).toBeGreaterThan(a.marginEur);
+    expect(b.homeEmptyKm).toBeLessThan(a.homeEmptyKm);
   });
 
   it("tight windows that only work in one order (not the order of the ids)", () => {

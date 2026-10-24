@@ -28,6 +28,8 @@ export type Load = {
   equipment: Equipment;
   weightKg: number;
   rateEur: number;
+  /** Contracted: left undone only when no crew can legally do it (and the plan says why). Default: spot (optional). */
+  mandatory?: boolean;
 };
 
 export type DrivingBaseline = {
@@ -55,7 +57,23 @@ export type Crew = {
   /** Must be back home by then for the weekly rest (Bragança style: weekends at home). */
   homeByMs: number;
   driving: DrivingBaseline;
+  /** Unplanned delays (traffic, a customer, a repair): from `atMs` the crew loses `sec`. */
+  delays?: Delay[];
+  /** Truck out of service from then on (breakdown, workshop): loads must be delivered before, no trip home. */
+  outOfServiceFromMs?: number;
+  /**
+   * Replanning: the first loads already happened or are under way; nothing new starts before `fromMs`.
+   * `thenTo`: after them the crew had already left for this place (home, or a pickup that was then
+   * cancelled or released), so it finishes that trip first.
+   */
+  replan?: { fromMs: number; frozenLoadIds: string[]; thenTo?: { at: LatLng; note: string } };
 };
+
+/**
+ * "driving" counts the lost time as driving (stuck in traffic: the safe reading for the driving limits);
+ * "waiting" counts it as idle time, like waiting for a window.
+ */
+export type Delay = { atMs: number; sec: number; as: "driving" | "waiting" };
 
 export type Leg = { km: number; sec: number };
 export type Travel = (a: LatLng, b: LatLng) => Leg;
@@ -93,9 +111,63 @@ export function isPlannableLoad(l: Load): boolean {
     l.pickupServiceSec >= 0 && l.deliveryServiceSec >= 0 && l.rateEur >= 0;
 }
 
+/** A dispatcher's decision the search must keep: this load is this crew's, never this crew's, or in this order. */
+export type Pin =
+  | { kind: "assign"; loadId: string; crewId: string }
+  | { kind: "forbid"; loadId: string; crewId: string }
+  /** These loads are this crew's, in this relative order (other loads may go in between). */
+  | { kind: "sequence"; crewId: string; loadIds: string[] };
+
+/** Why one step of a crew's week fails (see crewSchedule.appendLoadWhy). */
+export type FailCode =
+  | "INVALID_DATA"
+  | "EQUIPMENT"
+  | "CABOTAGE"
+  | "PICKUP_LATE"
+  | "DELIVERY_LATE"
+  | "WEEK_DRIVE"
+  | "FORTNIGHT_DRIVE"
+  | "WEEK_WORK"
+  | "NOT_HOME"
+  | "OUT_OF_SERVICE";
+
+/** Why a load is undone, or a pin could not be kept. */
+export type WhyCode =
+  | FailCode
+  /** The dispatcher forbade it to every crew that could do it. */
+  | "FORBIDDEN"
+  /** Fits a crew's week only by taking out another mandatory, pinned or running load. */
+  | "CONFLICT"
+  /** Optional: fits only by taking out other loads that pay more. */
+  | "NO_ROOM"
+  /** Optional: doing it costs more than it pays. */
+  | "NOT_WORTH"
+  /** Pins that cannot all hold (two crews, assigned and forbidden, a cycle of orders). */
+  | "PIN_CONTRADICTION"
+  /** A pin names a crew or load that does not exist. */
+  | "PIN_UNKNOWN"
+  /** Already loaded on, or on its way with, another crew. */
+  | "ALREADY_RUNNING"
+  /** On board a truck that broke down: needs a rescue (trailer swap not modelled). */
+  | "STRANDED";
+
+export type Why = {
+  code: WhyCode;
+  /** For the dispatcher, in Portuguese. */
+  text: string;
+  /** How many crews fail for each reason (when no crew can do it). */
+  crews?: Partial<Record<FailCode, number>>;
+};
+
+export type PinIssue = { pin: Pin; loadIds: string[]; code: WhyCode; text: string };
+
 export type Solution = {
   routes: { crewId: string; loadIds: string[] }[];
   unassigned: string[];
+  /** Why each undone load is undone. */
+  why?: Record<string, Why>;
+  /** Pins that could not be kept: their loads stay undone (never given to another crew), with the reason. */
+  pinIssues?: PinIssue[];
 };
 
 /** Synthetic road model (same as the week simulation): 25 % over straight line, 72 km/h average. */

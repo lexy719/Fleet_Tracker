@@ -48,8 +48,8 @@ Medições opcionais (sondas):
 BENCH=1 npx vitest run src/assignment/__tests__/bench.probe.test.ts
 ```
 
-As outras sondas seguem o mesmo padrão: `GAP=1` (`gap.probe`), `MC=1` (`montecarlo.probe`), `REAL=1` (`realroads.probe`) e `FUEL=1` (`fuelslack.probe`). Cada uma aceita `*_OUT=ficheiro.json` para gravar os resultados.
+As outras sondas seguem o mesmo padrão: `GAP=1` (`gap.probe`), `MC=1` (`montecarlo.probe`), `REAL=1` (`realroads.probe`), `FUEL=1` (`fuelslack.probe`) e `REPLAN=1` (`replan.probe`: replanear, contratadas e fixações). Cada uma aceita `*_OUT=ficheiro.json` para gravar os resultados. O fuzz aceita `FUZZ_N=<n>` (mais semanas) e `FUZZ_SEED=<n>` (repetir uma semana).
 
 ## Regras de condução e transporte já modeladas
 
-Reg. 561/2006 (pausas, 9/10 h, descanso de 11 h, 56 h por semana, 90 h em duas), Dir. 2002/15 (6 h seguidas, 60 h por semana, 10 h com trabalho noturno), cabotagem (3 operações em 7 dias, só depois de entrega internacional) e regresso a casa até sábado. Ainda não: várias semanas (descansos reduzidos e compensação, regresso a cada 4 semanas), portagens, grupagem, trocas de reboque.
+Reg. 561/2006 (pausas, 9/10 h, descanso de 11 h, 56 h por semana, 90 h em duas), Dir. 2002/15 (6 h seguidas, 60 h por semana, 10 h com trabalho noturno), cabotagem (3 operações em 7 dias, só depois de entrega internacional) e regresso a casa até sábado. A atribuição também aceita fixações do despachante, cargas contratadas e replaneamento com a semana em curso (atrasos, avarias, cargas novas e canceladas): ver a secção 8 de `docs/atribuicao-servicos-v2.md`. Ainda não: várias semanas (descansos reduzidos e compensação, regresso a cada 4 semanas), portagens, grupagem, trocas de reboque.

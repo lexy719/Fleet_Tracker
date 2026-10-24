@@ -17,6 +17,8 @@ export type PlanScore = {
   crewsUsed: number;
   loadedKm: number;
   emptyKm: number;
+  /** Of the empty km, the drive home at the end of the week. */
+  homeEmptyKm: number;
   emptyPct: number;
   revenueEur: number;
   costEur: number;
@@ -43,7 +45,7 @@ export function scorePlan(method: string, inst: Instance, sol: Solution, runtime
     if (seen.has(id)) throw new Error(`Load ${id} assigned twice`);
     seen.add(id);
   }
-  let loadedKm = 0, emptyKm = 0, revenueEur = 0, costEur = 0, driveSec = 0, infeasibleRoutes = 0, assigned = 0, crewsUsed = 0;
+  let loadedKm = 0, emptyKm = 0, homeEmptyKm = 0, revenueEur = 0, costEur = 0, driveSec = 0, infeasibleRoutes = 0, assigned = 0, crewsUsed = 0;
   let fuelL = 0, fuelEur = 0, naiveFuelEur = 0;
   const violations: PlanScore["violations"] = {};
   for (const crew of inst.crews) {
@@ -57,6 +59,8 @@ export function scorePlan(method: string, inst: Instance, sol: Solution, runtime
     assigned += ids.length;
     loadedKm += s.loadedKm;
     emptyKm += s.emptyKm;
+    const last = s.legs.at(-1);
+    if (last && !last.loaded && last.to === crew.home) homeEmptyKm += last.km;
     revenueEur += s.revenueEur;
     costEur += weekCostEur(inst, crew, s) + s.revenueEur;
     driveSec += s.driveSec;
@@ -78,6 +82,7 @@ export function scorePlan(method: string, inst: Instance, sol: Solution, runtime
     crewsUsed,
     loadedKm: Math.round(loadedKm),
     emptyKm: Math.round(emptyKm),
+    homeEmptyKm: Math.round(homeEmptyKm),
     emptyPct: +((100 * emptyKm) / Math.max(1, loadedKm + emptyKm)).toFixed(1),
     revenueEur: Math.round(revenueEur),
     costEur: Math.round(costEur),

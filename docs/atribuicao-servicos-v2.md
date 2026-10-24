@@ -162,18 +162,160 @@ Novo: `travelMatrix.ts` (tabela de tempos do motor, pedida uma vez por plano, co
 - A estimativa que fiz antes, de cerca de 8 500 € por semana, estava certa na ordem de grandeza, mas esse ganho vem do planeador de abastecimento, que já existe (`fuelPlanning/refuelPlanner.ts`), e não da atribuição.
 - Limites: só se abastece nos sítios onde a equipa pára (partida, recolhas, entregas, casa), e não nas bombas ao longo do percurso; os preços são medianas por polo e não de bombas concretas; o depósito e os consumos são suposições.
 
+## 8. Para um despachante real: fixações, cargas contratadas e replanear (24 out 2026)
+
+Novo: `constraints.ts` (fixações), `replan.ts` (replanear a partir do plano atual) e, em `crewSchedule.ts`, a razão de cada falha, os atrasos e o camião parado. **Todos os números abaixo são de semanas geradas** (as de Bragança da secção 3 e semanas aleatórias), com o modelo de estradas sintético, salvo onde se diz "estradas reais" (a matriz gravada do nosso motor). Não são dados de clientes.
+
+### 8.1 Fixações do despachante
+
+Três tipos (`Pin` em `model.ts`), passados em `solveWeek(inst, { pins })`:
+
+- `assign`: esta carga é desta equipa;
+- `forbid`: esta equipa não faz esta carga;
+- `sequence`: estas cargas são desta equipa e ficam por esta ordem (outras cargas podem ficar no meio).
+
+Como funciona: antes da pesquisa, as cargas fixadas de cada equipa formam um **esqueleto** (com a melhor ordem viável que respeita as sequências, procurada por enumeração com poda). A pesquisa nunca tira uma carga do esqueleto e só insere outras à volta. Por isso, as fixações valem por construção e não por penalização.
+
+Quando uma fixação não pode valer, o plano diz porquê (`pinIssues`) e a carga **fica por fazer**: nunca é dada, em silêncio, a outra equipa. Os casos:
+
+- contradições: uma carga fixada a duas equipas, fixada e proibida à mesma equipa, ou ordens que fazem um ciclo;
+- fixações a uma equipa ou carga que não existe (são reportadas e não mudam mais nada);
+- uma carga que já está a ser feita por outra equipa (ao replanear);
+- uma semana impossível, com a regra e as horas. Exemplos de textos produzidos pelos testes: "A não consegue fazer sev: chega tarde à recolha (seg 15:21; a janela fecha seg 09:00)", "passa das 56 h de condução na semana", "A não consegue fazer sexta: não chega a casa a tempo do descanso semanal (dom 01:42; limite sáb 14:00)".
+
+`checkPins` volta a verificar um plano acabado contra as fixações, de forma independente, e todos os testes o usam.
+
+### 8.2 Cargas contratadas (obrigatórias) e *spot* (opcionais)
+
+`Load.mandatory = true` marca uma carga contratada. Ficar por fazer custa-lhe 100 000 € a mais na pesquisa, mais do que qualquer conjunto de cargas *spot* pode valer. No fim há uma **reparação**: para cada contratada por fazer, tenta-se pô-la na semana de uma equipa tirando-lhe uma, ou todas, as cargas *spot* (que voltam para onde couberem), ou mudando uma outra contratada para outra equipa.
+
+Cada carga por fazer, contratada ou não, sai com a razão (`why`): o código e um texto. Quando nenhuma equipa a pode fazer, vem quantas equipas falham por cada regra e um exemplo com as horas (por exemplo, "nenhuma equipa a pode fazer (2 chegam tarde à recolha); por exemplo A: chega tarde à recolha (seg 15:21; a janela fecha seg 09:00)"). Também há: "só cabe na semana de E012 tirando-lhe C007 (obrigatórias)", "fazê-la custa mais do que paga" e "o despachante proibiu-a a todas as equipas".
+
+**O que está garantido, dito com rigor:** o fuzz verifica de forma independente que nenhuma contratada fica por fazer quando cabia na semana de alguma equipa depois de lhe tirar as cargas *spot*. Isto não prova que não exista nenhuma outra forma (trocas em cadeia entre várias contratadas não são procuradas de forma exaustiva).
+
+Há um ponto fraco conhecido: a **cabotagem**. Uma contratada Espanha → Espanha precisa de uma entrega internacional antes, na mesma equipa. Se nenhuma equipa tem essa entrega no plano, a carga fica por fazer com a razão "nenhuma equipa tem, no plano, uma entrega internacional em Espanha antes dela". A pesquisa não vai buscar uma entrega internacional de propósito para a permitir.
+
+Medido nas semanas de Bragança, com 30 % das cargas marcadas como contratadas (as de número acabado em 0, 1 ou 2) e, na segunda linha, também fixações tiradas do plano (cada 10.ª carga fixada à equipa seguinte, cada 20.ª proibida à sua, 3 ordens trocadas; algumas são de propósito impossíveis):
+
+| Semana | Caso | Fixações (impossíveis) | Cargas | Contratadas feitas | Contratadas por fazer, porquê | Margem | Tempo |
+|---|---|---|---|---|---|---|---|
+| S | sem nada | — | 34/45 | — | — | 6 039 € | 0,5 s |
+| S | 30 % contratadas | — | 34/45 | 11/14 | 1 chega tarde à descarga, 1 cabotagem, 1 conflito com outra contratada | 6 033 € | 0,5 s |
+| S | + fixações | 7 (4) | 31/45 | 10/14 | as mesmas + 1 chega tarde à recolha | 5 278 € | 0,4 s |
+| M | sem nada | — | 102/135 | — | — | 20 663 € | 2,4 s |
+| M | 30 % contratadas | — | 98/135 | 33/41 | 3 recolha, 3 cabotagem, 2 conflito | 20 637 € | 2,5 s |
+| M | + fixações | 20 (8) | 95/135 | 33/41 | 3 recolha, 3 cabotagem, 2 conflito | 19 773 € | 2,5 s |
+| L | sem nada | — | 408/450 | — | — | 90 992 € | 9,7 s |
+| L | 30 % contratadas | — | 408/450 | 124/135 | 5 cabotagem, 4 descarga, 2 recolha | 90 788 € | 9,8 s |
+| L | + fixações | 62 (15) | 392/450 | 121/135 | 6 cabotagem, 5 descarga, 3 recolha | 86 192 € | 10,2 s |
+
+- As contratadas quase não custam margem (−6 €, −26 € e −204 €). As fixações custam mais, porque são escolhas do despachante contra a pesquisa (nestes testes são arbitrárias, de propósito).
+- Zero infrações, zero rotas inviáveis e nenhuma fixação violada em todas as linhas. Os tempos são desta máquina (cloud), com 1 000 iterações.
+
+### 8.3 Replanear a semana em curso
+
+`replan(inst, planoAtual, agora, eventos, { pins })`, com os eventos:
+
+- carga nova;
+- carga cancelada;
+- atraso de X horas a partir de agora (contado como condução, o lado seguro para os limites, ou como espera, se o despachante sabe que o camião está parado);
+- camião parado a partir de um momento (avaria ou oficina; por omissão, agora).
+
+O que fica fixo:
+
+- **O passado não muda.** Ficam congeladas, à frente da semana de cada equipa e pela mesma ordem, as cargas acabadas, a que está a fazer e aquela para onde já vai a caminho (a entrega anterior acabou antes de agora). Nada novo começa antes de agora. Uma equipa que já ia para casa, ou para uma recolha que entretanto perdeu, acaba essa viagem primeiro. É o lado seguro: o desvio a meio da estrada não é modelado. Os testes confirmam, equipa a equipa, que a condução e as cargas/descargas antes de agora são iguais ao minuto.
+- **Quando o próprio evento parte o que está em curso, o resultado diz o quê, em vez de esconder:**
+  - descarga atrasada: a janela é alargada e a nota diz a que horas chega ("avisar o cliente");
+  - equipa que já não chega a casa até sábado: a nota diz a hora;
+  - recolha já impossível: a carga volta a ser atribuída;
+  - carga no camião avariado: fica fora do plano, marcada para resgate (a troca de reboque não está modelada);
+  - cancelar uma carga já carregada: não sai do plano e é reportado.
+- **Mudar o mínimo:** a pesquisa parte do plano atual, paga 300 € por cada carga que muda de equipa (ou que sai do plano), só mexe à volta do que mudou e só aceita melhorias. Sem eventos, o plano fica igual.
+- As fixações continuam a valer. Uma fixação a uma equipa que avariou é reportada, e a carga não é passada a outra em silêncio.
+
+**Estabilidade e tempo**, medidos nas semanas de Bragança: plano v2 completo (1 000 iterações), replaneado na terça às 12:00, com 10 casos de cada evento (o atraso e a avaria em 10 equipas diferentes; as cargas novas tiradas de outra semana gerada). "Equipas mexidas" são equipas cuja semana mudou (cargas ou ordem). "Mudam" são cargas que passam de uma equipa para outra.
+
+| Semana | Evento | Tempo mediano (máx.) | Equipas mexidas mediana (máx.) | Cargas que mudam de equipa mediana (máx.) | Total que fica por fazer | Δ margem mediana |
+|---|---|---|---|---|---|---|
+| S | carga nova | 0,10 s (0,13) | 1 (2) | 0 (1) | 0 | +29 € |
+| S | cancelamento (9) | 0,09 s (0,11) | 0 (1) | 0 (0) | 0 | −350 € |
+| S | atraso 3 h | 0,09 s (0,12) | 0 (3) | 0 (3) | 0 | 0 € |
+| S | atraso 6 h | 0,09 s (0,13) | 0 (3) | 0 (3) | 2 | −73 € |
+| S | avaria | 0,09 s (0,12) | 2 (3) | 1 (2) | 5 | −300 € |
+| M | carga nova | 0,29 s (0,36) | 1 (1) | 0 (0) | 0 | +162 € |
+| M | cancelamento | 0,26 s (0,31) | 0 (2) | 0 (1) | 0 | −380 € |
+| M | atraso 3 h | 0,25 s (0,31) | 0 (2) | 0 (2) | 1 | 0 € |
+| M | atraso 6 h | 0,25 s (0,28) | 0 (2) | 0 (2) | 1 | 0 € |
+| M | avaria | 0,26 s (0,31) | 2 (3) | 1 (2) | 4 | −277 € |
+| **L** | **carga nova** | **1,04 s (1,23)** | **1 (1)** | **0 (0)** | 0 | +131 € |
+| L | cancelamento | 0,98 s (1,11) | 0 (0) | 0 (0) | 0 | −582 € |
+| L | atraso 3 h | 0,90 s (1,20) | 0 (2) | 0 (1) | 2 | −1 € |
+| L | atraso 6 h | 0,88 s (1,19) | 2 (4) | 1 (3) | 2 | −36 € |
+| L | avaria | 0,95 s (1,23) | 2 (4) | 2 (3) | 2 | −189 € |
+
+- Na semana L, as 10 cargas novas foram todas atribuídas e cada uma mexeu numa só equipa (a que a recebeu). O replaneamento mais lento da L levou 1,23 s (meta: menos de 3 s).
+- Em todos os 150 casos: zero infrações, zero rotas inviáveis, passado igual e fixações respeitadas.
+- O replaneamento numa semana L com 30 % de contratadas e 62 fixações levou 1,1 s e mexeu numa equipa.
+
+### 8.4 Testes novos
+
+- `__tests__/pins.test.ts`: fixações e contratadas como semanas-armadilha (fixação mantida contra a equipa mais perto, ordem viável única, recolha impossível, 56 h, regresso de sábado, proibição, ordem pedida mais cara, outras cargas no meio, ordem que falha uma janela, contradições, ciclos, nomes inexistentes; contratada contra *spot* mais bem paga, contratada impossível com o número de equipas por razão, frio sem equipa de frio, duas contratadas em conflito, contratada que tira *spot* já planeadas, *spot* que não compensa).
+- `__tests__/replan.test.ts`: sem eventos, atraso (a carga seguinte passa à outra equipa), descarga atrasada, atraso como espera, avaria com carga a bordo, oficina marcada, carga nova, cancelamentos (também de uma carga já carregada e de uma para onde a equipa já ia), fixações através do replaneamento, e a semana L (carga nova e avaria abaixo de 3 s e no máximo 3 equipas mexidas).
+- `crewSchedule.test.ts`: atraso a meio de uma perna, atraso durante uma pausa obrigatória, atraso durante uma espera, camião parado, razões de falha com horas.
+- `__tests__/fuzz.test.ts`: além do fuzz de antes, três novos (fixações aleatórias, incluindo contraditórias, com 30 % de contratadas; replaneamentos aleatórios com 1 a 3 eventos; e o polimento de retorno, ver 8.5). Correram com `FUZZ_N=400` e com `FUZZ_N=2000` (8 000 semanas no total dos quatro). `FUZZ_SEED=<n>` repete uma semana só.
+- Sonda: `REPLAN=1 npx vitest run src/assignment/__tests__/replan.probe.test.ts` (tabelas acima; `REPLAN_OUT=ficheiro.json`).
+
+**O que os testes apanharam pelo caminho (corrigido):**
+
+1. Um atraso que caía durante uma pausa obrigatória fazia o simulador descontar condução em vez de a somar. A auditoria legal independente apanhou 4,75 h de condução sem pausa.
+2. Quatro casos em que o replaneamento reescrevia o passado, apanhados pela comparação ao minuto:
+   - uma equipa que já ia para casa;
+   - uma equipa que já estava na recolha de uma carga libertada;
+   - um camião que avariava a meio de uma viagem;
+   - uma carga com tempo de carga zero, que parecia ainda não carregada.
+3. Duas falhas nas fixações:
+   - uma terceira fixação da mesma carga contraditória ficava sem explicação (apanhado só com 2 000 semanas);
+   - uma sequência sem cargas em curso era tratada como se tivesse.
+
+### 8.5 Carga de retorno para casa (opcional, desligada por omissão)
+
+O regresso vazio ao sábado é 40–60 % dos km vazios. O objetivo já paga esses km (0,77 €/km), por isso dar-lhe um bónus distorceria a margem. Tentei duas coisas:
+
+1. **Uma forma nova de tirar cargas no *ruin & recreate***: tirar a última carga de uma equipa com regresso longo e as cargas que a trariam para casa. Resultado misto e dentro do ruído: em 13 semanas, o regresso vazio desceu em 6 e subiu em 7. Na S principal subiu 119 km e a margem caiu 10 €. **Foi retirada.**
+2. **Um polimento final** (`solveWeek(…, { backhaul: true })`). Para cada equipa que volta vazia mais de 100 km, tenta-se: (a) trazer de outra equipa uma carga que acabe perto de casa para o fim da semana; (b) trocar as últimas cargas entre as duas; (c) fazer uma carga por fazer que acabe perto de casa, em vez da última (que passa para outra equipa ou fica por fazer, nunca contratada por *spot*). Um movimento só é aceite se a margem subir **e** o regresso vazio das equipas envolvidas descer. Nunca se fazem menos cargas.
+
+Medido em estradas reais (matriz gravada do motor e preços recalculados nos km reais), nas três semanas de Bragança e em mais 5 semanas S e 5 M geradas com outras sementes (`REAL=1 REAL_MC=5 … realroads.probe.test.ts`):
+
+| Semana (estradas reais) | Cargas | Regresso vazio | Km vazios | Margem |
+|---|---|---|---|---|
+| S | 35 → 35 | 3 027 → **2 607 km (−14 %)** | 6 513 → 6 170 | 6 017 → 6 053 € (+36 €) |
+| M | 105 → 105 | 5 068 → 5 068 | igual | igual |
+| L | 410 → 410 | 20 929 → 20 926 | 53 409 → 53 406 | 91 806 → 91 808 € (+2 €) |
+| S, semente +100 | 36 → 36 | 3 267 → **2 939 (−10 %)** | 7 489 → 7 260 | 6 363 → 6 383 € (+20 €) |
+| M, semente +200 | 113 → 113 | 6 270 → 6 111 (−3 %) | 21 708 → 21 441 | 20 158 → 20 214 € (+56 €) |
+| M, semente +300 | 117 → 117 | 4 133 → 3 830 (−7 %) | 16 885 → 16 430 | 25 127 → 25 368 € (+241 €) |
+| outras 7 semanas | iguais | iguais | iguais | iguais |
+| **Total das 13** | iguais | 67 050 → 65 837 km (−1,8 %) | | +355 € |
+
+No v2 sem polimento, o regresso vazio é 46 % dos km vazios na S, 28 % na M e 39 % na L (estradas reais).
+
+- Nunca piora (é garantido por construção e verificado no fuzz). Ganha em 5 de 13 semanas e nas outras não muda nada. Zero infrações.
+- **Porque está desligado por omissão:** os ganhos vêm **todos** do movimento (c), ou seja, deixar por fazer uma carga *spot* que paga mais para fazer uma que paga menos mas traz a equipa a casa. A margem sobe, mas o objetivo da pesquisa piora, porque pesa cada carga por fazer pelo que paga (é preferir servir quem paga mais). Com a condição de o objetivo também não piorar, o polimento não encontra quase nada (L: −3 km, +2 €): o *ruin & recreate* já deixa o plano localmente ótimo para as trocas (a) e (b).
+- **Decisão para o fundador:** numa troca de cargas *spot*, vale mais a margem da semana ou fazer a carga que paga mais? Se for a margem, liga-se por omissão (ou muda-se o peso das cargas por fazer no objetivo), e os números da secção 5 mudam um pouco.
+
 ### Próximos passos
 
-1. Carga de retorno para casa: favorecer a última carga da semana que acabe perto de casa. Hoje isso só entra pelo custo do regresso.
-2. Velocidade na semana L, para mais iterações nos mesmos 30 s: reutilizar os tempos já calculados entre iterações.
-3. Ligar ao modelo da aplicação (Job/Truck/Driver/Trailer → equipas e cargas) e verificar com rotas reais do GraphHopper.
-4. Cargas obrigatórias (contratadas) contra cargas opcionais (*spot*).
+1. Decidir o ponto de 8.5 (margem contra receita nas cargas *spot*) e, conforme a decisão, ligar o polimento de retorno.
+2. Cabotagem contratada: procurar de propósito uma entrega internacional que a permita.
+3. Velocidade na semana L, para mais iterações nos mesmos 30 s: reutilizar os tempos já calculados entre iterações.
+4. Ligar ao modelo da aplicação (Job/Truck/Driver/Trailer → equipas e cargas) e verificar com rotas reais do GraphHopper. Os eventos de replaneamento devem vir da app do motorista (atrasos, avarias).
+5. Replanear: modelar a posição a meio de uma viagem (hoje a equipa acaba a viagem em curso) e a troca de reboque para resgatar uma carga de um camião avariado.
 
 ### Ainda não modelado
 
 - Várias semanas: regresso a cada 4 semanas, descansos semanais reduzidos e compensação.
 - Portagens.
-- Preferências dos motoristas.
+- Preferências dos motoristas (podem ser dadas como fixações `forbid`, à mão).
 - Trocas de reboque.
 - Grupagem (várias cargas no mesmo reboque, com ordem de carga).
 - Velocidades reais por estrada: virão do motor e, mais tarde, da app do motorista.
