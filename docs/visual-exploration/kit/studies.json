@@ -1,0 +1,592 @@
+[
+ {
+  "id": "O-01",
+  "fam": "Operation",
+  "name": "Operation ledger with micro-journeys",
+  "intent": "What is every transport doing right now, scannable in one pass?",
+  "verdict": "MAYBE",
+  "strength": "Each row carries a true micro-journey (position, stops, pause, restriction) instead of a status word. Very dense and still calm, and it scans like a timetable.",
+  "weakness": "Without geography you can't see regional clustering. Row height limits how many signals fit.",
+  "reason": "The micro-journey row is excellent, but as a full composition it is subsumed by O-09, which adds geography at no cost. Keep the row and drop this page."
+ },
+ {
+  "id": "O-02",
+  "fam": "Operation",
+  "name": "Country as the operation (fullscreen map, attached labels)",
+  "intent": "Where is everything, and what is attached to each moving object?",
+  "verdict": "REJECT",
+  "strength": "Labels attached directly to objects, no side panel. The country reads as the workspace, and the real road network gives it physical credibility.",
+  "weakness": "Portugal is tall and narrow, so a landscape screen wastes about 55% of its width on sea and Spain. The labels collide in the Porto/Coimbra cluster.",
+  "reason": "Map as landscape wallpaper: about 55% of the screen is sea and Spain, and the labels collide where the operation is densest. The attached-label idea survives elsewhere (O-09, R-07)."
+ },
+ {
+  "id": "O-03",
+  "fam": "Operation",
+  "name": "Day board (temporal, all transports)",
+  "intent": "When will each transport do what today, and where do restrictions fall in time?",
+  "verdict": "KEEP",
+  "strength": "Time is native here. Restriction validity windows show as hatched time bands crossing the rows they affect, and windows, pauses and now line up on one clock.",
+  "weakness": "Spatial context is gone entirely. Long transports compress badly when the day is wide.",
+  "reason": "The temporal spine for the whole operation. Restriction-as-time-band is a genuinely strong FleetOS idea."
+ },
+ {
+  "id": "O-04",
+  "fam": "Operation",
+  "name": "Readiness matrix (transport × check)",
+  "intent": "Which transports are blocked, and by which dimension?",
+  "verdict": "REJECT",
+  "strength": "Very fast blocking diagnosis. Unknown gets a distinct glyph, and the columns read as the decision dimensions.",
+  "weakness": "It's a spreadsheet. Facts lose their native form (a restriction becomes a dot) and there's nothing physical or temporal left.",
+  "reason": "Spreadsheet. Facts lose their native form and there is nothing temporal or physical. The glyph vocabulary is worth keeping; the composition is not."
+ },
+ {
+  "id": "O-05",
+  "fam": "Operation",
+  "name": "Latitude schematic (Portugal as a metro line)",
+  "intent": "Can the country be straightened so every transport becomes a comparable vertical journey?",
+  "verdict": "KEEP",
+  "strength": "Latitude as the shared vertical axis turns Portugal's N–S shape into an advantage. Transports become parallel journeys you can compare at a glance, and Coimbra/Porto/Lisboa line up across all of them.",
+  "weakness": "It distorts east–west geography (Bragança and Sines look adjacent), and the schematic needs learning.",
+  "reason": "Strong, distinctively FleetOS, and native to Portugal's geometry. A candidate replacement for the landscape overview map."
+ },
+ {
+  "id": "O-06",
+  "fam": "Operation",
+  "name": "Accordion instrument (list that opens into the object)",
+  "intent": "Can scanning and inspecting happen in the same place, without leaving the list?",
+  "verdict": "REJECT",
+  "strength": "The selected row grows into a real instrument (journey + day + truck) in situ, so continuity is perfect. No inspector needed.",
+  "weakness": "The other rows get pushed away and lose comparability, so it reads like a FAQ accordion. Hierarchy between the expanded row and the page title is muddled.",
+  "reason": "A generic accordion. Expanding one row destroys the comparability that made the list worth having. In-place growth belongs to a transition, not a layout."
+ },
+ {
+  "id": "O-07",
+  "fam": "Operation",
+  "name": "Three sentences (attention-only, typographic)",
+  "intent": "If the operator only reads one screen, what must change in the next hour?",
+  "verdict": "MAYBE",
+  "strength": "Ruthless prioritisation. Each sentence is a decision with its consequence and one inline physical hint. Calm and premium.",
+  "weakness": "No ambient awareness of the healthy transports, so it can feel empty on a quiet day. It's only as good as the ranking behind it.",
+  "reason": "Superb landing sentence, but a workspace can't be built from three sentences. On a calm day it is empty. Use as the attention header above O-09."
+ },
+ {
+  "id": "O-08",
+  "fam": "Operation",
+  "name": "The yard (fleet as physical silhouettes)",
+  "intent": "What physical capacity do I have, and where is it committed?",
+  "verdict": "REJECT",
+  "strength": "Load fill read through the silhouettes is immediate, and free trailers are visibly empty. Physical-object-first at population scale.",
+  "weakness": "Eight trucks fit; forty would not. The silhouettes repeat and turn decorative, and location and time are missing.",
+  "reason": "Decorative at population scale. Eight silhouettes look lovely and forty would be wallpaper. The load-fill glyph survives as a row micro-object."
+ },
+ {
+  "id": "O-09",
+  "fam": "Operation",
+  "name": "Portrait map spine + ledger (no white panel)",
+  "intent": "Can geography and the dense list coexist without a map-left/panel-right split?",
+  "verdict": "KEEP",
+  "strength": "A portrait map matches Portugal's shape. Rows sit on the same paper with leader lines from each row to its truck, so the map and the list are one surface.",
+  "weakness": "Leader lines get busy beyond about 10 rows, and the map is fixed-scale at country level.",
+  "reason": "Best answer so far to 'map plus list'. The portrait orientation and leader-line binding replace the generic side panel."
+ },
+ {
+  "id": "D-01",
+  "fam": "Driver",
+  "name": "Legal buckets under the day",
+  "intent": "Is the driver legal now and for the rest of the day, and which rule binds first?",
+  "verdict": "KEEP",
+  "strength": "Each EU 561 counter is a filling band drawn on the same clock as the activity ribbon, so the binding constraint (continuous 4h30) visibly hits its wall at 10:50. Time stays time.",
+  "weakness": "Weekly and fortnightly counters don't fit a day axis and get pushed to text. Four bands may be too many for new users.",
+  "reason": "The strongest legality representation. It causally joins activity and rule on one clock. Core FleetOS."
+ },
+ {
+  "id": "D-02",
+  "fam": "Driver",
+  "name": "Week as stacked columns (portrait time)",
+  "intent": "What is the driver's weekly rhythm, and how much is left?",
+  "verdict": "MAYBE",
+  "strength": "A vertical day axis makes seven days comparable side by side. The 56h week fills a physical gauge on the right, and rest periods read as negative space.",
+  "weakness": "Rotating time to vertical breaks consistency with every horizontal day view, and the hour labels repeat.",
+  "reason": "Good weekly rhythm, but the orientation conflicts with the horizontal temporal spine. Take the gauge, not the rotation."
+ },
+ {
+  "id": "D-03",
+  "fam": "Driver",
+  "name": "Qualifications as physical cards",
+  "intent": "Which documents allow this person to drive what, and until when?",
+  "verdict": "MAYBE",
+  "strength": "The licence, CQM and tachograph cards drawn at true aspect ratio are instantly recognisable, and a shared validity axis below them shows the CQM expiry coming up against the transport dates.",
+  "weakness": "Card skeuomorphism risks looking like a consumer wallet, and categories (C, CE) are small.",
+  "reason": "The validity axis is strong; the card rendering is borderline decorative. Keep the axis plus a flat document glyph."
+ },
+ {
+  "id": "D-04",
+  "fam": "Driver",
+  "name": "Driver ⇄ vehicle coupling",
+  "intent": "Is this person compatible with this exact combination?",
+  "verdict": "REJECT",
+  "strength": "Compatibility is drawn as joints between the person and the physical combination: licence category to mass, ADR to load, the tacho card to the tractor. Relations become visible connective tissue.",
+  "weakness": "The monogram-as-person is weak, and the joints are generic connector lines. It doesn't explain what to do when a joint fails.",
+  "reason": "Too diagrammatic and static. The monogram stands in for a person, and connector curves carry less information than one sentence would."
+ },
+ {
+  "id": "D-05",
+  "fam": "Driver",
+  "name": "Legality projected onto the road",
+  "intent": "Where on the road will the driver's legal time run out?",
+  "verdict": "KEEP",
+  "strength": "The legal clock is converted to kilometres: the 10:50 wall becomes a physical line on the A1 before Santarém, and pause candidates appear as real places inside the remaining legal distance. Time and space joined causally.",
+  "weakness": "Projection assumes average speed; uncertainty needs better expression than one shaded taper.",
+  "reason": "Distinctively FleetOS. Answers the dispatcher's real question ('where must he stop?'). A primary Driver+Route primitive."
+ },
+ {
+  "id": "D-06",
+  "fam": "Driver",
+  "name": "Spatial driver: reachable legal corridor",
+  "intent": "Geographically, how far can the driver legally go before the next mandatory event?",
+  "verdict": "REJECT",
+  "strength": "The route coloured by legal state (driven / legal remaining / beyond limit), with pause candidates on the real geometry. The map does real work, not decoration.",
+  "weakness": "On a country-scale map the legal remainder is about 50 km, a tiny sliver. It needs a corridor zoom to be legible, and the label box floats.",
+  "reason": "Right semantics at the wrong scale: the 49 km legal remainder is a sliver on a regional map. D-05 says the same thing legibly."
+ },
+ {
+  "id": "D-07",
+  "fam": "Driver",
+  "name": "Driver history as event spine",
+  "intent": "What happened with this driver recently, and is there a pattern?",
+  "verdict": "REJECT",
+  "strength": "A vertical event spine with typed event glyphs (infraction, rest, transport, document) and real timestamps. History reads as events, not records.",
+  "weakness": "Generic activity-feed energy. Fourteen days of mostly 'normal' events dilute the two that matter, and there is no aggregation.",
+  "reason": "A generic activity feed. Equal visual weight for every event buries the one infraction that matters, so it needs significance grouping before it is FleetOS."
+ },
+ {
+  "id": "D-08",
+  "fam": "Driver",
+  "name": "Forward assignments (5-day horizon)",
+  "intent": "What is this driver committed to, and where do commitments collide with rest rules?",
+  "verdict": "MAYBE",
+  "strength": "Future transports as blocks on a multi-day axis with mandatory rest (11h daily, 45h weekly) drawn as hatched no-go time. A proposed assignment visibly collides with a rest block, so conflict is a geometry.",
+  "weakness": "The days are compressed, so short events are illegible, and it needs zoom into a single day.",
+  "reason": "Conflict-as-overlap is exactly right, but the composition is sparse and the days compress. Belongs as a zoom level of the Driver temporal spine, not a page."
+ },
+ {
+  "id": "D-09",
+  "fam": "Driver",
+  "name": "One sentence driver (typography only)",
+  "intent": "What is the single most important fact about this driver right now?",
+  "verdict": "MAYBE",
+  "strength": "Enormous calm. The decision fact dominates and the supporting facts read as inline prose with live values. Premium and editorial.",
+  "weakness": "Too empty to work in. Comparison or deeper inspection needs another state, and it risks a 'marketing hero' feel.",
+  "reason": "Excellent as an attention header or a lock-screen / mobile glance. Not a workspace by itself."
+ },
+ {
+  "id": "D-10",
+  "fam": "Driver",
+  "name": "Driver dossier (documents bound to person)",
+  "intent": "Which documents prove this driver is allowed, and which are stale?",
+  "verdict": "REJECT",
+  "strength": "Complete and orderly, with every document present.",
+  "weakness": "A table of files with status pills, the classic HR system. There's no relation to the transport and no sense of time or consequence. It looks like every compliance tool.",
+  "reason": "Too ERP-like. Card/list soup with no native form. Qualifications should be time (D-03 axis) or relation (D-04)."
+ },
+ {
+  "id": "D-11",
+  "fam": "Driver",
+  "name": "Reassignment comparison (two drivers, one transport)",
+  "intent": "Who should take this transport, and why?",
+  "verdict": "KEEP",
+  "strength": "Two candidates on mirrored day ribbons with identical axes. Recommendation shown by ink weight and outline, not colour, and the deciding difference (rest window) is called out on the timeline.",
+  "weakness": "Only two candidates fit. Three or more need a ranked list with a pinned comparison pair.",
+  "reason": "Decision comparison layer done right: native time form, clear recommendation, honest reason. Core primitive."
+ },
+ {
+  "id": "D-12",
+  "fam": "Driver",
+  "name": "Tachograph disc (circular 24h)",
+  "intent": "Can the legacy tachograph disc metaphor carry the driver's day?",
+  "verdict": "REJECT",
+  "strength": "Instantly recognisable to old-school drivers and visually striking.",
+  "weakness": "Circular time is hard to compare, labels rotate, and the 'now' wedge is ambiguous. It conflicts with every horizontal time axis and reads as nostalgic decoration.",
+  "reason": "Skeuomorphic, visually strong but operationally unclear. Linear time beats it everywhere."
+ },
+ {
+  "id": "V-01",
+  "fam": "Vehicle",
+  "name": "Annotated technical elevation (facts on the object)",
+  "intent": "What is the state of this combination, read directly off the machine?",
+  "verdict": "KEEP",
+  "strength": "Every fact is pinned to its physical location: fuel at the tank, the unknown axle height at the 1st axle, load at the bay, the tacho at the cab. There is no panel; the object is the interface, and the unknown is honest (dashed '?').",
+  "weakness": "The callouts need careful layout per state, and on small screens the drawing shrinks below legibility.",
+  "reason": "Physical-object-first at its best. Information integrated into the object. Distinctively FleetOS."
+ },
+ {
+  "id": "V-02",
+  "fam": "Vehicle",
+  "name": "Load plan as unloading sequence",
+  "intent": "Is the load arranged in the order it will leave the trailer?",
+  "verdict": "MAYBE",
+  "strength": "The top-down plan is enlarged to be the canvas. The unload order is drawn as numbered flows out of the doors toward each stop on a mini journey, so the sequence is a physical argument.",
+  "weakness": "Only meaningful for multi-drop loads, and pallet-level detail is overkill for full single-drop loads.",
+  "reason": "A strong physical argument for multi-drop only. It overlaps V-01 and the existing lab load plan; fold the unload-order arrows into those."
+ },
+ {
+  "id": "V-03",
+  "fam": "Vehicle",
+  "name": "Range as a draining band along the road",
+  "intent": "Will the fuel reach the next refuelling point, and where should it refuel?",
+  "verdict": "MAYBE",
+  "strength": "Fuel is drawn as a quantity draining along the km axis with a reserve floor. The refuel candidates sit on that same axis, and the assumption (manual reading plus consumption) is shown as a widening uncertainty cone.",
+  "weakness": "It duplicates the route strip axis, so it must be a layer of the route view, not its own page.",
+  "reason": "Correct and honest, but it is a layer of the route axis, not a vehicle view. As its own page it duplicates the route."
+ },
+ {
+  "id": "V-04",
+  "fam": "Vehicle",
+  "name": "Maintenance as component lifelines",
+  "intent": "Which service is due, measured in the units each component actually wears in?",
+  "verdict": "REJECT",
+  "strength": "Each component has its own wear unit (km, hours, date) on its own lifeline, with the current position and the projected position after this week's assignments, so 'due during J-4229' is visible.",
+  "weakness": "A stack of horizontal bars looks dashboard-ish, and there is no drawing of the component on the truck.",
+  "reason": "Dashboard progress bars by another name. The projected-wear idea should be callouts on the elevation, not a bar stack."
+ },
+ {
+  "id": "V-05",
+  "fam": "Vehicle",
+  "name": "Trailer comparison (stacked elevations)",
+  "intent": "Which free trailer can replace PT-3821, and what differs physically?",
+  "verdict": "MAYBE",
+  "strength": "Candidate trailers are drawn at identical scale and aligned so that height, axles and floor length differ visibly. Capability differences become labelled deltas and the recommendation is marked by outline.",
+  "weakness": "Elevations take a lot of vertical space, so a fourth candidate needs scrolling. The cost/distance-to-trailer dimension is underweighted.",
+  "reason": "Native physical comparison with a clear recommendation, but four elevations eat the screen and cost/distance is buried. Pair candidates with a ranked list instead."
+ },
+ {
+  "id": "V-06",
+  "fam": "Vehicle",
+  "name": "Clearance portal (truck front vs. structure)",
+  "intent": "Does the vehicle physically fit under this structure?",
+  "verdict": "KEEP",
+  "strength": "The front elevation of the truck stands inside the drawn portal of the Campanhã underpass at true scale. The 30 cm margin is a dimension line, not a number in a table, and the posted versus measured gauge is distinguished.",
+  "weakness": "It only applies to clearance restrictions. Weight and length need other physical metaphors.",
+  "reason": "The single most convincing 'physical fact' representation. Anyone understands it in one second. Keep."
+ },
+ {
+  "id": "V-07",
+  "fam": "Vehicle",
+  "name": "Spatial truck in a lens (position + heading + context)",
+  "intent": "Where exactly is the truck and what is immediately around it?",
+  "verdict": "REJECT",
+  "strength": "A circular zoom lens on the national map gives local and global context at once.",
+  "weakness": "The circular lens is a gimmick: it wastes corners, crops labels and reads as a sci-fi scope. Position is simulated anyway, so precision theatre misleads.",
+  "reason": "Visually strong but operationally unclear. A decorative lens with a false-precision risk."
+ },
+ {
+  "id": "V-08",
+  "fam": "Vehicle",
+  "name": "Spec sheet (technical register)",
+  "intent": "What are the registered characteristics of the vehicle?",
+  "verdict": "REJECT",
+  "strength": "Complete, precise and exportable. Ops people know this form.",
+  "weakness": "A key–value wall with no hierarchy, no consequence and no relation to the transport. Every fleet tool already looks like this.",
+  "reason": "Too ERP-like and too static. Specs should surface only where they cause something (V-06, V-01)."
+ },
+ {
+  "id": "V-09",
+  "fam": "Vehicle",
+  "name": "Truck + route: vehicle constraints along the corridor",
+  "intent": "Where on the route does this specific vehicle meet a physical constraint?",
+  "verdict": "MAYBE",
+  "strength": "A tiny truck silhouette rides the straightened corridor. Above it, each structure or rule on the road is drawn as a physical gate (height, weight, axle) at its km with pass/unknown/fail against this vehicle's numbers. Truck+Route+Restriction in one strip.",
+  "weakness": "Gates cluster around cities, and the drawn gate metaphor needs a legend the first time.",
+  "reason": "Excellent concept (structures as gates against this truck), but the gates cluster at Porto and the labels collide. It works better as a layer of R-03."
+ },
+ {
+  "id": "V-10",
+  "fam": "Vehicle",
+  "name": "Axle mass diagram (weight as force)",
+  "intent": "Is the mass legal and well-distributed per axle?",
+  "verdict": "MAYBE",
+  "strength": "Downward force arrows under each axle are scaled to load, with the legal limit as a ghost arrow. Engineering-correct and physical, and the overload is visible before reading numbers.",
+  "weakness": "Estimates presented as forces can imply false precision. Ops staff rarely act on per-axle values unless a weigh station flags them.",
+  "reason": "A strong physical idiom, but niche. Belongs inside the truck elevation as an optional layer, not a full view."
+ },
+ {
+  "id": "V-11",
+  "fam": "Vehicle",
+  "name": "Combination assembly (tractor · trailer · driver as parts)",
+  "intent": "Which parts make up this transport's equipment and which part is the problem?",
+  "verdict": "REJECT",
+  "strength": "An exploded assembly: driver, tractor and trailer separated by visible couplings, each with its own state, with the faulty part highlighted. Good for 'swap one part' decisions.",
+  "weakness": "Exploding the truck is visually busy and the couplings carry little information. It feels like an instruction manual.",
+  "reason": "An instruction-manual exploded view. Couplings carry no information and part-swap is better done inside V-05."
+ },
+ {
+  "id": "R-01",
+  "fam": "Route",
+  "name": "Journey strip (horizontal, stops as stations)",
+  "intent": "Where is the transport in its journey and what comes next?",
+  "verdict": "MAYBE",
+  "strength": "Distance is the axis, stops are stations with window above and ETA below, and the vehicle is a marker on the line. It reads in two seconds and is calm.",
+  "weakness": "Without a time axis, windows are just text; the strip alone can't show slack.",
+  "reason": "Necessary but not sufficient: the baseline strip already exists in the lab. Without time or geography it can't show slack or context. A component, not a direction."
+ },
+ {
+  "id": "R-02",
+  "fam": "Route",
+  "name": "Time–distance diagram (Marey chart)",
+  "intent": "Will each stop be reached inside its window, and how much slack is there?",
+  "verdict": "KEEP",
+  "strength": "Distance on y and time on x. The plan is a line, windows are boxes it must pass through, pauses are flat segments and the slope is speed. Slack is visible geometry, and the replan alternative is a second line.",
+  "weakness": "Unfamiliar to most dispatchers, so it needs one onboarding moment. Labels crowd at the stops.",
+  "reason": "The most information-dense honest representation of a timed route. A railway-planning idiom that fits trucking perfectly. Distinctive."
+ },
+ {
+  "id": "R-03",
+  "fam": "Route",
+  "name": "Strip map (real corridor, straightened)",
+  "intent": "Can we keep real geography but give the route the clarity of a linear strip?",
+  "verdict": "KEEP",
+  "strength": "The real route is unrolled into a horizontal corridor. True lateral wiggle is kept, the surrounding real roads are projected into the band, and stops, pause and position sit on a straight km scale. The map becomes a journey (the classic strip-map/itinerary roll).",
+  "weakness": "Cross-roads far from the corridor are lost, and side-trips (the depot, a detour) need special handling.",
+  "reason": "Map as corridor, the best synthesis of geography and journey. A primary FleetOS primitive."
+ },
+ {
+  "id": "R-04",
+  "fam": "Route",
+  "name": "Side-mounted vertical route + portrait map",
+  "intent": "Can a vertical route strip sit next to a portrait map so that both share the N–S direction?",
+  "verdict": "MAYBE",
+  "strength": "Portugal runs north–south and so does Faro→Porto. A vertical journey strip on the left aligned to the portrait map makes stops line up horizontally with their geographic position, with no leader-line spaghetti.",
+  "weakness": "Only works for N–S routes; an east–west route (Évora→Lisboa) breaks the alignment.",
+  "reason": "Clever N–S alignment, but it breaks for E–W routes and leaves a large empty right column. Keep the alignment trick for portrait layouts only."
+ },
+ {
+  "id": "R-05",
+  "fam": "Route",
+  "name": "The console (stacked tracks aligned to km)",
+  "intent": "Everything that varies along the route in one aligned instrument.",
+  "verdict": "MAYBE",
+  "strength": "Six tracks share one km axis: ETA/time, legal clock, fuel, restrictions, cargo on board and road. Vertical alignment exposes causality (pause = legal reset = refuel).",
+  "weakness": "Dense to the point of a cockpit. Every track is thin, and it becomes a monitoring wall instead of an answer, with the hierarchy lost.",
+  "reason": "Too dense as a default. Excellent as an expert 'all layers' mode where the user adds tracks on demand."
+ },
+ {
+  "id": "R-06",
+  "fam": "Route",
+  "name": "Candidate alternatives (fastest vs. no tolls)",
+  "intent": "Which route should this transport take, and what does each cost?",
+  "verdict": "MAYBE",
+  "strength": "Two real alternatives on the same map with distinct line styles, plus a comparison ledger where each row is a dimension and the deciding row is in ink. The recommendation is explicit and the trade-off honest (+47 min vs −€38).",
+  "weakness": "The map is a 50/50 split, and the comparison stays as two lines with no strip/time form.",
+  "reason": "Honest trade-off and a clear recommendation, but half the screen is a map whose only message is 'two lines diverge', and the ledger is a table."
+ },
+ {
+  "id": "R-07",
+  "fam": "Route",
+  "name": "Fullscreen route map with embedded km axis",
+  "intent": "Can the map itself carry the journey's measurements?",
+  "verdict": "REJECT",
+  "strength": "Km ticks and times are drawn along the real line itself, so the map is a measured instrument. Stops carry their windows in place with no side panel.",
+  "weakness": "Fullscreen landscape again wastes width. Tick labels along a curving line collide and rotate, and it's hard to read slack.",
+  "reason": "Fullscreen landscape again: Spain and the Atlantic take most of the screen. Embedding km ticks in the line is good; this frame is not."
+ },
+ {
+  "id": "R-08",
+  "fam": "Route",
+  "name": "Local stop focus (site plan)",
+  "intent": "What happens at this specific stop: access, dock, window, cargo?",
+  "verdict": "REJECT",
+  "strength": "Zooms to the stop's own physical world: a site plan with gate, dock and parking, the arrival window as a small timeline, and the cargo leaving the trailer. A local, physical, temporal answer.",
+  "weakness": "Site plans are not real data we have (hand-drawn here), so the view is risky to promise. Without real site geometry it is decorative.",
+  "reason": "Decorative: FleetOS has no site-plan data, so this view promises something it can't deliver. Only the arrival-window fragment survives."
+ },
+ {
+  "id": "R-09",
+  "fam": "Route",
+  "name": "Restrictions on route (time-of-day validity on the corridor)",
+  "intent": "Which restrictions will this route meet, at the time it will meet them?",
+  "verdict": "MAYBE",
+  "strength": "A km×time plane: each restriction is a rectangle (where × when valid) and the planned trajectory is a line through it. A conflict is a literal intersection; the VCI 17–20h box is missed by 2 hours, the IP3 night closure is irrelevant.",
+  "weakness": "Abstract for newcomers; it's the Marey chart again, with restrictions overlaid.",
+  "reason": "The cleanest 'does the rule hit my transport' picture, but it is the same km×time plane as R-02. Fold restriction rectangles into R-02 rather than a second view."
+ },
+ {
+  "id": "R-10",
+  "fam": "Route",
+  "name": "Itinerary roll (vertical text-first route)",
+  "intent": "Can the route be read as an itinerary document, like a road book?",
+  "verdict": "REJECT",
+  "strength": "Very readable, printable, familiar to drivers (rally road-book style), with exact instructions.",
+  "weakness": "It's a list of instructions, the driver's artefact rather than the dispatcher's. There's no overview, no slack and no spatial sense, and long routes become endless scrolling.",
+  "reason": "Wrong user. Useful as an export, not a FleetOS workspace composition."
+ },
+ {
+  "id": "R-11",
+  "fam": "Route",
+  "name": "Route as horizon (perspective road)",
+  "intent": "Can a 'driver's-eye' perspective convey what's coming?",
+  "verdict": "REJECT",
+  "strength": "Emotive; upcoming events feel near or far.",
+  "weakness": "Perspective destroys measurement because distant stops compress, so it's unusable for comparison. It's a game/sat-nav aesthetic.",
+  "reason": "Consumer sat-nav, sci-fi adjacent. Visually strong, operationally useless for a dispatcher."
+ },
+ {
+  "id": "X-01",
+  "fam": "Restrictions",
+  "name": "Causal logic tree (AND of conditions → verdict)",
+  "intent": "Why does (or might) this restriction apply to this transport?",
+  "verdict": "KEEP",
+  "strength": "The rule is drawn as its real logic: four conditions joined by AND into one verdict. Each condition carries the fact used and its source, and the single unknown fact makes the whole verdict 'unknown', which you can see in the wiring.",
+  "weakness": "Gets wide with OR-groups and exceptions, and needs a layout engine for real decree logic.",
+  "reason": "Rules as logic, with honesty about missing facts. The defining restriction primitive. Keep."
+ },
+ {
+  "id": "X-02",
+  "fam": "Restrictions",
+  "name": "Affected segment at street scale (VCI ring)",
+  "intent": "Exactly which roadway does the restriction cover, and where does our route touch it?",
+  "verdict": "MAYBE",
+  "strength": "Real OSM geometry of the VCI ring with the restricted span in hatched red, our route's entry and exit drawn precisely, and the bridges named as boundaries. Geography is used at the scale where it matters, with annotations living on the map edges, not in a panel.",
+  "weakness": "Without a basemap, local orientation relies on named anchors, and it's too abstract for people who don't know Porto.",
+  "reason": "Real geometry at the right scale, but without a basemap Porto is abstract, and the right column is a conventional side panel."
+ },
+ {
+  "id": "X-03",
+  "fam": "Restrictions",
+  "name": "Missing fact drawn as a gap in the object",
+  "intent": "What single fact is missing, where does it physically live, and who can provide it?",
+  "verdict": "KEEP",
+  "strength": "The missing measurement is drawn as an empty dimension line on the truck's front axle with a dashed '?'. The question becomes a physical task ('measure here') with an owner and a consequence. Unknown is a first-class, actionable state.",
+  "weakness": "A single-fact focus; several missing facts at once would need a list form.",
+  "reason": "Turns uncertainty into a concrete, physical action. A uniquely FleetOS idea. Keep."
+ },
+ {
+  "id": "X-04",
+  "fam": "Restrictions",
+  "name": "Transport impact over time (who crosses when)",
+  "intent": "Which transports cross the restricted segment, and do their crossings fall inside the validity window?",
+  "verdict": "KEEP",
+  "strength": "Columns of time with validity windows as hatched bands; each transport's crossing is a short tick at its ETA. Conflicts are ticks inside a band: J-4218 (17:20) is in, J-4217 (15:05) is out. The restriction's operational blast radius at a glance.",
+  "weakness": "Only shows crossings and hides how to fix them, so it needs the decision layer adjacent.",
+  "reason": "Restriction-centric population view, temporal and causal. Keep."
+ },
+ {
+  "id": "X-05",
+  "fam": "Restrictions",
+  "name": "Detour decision on the corridor (two strips)",
+  "intent": "If a restriction blocks the route, what is the alternative and what does it cost?",
+  "verdict": "REJECT",
+  "strength": "Two strip-maps stacked (planned vs. alternative) at the same km scale make the extra distance a physical length you can see, and the restriction gate sits on the planned strip.",
+  "weakness": "The strips are long and thin and repeat information. For a short urban detour, km-scaling is meaningless (2 km vs 556 km).",
+  "reason": "Two thin strips repeat each other, and the length difference (+69 km) is the only message. A sentence and R-06 do it better."
+ },
+ {
+  "id": "X-06",
+  "fam": "Restrictions",
+  "name": "Evidence & provenance chain",
+  "intent": "Why should I trust this restriction? Where does every part come from?",
+  "verdict": "MAYBE",
+  "strength": "Provenance as a chain of documents: legal source, interpretation, geometry, seeded record, then this evaluation. Each link has a date and a confidence, and the weak link (geometry derived algorithmically) is flagged. It reads as documents.",
+  "weakness": "Most operators won't open it daily, and it's long for a simple rule.",
+  "reason": "Essential for trust and in correct document form, but it's a rarely-opened page. It should be a fold-out of X-01, not a destination."
+ },
+ {
+  "id": "X-07",
+  "fam": "Restrictions",
+  "name": "Fullscreen spatial restriction (IP3 works, night)",
+  "intent": "Where are the works and how does traffic get around them?",
+  "verdict": "REJECT",
+  "strength": "A real IP3 works geometry at regional scale, the closed sections drawn as a hatched tube, the official detour, and affected transports as markers with their time of arrival. No panel; the facts are annotations.",
+  "weakness": "Fullscreen landscape map of a 40 km thing is mostly empty, and the time dimension is reduced to text labels.",
+  "reason": "Fullscreen landscape for a 40 km object: mostly empty land, with time reduced to labels. Spatial restriction mode must be inset or portrait."
+ },
+ {
+  "id": "X-08",
+  "fam": "Restrictions",
+  "name": "Restriction register (list of rules)",
+  "intent": "Which restrictions exist in the system?",
+  "verdict": "REJECT",
+  "strength": "A complete inventory, sortable and searchable.",
+  "weakness": "A register of rules disconnected from transports, time or space. 'Active' is meaningless without when and for whom, and it looks like a legal database admin page.",
+  "reason": "Too ERP-like. Restrictions only matter relative to transports (X-04) or space (X-02). Admin-only."
+ },
+ {
+  "id": "F-01",
+  "fam": "Documents",
+  "name": "Dossier as fanned paper",
+  "intent": "What paper exists for this transport, and what state is each sheet in?",
+  "verdict": "REJECT",
+  "strength": "Documents look like documents: a CMR, invoice and delivery note fanned like a physical dossier with stamps for signed state. Immediately legible to logistics people.",
+  "weakness": "The fanned overlap hides content, and the skeuomorphic shadow drifts toward decoration. Five or more documents become a pile.",
+  "reason": "Decorative skeuomorph. Fanned overlap hides the very content the dossier exists to show."
+ },
+ {
+  "id": "F-02",
+  "fam": "Documents",
+  "name": "Revision diff on the document itself",
+  "intent": "What changed between rev. 6 and rev. 7, and why?",
+  "verdict": "KEEP",
+  "strength": "Two full CMR sheets at the same scale with changed fields marked in place (struck/added). The cause of each change is annotated in the margin with its source event. The diff lives in the document's own layout, not a table.",
+  "weakness": "Two sheets need about 1100 px of width; on small screens it must collapse to a field list. Minor changes are easy to miss at a glance.",
+  "reason": "The diff shown in native document form with causal margin notes. Strong and distinctive."
+ },
+ {
+  "id": "F-03",
+  "fam": "Documents",
+  "name": "Issued document at reading scale + live fields",
+  "intent": "What exactly did we issue, and which fields are live versus frozen?",
+  "verdict": "MAYBE",
+  "strength": "The issued CMR at near-true scale, centred like a sheet on a desk. Fields bound to live data are marked with a thin link glyph and the frozen ones are plain. The margin shows signatures still due, linked to the stops' ETAs.",
+  "weakness": "Generous whitespace, and a single document per screen limits throughput for back-office work.",
+  "reason": "The canonical document view and the live/frozen distinction are both right, but the generous whitespace and single sheet per screen make it a component rather than a direction."
+ },
+ {
+  "id": "F-04",
+  "fam": "Documents",
+  "name": "Version history as a ribbon of thumbnails",
+  "intent": "How did this document evolve, and which revision was valid when?",
+  "verdict": "MAYBE",
+  "strength": "A horizontal time ribbon with miniature document thumbnails at each revision. The cause event sits below each one (cargo change, trailer swap) and the validity span between revisions is shown as a bar, so history reads as events and documents together.",
+  "weakness": "Thumbnails are too small to read and act as recognition glyphs only. It needs click-through to F-02.",
+  "reason": "The history-ribbon structure is right, but thumbnails at this scale are illegible and only work as recognition glyphs."
+ },
+ {
+  "id": "F-05",
+  "fam": "Documents",
+  "name": "Reissue proposal (cause → document → consequence)",
+  "intent": "Something changed in the transport. Do I need to reissue, and what happens if I do?",
+  "verdict": "MAYBE",
+  "strength": "A left-to-right causal flow: live change (driver swapped), then the affected CMR field highlighted on the sheet, then the consequences (new revision, a notification to the client, re-signature at Coimbra). The decision is one clear action with its cost.",
+  "weakness": "A three-column flow can look like a process diagram, and the arrows are on the edge of being decorative.",
+  "reason": "Cause → document → consequence is exactly the question, but the three-column arrow flow reads as a process diagram. Integrate the consequence list into F-02's margin."
+ },
+ {
+  "id": "F-06",
+  "fam": "Documents",
+  "name": "Document vs. live transport (mismatch audit)",
+  "intent": "Does the paper still match reality?",
+  "verdict": "MAYBE",
+  "strength": "Field-by-field alignment between the document and live facts with a match/mismatch/unknown gutter. Very fast to audit, and it catches the real compliance risk (paper says PT-3910).",
+  "weakness": "Two-column comparisons drift toward a reconciliation table, and the document loses its document form.",
+  "reason": "Strong check, generic form. Better as highlights directly on the sheet (F-03 plus F-05 markings)."
+ },
+ {
+  "id": "F-07",
+  "fam": "Documents",
+  "name": "Document + related entities (relation map)",
+  "intent": "Who and what does this document bind together?",
+  "verdict": "REJECT",
+  "strength": "Makes clear that a CMR binds client, carrier, driver, vehicle and cargo.",
+  "weakness": "A hub-and-spoke node graph is generic 'knowledge graph' UI. The positions are meaningless, the lines carry no information beyond 'related', and it reads like a CRM relationship map.",
+  "reason": "Graph-as-decoration. The relations are better expressed as linked fields on the sheet (F-03)."
+ },
+ {
+  "id": "F-08",
+  "fam": "Documents",
+  "name": "Qualification document against the transport calendar",
+  "intent": "Will this person's qualification document still be valid for every transport they're planned on?",
+  "verdict": "MAYBE",
+  "strength": "The CQM card sits next to a calendar strip of planned transports. The expiry line cuts the calendar, and transports beyond it are marked as needing a different driver or a renewal date. The document's validity is projected onto future work.",
+  "weakness": "It overlaps D-03 and D-08. As a separate composition it splits a single concern across views.",
+  "reason": "The projection-onto-calendar idea is valuable but belongs in the Driver forward view (D-08), not as a document page."
+ }
+]

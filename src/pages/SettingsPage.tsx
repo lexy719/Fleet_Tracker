@@ -98,8 +98,8 @@ function DevTools() {
           <a href={e.sourceUrl} target="_blank" rel="noreferrer" title="Aviso oficial" className="text-[var(--text-3)] hover:text-[var(--text)]"><ExternalLink className="h-3 w-3" /></a>
         </div>
       ))}
-      {import.meta.env.DEV && <a href="/__dev/operational-planning" className="block text-[13px] text-[var(--accent)] underline">Aceitação do planeamento automático (dados sintéticos isolados)</a>}
-      {import.meta.env.DEV && <a href="/__dev/routing-acceptance" className="block text-[13px] text-[var(--accent)] underline">Aceitação do motor de rotas (cenários sintéticos, sem guardar dados)</a>}
+      {import.meta.env.DEV && <a href="/classic/__dev/operational-planning" className="block text-[13px] text-[var(--accent)] underline">Aceitação do planeamento automático (dados sintéticos isolados)</a>}
+      {import.meta.env.DEV && <a href="/classic/__dev/routing-acceptance" className="block text-[13px] text-[var(--accent)] underline">Aceitação do motor de rotas (cenários sintéticos, sem guardar dados)</a>}
       {DEV_FIXTURES_AVAILABLE ? (
         <Checkbox label="Fontes de TESTE SINTÉTICO (só no servidor de desenvolvimento; dados não oficiais)" checked={ing.devFixturesEnabled} onChange={(v) => ing.setDevFixturesEnabled(v)} />
       ) : (

@@ -1,0 +1,1230 @@
+[
+ {
+  "id": "ZD-01",
+  "dom": "Driver",
+  "name": "Day horizon (12-hour arc around now)",
+  "kind": "temporal · unconventional",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   5,
+   3,
+   5,
+   3
+  ],
+  "reason": "Striking and instantly 'not a fleet tool'. The arc centres 'now' so past and future are symmetric and the legal wall cuts the horizon like a sunset line. It's hard to read durations on an arc, though, and it only shows ±6h."
+ },
+ {
+  "id": "ZD-02",
+  "dom": "Driver",
+  "name": "The number (sparse)",
+  "kind": "extremely sparse",
+  "origin": "NEW",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   5
+  ],
+  "reason": "One number, one place, one consequence. It survives any screen size and reads from across a room. A perfect lock-screen and attention state."
+ },
+ {
+  "id": "ZD-03",
+  "dom": "Driver",
+  "name": "Week as terrain (ridgelines)",
+  "kind": "ultra-dense · temporal",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   5,
+   3,
+   5,
+   4
+  ],
+  "reason": "Fourteen days as stacked ridgelines reveal rhythm (early starts, long Fridays) in one glance. Legal thresholds become horizon lines. Beautiful, but exact values need hover."
+ },
+ {
+  "id": "ZD-04",
+  "dom": "Driver",
+  "name": "Commitments ledger (who he owes what)",
+  "kind": "editorial",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   5,
+   4
+  ],
+  "reason": "A new mental model (promises, not timelines) and the copy is excellent, but visually it's a list of sentences. Keep the framing as language across FleetOS, not as a screen."
+ },
+ {
+  "id": "ZD-05",
+  "dom": "Driver",
+  "name": "Legal reach envelope (time × km cone)",
+  "kind": "highly technical",
+  "origin": "EVOLUTION",
+  "v": "KEEP",
+  "sc": [
+   4,
+   4,
+   5,
+   4
+  ],
+  "reason": "Evolves Round 2's C-03 into a pure instrument: the cone of legally reachable positions, with the plan inside it and the stop places as horizontal lines. The best legality representation so far."
+ },
+ {
+  "id": "ZD-06",
+  "dom": "Driver",
+  "name": "Calendar landscape (isometric month)",
+  "kind": "physical metaphor",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   4,
+   2,
+   3,
+   2
+  ],
+  "reason": "Pretty isometric blocks, but occlusion hides the very days you need, and heights are unreadable in perspective. Concept-art toy."
+ },
+ {
+  "id": "ZD-07",
+  "dom": "Driver",
+  "name": "Qualifications as runways (validity vs assignments)",
+  "kind": "temporal · hybrid",
+  "origin": "HYBRID",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   4,
+   5
+  ],
+  "reason": "Each qualification is a runway that ends at expiry; planned transports are aircraft that must land before the end. 'J-4302 runs off the CQM runway' is instantly understood, and it scales to 40 drivers as rows."
+ },
+ {
+  "id": "ZD-08",
+  "dom": "Driver",
+  "name": "Cluster (automotive instrument, dark)",
+  "kind": "instrument-heavy",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   5,
+   4,
+   3,
+   2
+  ],
+  "reason": "Beautiful cab HMI, wrong user. A dispatcher reading three dials is skeuomorphism, and it can't show 40 drivers."
+ },
+ {
+  "id": "ZD-09",
+  "dom": "Driver",
+  "name": "The day drawn as the road",
+  "kind": "Driver + Route · physical",
+  "origin": "HYBRID",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   3
+  ],
+  "reason": "The real road is unrolled and coloured by what the driver is doing on it: driving, pause, unloading. Clock times are milestones on the asphalt, and the legal wall is a line across the road. Time and space are literally one object."
+ },
+ {
+  "id": "ZD-10",
+  "dom": "Driver",
+  "name": "Reassignment duel (two names, one transport)",
+  "kind": "editorial · decision",
+  "origin": "EVOLUTION",
+  "v": "MAYBE",
+  "sc": [
+   5,
+   5,
+   4,
+   3
+  ],
+  "reason": "Poster-scale decision clarity, but it only works for two candidates and hides the time geometry that justifies the choice. Pair it with a time comparison."
+ },
+ {
+  "id": "ZD-11",
+  "dom": "Driver",
+  "name": "30-day activity barcode (history)",
+  "kind": "ultra-dense",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   5
+  ],
+  "reason": "Excellent density and anomaly pop-out, but it's a history view that is rarely opened. It belongs as a strip inside the Driver screen."
+ },
+ {
+  "id": "ZD-12",
+  "dom": "Driver",
+  "name": "Where he has been (spatial week traces)",
+  "kind": "spatial",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   3,
+   4,
+   3
+  ],
+  "reason": "The portrait country with five days of traces shows familiarity and home base, which is useful for reassignment ('he knows the VCI'). As a daily screen, though, it answers a rare question."
+ },
+ {
+  "id": "ZR-01",
+  "dom": "Route",
+  "name": "String chart (Ibry/Marey) with gates and barriers",
+  "kind": "highly technical · temporal",
+  "origin": "EVOLUTION",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   5
+  ],
+  "reason": "The 150-year-old railway answer. Windows are gates the line must pass through, restrictions are hatched barriers in km×time, slack is a gap you can measure, and a second line shows the alternative. It scales to many transports on one corridor."
+ },
+ {
+  "id": "ZR-02",
+  "dom": "Route",
+  "name": "Rail diagram (octilinear schematic with branch)",
+  "kind": "unconventional · signature",
+  "origin": "NEW",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   4
+  ],
+  "reason": "Beck's rules applied to a road trip: 45° geometry, stations evenly spaced by importance, and the alternative as a branch line. Restrictions are 'closed stations'. Instantly legible and unmistakably distinctive, a signature candidate."
+ },
+ {
+  "id": "ZR-03",
+  "dom": "Route",
+  "name": "Diagonal journey (editorial)",
+  "kind": "editorial",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   5,
+   3,
+   5,
+   2
+  ],
+  "reason": "A gorgeous diagonal that holds one transport and wastes half the canvas. Concept art."
+ },
+ {
+  "id": "ZR-04",
+  "dom": "Route",
+  "name": "Timetable (typographic, dense)",
+  "kind": "ultra-dense · typographic",
+  "origin": "NEW",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   4,
+   5
+  ],
+  "reason": "A railway timetable: stops as rows, planned / predicted / alternative / window as columns, with deviations in red only. Zero chart literacy needed and extremely dense. It is the 'Bloomberg' of routes."
+ },
+ {
+  "id": "ZR-05",
+  "dom": "Route",
+  "name": "Trajectory field (all plausible futures)",
+  "kind": "unconventional · technical",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   5,
+   3,
+   5,
+   3
+  ],
+  "reason": "Forty plausible futures (speed and pause variations) fan from 'now'. Windows are gates, and the share of lines passing each gate is the confidence. Honest about uncertainty and visually powerful, but it needs a real probabilistic model behind it."
+ },
+ {
+  "id": "ZR-06",
+  "dom": "Route",
+  "name": "Split stage: current vs alternative",
+  "kind": "decision comparison",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   3
+  ],
+  "reason": "Two unrolled corridors at the same km scale, top and bottom, with the differences as a seam of deltas between them. A clear comparison, but corridor strips are thin for so much width."
+ },
+ {
+  "id": "ZR-07",
+  "dom": "Route",
+  "name": "Route as a folded paper strip (accordion)",
+  "kind": "physical object",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   4,
+   2,
+   4,
+   1
+  ],
+  "reason": "The folded-map metaphor is charming, but the folds distort distance and hide information at every crease. It's a beautiful object and a bad instrument."
+ },
+ {
+  "id": "ZR-08",
+  "dom": "Route",
+  "name": "Fuel tube (depletion as a physical tank along the road)",
+  "kind": "physical object",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   3
+  ],
+  "reason": "A horizontal tube whose fill drains along km and refills at Santarém. The reserve is a red floor, and anyone gets it. It is a single-variable view, though: a layer, not a route screen."
+ },
+ {
+  "id": "ZR-09",
+  "dom": "Route",
+  "name": "Geographic corridor + stacked strata (geology section)",
+  "kind": "dense · technical",
+  "origin": "HYBRID",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   5,
+   4
+  ],
+  "reason": "Calm and dense, but km-aligned strata are a refinement of Round 1's console, not a new direction. It becomes a layer of the winner."
+ },
+ {
+  "id": "ZR-10",
+  "dom": "Route",
+  "name": "Editorial route narrative (path through text)",
+  "kind": "editorial",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   5,
+   3,
+   4,
+   1
+  ],
+  "reason": "The editorial narrative is lovely for a client deck but useless while the truck is moving. Not a FleetOS screen."
+ },
+ {
+  "id": "ZR-11",
+  "dom": "Route",
+  "name": "Gates in sequence (multi-stop execution, exception-first)",
+  "kind": "sparse-dense hybrid",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   4,
+   5
+  ],
+  "reason": "Great exception scan at poster scale, but stripping out time and space makes it a summary, not a route instrument."
+ },
+ {
+  "id": "ZR-12",
+  "dom": "Route",
+  "name": "Portrait route on Natural Earth + km column",
+  "kind": "spatial",
+  "origin": "EVOLUTION",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   3,
+   3
+  ],
+  "reason": "A refined Round 3 spatial state on real coastline, with a km column aligned by latitude. Good, but not new, and it doesn't stop anyone."
+ },
+ {
+  "id": "ZV-01",
+  "dom": "Vehicle",
+  "name": "Engineering drawing sheet (three views + title block)",
+  "kind": "highly technical",
+  "origin": "NEW",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   4
+  ],
+  "reason": "The vehicle as a real drawing sheet: side elevation, front, top plan and a title block (registration, revision, assignment). The revision table is the change history and detail callouts point at the open facts. Engineers and dispatchers both recognise it at once."
+ },
+ {
+  "id": "ZV-02",
+  "dom": "Vehicle",
+  "name": "Section through the trailer (load cutaway + centre of gravity)",
+  "kind": "physical object",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   5,
+   4,
+   5,
+   3
+  ],
+  "reason": "Physically correct and beautiful, but centre of gravity is a niche question for dispatch. It's a drawing layer, not a screen."
+ },
+ {
+  "id": "ZV-03",
+  "dom": "Vehicle",
+  "name": "Exploded combination (parts with states)",
+  "kind": "technical · physical",
+  "origin": "EVOLUTION",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   3,
+   4,
+   2
+  ],
+  "reason": "Cleaner than Round 1's V-11: the tractor, fifth wheel, trailer and axle groups float apart on one axis, each with its state. Useful for 'which part is the problem', but a heavy drawing for a simple answer."
+ },
+ {
+  "id": "ZV-04",
+  "dom": "Vehicle",
+  "name": "From below (axles, tyres, brakes)",
+  "kind": "ultra-dense · technical",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   5,
+   3
+  ],
+  "reason": "An underside plan nobody shows: each tyre carries tread depth, each axle its load and brake state. Perfect for the workshop, too specialised for dispatch."
+ },
+ {
+  "id": "ZV-05",
+  "dom": "Vehicle",
+  "name": "Silhouette against every gate (front overlays)",
+  "kind": "physical comparison",
+  "origin": "EVOLUTION",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   4
+  ],
+  "reason": "The truck's front silhouette is overlaid on the outlines of every structure on its route, aligned at the road, like a key in many locks. The tightest fit pops out without reading."
+ },
+ {
+  "id": "ZV-06",
+  "dom": "Vehicle",
+  "name": "The tank (fuel as a physical vessel)",
+  "kind": "extremely sparse · physical",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   3,
+   3
+  ],
+  "reason": "A single tank cross-section, litres as liquid, range as a rod measured against the road ahead. Immediately clear, but a one-variable screen."
+ },
+ {
+  "id": "ZV-07",
+  "dom": "Vehicle",
+  "name": "Maintenance aligned to the machine",
+  "kind": "temporal · object",
+  "origin": "HYBRID",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   5,
+   4
+  ],
+  "reason": "Workshop-grade and well aligned, but the labels collide with the drawing at desk size. Needs the sheet format of ZV-01."
+ },
+ {
+  "id": "ZV-08",
+  "dom": "Vehicle",
+  "name": "Coupling fan (which trailer fits the tractor)",
+  "kind": "unconventional",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   4,
+   2,
+   4,
+   2
+  ],
+  "reason": "Trailers fanning around the fifth wheel like keys on a ring is a memorable image, but the rotations make comparison impossible. Visually strong, operationally unclear."
+ },
+ {
+  "id": "ZV-09",
+  "dom": "Vehicle",
+  "name": "Plate and one line (sparse)",
+  "kind": "extremely sparse",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   4,
+   4,
+   3,
+   5
+  ],
+  "reason": "Says nothing a list row couldn't. Calm is not the same as useful."
+ },
+ {
+  "id": "ZV-10",
+  "dom": "Vehicle",
+  "name": "Mass over distance (the truck lightens along the road)",
+  "kind": "Vehicle + Route · temporal",
+  "origin": "NEW",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "A mass-over-km area chart whose top edge is drawn as the trailer roofline: 27.6 t until Coimbra, a step down to 25 t, then a final drop. Structures with mass limits sit on the same axis. A rare honest weight view."
+ },
+ {
+  "id": "ZT-01",
+  "dom": "Transport",
+  "name": "Commitment structure (who promised what, depends on what)",
+  "kind": "ultra-dense · technical",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   5,
+   3
+  ],
+  "reason": "A structurally brilliant idea (promises rest on resources), but the links clutter quickly. It needs a focus mode before it's a screen."
+ },
+ {
+  "id": "ZT-02",
+  "dom": "Transport",
+  "name": "Live execution (one bar, one sentence)",
+  "kind": "extremely sparse",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   4,
+   5
+  ],
+  "reason": "Superbly clear, but thin: once the bar repeats it is O-01's micro-journey row. A state, not a screen."
+ },
+ {
+  "id": "ZT-03",
+  "dom": "Transport",
+  "name": "Exception-first (only what deviates)",
+  "kind": "exception-first",
+  "origin": "NEW",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   4,
+   5
+  ],
+  "reason": "ISA-101 philosophy applied: everything nominal is grey, and only deviations get magnitude bars against their tolerance. The screen is mostly calm, and that calm is information."
+ },
+ {
+  "id": "ZT-04",
+  "dom": "Transport",
+  "name": "Cargo movement (pallets flowing through places and time)",
+  "kind": "physical · temporal",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   5,
+   3,
+   5,
+   2
+  ],
+  "reason": "Every pallet is a square flowing left to right through time, splitting at Coimbra and exiting at Porto. Gorgeous and tangible, but for 24 pallets it's mostly repetition, and it doesn't scale to groupage."
+ },
+ {
+  "id": "ZT-05",
+  "dom": "Transport",
+  "name": "People · equipment · places (three bands over time)",
+  "kind": "temporal · relational",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "reason": "Places run along the middle band; people above and equipment below show who and what is bound to each leg. It shows hand-overs (a trailer swap, a driver change) as breaks in the band. Good for multi-leg transports, overkill for single-driver runs."
+ },
+ {
+  "id": "ZT-06",
+  "dom": "Transport",
+  "name": "Plan lineage (revisions as stacked plans)",
+  "kind": "temporal · technical",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   5,
+   3
+  ],
+  "reason": "Seven revisions of the plan drawn as offset journey strips. What changed between each pair is marked at the km where it changed, so you see the plan's evolution as geology. Strong for audit, rare need."
+ },
+ {
+  "id": "ZT-07",
+  "dom": "Transport",
+  "name": "Case file (the transport as a physical dossier)",
+  "kind": "editorial · physical",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   5,
+   3,
+   4,
+   3
+  ],
+  "reason": "The manila case file is charming, but its tabs bring back exactly the tab structure this round was told to abandon."
+ },
+ {
+  "id": "ZT-08",
+  "dom": "Transport",
+  "name": "Next decision as a fork (decision tree with consequences)",
+  "kind": "decision",
+  "origin": "NEW",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   5,
+   4
+  ],
+  "reason": "The current state sits on the left and the decision branches to the right with each branch's consequences drawn to the end of the day (arrival times, legality, cost). The recommended branch is inked. It makes the next decision a visible fork."
+ },
+ {
+  "id": "ZT-09",
+  "dom": "Transport",
+  "name": "Editorial front page of a transport",
+  "kind": "editorial",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   5,
+   4,
+   4,
+   2
+  ],
+  "reason": "Duplicates ZO-06 at lower value. One editorial front page is enough, and it belongs at operation level."
+ },
+ {
+  "id": "ZF-01",
+  "dom": "Documents",
+  "name": "The sheet at reading scale with margin annotations",
+  "kind": "editorial · technical",
+  "origin": "EVOLUTION",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "The best 'document at reading scale', but it evolves Round 1's F-03 rather than breaking new ground. It becomes part of the documents winner."
+ },
+ {
+  "id": "ZF-02",
+  "dom": "Documents",
+  "name": "Signature relay (the paper travels through hands)",
+  "kind": "temporal · physical",
+  "origin": "NEW",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   4
+  ],
+  "reason": "The document is drawn as it physically travels: Faro hands it signed, the driver carries it, Coimbra and Porto will stamp it. Each hand-over is a stamp on a time axis. It turns 'signature status' into a relay race anyone can read."
+ },
+ {
+  "id": "ZF-03",
+  "dom": "Documents",
+  "name": "Version lineage (git graph of revisions)",
+  "kind": "highly technical",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   4,
+   5
+  ],
+  "reason": "Clear, scalable and familiar, but a git graph is borrowed language with little FleetOS character. Good as a detail view."
+ },
+ {
+  "id": "ZF-04",
+  "dom": "Documents",
+  "name": "Documents attached to cargo (each pallet carries its paper)",
+  "kind": "physical object",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   3,
+   5,
+   2
+  ],
+  "reason": "Paper tags tied to the pallet groups in the load plan: the CMR line for Coimbra hangs on the six pallets near the doors. A clever physical binding, but documents rarely map one-to-one to pallets."
+ },
+ {
+  "id": "ZF-05",
+  "dom": "Documents",
+  "name": "Onion skin (snapshot over current)",
+  "kind": "unconventional · technical",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   4,
+   4,
+   4,
+   3
+  ],
+  "reason": "Onion skin is clever in theory; in practice two overlapping forms are illegible below 4K."
+ },
+ {
+  "id": "ZF-06",
+  "dom": "Documents",
+  "name": "Receipt tape (documents printed by events)",
+  "kind": "temporal · unconventional",
+  "origin": "NEW",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   4
+  ],
+  "reason": "Events on the transport timeline print paper receipts that hang below the moment they were produced (load, issue, toll, refuel, POD), so documents become evidence of events. A distinctive, honest model that scales by scrolling time."
+ },
+ {
+  "id": "ZF-07",
+  "dom": "Documents",
+  "name": "Document table (reference)",
+  "kind": "reference · generic",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   1,
+   3,
+   1,
+   4
+  ],
+  "reason": "Included deliberately as the baseline every other study must beat. It's a file table with status pills, and it fails on every FleetOS value except listability."
+ },
+ {
+  "id": "ZX-01",
+  "dom": "Restrictions",
+  "name": "Forbidden regions (km × time) for all transports on the corridor",
+  "kind": "highly technical · dense",
+  "origin": "EVOLUTION",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   5
+  ],
+  "reason": "Restrictions are forbidden rectangles in a shared space-time plane and every transport crossing the corridor is a string. A conflict is a string entering a rectangle. One picture serves the whole operation."
+ },
+ {
+  "id": "ZX-02",
+  "dom": "Restrictions",
+  "name": "Decision tree with fact provenance (vertical)",
+  "kind": "technical",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "Clean and correct, but a vertical tree spends a whole screen on four conditions. It folds into the two-futures winner."
+ },
+ {
+  "id": "ZX-03",
+  "dom": "Restrictions",
+  "name": "Route through the restricted ring (street level)",
+  "kind": "spatial",
+  "origin": "EVOLUTION",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   3
+  ],
+  "reason": "Real Porto streets, the ring hatched and the route's 2.8 km inside it highlighted. Clear and honest, but it's Round 3's G-09 without the section bubble, so nothing new."
+ },
+ {
+  "id": "ZX-04",
+  "dom": "Restrictions",
+  "name": "Two futures of a missing fact",
+  "kind": "unconventional · decision",
+  "origin": "NEW",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   5,
+   4
+  ],
+  "reason": "The screen splits on the unknown: if the axle is < 1.1 m (left) the transport is untouched; if ≥ 1.1 m (right) these transports and these hours are affected. Missing data becomes a visible bet with a price, a new and honest pattern."
+ },
+ {
+  "id": "ZX-05",
+  "dom": "Restrictions",
+  "name": "The law, typeset, with clauses bound to facts",
+  "kind": "editorial · evidence",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   3
+  ],
+  "reason": "The regulation article set like a printed page, with clauses underlined and each tied by a margin leader to the fact that satisfies it. Excellent evidence and trust, but slow to read, so it's a fold-out, not a main screen."
+ },
+ {
+  "id": "ZX-06",
+  "dom": "Restrictions",
+  "name": "Gate gallery (front elevations through every structure)",
+  "kind": "physical",
+  "origin": "EVOLUTION",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   3,
+   3
+  ],
+  "reason": "Round 2's C-15 refined. Still the clearest physical restriction picture, but it duplicates the vehicle domain's ZV-05."
+ },
+ {
+  "id": "ZX-07",
+  "dom": "Restrictions",
+  "name": "Restriction register (reference)",
+  "kind": "reference · generic",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   1,
+   3,
+   1,
+   4
+  ],
+  "reason": "Baseline included on purpose: a rule list without when, where or for whom. Every study above beats it."
+ },
+ {
+  "id": "ZO-01",
+  "dom": "Operation",
+  "name": "Day board with restriction bands (temporal operation)",
+  "kind": "temporal · dense",
+  "origin": "EVOLUTION",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   4,
+   5
+  ],
+  "reason": "Still the dispatch backbone, but it's Round 1's O-03 cleaned. Necessary infrastructure, not a new idea."
+ },
+ {
+  "id": "ZO-02",
+  "dom": "Operation",
+  "name": "Latitude metro (country as parallel lines)",
+  "kind": "unconventional · signature",
+  "origin": "EVOLUTION",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   4
+  ],
+  "reason": "Portugal's latitude is the shared axis and transports are parallel metro lines, with cities as transfer bands. Nothing in fleet software looks like this, yet it's immediately readable for a N–S country."
+ },
+ {
+  "id": "ZO-03",
+  "dom": "Operation",
+  "name": "Attention stream (typography only, ranked)",
+  "kind": "extremely sparse · editorial",
+  "origin": "EVOLUTION",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   4
+  ],
+  "reason": "Round 1's O-07, purer: four sentences ranked by time-to-consequence, each with its countdown in the margin. The calmest possible command centre, and the right landing state."
+ },
+ {
+  "id": "ZO-04",
+  "dom": "Operation",
+  "name": "Dispatch wall (the whole day, ultra-dense)",
+  "kind": "ultra-dense",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   3,
+   5
+  ],
+  "reason": "A 'Bloomberg' wall where every transport is one line with micro-journey, legal clock, fuel, documents and the next event as glyph columns, built for a 4K wall screen. Powerful at scale, intimidating at desk size."
+ },
+ {
+  "id": "ZO-05",
+  "dom": "Operation",
+  "name": "Resource pairing (drivers ⇄ trucks ⇄ transports)",
+  "kind": "relational · unconventional",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   3
+  ],
+  "reason": "Three columns of resources with arcs pairing them for today. Unpaired resources dangle, so idle capacity and orphan transports are visible at once. A good assignment overview, but crossing arcs get messy past 20."
+ },
+ {
+  "id": "ZO-06",
+  "dom": "Operation",
+  "name": "Newspaper front page of the operation",
+  "kind": "editorial",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   5,
+   4,
+   5,
+   2
+  ],
+  "reason": "The operation as the morning paper: headline, three stories, a portrait map figure and the weather box as road conditions. Perfect for shift handover, too static for live work."
+ },
+ {
+  "id": "ZO-07",
+  "dom": "Operation",
+  "name": "Slack skyline (comparison landscape)",
+  "kind": "unconventional · comparison",
+  "origin": "NEW",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   4
+  ],
+  "reason": "Each transport is a tower whose height is minutes of slack to its tightest commitment; towers below ground are already late. The skyline ranks the operation's risk at a glance. Strong, but it hides why."
+ },
+ {
+  "id": "ZO-08",
+  "dom": "Operation",
+  "name": "Portrait country + exceptions only (ISA-101 map)",
+  "kind": "spatial",
+  "origin": "HYBRID",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   4,
+   5
+  ],
+  "reason": "A Natural Earth portrait with all routes in grey; only exceptions get ink and a label bound to their location. Calm when calm, loud only where needed. The geographic home screen."
+ },
+ {
+  "id": "ZO-09",
+  "dom": "Operation",
+  "name": "Commitments clock (all windows of the day on one ring)",
+  "kind": "unconventional · temporal",
+  "origin": "NEW",
+  "v": "REJECT",
+  "sc": [
+   4,
+   2,
+   4,
+   3
+  ],
+  "reason": "A 24h ring with every delivery window as an arc is pretty, but it collapses which transport owns which window, and circular time again loses to linear. Rejected."
+ },
+ {
+  "id": "ZS-D1",
+  "dom": "Driver",
+  "base": "ZD-09",
+  "pass": 1,
+  "name": "Driver · the day drawn as the road (pass 1)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   3
+  ],
+  "reason": "Adds the number (0:45) as the anchor, km ticks on the asphalt and the four legal counters as hairline gauges. The road keeps all the meaning while the counters sit quietly at the bottom."
+ },
+ {
+  "id": "ZS-D2",
+  "dom": "Driver",
+  "base": "ZD-09",
+  "pass": 2,
+  "name": "Driver · the day drawn as the road (pass 2)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   4
+  ],
+  "reason": "Adds lay-bys off the road as the real pause candidates (capacity, fuel, out-of-limit), a seven-day barcode for rhythm, and a quieter type scale. The full legal and spatial answer on one canvas with no panel. Signature screen."
+ },
+ {
+  "id": "ZS-R1",
+  "dom": "Route",
+  "base": "ZR-01",
+  "pass": 1,
+  "name": "Route · string chart (pass 1)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   5
+  ],
+  "reason": "Cleaner grid (every other hour), gates as brackets, barriers hatched, a single dashed alternative, slack values on the gates, and the pause as a physical block. A railway instrument without chart-junk."
+ },
+ {
+  "id": "ZS-R2",
+  "dom": "Route",
+  "base": "ZR-01",
+  "pass": 2,
+  "name": "Route · string chart + real corridor on its axis (pass 2)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   5
+  ],
+  "reason": "Applies the MBTA lesson (string charts need a map beside them) the Portugal way. The real corridor, unrolled vertically, shares the chart's km axis, so geography and time-distance are read on one line of sight. Signature screen."
+ },
+ {
+  "id": "ZS-V1",
+  "dom": "Vehicle",
+  "base": "ZV-01",
+  "pass": 1,
+  "name": "Vehicle · drawing sheet (pass 1)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   5,
+   4
+  ],
+  "reason": "Proper sheet grid references, four numbered views (elevation, front, detail A, load plan), a revision table that is the vehicle's history, and a title block that is its identity. The open fact lives in a detail callout."
+ },
+ {
+  "id": "ZS-V2",
+  "dom": "Vehicle",
+  "base": "ZV-01",
+  "pass": 2,
+  "name": "Vehicle · drawing sheet with service conditions (pass 2)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   4
+  ],
+  "reason": "The sheet gains a 'service conditions' band (the next 274 km with gates, fuel and mass), so the machine meets its journey without leaving the drawing language. Signature screen."
+ },
+ {
+  "id": "ZS-T1",
+  "dom": "Transport",
+  "base": "ZT-08",
+  "pass": 1,
+  "name": "Transport · the next decision as a fork in time (pass 1)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   4
+  ],
+  "reason": "Branches now live on a real time axis, so each consequence (pause, legality, Coimbra, Porto, fuel) is placed when it happens, with windows and the legal wall as vertical references. The fork becomes measurable."
+ },
+ {
+  "id": "ZS-T2",
+  "dom": "Transport",
+  "base": "ZT-08",
+  "pass": 2,
+  "name": "Transport · fork + exceptions margin (pass 2)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   4
+  ],
+  "reason": "A left margin lists the transport's state in ISA-101 style (normal in grey, exceptions in colour), so the fork is read in context. One screen holds state, decision and consequences. Signature screen."
+ },
+ {
+  "id": "ZS-F1",
+  "dom": "Documents",
+  "base": "ZF-06",
+  "pass": 1,
+  "name": "Documents · receipts of events + the selected sheet (pass 1)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   4
+  ],
+  "reason": "The receipt tape becomes the index and the selected receipt (CMR rev. 7) opens at reading scale below with margin notes. Event → paper → content in one vertical reading."
+ },
+ {
+  "id": "ZS-F2",
+  "dom": "Documents",
+  "base": "ZF-06",
+  "pass": 2,
+  "name": "Documents · receipts + signature stamps + sheet (pass 2)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   4
+  ],
+  "reason": "Signature stamps sit above the tape on the same time axis (done = blue ink, pending = dashed), so the relay (ZF-02) and the receipts (ZF-06) merge into one paper timeline over the open sheet. Signature screen."
+ },
+ {
+  "id": "ZS-X1",
+  "dom": "Restrictions",
+  "base": "ZX-04",
+  "pass": 1,
+  "name": "Restriction · two futures of a missing fact (pass 1)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   4
+  ],
+  "reason": "Each future gets its own small space-time plane showing which transports would hit the barrier, and the missing measurement is drawn at the axle in the centre. The bet, its price and the task are all visible."
+ },
+ {
+  "id": "ZS-X2",
+  "dom": "Restrictions",
+  "base": "ZX-04",
+  "pass": 2,
+  "name": "Restriction · two futures + the rule path (pass 2)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   4
+  ],
+  "reason": "A thin rule path across the top shows which conditions are known (inked) and which one splits the world (dashed), then forks into the two futures. Logic, consequence, physical fact and action, with no panel. Signature screen."
+ },
+ {
+  "id": "ZS-O1",
+  "dom": "Operation",
+  "base": "ZO-02",
+  "pass": 1,
+  "name": "Operation · latitude metro, exceptions in ink (pass 1)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   4
+  ],
+  "reason": "Healthy lines recede to grey and only exceptions keep ink and a one-line note at the head of their line (ISA-101). The country shape still organises everything."
+ },
+ {
+  "id": "ZS-O2",
+  "dom": "Operation",
+  "base": "ZO-02",
+  "pass": 2,
+  "name": "Operation · latitude metro + attention rail (pass 2)",
+  "kind": "signature refinement",
+  "origin": "REFINEMENT",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   4
+  ],
+  "reason": "Adds ETA ticks at line ends, the VCI barrier as a latitude band across all lines, and a right rail with the four decisions ranked by time-to-consequence. Geography, time and attention on one surface. Signature screen."
+ }
+]

@@ -1,5 +1,5 @@
 import { useMemo, useState, type DragEvent } from "react";
-import { DRIVER_POOL, NOW, TRAILERS, type AttentionItem, type JobStatus } from "../fleetos-environment/world";
+import { DRIVER_POOL, NOW, TRAILERS, type AttentionItem, type JobStatus } from "../../world/world";
 import { LatitudeMetro, MicroJourney, PortraitMap, StripMap, minOf } from "./graphics";
 import { DRIVERS, FREE_TRAILERS, driverName, levelOf, routeLabel, statusLabel, truckPlate, useWs, type Job, type Level } from "./store";
 

@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="base.css" />
+<style>
+  body { background: #ebe5d8; }
+  .bgdots { position: absolute; inset: 0; background: radial-gradient(circle at 1px 1px, rgba(27,29,34,.06) 1px, transparent 0) 0 0 / 24px 24px, #ebe5d8; }
+  .topb { position: absolute; top: 16px; left: 16px; right: 16px; height: 44px; display: flex; align-items: center; gap: 14px; padding: 0 8px 0 14px; z-index: 50; transition: none; }
+  .clock2 { margin-left: auto; padding: 7px 12px; border-radius: 999px; font-size: 13px; color: var(--ink-2); }
+  .clock2 b { font: 600 13px var(--mono); color: var(--ink); }
+  .trail { display: flex; gap: 6px; align-items: center; }
+  .trail .lbl { margin-right: 4px; }
+  .tsig { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: var(--glass); box-shadow: var(--shadow); font-size: 12.5px; white-space: nowrap; }
+  .tsig i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3); }
+  .blk { position: absolute; overflow: hidden; border-radius: 20px; background: var(--paper); box-shadow: var(--shadow); }
+  .blk.focus { box-shadow: 0 0 0 2px var(--ink), var(--shadow); }
+  .blk .c { position: absolute; inset: 0; }
+  .sc { position: absolute; inset: 0; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; overflow: hidden; }
+  .kind { font: 500 10.5px var(--mono); text-transform: uppercase; letter-spacing: .09em; color: var(--ink-3); }
+  .ttl { font-size: 26px; font-weight: 650; letter-spacing: -.03em; line-height: 1.05; white-space: nowrap; }
+  .sub { font-size: 13px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hero { border-radius: 14px; padding: 14px 16px; background: var(--ink); color: var(--paper); }
+  .hero .k { font: 500 10.5px var(--mono); text-transform: uppercase; letter-spacing: .09em; color: rgba(246,242,234,.6); }
+  .hero .v { font-size: 22px; font-weight: 650; letter-spacing: -.02em; margin-top: 4px; }
+  .hero .s { font-size: 12.5px; color: rgba(246,242,234,.7); margin-top: 4px; }
+  .hero.warn { background: #3a2a10; } .hero.bad { background: #3b1a12; }
+  .row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--paper-2); font-size: 13px; white-space: nowrap; overflow: hidden; }
+  .row .k { font: 600 12.5px var(--mono); }
+  .row .s { margin-left: auto; font: 500 12px var(--mono); color: var(--ink-3); }
+  .row.link { box-shadow: inset 0 0 0 1px rgba(27,29,34,.12); }
+  .row.link::after { content: "→"; margin-left: 6px; color: var(--ink-3); }
+  .row.hot { box-shadow: inset 0 0 0 2px var(--focus); }
+  .facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; }
+  .fact { padding: 10px 12px; border-radius: 12px; background: var(--paper-2); }
+  .fact b { display: block; font: 600 17px var(--mono); }
+  .fact span { font-size: 11.5px; color: var(--ink-3); }
+  .acts { display: flex; gap: 8px; flex-wrap: wrap; }
+  .act2 { padding: 8px 12px; border-radius: 10px; font-size: 12.5px; font-weight: 600; background: var(--paper-2); box-shadow: inset 0 0 0 1px rgba(27,29,34,.12); white-space: nowrap; }
+  .act2.need { background: var(--focus); color: #fff; box-shadow: none; }
+  .bar { height: 6px; border-radius: 3px; background: rgba(27,29,34,.1); position: relative; }
+  .bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 3px; background: var(--ink); }
+  .mapimg { position: absolute; inset: 0; background-image: url(bg-overview.png); background-repeat: no-repeat; }
+  svg.ov { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+  .immhint { position: absolute; left: 24px; top: 24px; padding: 8px 14px; border-radius: 999px; background: var(--glass); box-shadow: var(--shadow); font-size: 13px; }
+  .immhint b { font: 600 12px var(--mono); padding: 1px 6px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(27,29,34,.25); margin-right: 6px; }
+  .cursor { position: absolute; width: 22px; height: 22px; z-index: 80; pointer-events: none; }
+  .ripple { position: absolute; border-radius: 50%; border: 2px solid var(--focus); z-index: 79; pointer-events: none; }
+  .cap { position: absolute; left: 50%; bottom: 12px; translate: -50% 0; padding: 8px 16px; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 13px var(--sans); z-index: 90; white-space: nowrap; }
+  .keyhint { position: absolute; right: 24px; bottom: 60px; padding: 10px 16px; border-radius: 12px; background: var(--ink); color: var(--paper); font: 700 18px var(--mono); z-index: 90; }
+</style>
+</head>
+<body>
+<div class="bgdots"></div>
+<div class="topb" id="top"><span class="brand"><span class="mark"></span>FleetOS</span><span class="trail" id="trail"></span><span class="clock2 glass">sex 17/10 · <b>11:52</b></span></div>
+<div id="stage"></div>
+<div class="cap" id="cap"></div>
+<script src="path.js"></script>
+</body>
+</html>

@@ -1,5 +1,5 @@
-import { NOW, ROUTES, pointAtKm, type WorldJob } from "../fleetos-environment/world";
-import { PT_OUTLINE } from "./geo";
+import { NOW, ROUTES, pointAtKm, type WorldJob } from "../../world/world";
+import { PT_OUTLINE } from "../../world/geo";
 import { routeLabel, type Job, type Level } from "./store";
 
 type P = [number, number];

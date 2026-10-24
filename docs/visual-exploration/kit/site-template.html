@@ -1,0 +1,170 @@
+<title>FleetOS Design Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: sticky review bar + round sections of uniform cards; a full-screen viewer for one asset at a time. */
+:root{
+  --bg:#eef1f3;--surface:#ffffff;--sunk:#e3e8eb;--line:#d3dadf;--fg:#162026;--muted:#5d6b74;--accent:#2b4fd8;--accent-ink:#ffffff;
+  --yes:#1f8a5b;--yes-bg:#dcf3e7;--maybe:#b7791f;--maybe-bg:#fbeed3;--no:#c43d3d;--no-bg:#f9dede;--overlay:rgba(14,20,24,.88);
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;--body:"Instrument Sans","Segoe UI",system-ui,sans-serif;--mono:"IBM Plex Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#11171b;--surface:#1a2228;--sunk:#141b20;--line:#2b363e;--fg:#e6ecef;--muted:#93a2ab;--accent:#7e9bff;--accent-ink:#0d1420;--yes:#4cc98f;--yes-bg:#16352a;--maybe:#e8b04d;--maybe-bg:#3a2e15;--no:#f07a7a;--no-bg:#3d1d1f;--overlay:rgba(5,8,10,.92);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#11171b;--surface:#1a2228;--sunk:#141b20;--line:#2b363e;--fg:#e6ecef;--muted:#93a2ab;--accent:#7e9bff;--accent-ink:#0d1420;--yes:#4cc98f;--yes-bg:#16352a;--maybe:#e8b04d;--maybe-bg:#3a2e15;--no:#f07a7a;--no-bg:#3d1d1f;--overlay:rgba(5,8,10,.92);color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font:15px/1.5 var(--body);margin:0}
+.wrap{max-width:1500px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 80px}
+header.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.bar-in{max-width:1500px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:14px;display:flex;flex-direction:column;gap:12px}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+h1{font:700 clamp(22px,3vw,30px)/1 var(--display);letter-spacing:-.02em;margin:0;text-wrap:balance}
+.progress{display:flex;align-items:center;gap:12px;margin-left:auto;font:500 13px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.meter{width:min(260px,40vw);height:8px;border-radius:4px;background:var(--sunk);display:flex;overflow:hidden}
+.meter i{display:block;height:100%}
+.tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab,.chip{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:999px;padding:6px 13px;font:500 13px var(--body);cursor:pointer}
+.tab[aria-pressed="true"],.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tab small{color:inherit;opacity:.6;margin-left:4px;font-family:var(--mono)}
+input[type=search]{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:8px;padding:7px 11px;font:14px var(--body);min-width:0;width:220px;max-width:100%}
+button:focus-visible,.tab:focus-visible,input:focus-visible,.thumb:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tools{margin-left:auto;display:flex;gap:8px}
+.ghost{border:1px solid var(--line);background:transparent;color:var(--fg);border-radius:8px;padding:7px 12px;font:500 13px var(--body);cursor:pointer}
+.round-head{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;align-items:baseline;margin:46px 0 18px}
+.round-head .n{font:700 64px/0.9 var(--display);color:var(--accent);grid-row:span 2}
+.round-head h2{font:700 26px/1.1 var(--display);margin:0;letter-spacing:-.01em}
+.round-head p{margin:0;color:var(--muted);max-width:70ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.card[data-v="yes"]{border-color:var(--yes);box-shadow:0 0 0 1px var(--yes)}
+.card[data-v="maybe"]{border-color:var(--maybe);box-shadow:0 0 0 1px var(--maybe)}
+.card[data-v="no"]{opacity:.62}
+.thumb{display:block;aspect-ratio:16/10;width:100%;background:var(--sunk);border:0;padding:0;cursor:zoom-in;position:relative}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .frames{position:absolute;right:8px;bottom:8px;background:var(--overlay);color:#fff;font:500 11px var(--mono);padding:3px 7px;border-radius:4px}
+.meta{padding:12px 14px 4px;display:flex;flex-direction:column;gap:3px;min-width:0;flex:1}
+.idl{display:flex;gap:8px;align-items:center;font:500 11.5px var(--mono);color:var(--muted)}
+.mine{font:600 10px var(--mono);letter-spacing:.06em;padding:2px 6px;border-radius:3px;border:1px solid var(--line)}
+.name{font-weight:600;font-size:14.5px;line-height:1.3}
+.grp{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vote{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px 14px 14px}
+.vb{border:1px solid var(--line);background:var(--surface);color:var(--fg);border-radius:7px;padding:8px 4px;font:600 13px var(--body);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.vb:hover{border-color:var(--fg)}
+.vb[data-k="yes"][aria-pressed="true"]{background:var(--yes-bg);color:var(--yes);border-color:var(--yes)}
+.vb[data-k="maybe"][aria-pressed="true"]{background:var(--maybe-bg);color:var(--maybe);border-color:var(--maybe)}
+.vb[data-k="no"][aria-pressed="true"]{background:var(--no-bg);color:var(--no);border-color:var(--no)}
+.empty{padding:40px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}
+.note-dot{color:var(--accent)}
+/* viewer */
+.viewer{position:fixed;inset:0;z-index:50;background:var(--overlay);display:grid;grid-template-columns:1fr minmax(280px,360px);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.stage{display:flex;flex-direction:column;min-width:0;min-height:0;padding:18px}
+.stage .main{flex:1;min-height:0;display:flex;align-items:center;justify-content:center}
+.stage .main img{max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;background:#fff}
+.strip{display:flex;gap:8px;overflow-x:auto;padding-top:12px}
+.strip button{flex:none;width:120px;aspect-ratio:16/10;border:2px solid transparent;border-radius:4px;padding:0;background:#000;cursor:pointer}
+.strip button[aria-current="true"]{border-color:var(--accent)}
+.strip img{width:100%;height:100%;object-fit:cover;display:block;border-radius:2px}
+.panel{background:var(--surface);color:var(--fg);padding:22px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;min-height:0}
+.panel h3{font:700 22px/1.15 var(--display);margin:0;text-wrap:balance}
+.panel .desc{color:var(--muted);font-size:14px}
+.sc{display:flex;flex-wrap:wrap;gap:6px}
+.sc span{font:500 11.5px var(--mono);background:var(--sunk);padding:3px 7px;border-radius:4px}
+.panel textarea{width:100%;min-height:80px;border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:8px;padding:9px;font:14px var(--body);resize:vertical}
+.nav{display:flex;gap:8px;margin-top:auto}
+.nav button{flex:1}
+.kbd{font:500 11px var(--mono);color:var(--muted)}
+.close{position:absolute;top:calc(12px + env(safe-area-inset-top,0px));right:376px;background:var(--surface);color:var(--fg);border:0;border-radius:999px;width:38px;height:38px;font-size:18px;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;z-index:60}
+.status{font-size:12.5px;color:var(--muted)}
+@media (max-width:860px){.viewer{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;overflow:auto}.panel{max-height:52vh}.close{right:12px}.tools{margin-left:0}.progress{margin-left:0}}
+@media (prefers-reduced-motion:no-preference){.card{transition:opacity .2s,box-shadow .2s}}
+</style>
+
+<header class="bar"><div class="bar-in">
+  <div class="row"><h1>FleetOS Design Review</h1>
+    <div class="progress" aria-live="polite"><div class="meter" id="meter"></div><span id="pcount"></span></div></div>
+  <div class="row">
+    <div class="tabs" id="tabs" role="group" aria-label="Ronda"></div>
+    <div class="tabs" id="filters" role="group" aria-label="Estado"></div>
+    <input type="search" id="q" placeholder="Procurar ID ou nome…" aria-label="Procurar">
+    <div class="tools"><button class="ghost" id="copy">Copiar escolhas</button></div>
+  </div>
+  <div class="status" id="status">A carregar as tuas escolhas…</div>
+</div></header>
+<main class="wrap" id="main"></main>
+<div class="viewer" id="viewer" hidden></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/*DATA*/
+const LABEL={yes:"Gosto",maybe:"Talvez",no:"Não"};
+const ICON={yes:"✓",maybe:"~",no:"✕"};
+let votes={}; let db=null; let round="all"; let filt="all"; let q=""; let cur=-1, frame=0; let list=[];
+const $=s=>document.querySelector(s);
+const LS="fleetos-review-v1";
+try{votes=JSON.parse(localStorage.getItem(LS)||"{}")}catch(e){}
+function saveLocal(){try{localStorage.setItem(LS,JSON.stringify(votes))}catch(e){}}
+function toast(t){const el=$("#toast");el.textContent=t;el.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>el.hidden=true,1800)}
+
+async function setVote(key,v,note){
+  const prev=votes[key]||{};const next={v:v===undefined?prev.v||null:v,note:note===undefined?prev.note||"":note,at:new Date().toISOString()};
+  if(v!==undefined&&prev.v===v)next.v=null;
+  votes[key]=next;saveLocal();refreshCard(key);updateProgress();if(cur>=0)renderViewerPanel();
+  if(db){try{await db.collection("votes").doc(key).set(next)}catch(e){$("#status").textContent="Não foi possível guardar no servidor — fica guardado só neste browser."}}
+}
+function visible(){return ITEMS.filter(it=>(round==="all"||it.round==round)&&(filt==="all"||(filt==="none"?!votes[it.key]?.v:votes[it.key]?.v===filt))&&(!q||(it.id+" "+it.name+" "+it.group).toLowerCase().includes(q)))}
+function cardHTML(it){const v=votes[it.key]?.v||"";const n=votes[it.key]?.note;
+  return `<article class="card" data-key="${it.key}" data-v="${v}"><button class="thumb" data-open="${it.key}" aria-label="Ver ${it.id} em grande"><img loading="lazy" src="${it.imgs[0]}" alt="${it.id} · ${esc(it.name)}">${it.imgs.length>1?`<span class="frames">${it.imgs.length} imagens</span>`:""}</button>
+  <div class="meta"><div class="idl"><span>${it.id}</span>${it.mine?`<span class="mine" title="Avaliação do Claude">Claude: ${it.mine}</span>`:""}${n?'<span class="note-dot" title="Tem nota">● nota</span>':""}</div><div class="name">${esc(it.name)}</div><div class="grp">${esc(it.group||"")}</div></div>
+  <div class="vote">${["yes","maybe","no"].map(k=>`<button class="vb" data-k="${k}" data-key="${it.key}" aria-pressed="${v===k}">${ICON[k]} ${LABEL[k]}</button>`).join("")}</div></article>`}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function render(){list=visible();const byR={};list.forEach(it=>(byR[it.round]=byR[it.round]||[]).push(it));
+  $("#main").innerHTML=Object.keys(byR).length?Object.keys(byR).sort().map(r=>`<section><div class="round-head"><span class="n">${r}</span><h2>Ronda ${r} · ${ROUNDS[r][0]}</h2><p>${ROUNDS[r][1]} <span class="kbd">${byR[r].length} itens</span></p></div><div class="grid">${byR[r].map(cardHTML).join("")}</div></section>`).join(""):`<div class="empty" style="margin-top:40px">Nada com este filtro.</div>`;
+  renderTabs()}
+function refreshCard(key){const el=document.querySelector(`.card[data-key="${CSS.escape(key)}"]`);if(!el)return;const it=ITEMS.find(i=>i.key===key);el.outerHTML=cardHTML(it)}
+function counts(){const c={yes:0,maybe:0,no:0};ITEMS.forEach(it=>{const v=votes[it.key]?.v;if(v)c[v]++});return c}
+function updateProgress(){const c=counts(),t=ITEMS.length,d=c.yes+c.maybe+c.no;
+  $("#meter").innerHTML=`<i style="width:${c.yes/t*100}%;background:var(--yes)"></i><i style="width:${c.maybe/t*100}%;background:var(--maybe)"></i><i style="width:${c.no/t*100}%;background:var(--no)"></i>`;
+  $("#pcount").textContent=`${d}/${t} · ✓${c.yes} ~${c.maybe} ✕${c.no}`;renderTabs()}
+function renderTabs(){const rs=["all",1,2,3,4,5,6];
+  $("#tabs").innerHTML=rs.map(r=>{const n=r==="all"?ITEMS.length:ITEMS.filter(i=>i.round==r).length;return `<button class="tab" data-round="${r}" aria-pressed="${round==r}">${r==="all"?"Todas":"R"+r}<small>${n}</small></button>`}).join("");
+  const c=counts(),none=ITEMS.length-c.yes-c.maybe-c.no;
+  $("#filters").innerHTML=[["all","Tudo"],["none","Por decidir",none],["yes","Gosto",c.yes],["maybe","Talvez",c.maybe],["no","Não",c.no]].map(([k,l,n])=>`<button class="chip" data-filt="${k}" aria-pressed="${filt===k}">${l}${n!==undefined?` <small style="opacity:.6">${n}</small>`:""}</button>`).join("")}
+
+function openViewer(key){cur=list.findIndex(i=>i.key===key);frame=0;renderViewer()}
+function renderViewer(){const it=list[cur];const v=$("#viewer");if(!it){v.hidden=true;cur=-1;return}v.hidden=false;
+  v.innerHTML=`<div class="stage"><div class="main"><img src="${it.imgs[frame]}" alt="${it.id} imagem ${frame+1}"></div>${it.imgs.length>1?`<div class="strip">${it.imgs.map((s,i)=>`<button data-frame="${i}" aria-current="${i===frame}" aria-label="Imagem ${i+1}${it.frames?": "+esc(it.frames[i]):""}"><img src="${s}" alt=""></button>`).join("")}</div>`:""}</div><aside class="panel" id="vpanel"></aside><button class="close" id="vclose" aria-label="Fechar">✕</button>`;
+  renderViewerPanel()}
+function renderViewerPanel(){const it=list[cur];if(!it)return;const v=votes[it.key]?.v||"";
+  $("#vpanel").innerHTML=`<div class="idl"><span>Ronda ${it.round} · ${it.id} · ${cur+1}/${list.length}</span></div><h3>${esc(it.name)}</h3><div class="grp" style="white-space:normal">${esc(it.group||"")}</div>
+  ${it.frames?`<div class="kbd">Imagem ${frame+1}: ${esc(it.frames[frame]||"")}</div>`:""}
+  <div class="vote" style="padding:0">${["yes","maybe","no"].map((k,i)=>`<button class="vb" data-k="${k}" data-key="${it.key}" aria-pressed="${v===k}">${ICON[k]} ${LABEL[k]} <span class="kbd">${i+1}</span></button>`).join("")}</div>
+  <label for="note" class="kbd">Nota (opcional)</label><textarea id="note" placeholder="O que muda, o que fica…">${esc(votes[it.key]?.note||"")}</textarea>
+  ${it.mine?`<div class="kbd">Avaliação do Claude: <b>${it.mine}</b></div>`:""}${it.sc?`<div class="sc">${it.sc.map(s=>`<span>${s}/5</span>`).join("")}</div>`:""}
+  <div class="desc">${esc(it.desc||"")}</div>
+  <div class="nav"><button class="ghost" id="prev">← Anterior</button><button class="ghost" id="next">Seguinte →</button></div><div class="kbd">Teclado: 1 gosto · 2 talvez · 3 não · ← → navegar · Esc fechar</div>`;
+  $("#note").addEventListener("change",e=>setVote(it.key,undefined,e.target.value))}
+
+document.addEventListener("click",e=>{const t=e.target.closest("button");if(!t)return;
+  if(t.dataset.round){round=t.dataset.round==="all"?"all":+t.dataset.round;render();return}
+  if(t.dataset.filt){filt=t.dataset.filt;render();return}
+  if(t.dataset.open){openViewer(t.dataset.open);return}
+  if(t.dataset.k){setVote(t.dataset.key,t.dataset.k);return}
+  if(t.dataset.frame){frame=+t.dataset.frame;renderViewer();return}
+  if(t.id==="vclose"){cur=-1;$("#viewer").hidden=true;render();return}
+  if(t.id==="prev"){cur=Math.max(0,cur-1);frame=0;renderViewer();return}
+  if(t.id==="next"){cur=Math.min(list.length-1,cur+1);frame=0;renderViewer();return}
+  if(t.id==="copy"){copyChoices()}});
+document.addEventListener("keydown",e=>{if(cur<0||e.target.tagName==="TEXTAREA")return;const it=list[cur];
+  if(e.key==="Escape"){cur=-1;$("#viewer").hidden=true;render()}
+  else if(e.key==="ArrowRight"){if(frame<it.imgs.length-1)frame++;else if(cur<list.length-1){cur++;frame=0}renderViewer()}
+  else if(e.key==="ArrowLeft"){if(frame>0)frame--;else if(cur>0){cur--;frame=0}renderViewer()}
+  else if(["1","2","3"].includes(e.key)){setVote(it.key,["yes","maybe","no"][+e.key-1])}});
+$("#q").addEventListener("input",e=>{q=e.target.value.trim().toLowerCase();render()});
+function copyChoices(){const out=["yes","maybe","no"].map(k=>`${LABEL[k].toUpperCase()}\n`+ITEMS.filter(i=>votes[i.key]?.v===k).map(i=>`- ${i.id} (R${i.round}) ${i.name}${votes[i.key].note?" — "+votes[i.key].note:""}`).join("\n")).join("\n\n");
+  navigator.clipboard.writeText(out).then(()=>toast("Copiado")).catch(()=>{const ta=document.createElement("textarea");ta.value=out;document.body.appendChild(ta);ta.select();toast("Selecionado — copia com Ctrl+C")})}
+
+render();updateProgress();
+(async()=>{try{db=await window.claude?.use?.("db")}catch(e){db=null}
+  if(!db){$("#status").textContent="As escolhas ficam guardadas neste browser.";return}
+  try{const s=await db.collection("votes").get();s.docs.forEach(d=>{const x=d.data();const l=votes[d.id];if(!l||!l.at||(x.at&&x.at>l.at))votes[d.id]=x});saveLocal();render();updateProgress();
+    $("#status").textContent="As tuas escolhas ficam guardadas e o Claude consegue lê-las."}catch(e){$("#status").textContent="As escolhas ficam guardadas neste browser."}})();
+</script>

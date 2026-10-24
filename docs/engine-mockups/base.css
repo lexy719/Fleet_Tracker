@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap");
+:root {
+  --paper: #f6f2ea; --paper-2: #efe9dd; --glass: rgba(250, 247, 240, 0.92);
+  --ink: #1b1d22; --ink-2: #474b55; --ink-3: #868a93; --rule: rgba(27, 29, 34, 0.09); --rule-2: rgba(27, 29, 34, 0.16);
+  --focus: #e0502a; --sea: #2f6f8f; --ok: #2a7a57; --warn: #c2850c; --bad: #d2401f;
+  --shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 18px 50px -18px rgba(40,32,18,.28), 0 2px 8px -2px rgba(40,32,18,.1);
+  --sans: "Geist", system-ui, sans-serif; --mono: "Geist Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 1440px; height: 900px; overflow: hidden; font: 14px/1.45 var(--sans); color: var(--ink); -webkit-font-smoothing: antialiased; }
+.stage { position: absolute; inset: 0; background: center / cover no-repeat; }
+.glass { background: var(--glass); backdrop-filter: blur(14px); box-shadow: var(--shadow); }
+.mono { font-family: var(--mono); }
+.eyebrow { font: 500 10.5px var(--mono); text-transform: uppercase; letter-spacing: .09em; color: var(--ink-3); }
+
+/* top bar */
+.top { position: absolute; top: 16px; left: 16px; right: 16px; height: 44px; display: flex; align-items: center; gap: 18px; padding: 0 8px 0 16px; }
+.brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 650; font-size: 15px; }
+.mark { width: 18px; height: 18px; border-radius: 50%; background: conic-gradient(from 210deg, var(--ink) 0 70%, var(--focus) 70% 100%); box-shadow: inset 0 0 0 4px var(--paper); outline: 1.5px solid var(--ink); }
+.crumb { color: var(--ink-2); font-weight: 500; }
+.cmd { margin-left: 70px; width: 420px; white-space: nowrap; display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 12px; color: var(--ink-3); font-size: 13.5px; }
+.cmd kbd { margin-left: auto; font: 500 11px var(--mono); padding: 2px 6px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--rule-2); }
+.clock { margin-left: auto; padding: 7px 12px; border-radius: 999px; font-size: 13px; color: var(--ink-2); }
+.clock b { font: 600 13px var(--mono); color: var(--ink); }
+.clock em { font: 500 10px var(--mono); font-style: normal; text-transform: uppercase; letter-spacing: .08em; color: var(--ok); margin-left: 6px; }
+
+/* the stack: modules share the column */
+.stack { position: absolute; top: 76px; left: 16px; bottom: 16px; width: 404px; display: flex; flex-direction: column; gap: 10px; }
+.mod { border-radius: 18px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; overflow: hidden; position: relative; }
+.mod-h { display: flex; align-items: baseline; gap: 8px; }
+.mod-h h3 { margin: 0; font-size: 16px; font-weight: 650; letter-spacing: -.01em; }
+.mod-h .n { font: 600 12px var(--mono); color: var(--ink-3); }
+.mod-h .why { margin-left: auto; font: 500 10.5px var(--mono); color: var(--sea); }
+.mod.big h3 { font-size: 26px; letter-spacing: -.03em; }
+.size { position: absolute; right: 12px; top: 12px; font: 600 10px var(--mono); color: var(--ink-3); }
+
+.row { display: flex; align-items: center; gap: 12px; padding: 9px 10px; border-radius: 12px; background: var(--paper-2); }
+.row .t { font: 600 19px var(--mono); width: 58px; }
+.row .t.late { color: var(--bad); }
+.row .c { flex: 1; min-width: 0; }
+.row .c b { font-size: 14px; }
+.row .c small { display: block; font-size: 11.5px; color: var(--ink-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .ref { font: 600 11px var(--mono); padding: 2px 6px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--rule-2); }
+.tag { font: 600 10px var(--mono); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3); margin-left: 6px; }
+
+.card { border-radius: 14px; padding: 11px 13px; background: var(--paper-2); display: flex; flex-direction: column; gap: 6px; border-left: 3px solid var(--ok); }
+.card.warn { border-left-color: var(--warn); }
+.card.bad { border-left-color: var(--bad); }
+.card .top1 { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-3); }
+.card .top1 .ref { font: 600 12px var(--mono); color: var(--ink); }
+.card .top1 .st { margin-left: auto; font: 600 10.5px var(--sans); background: var(--ink); color: var(--paper); padding: 2px 8px; border-radius: 999px; }
+.card .od { font-size: 17px; font-weight: 650; display: flex; align-items: center; gap: 8px; }
+.card .od .eta { margin-left: auto; font-size: 12px; font-weight: 400; color: var(--ink-3); }
+.card .od .eta b { font: 600 15px var(--mono); color: var(--ink); }
+.bar { height: 3px; border-radius: 2px; background: var(--rule-2); position: relative; }
+.bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 2px; background: var(--ink); }
+.bar s { position: absolute; top: -4px; width: 11px; height: 11px; border-radius: 50%; background: var(--focus); }
+
+/* dock: modules folded to a dot */
+.dock { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; border-radius: 16px; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: var(--paper-2); font-size: 12.5px; color: var(--ink-2); }
+.pill b { font: 600 12px var(--mono); color: var(--ink); }
+.pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); }
+.pill.warn i { background: var(--warn); }
+.pill.bad i { background: var(--bad); }
+
+.fab { position: absolute; left: 380px; bottom: 30px; width: 46px; height: 46px; border-radius: 50%; background: var(--focus); color: #fff; display: grid; place-items: center; font-size: 26px; box-shadow: 0 10px 24px -8px rgba(224,80,42,.7); }
+
+/* engine notes (explain the decisions in the mockup only) */
+.note { position: absolute; max-width: 250px; padding: 8px 11px; border-radius: 10px; background: #2f6f8f; color: #fff; font: 500 11.5px/1.35 var(--sans); box-shadow: 0 8px 20px -10px rgba(0,0,0,.5); }
+.note b { display: block; font: 600 10px var(--mono); text-transform: uppercase; letter-spacing: .08em; opacity: .75; margin-bottom: 2px; }
+.scene { position: absolute; left: 50%; bottom: 16px; translate: -50% 0; padding: 8px 16px; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 13px var(--sans); }
+
+/* event */
+.event { border-radius: 18px; padding: 14px 16px; background: var(--ink); color: var(--paper); display: flex; flex-direction: column; gap: 8px; box-shadow: 0 0 0 3px rgba(224,80,42,.35), var(--shadow); }
+.event .eyebrow { color: #ff9a7a; }
+.event p { margin: 0; font-size: 15px; font-weight: 600; }
+.event small { color: rgba(246,242,234,.65); font-size: 12px; }
+.acts { display: flex; gap: 8px; }
+.act { padding: 7px 12px; border-radius: 9px; font-size: 12.5px; font-weight: 600; background: rgba(246,242,234,.12); }
+.act.need { background: var(--focus); color: #fff; }
+
+/* satellites on the map */
+.sat { position: absolute; width: 230px; border-radius: 14px; padding: 10px 12px; font-size: 12.5px; }
+.sat .eyebrow { margin-bottom: 4px; }
+.sat b { font-size: 14px; }
+.sat .meter { height: 5px; border-radius: 3px; background: var(--rule-2); margin-top: 7px; overflow: hidden; }
+.sat .meter i { display: block; height: 100%; background: var(--warn); }
+svg.ov { position: absolute; inset: 0; pointer-events: none; }

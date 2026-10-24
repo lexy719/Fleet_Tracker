@@ -1,0 +1,174 @@
+[
+ {
+  "id": "C-01",
+  "pair": "Job × Driver",
+  "name": "Docking seam",
+  "idea": "The job and the driver are two halves that have to lock together. Every compatibility check is a joint on the seam, and the one that fails is a broken notch."
+ },
+ {
+  "id": "C-02",
+  "pair": "Job × Driver",
+  "name": "Magnetic field of candidates",
+  "idea": "The job sits like a magnet. Each driver is placed by distance to pickup (x) and legal hours left (y), and the pull lines thicken with fit. The best candidate is pulled hardest."
+ },
+ {
+  "id": "C-03",
+  "pair": "Job × Driver",
+  "name": "Legal envelope around the trajectory",
+  "idea": "The job's plan is a line in time × distance. The driver's legality is a shaded envelope of reachable states. Where the line touches the envelope edge is where the driver has to stop."
+ },
+ {
+  "id": "C-04",
+  "pair": "Job × Driver",
+  "name": "Editorial assignment spread",
+  "idea": "The assignment as a magazine spread: giant names locked together by a ×, with the facts set as editorial columns. Pure typographic confidence."
+ },
+ {
+  "id": "C-05",
+  "pair": "Job × Truck",
+  "name": "Blueprint cutaway, cargo dropping in",
+  "idea": "A dark blueprint of the combination with the job's cargo falling into its slots, numbered by unload order. Weight and space fill visibly. Dribbble's hero-object energy, held in FleetOS ink."
+ },
+ {
+  "id": "C-06",
+  "pair": "Job × Truck",
+  "name": "Filmstrip: the truck at every stop",
+  "idea": "The same truck drawn four times along the corridor, once per stop. Load, fuel and mass change between frames, so you read the job as a physical sequence."
+ },
+ {
+  "id": "C-07",
+  "pair": "Job × Truck",
+  "name": "Stencil overlay",
+  "idea": "The job's requirements are drawn as a dashed stencil (minimum length, height, axles). Candidate trucks are overlaid on it in thin ink, and whatever overflows or falls short shows as positive or negative space."
+ },
+ {
+  "id": "C-08",
+  "pair": "Job × Truck",
+  "name": "The week is a trailer",
+  "idea": "A truck's week drawn as one long trailer deck. Jobs are cargo blocks occupying time slots, empty deck is idle capacity, and the workshop slot is hatched. Utilisation becomes a load plan."
+ },
+ {
+  "id": "C-09",
+  "pair": "Driver × Documents",
+  "name": "Exploded isometric wallet",
+  "idea": "The driver's documents as stacked isometric plates. The expiring CQM lifts off the stack and casts its consequence (the transports it will block) onto the floor."
+ },
+ {
+  "id": "C-10",
+  "pair": "Driver × Documents",
+  "name": "Validity skyline (whole team)",
+  "idea": "Each driver is a building. Its floors are documents and the height is days of validity left. The planning horizon is a horizontal line: anything below it is a problem in waiting."
+ },
+ {
+  "id": "C-11",
+  "pair": "Driver × Documents",
+  "name": "Documents hanging by threads into the day",
+  "idea": "The driver's day runs below. Documents hang above it on threads that touch exactly the moments they're used: the tacho card on every driving block, the CMR on each stop."
+ },
+ {
+  "id": "C-12",
+  "pair": "Truck × Documents",
+  "name": "Documents clipped to the machine",
+  "idea": "Each document is a paper tag clipped to the part it certifies: IPO on the chassis, insurance on the cab, tacho calibration on the dashboard, CMR on the rear doors. Expired tags flap red."
+ },
+ {
+  "id": "C-13",
+  "pair": "Truck × Documents",
+  "name": "Paper signposts along the road",
+  "idea": "Documents stand on the corridor like roadside signposts at the km where they get stamped. Signed ones are solid, pending ones are outlined, and the CMR changes revision mid-road."
+ },
+ {
+  "id": "C-14",
+  "pair": "Truck × Documents",
+  "name": "The plate as the hero",
+  "idea": "The registration plate set enormous as the identity of the machine, with every document orbiting it at a distance proportional to days of validity left. Closer means more urgent."
+ },
+ {
+  "id": "C-15",
+  "pair": "Truck × Restrictions",
+  "name": "Gate run (front elevations in sequence)",
+  "idea": "The truck's front profile passes through every physical gate on the route, left to right in km order. Margins are tight negative spaces, and the unknown gate is drawn in dashed outline."
+ },
+ {
+  "id": "C-16",
+  "pair": "Truck × Restrictions",
+  "name": "Envelope chart (height × mass)",
+  "idea": "Every restriction becomes a forbidden region on a physical plane. The combination is a point with an uncertainty bar where data is missing. Legal = the white space the point sits in."
+ },
+ {
+  "id": "C-17",
+  "pair": "Truck × Restrictions",
+  "name": "Night operations map (dark, portrait)",
+  "idea": "A dark-mode, portrait, Portugal-native map for night monitoring. Restrictions are muted embers with their active hours, and the truck carries its next restriction as a label. Calm, not neon."
+ },
+ {
+  "id": "C-18",
+  "pair": "Truck × Restrictions",
+  "name": "Rule plates over the machine",
+  "idea": "Road-sign plates are drawn at scale over the parts of the truck they judge: a height bar over the roof, a mass disc over the axles, an axle-height ruler at the front wheel. The rule and the object share one drawing."
+ },
+ {
+  "id": "C-19",
+  "pair": "Everything",
+  "name": "Skewer: stacked planes, pinned facts",
+  "idea": "Job, Route, Truck, Driver, Documents and Restriction are isometric planes stacked like acetate sheets. A single fact (the VCI crossing at 15:05) is a pin piercing every plane it touches, so the cross-domain relation becomes literal."
+ },
+ {
+  "id": "C-20",
+  "pair": "Everything",
+  "name": "Constellation on portrait Portugal",
+  "idea": "The whole operation as a constellation placed geographically. Each node is a tiny physical glyph (truck, person, sheet, sign), and fine arcs bind what belongs together. The selected cluster is lit; the rest stays dim."
+ },
+ {
+  "id": "C-21",
+  "pair": "Everything",
+  "name": "Commitment flows (drivers → jobs → trucks)",
+  "idea": "A Sankey of the day: driver hours flow into jobs, and jobs flow into trucks. Ribbon width is hours committed. Unassigned jobs are dangling ribbons and idle resources are stubs."
+ },
+ {
+  "id": "C-22",
+  "pair": "Everything",
+  "name": "Departures board (split-flap, on paper)",
+  "idea": "An industrial split-flap board: each row is a job with driver, truck, document and restriction cells that flip when state changes. It's a dynamic, readable-from-across-the-room ops wall, inked on paper rather than glowing."
+ },
+ {
+  "id": "C-23",
+  "pair": "Everything",
+  "name": "Relation lens (rings of distance)",
+  "idea": "J-4217 at the centre. Ring 1 holds what it physically uses, ring 2 the papers and stops, ring 3 the rules and other jobs competing for the same resources. Distance encodes how directly something affects the job."
+ },
+ {
+  "id": "C-24",
+  "pair": "Everything",
+  "name": "Editorial dossier spread (Awwwards energy)",
+  "idea": "J-4217 laid out as a magazine spread: a giant km numeral, the truck drawing bleeding off the page, pull-quote decisions and a caption-sized ledger. Premium editorial pacing applied to operations."
+ },
+ {
+  "id": "M-01",
+  "pair": "Driver × Documents",
+  "name": "Threads draw into the day",
+  "base": "C-11",
+  "idea": "The threads unspool from each document and land on the moments they touch, staggered. The eye learns the relation as the sequence plays."
+ },
+ {
+  "id": "M-02",
+  "pair": "Job × Driver",
+  "name": "Magnetic pull settles",
+  "base": "C-02",
+  "idea": "The candidates fade in and the pull lines draw from the job outward. The strongest pull completes first and the rest follow by fit, so the ranking is felt before it is read."
+ },
+ {
+  "id": "M-03",
+  "pair": "Everything",
+  "name": "Skewer assembles",
+  "base": "C-19",
+  "idea": "The planes drop into the stack one by one, then the pin pierces all six. The relation is literally assembled in front of the operator."
+ },
+ {
+  "id": "M-04",
+  "pair": "Job × Truck",
+  "name": "Truck rides the corridor",
+  "base": null,
+  "idea": "The truck glides along the unrolled corridor while the fuel and legal gauges drain and reset at Santarém. It's dynamism carrying meaning: the pause is visibly the moment both refill."
+ }
+]

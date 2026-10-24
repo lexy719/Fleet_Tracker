@@ -1,0 +1,122 @@
+[
+ {
+  "id": "N-01",
+  "name": "Inbox · triage what needs me",
+  "lang": "Clean SaaS · Inter · blue · white",
+  "model": "Email-style three panes: folders, alert list, reading pane",
+  "why": "Every office worker already knows this. The alerts are the 'emails'; open one and act with big buttons. Lowest learning curve.",
+  "ease": 5
+ },
+ {
+  "id": "N-02",
+  "name": "Board · transports by stage",
+  "lang": "Trello-like · DM Sans · purple · grey canvas",
+  "model": "Kanban columns, drag cards between stages",
+  "why": "Planning becomes moving cards. Status is position, not a label. Very easy to explain to new staff.",
+  "ease": 5
+ },
+ {
+  "id": "N-03",
+  "name": "Grid · everything in one sheet",
+  "lang": "Airtable-like · IBM Plex Sans · green · dense grid",
+  "model": "Spreadsheet with filters, grouping, coloured pills, inline edit",
+  "why": "Office workers live in Excel. Sortable, filterable, editable in place, exportable. Power without training.",
+  "ease": 5
+ },
+ {
+  "id": "N-04",
+  "name": "Calendar · who drives when",
+  "lang": "Google-Calendar-like · Roboto · teal · day columns",
+  "model": "Week calendar, drivers as coloured events; click empty slot to assign",
+  "why": "Scheduling in the tool everybody already uses for meetings. Conflicts are overlaps; free time is white space.",
+  "ease": 5
+ },
+ {
+  "id": "N-05",
+  "name": "Gantt · plan the week",
+  "lang": "MS-Project-like · Source Sans 3 · orange · toolbar ribbon",
+  "model": "Resource rows (trucks) × days, bars draggable, ribbon toolbar",
+  "why": "Planners see utilisation and gaps across the week; drag a transport to another truck. Familiar to anyone who used Project.",
+  "ease": 4
+ },
+ {
+  "id": "N-06",
+  "name": "Dark list · keyboard-first",
+  "lang": "Linear-like · Inter · indigo · dark",
+  "model": "Sidebar + list with keyboard shortcuts + command palette",
+  "why": "For the fast dispatcher who lives on the keyboard: ⌘K to do anything, J/K to move, single-key actions shown in rows.",
+  "ease": 3
+ },
+ {
+  "id": "N-07",
+  "name": "Live map · tap a truck",
+  "lang": "Uber-Freight-like · Manrope · black + lime · rounded",
+  "model": "Full map, floating list panel, big rounded detail sheet",
+  "why": "Feels like apps everyone uses on the phone. Answers 'where is it' instantly; detail slides in with one tap.",
+  "ease": 4
+ },
+ {
+  "id": "N-08",
+  "name": "Assistant · ask in plain words",
+  "lang": "Conversational · Nunito · peach · soft",
+  "model": "Chat with the operation; answers come as small tables and buttons",
+  "why": "No menus to learn: 'who can take J-4218?' Answers carry the action buttons. Great for occasional users and managers.",
+  "ease": 4
+ },
+ {
+  "id": "N-09",
+  "name": "Today · tiles + to-do",
+  "lang": "Office dashboard · Work Sans · navy + yellow",
+  "model": "Big number tiles, a to-do list, today's deliveries table",
+  "why": "The manager's morning screen: how many, what's late, what to do. Readable from across the office.",
+  "ease": 5
+ },
+ {
+  "id": "N-10",
+  "name": "Record · transport form",
+  "lang": "Classic business app · Inter · slate · forms",
+  "model": "Header with status + actions, tabs, two-column fields, activity log",
+  "why": "Exactly how invoices and orders look in every ERP — editable fields, save, history. Zero surprise for back-office staff.",
+  "ease": 5
+ },
+ {
+  "id": "N-11",
+  "name": "Checklist · today's run sheet",
+  "lang": "Productivity · Space Grotesk · green · checkboxes",
+  "model": "Time-ordered task list per transport with progress and big ticks",
+  "why": "Dispatch as a checklist: things tick themselves when they happen; you only act on unchecked items with a red dot.",
+  "ease": 5
+ },
+ {
+  "id": "N-12",
+  "name": "Board · high contrast",
+  "lang": "Brutalist · Archivo + JetBrains Mono · black/yellow",
+  "model": "Giant type wallboard for the depot screen",
+  "why": "For the screen on the office wall: readable from 6 m, no hover, no clutter. Problems in yellow, the rest in white on black.",
+  "ease": 4
+ },
+ {
+  "id": "N-13",
+  "name": "Touch · yard tablet",
+  "lang": "Touch-first · Nunito Sans · orange · huge targets",
+  "model": "Two panes with 64px rows and thumb-sized buttons",
+  "why": "For the yard or cais on a tablet: gloves-friendly buttons, one decision per screen, no tiny text.",
+  "ease": 5
+ },
+ {
+  "id": "N-14",
+  "name": "Report · daily summary for the boss",
+  "lang": "Editorial print · Source Serif 4 · black · A4 rhythm",
+  "model": "One readable page: summary, exceptions, table, signatures",
+  "why": "Some people want a page, not an app: emailed at 08:00 or printed for the morning meeting. Same data, zero interface.",
+  "ease": 5
+ },
+ {
+  "id": "N-15",
+  "name": "Wizard · assign a driver in 3 steps",
+  "lang": "Guided flow · Plus Jakarta Sans · cyan · stepper",
+  "model": "Stepper with choice cards, recommendation badge, summary before confirm",
+  "why": "For rare or risky tasks: the tool walks you through, ranks the options, and shows the consequences before you confirm.",
+  "ease": 5
+ }
+]

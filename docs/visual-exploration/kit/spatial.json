@@ -1,0 +1,933 @@
+{
+ "singles": [
+  {
+   "id": "G-01",
+   "name": "Normal transport (map as 25% tile)",
+   "fam": "N · normal page",
+   "arch": "—",
+   "meta": {
+    "a": "Transport J-4217",
+    "ln": "Execução",
+    "q": "none: page is about the next decision",
+    "ans": "where the truck roughly is",
+    "prom": "≈ 20% (tile)",
+    "cf": "content + tile",
+    "sv": "—",
+    "ch": "baseline",
+    "cp": "geography to a tile",
+    "dis": "—"
+   },
+   "v": "REJECT",
+   "sc": [
+    1,
+    1,
+    2
+   ],
+   "reason": "The current lab default. The tile answers nothing the content asks, so it is wallpaper at small size. It is the starting point every transformation in this round leaves."
+  },
+  {
+   "id": "G-02",
+   "name": "Standard GPS dashboard (fullscreen + floating cards)",
+   "fam": "R · reference",
+   "arch": "—",
+   "meta": {
+    "a": "Transport",
+    "ln": "all",
+    "q": "where is it?",
+    "ans": "position only",
+    "prom": "100% under cards",
+    "cf": "map + floating white cards",
+    "sv": "—",
+    "ch": "—",
+    "cp": "everything into cards",
+    "dis": "relations"
+   },
+   "v": "REJECT",
+   "sc": [
+    2,
+    1,
+    1
+   ],
+   "reason": "Explicitly what the brief forbids. Cards float without binding to geometry, the map becomes backdrop, and it is indistinguishable from any fleet GPS product."
+  },
+  {
+   "id": "G-03",
+   "name": "Map left + white panel right",
+   "fam": "R · reference",
+   "arch": "—",
+   "meta": {
+    "a": "Transport",
+    "ln": "Percurso",
+    "q": "where + what",
+    "ans": "route shape",
+    "prom": "65%",
+    "cf": "split",
+    "sv": "—",
+    "ch": "—",
+    "cp": "content into a column",
+    "dis": "time"
+   },
+   "v": "REJECT",
+   "sc": [
+    2,
+    1,
+    1
+   ],
+   "reason": "The default split. The panel repeats the strip and the map shows sea and Spain. Nothing binds the two halves."
+  },
+  {
+   "id": "G-04",
+   "name": "A3 · Full route + bottom journey strip (leaders bind strip to geometry)",
+   "fam": "A3 · route + bottom strip",
+   "arch": "A3",
+   "meta": {
+    "a": "Transport J-4217",
+    "ln": "Percurso",
+    "q": "where is each stop and how far along is it?",
+    "ans": "the shape and position of the journey",
+    "prom": "≈ 85%",
+    "cf": "fullscreen + bottom instrument",
+    "sv": "headline (compressed), journey strip",
+    "ch": "strip moves to the bottom edge, leaders added",
+    "cp": "headline to one line",
+    "dis": "day ribbon, rows"
+   },
+   "v": "KEEP",
+   "sc": [
+    4,
+    4,
+    4
+   ],
+   "reason": "The strip stays a strip (distance-true) and dashed leaders bind each station to its geographic place, so neither representation is sacrificed. Calm and clearly FleetOS."
+  },
+  {
+   "id": "G-05",
+   "name": "A4 · Route with edge timeline (time runs UP the right edge, with travel)",
+   "fam": "A4 · route + edge timeline",
+   "arch": "A4",
+   "meta": {
+    "a": "Transport J-4217",
+    "ln": "Percurso · Tempo",
+    "q": "when will the truck be where?",
+    "ans": "where each future moment happens",
+    "prom": "≈ 80%",
+    "cf": "portrait map + edge time axis",
+    "sv": "stops, times",
+    "ch": "time becomes a vertical edge ruler with leaders into the map",
+    "cp": "day ribbon to a 120 px column",
+    "dis": "panels"
+   },
+   "v": "KEEP",
+   "sc": [
+    5,
+    4,
+    5
+   ],
+   "reason": "Time runs up because the truck travels north (a first draft with time running down crossed every leader). Portugal's N–S shape lets the vertical time axis and the route share direction. Leaders from hours to places make time-geography one reading, which no GPS dashboard does."
+  },
+  {
+   "id": "G-06",
+   "name": "A2 · Corridor fullscreen (geography unrolled, tracks above and below)",
+   "fam": "A2 · corridor",
+   "arch": "A2",
+   "meta": {
+    "a": "Route J-4217",
+    "ln": "Percurso · Legalidade · Combustível",
+    "q": "what changes along the road?",
+    "ans": "context roads and towns around each km",
+    "prom": "≈ 45% (band)",
+    "cf": "corridor band + km-aligned tracks",
+    "sv": "stops, position",
+    "ch": "map is straightened into a km band",
+    "cp": "geography to ±40 km lateral",
+    "dis": "the country shape"
+   },
+   "v": "MAYBE",
+   "sc": [
+    3,
+    3,
+    4
+   ],
+   "reason": "Strong (Round 1 R-03), but as a fullscreen it is a chart with a map texture. Better as the target of a transition (A3 → A2) than as a destination."
+  },
+  {
+   "id": "G-07",
+   "name": "A5 · Spatial object inspector (truck docked to its marker, dark)",
+   "fam": "A5 · object docked to map",
+   "arch": "A5",
+   "meta": {
+    "a": "Truck AA-42-ZP",
+    "ln": "Combustível · Carga",
+    "q": "where does this machine run out, and where can it refuel?",
+    "ans": "range on the real road, refuel points",
+    "prom": "100% (dimmed)",
+    "cf": "dark map + docked technical object",
+    "sv": "truck drawing (from the Truck page)",
+    "ch": "the drawing docks bottom-left with a leader to the marker",
+    "cp": "load plan to the silhouette",
+    "dis": "tabs, readings row"
+   },
+   "v": "KEEP",
+   "sc": [
+    4,
+    5,
+    5
+   ],
+   "reason": "The technical object survives the jump to fullscreen and points at itself on the map. Range is drawn on the route (fuel → km), so geography answers a vehicle question."
+  },
+  {
+   "id": "G-08",
+   "name": "A6 · Tactical multi-resource (who can reach J-4223's pickup)",
+   "fam": "A6 · tactical",
+   "arch": "A6",
+   "meta": {
+    "a": "Operation (J-4223 unplanned)",
+    "ln": "Motoristas · Viaturas · Reboques",
+    "q": "which free resources are near Coimbra and can make 14:00?",
+    "ans": "reach rings by drive time, resource positions",
+    "prom": "≈ 75%",
+    "cf": "portrait map + ranked edge list",
+    "sv": "J-4223 headline",
+    "ch": "brushing ring around the pickup; resources glyphed by type",
+    "cp": "candidate list to 4 lines",
+    "dis": "other transports (ghosted)"
+   },
+   "v": "MAYBE",
+   "sc": [
+    5,
+    3,
+    4
+   ],
+   "reason": "The right question and a good brushing interaction, but the rings are crow-flies circles posing as drive time, which is misleading. Real isochrones are needed before this is a KEEP."
+  },
+  {
+   "id": "G-09",
+   "name": "A7 · Restriction segment with section cutout (detail A)",
+   "fam": "A7 · segment focus + cutout",
+   "arch": "A7",
+   "meta": {
+    "a": "Restriction VCI",
+    "ln": "Aplicabilidade · Viatura",
+    "q": "exactly where does the rule bite and which physical fact decides?",
+    "ans": "the restricted ring at street level and where J-4217 touches it",
+    "prom": "≈ 90%",
+    "cf": "street map + CAD detail bubble",
+    "sv": "restriction logic (compressed to chip)",
+    "ch": "logic collapses to a chip; physical section appears as a detail callout",
+    "cp": "logic tree to a 5-line chip",
+    "dis": "country context"
+   },
+   "v": "KEEP",
+   "sc": [
+    5,
+    4,
+    5
+   ],
+   "reason": "Borrows the CAD 'detail A' callout. The section of the physical fact (clearance) is bound to the exact place on the street map. Map, logic and object are all native, with no panel."
+  },
+  {
+   "id": "G-10",
+   "name": "A8 · Stop at street level (Santarém service area)",
+   "fam": "A8 · stop detail",
+   "arch": "A8",
+   "meta": {
+    "a": "Stop Santarém (pause)",
+    "ln": "Paragem · Legalidade · Combustível",
+    "q": "how does the truck enter, where does it park, does the window hold?",
+    "ans": "approach, exit, the A1 junction",
+    "prom": "≈ 90%",
+    "cf": "street map + window ring at the stop",
+    "sv": "pause marker, legal wall",
+    "ch": "camera to 6 km; the window becomes a clock ring around the stop",
+    "cp": "route to the last 10 km",
+    "dis": "rest of journey"
+   },
+   "v": "MAYBE",
+   "sc": [
+    4,
+    3,
+    4
+   ],
+   "reason": "Street detail is real (OSM) and the clock ring at the stop is a good idea, but we don't own service-area layouts, so 'where it parks' is still a promise. Keep the ring idea."
+  },
+  {
+   "id": "G-11",
+   "name": "A8 · Delivery stop at street level (Campanhã) with final approach",
+   "fam": "A8 · stop detail",
+   "arch": "A8",
+   "meta": {
+    "a": "Stop Porto (delivery)",
+    "ln": "Paragem · Restrições",
+    "q": "how does it get to the dock, and does any street rule apply?",
+    "ans": "approach via A20/VCI, the underpass, the dock",
+    "prom": "≈ 85%",
+    "cf": "street map + approach timeline along the line",
+    "sv": "ETA, window",
+    "ch": "km ticks become minute ticks along the final 10 km",
+    "cp": "journey strip to the last 10 km",
+    "dis": "country"
+   },
+   "v": "KEEP",
+   "sc": [
+    5,
+    4,
+    4
+   ],
+   "reason": "The final approach is where geography matters most. Minute ticks drawn along the street line and the underpass annotated in place make it a strong local map."
+  },
+  {
+   "id": "G-12",
+   "name": "A1 · Portrait country spine + ledger (operation)",
+   "fam": "A1 · portrait spine",
+   "arch": "A1",
+   "meta": {
+    "a": "Operation",
+    "ln": "Transportes",
+    "q": "where is everything and which rows matter?",
+    "ans": "distribution along the N–S country",
+    "prom": "≈ 40% (portrait)",
+    "cf": "portrait map + bound rows",
+    "sv": "rows",
+    "ch": "map turns portrait; leaders bind rows to trucks",
+    "cp": "rows to two lines",
+    "dis": "white panel"
+   },
+   "v": "KEEP",
+   "sc": [
+    4,
+    4,
+    5
+   ],
+   "reason": "The Round 1 winner on real coastline. Portugal-native, no wasted width, and rows and trucks are bound by leaders."
+  },
+  {
+   "id": "G-13",
+   "name": "A1-dark · Night operation spine",
+   "fam": "A1 · portrait spine (dark)",
+   "arch": "A1",
+   "meta": {
+    "a": "Operation (night)",
+    "ln": "Restrições",
+    "q": "what wakes up before 06:00?",
+    "ans": "where the night restrictions sit relative to trucks",
+    "prom": "≈ 40%",
+    "cf": "dark portrait + text column",
+    "sv": "rows",
+    "ch": "tone, restriction emphasis",
+    "cp": "rows to restrictions",
+    "dis": "day detail"
+   },
+   "v": "MAYBE",
+   "sc": [
+    3,
+    2,
+    4
+   ],
+   "reason": "Calm dark mode works and the embers are legible, but it's a re-skin of A1, not a new spatial idea. Keep as the tone variant."
+  },
+  {
+   "id": "G-14",
+   "name": "Instrument frame (edge-mounted gauges around a full map)",
+   "fam": "dense context, map dominant",
+   "arch": "A3+",
+   "meta": {
+    "a": "Transport J-4217",
+    "ln": "Legalidade · Combustível · Documentos · Percurso",
+    "q": "everything about the transport while the map stays dominant",
+    "ans": "position, stops, restriction",
+    "prom": "≈ 80%",
+    "cf": "map framed by edge instruments",
+    "sv": "legal gauge, fuel, strip, docs",
+    "ch": "every lens becomes a thin edge instrument",
+    "cp": "each lens to one edge",
+    "dis": "headline"
+   },
+   "v": "REJECT",
+   "sc": [
+    3,
+    3,
+    3
+   ],
+   "reason": "A cockpit frame. Side gauges detached from geometry are the standard GPS-dashboard reflex in disguise. Only the bottom strip earns its edge."
+  },
+  {
+   "id": "G-15",
+   "name": "Map cutout inside a document-like page",
+   "fam": "map as figure",
+   "arch": "—",
+   "meta": {
+    "a": "Transport",
+    "ln": "Execução",
+    "q": "where is the decision place?",
+    "ans": "only the 60 km around the pause",
+    "prom": "≈ 15% (cutout)",
+    "cf": "editorial page + shaped map figure",
+    "sv": "headline, strip",
+    "ch": "map becomes a corridor-shaped figure in the text flow",
+    "cp": "map to the decision region",
+    "dis": "everything else of the map"
+   },
+   "v": "MAYBE",
+   "sc": [
+    3,
+    4,
+    5
+   ],
+   "reason": "The principle (map shrinks to the decision region) is right and goes into the rules; the shaped clip is a stylistic flourish that would age badly."
+  },
+  {
+   "id": "G-16",
+   "name": "Map-free: document anchor with a locator line",
+   "fam": "map disappears",
+   "arch": "—",
+   "meta": {
+    "a": "Document CMR rev. 7",
+    "ln": "Dossier",
+    "q": "none spatial",
+    "ans": "nothing; a one-line locator remains",
+    "prom": "0% (locator text)",
+    "cf": "document stage",
+    "sv": "truck position as text",
+    "ch": "map collapses to a locator line",
+    "cp": "geography to 'A1 · km 282 · Alenquer'",
+    "dis": "map"
+   },
+   "v": "MAYBE",
+   "sc": [
+    2,
+    4,
+    4
+   ],
+   "reason": "The rule (the map leaves when it stops answering) is essential, but the screen itself is just a document stage. It's recorded as a prominence rule, not a composition."
+  },
+  {
+   "id": "G-17",
+   "name": "Map as top band, Marey below (map changes axis to share km)",
+   "fam": "map changes shape",
+   "arch": "A2-band",
+   "meta": {
+    "a": "Route J-4217",
+    "ln": "Percurso · Janelas",
+    "q": "slack per stop, with geography as orientation",
+    "ans": "context of each km",
+    "prom": "≈ 28% (band)",
+    "cf": "corridor band over time–distance plane",
+    "sv": "stops",
+    "ch": "map rotates into a horizontal km band aligned with the Marey x-axis",
+    "cp": "map height",
+    "dis": "country shape"
+   },
+   "v": "MAYBE",
+   "sc": [
+    3,
+    4,
+    4
+   ],
+   "reason": "The idea is right (the map adopts the plane's axis), but the Marey here plots km vertically, so the alignment is only half real. Flip the Marey axes before using it."
+  },
+  {
+   "id": "G-18",
+   "name": "Route strip integrated into the line (hour ticks on geometry)",
+   "fam": "strip on map",
+   "arch": "A3-lite",
+   "meta": {
+    "a": "Transport",
+    "ln": "Percurso · Tempo",
+    "q": "where will the truck be at each hour?",
+    "ans": "hour positions along the real road",
+    "prom": "≈ 70%",
+    "cf": "map with embedded time axis",
+    "sv": "stops",
+    "ch": "the strip dissolves into ticks on the line",
+    "cp": "strip to ticks",
+    "dis": "strip"
+   },
+   "v": "MAYBE",
+   "sc": [
+    5,
+    4,
+    4
+   ],
+   "reason": "Hour ticks on the road are honest and cheap, but they crowd quickly and need careful thinning. A layer of A3, not a destination."
+  },
+  {
+   "id": "G-19",
+   "name": "Technical object + geography: cargo leaves at each stop",
+   "fam": "object + map",
+   "arch": "A5-variant",
+   "meta": {
+    "a": "Truck (load)",
+    "ln": "Carga · Paragens",
+    "q": "what leaves the trailer where?",
+    "ans": "stop positions",
+    "prom": "≈ 70%",
+    "cf": "map with load glyphs at stops",
+    "sv": "load plan",
+    "ch": "the load plan splits into per-stop blocks pinned to places",
+    "cp": "load plan to pallet blocks",
+    "dis": "elevation"
+   },
+   "v": "MAYBE",
+   "sc": [
+    3,
+    4,
+    4
+   ],
+   "reason": "The load plan splitting onto the map is a lovely continuity move, but the geography adds little to 'Coimbra first'. Better as a motion than as a destination."
+  },
+  {
+   "id": "G-20",
+   "name": "Causal rule + geography (conditions attached to where they are true)",
+   "fam": "rule on map",
+   "arch": "A7-variant",
+   "meta": {
+    "a": "Restriction VCI × J-4217",
+    "ln": "Aplicabilidade",
+    "q": "which condition is decided where?",
+    "ans": "the time condition at the crossing point, the vehicle condition at the truck",
+    "prom": "≈ 80%",
+    "cf": "map + logic wiring anchored to places",
+    "sv": "logic conditions",
+    "ch": "the logic tree splits; each condition moves to its place/object",
+    "cp": "tree to inline chips",
+    "dis": "the tree"
+   },
+   "v": "MAYBE",
+   "sc": [
+    4,
+    4,
+    4
+   ],
+   "reason": "Spatially anchoring the time condition at the crossing is powerful, but anchoring vehicle facts at the truck position is arbitrary (they aren't spatial). A hybrid: spatial conditions on the map, physical ones on the object."
+  },
+  {
+   "id": "G-21",
+   "name": "Corridor zoom (Lisboa–Leiria) with legal remainder + day crossing the map",
+   "fam": "corridor + timeline crossing",
+   "arch": "A2-geo",
+   "meta": {
+    "a": "Driver Miguel",
+    "ln": "Legalidade · Percurso",
+    "q": "where must he stop?",
+    "ans": "the 49 km of legal road and every service area inside it",
+    "prom": "≈ 80%",
+    "cf": "regional map + day ribbon crossing it",
+    "sv": "day ribbon, legal wall",
+    "ch": "camera to the corridor; the legal wall becomes a place",
+    "cp": "day ribbon to a band across the map",
+    "dis": "rows, documents"
+   },
+   "v": "KEEP",
+   "sc": [
+    5,
+    4,
+    5
+   ],
+   "reason": "D-05 (legal → km) finally at the right scale on real geography. The day ribbon crossing the map keeps time present without a panel. Best fullscreen Driver candidate."
+  },
+  {
+   "id": "G-22",
+   "name": "Two stops compared side-by-side at street scale",
+   "fam": "comparison of places",
+   "arch": "A8×2",
+   "meta": {
+    "a": "Stops (pause candidates)",
+    "ln": "Paragem",
+    "q": "Aveiras or Santarém?",
+    "ans": "access and layout of each candidate",
+    "prom": "2 × 45%",
+    "cf": "twin local maps + shared deciding row",
+    "sv": "stop facts",
+    "ch": "the map splits in two at the same scale",
+    "cp": "route to two locales",
+    "dis": "journey"
+   },
+   "v": "REJECT",
+   "sc": [
+    3,
+    3,
+    3
+   ],
+   "reason": "Twin maps at equal scale sound fair, but the deciding facts aren't spatial and one side lacks data. It looks rigorous and answers nothing."
+  },
+  {
+   "id": "G-23",
+   "name": "Restriction regional fullscreen (IP3) with time band crossing the map",
+   "fam": "restriction + timeline",
+   "arch": "A7-regional",
+   "meta": {
+    "a": "Restriction IP3 works",
+    "ln": "Impacto · Alternativa",
+    "q": "who crosses the closure while it is closed?",
+    "ans": "closure extent, detour, the affected truck",
+    "prom": "≈ 85%",
+    "cf": "regional map + time band",
+    "sv": "affected transport",
+    "ch": "validity window becomes a band at the bottom with crossing ticks",
+    "cp": "detour to a dashed line",
+    "dis": "logic"
+   },
+   "v": "MAYBE",
+   "sc": [
+    4,
+    3,
+    3
+   ],
+   "reason": "Better than Round 1's X-07 thanks to the time band, but still mostly empty land. It earns fullscreen only at night with several trucks affected."
+  },
+  {
+   "id": "G-24",
+   "name": "Operation brushing (hover radius highlights everything near the cursor)",
+   "fam": "operation · brushing",
+   "arch": "A1+A6",
+   "meta": {
+    "a": "Operation",
+    "ln": "Transportes · Recursos",
+    "q": "what is around Coimbra right now?",
+    "ans": "every entity inside the brush radius",
+    "prom": "≈ 60%",
+    "cf": "portrait map + brush lens + compact rows",
+    "sv": "rows",
+    "ch": "rows filter to what the brush touches",
+    "cp": "rows to the brushed subset",
+    "dis": "unbrushed rows"
+   },
+   "v": "MAYBE",
+   "sc": [
+    4,
+    3,
+    3
+   ],
+   "reason": "Brushing is a genuine spatial query (kepler.gl), but it's an interaction, not a composition. Keep it as a behaviour of A1."
+  }
+ ],
+ "sequences": [
+  {
+   "id": "S-A",
+   "name": "Driver → +Route → +Restriction → map dominant → fullscreen → click Truck (anchor switch)",
+   "arch": "A4 → A5",
+   "meta": {
+    "a": "Driver → Truck",
+    "ln": "Execução → +Percurso → +Restrições",
+    "q": "where must Miguel stop, and is the truck OK on the way?",
+    "ans": "the legal corridor, then the truck's range on the same map",
+    "prom": "20% → 45% → 70% → 100%",
+    "cf": "normal → map-dominant → A4 → A5",
+    "sv": "day ribbon (compressed to edge), headline, map camera",
+    "ch": "map grows, the ribbon becomes the left edge strip, the anchor switches without closing the map",
+    "cp": "ribbon → edge strip; rows → nothing",
+    "dis": "rows, documents"
+   },
+   "v": "KEEP",
+   "sc": [
+    5,
+    5,
+    5
+   ],
+   "reason": "The reference transformation. Each step adds one lens and the geometry grows only when the question becomes spatial. On anchor switch the map holds still and only the docked object and the line styling change.",
+   "frames": [
+    "Driver normal",
+    "+ Percurso",
+    "+ Restrição",
+    "Mapa dominante",
+    "Fullscreen",
+    "Clique na viatura",
+    "Âncora: Viatura (mapa mantém-se)"
+   ]
+  },
+  {
+   "id": "S-B",
+   "name": "Transport → Route focus → Stop focus → local zoom → compare two stops → Esc restores",
+   "arch": "A3 → A8 → A3",
+   "meta": {
+    "a": "Transport → Stop",
+    "ln": "Percurso → Paragem",
+    "q": "is the delivery approach safe, and how does it compare to Coimbra?",
+    "ans": "route, then the street approach",
+    "prom": "25% → 85% → 90% street → 2×45% → 85%",
+    "cf": "A3 → A8 → twin → A3",
+    "sv": "bottom strip (re-scoped to the last 36 km), the stop identity",
+    "ch": "camera dives; the strip re-scales to the local km range",
+    "cp": "headline",
+    "dis": "country, then the twin view on Esc"
+   },
+   "v": "KEEP",
+   "sc": [
+    5,
+    4,
+    4
+   ],
+   "reason": "The bottom strip survives every zoom by re-scoping its km range, a great continuity rule. Esc restores the exact A3 geometry. The twin-stop step is the weakest.",
+   "frames": [
+    "Transporte",
+    "Foco no percurso (A3)",
+    "Foco na paragem Porto",
+    "Zoom local (ruas)",
+    "Comparar com Santarém",
+    "Esc → percurso restaurado"
+   ]
+  },
+  {
+   "id": "S-C",
+   "name": "Truck → Restriction → affected segment → physical clearance → back to map",
+   "arch": "object → A7 → object → A7",
+   "meta": {
+    "a": "Truck → Restriction",
+    "ln": "Viatura → Restrições",
+    "q": "does this truck fit the Porto approach?",
+    "ans": "the segment and the place of the structure",
+    "prom": "0% → 20% → 90% → 25% → 90%",
+    "cf": "object canvas → segment focus → clearance → segment",
+    "sv": "the truck drawing (docks, shrinks to marker, returns)",
+    "ch": "the truck flies to its marker; the logic collapses into a map annotation",
+    "cp": "logic to a chip, truck to a marker",
+    "dis": "tabs, readings"
+   },
+   "v": "KEEP",
+   "sc": [
+    5,
+    5,
+    5
+   ],
+   "reason": "Object continuity is complete: the drawing becomes the marker and returns as the portal view. Logic collapses into a map annotation instead of a panel. Best normal↔spatial transition.",
+   "frames": [
+    "Viatura (objeto)",
+    "+ Restrição (lógica)",
+    "Segmento afetado (mapa)",
+    "Gabarito físico",
+    "De volta ao mapa"
+   ]
+  },
+  {
+   "id": "S-D",
+   "name": "Operation → hover transport → select → route grows, others fade → Driver lens → legal corridor",
+   "arch": "A1 → A3 → A2-geo",
+   "meta": {
+    "a": "Operation → Transport → Driver",
+    "ln": "Transportes → +Motorista",
+    "q": "what's happening with J-4217 and where must the driver stop?",
+    "ans": "country distribution, then one route, then the legal corridor",
+    "prom": "40% portrait → 85% → 100%",
+    "cf": "A1 → A3 → corridor zoom",
+    "sv": "J-4217 row (becomes the headline), the route line",
+    "ch": "others ghost (Autodesk isolate); camera reframes as the layout moves",
+    "cp": "rows → headline",
+    "dis": "other rows"
+   },
+   "v": "KEEP",
+   "sc": [
+    5,
+    4,
+    4
+   ],
+   "reason": "Isolate-by-ghosting (CAD) keeps context without clutter, and the selected row becoming the headline is clean continuity. The camera reframe during layout movement explains the change.",
+   "frames": [
+    "Operação (A1)",
+    "Hover J-4217",
+    "Seleção",
+    "Percurso cresce, outros esbatem",
+    "+ Motorista",
+    "Corredor legal"
+   ]
+  },
+  {
+   "id": "S-E",
+   "name": "Map disappears: Route fullscreen → Documents → locator line → document stage",
+   "arch": "A3 → map-free",
+   "meta": {
+    "a": "Transport → Document",
+    "ln": "Percurso → Documentos",
+    "q": "the question stops being spatial",
+    "ans": "nothing — the map exits",
+    "prom": "85% → 30% → 0%",
+    "cf": "A3 → split → document stage",
+    "sv": "truck position (as a locator line), signature stops",
+    "ch": "the map shrinks into the locator; stops become signature rows on the sheet",
+    "cp": "map → text",
+    "dis": "map"
+   },
+   "v": "MAYBE",
+   "sc": [
+    3,
+    4,
+    4
+   ],
+   "reason": "Demonstrates the disappearance rule, but the intermediate split frame is a generic map-plus-document layout. The rule survives; the sequence doesn't.",
+   "frames": [
+    "Percurso (A3)",
+    "Pedido: documentos",
+    "Mapa encolhe para locator",
+    "Palco do documento"
+   ]
+  },
+  {
+   "id": "S-F",
+   "name": "Map changes axis: landscape route → portrait spine → corridor band",
+   "arch": "A3 → A1 → A2",
+   "meta": {
+    "a": "Route",
+    "ln": "Percurso",
+    "q": "which geometry suits the next question?",
+    "ans": "shape, then N–S alignment, then along-road detail",
+    "prom": "85% → 40% → 45%",
+    "cf": "A3 → A1 → A2",
+    "sv": "the route line and stops",
+    "ch": "the map's frame rotates; the route straightens into the corridor",
+    "cp": "country to a band",
+    "dis": "the country shape (at A2)"
+   },
+   "v": "MAYBE",
+   "sc": [
+    4,
+    4,
+    3
+   ],
+   "reason": "Axis change is right, but the straightening step cannot be shown honestly with a camera move (it needs a geometric morph). The frames read as cuts. Needs a real morph implementation to judge.",
+   "frames": [
+    "Paisagem (A3)",
+    "Retrato (A1)",
+    "Corredor (A2)",
+    "Corredor + faixas"
+   ]
+  }
+ ],
+ "motions": [
+  {
+   "id": "M-01",
+   "name": "Map expands while the layout collapses",
+   "seq": "S-A",
+   "play": [
+    2,
+    3,
+    4
+   ],
+   "idea": "The map grows from the right column to fullscreen while the day ribbon compresses into the left edge strip. Both move on the same curve, so space visibly flows from content to geography.",
+   "v": "KEEP",
+   "sc": [
+    4,
+    5,
+    5
+   ]
+  },
+  {
+   "id": "M-02",
+   "name": "Camera reframes during layout movement",
+   "seq": "S-D",
+   "play": [
+    2,
+    3,
+    5
+   ],
+   "idea": "Portrait → landscape → corridor: the camera's fit changes while the frame changes, keeping the selected truck at the same reading position.",
+   "v": "MAYBE",
+   "reason": "The portrait→landscape reframe jumps too far: the selected truck does not keep its reading position. It needs an anchored camera (keep the selected object fixed on screen).",
+   "sc": [
+    4,
+    4,
+    4
+   ]
+  },
+  {
+   "id": "M-03",
+   "name": "Driver timeline compresses into an edge strip",
+   "seq": "S-A",
+   "play": [
+    1,
+    3,
+    4
+   ],
+   "idea": "The horizontal day ribbon becomes a vertical edge timeline; 'now' and the 10:50 wall stay visible throughout.",
+   "v": "MAYBE",
+   "sc": [
+    3,
+    4,
+    4
+   ]
+  },
+  {
+   "id": "M-04",
+   "name": "Truck object moves from technical canvas to map marker",
+   "seq": "S-C",
+   "play": [
+    1,
+    2
+   ],
+   "idea": "The drawing shrinks and fades into its marker position while the map grows behind it; object continuity explained by motion.",
+   "v": "KEEP",
+   "sc": [
+    4,
+    5,
+    5
+   ]
+  },
+  {
+   "id": "M-05",
+   "name": "Restriction logic collapses into a map annotation",
+   "seq": "S-C",
+   "play": [
+    1,
+    2,
+    4
+   ],
+   "idea": "The full logic tree folds into a compact chip at the map edge and the physical detail returns as a small portal inset.",
+   "v": "MAYBE",
+   "reason": "The logic tree crossfades into the chip rather than folding into it, so the motion doesn't yet explain the collapse. It needs a real morph of the five conditions.",
+   "sc": [
+    4,
+    4,
+    5
+   ]
+  },
+  {
+   "id": "M-06",
+   "name": "Route axis becomes a geographic corridor",
+   "seq": "S-F",
+   "play": [
+    0,
+    1,
+    2
+   ],
+   "idea": "Landscape → portrait → straightened corridor. Currently a cut, not a morph: the honest version needs path interpolation.",
+   "v": "MAYBE",
+   "sc": [
+    3,
+    2,
+    4
+   ]
+  },
+  {
+   "id": "M-07",
+   "name": "Anchor changes while the map stays open",
+   "seq": "S-A",
+   "play": [
+    4,
+    5,
+    6
+   ],
+   "idea": "Driver → Truck: the map doesn't move; line styling switches from legal (amber) to fuel (blue), and the truck drawing docks with a leader.",
+   "v": "KEEP",
+   "sc": [
+    5,
+    5,
+    5
+   ]
+  },
+  {
+   "id": "M-08",
+   "name": "Esc restores the prior geometry exactly",
+   "seq": "S-B",
+   "play": [
+    1,
+    3,
+    5
+   ],
+   "idea": "Route → street zoom → Esc. The camera and the strip return to the identical A3 state (same fit, same strip scale).",
+   "v": "KEEP",
+   "sc": [
+    4,
+    5,
+    4
+   ]
+  }
+ ]
+}

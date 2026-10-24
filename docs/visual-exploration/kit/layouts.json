@@ -1,0 +1,724 @@
+[
+ {
+  "id": "W-01",
+  "fam": "F1 Editorial",
+  "state": "Operation · base / attention",
+  "name": "Attention sentences + portrait figure",
+  "nav": "top switcher",
+  "actions": "inline in sentences",
+  "map": "portrait figure",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   3,
+   4,
+   4,
+   5
+  ],
+  "reason": "The calmest home possible. Ranked sentences carry the decisions, inline actions sit inside each sentence, and the portrait map is a figure that confirms geography without competing."
+ },
+ {
+  "id": "W-02",
+  "fam": "F3 Spatial",
+  "state": "Operation · base / attention",
+  "name": "Latitude metro + attention rail",
+  "nav": "floating rail",
+  "actions": "edge (rail items)",
+  "map": "schematic latitude",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "The Round 4 signature survives inside a product. The floating rail stays out of the way, and the attention rail narrows or moves under the metro at 1199. Distinctive and legible."
+ },
+ {
+  "id": "W-03",
+  "fam": "F6 Operator",
+  "state": "Operation · base / attention",
+  "name": "Ledger + portrait map + action strip",
+  "nav": "icon + labels",
+  "actions": "contextual strip",
+  "map": "portrait column",
+  "v": "MAYBE",
+  "sc": [
+   3,
+   5,
+   3,
+   3,
+   5,
+   5
+  ],
+  "reason": "The most implementable and scalable, and the closest to a classic tool. The micro-journey rows keep it FleetOS, but the three-column skeleton is generic and the map column is half wallpaper."
+ },
+ {
+  "id": "W-04",
+  "fam": "F4 Temporal",
+  "state": "Operation · Driver population",
+  "name": "Drivers as day ribbons (edge nav)",
+  "nav": "edge (vertical words)",
+  "actions": "row-attached on hover",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   4,
+   4,
+   5,
+   5
+  ],
+  "reason": "Every driver on one clock with legal state in the row, and a sentence header. Edge navigation reads as a ruler and disappears into the margin. Dense and calm, it scales to 40."
+ },
+ {
+  "id": "W-05",
+  "fam": "F6 Operator",
+  "state": "Operation · Fleet population",
+  "name": "Fleet rows with load silhouettes",
+  "nav": "icon rail",
+  "actions": "row strip",
+  "map": "none",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   3,
+   4,
+   4,
+   4
+  ],
+  "reason": "Silhouettes show load and state at a glance, with location and next maintenance in each row. Good, but repeated silhouettes become texture past 15 rows. Needs a compact glyph mode."
+ },
+ {
+  "id": "W-06",
+  "fam": "F3 Spatial",
+  "state": "Operation · Routes population",
+  "name": "Portrait country, exceptions bound by leaders",
+  "nav": "floating rail",
+  "actions": "label-attached",
+  "map": "portrait dominant",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   4,
+   4,
+   4,
+   4
+  ],
+  "reason": "ISA-101 geography: grey routes, ink only on exceptions, with labels flowing to a right gutter by leader lines. No panel and no landscape waste."
+ },
+ {
+  "id": "W-07",
+  "fam": "F4 Temporal",
+  "state": "Operation · Restrictions population",
+  "name": "Forbidden regions plane + rule column",
+  "nav": "edge",
+  "actions": "row-attached",
+  "map": "none (km×time)",
+  "v": "KEEP",
+  "sc": [
+   4,
+   4,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "All restrictions as space-time barriers with every transport as a string, plus a left column that names each rule and its exposure. The operation-wide restriction view."
+ },
+ {
+  "id": "W-08",
+  "fam": "F1 Editorial",
+  "state": "Driver · Today",
+  "name": "Number + road + gauges",
+  "nav": "top switcher",
+  "actions": "inline",
+  "map": "the road itself (unrolled)",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "The Round 4 signature in a real shell. The number anchors, the road carries time and place, and the gauges sit in the footer zone. Reflows from a stacked 1199 to a 1920 with week context."
+ },
+ {
+  "id": "W-09",
+  "fam": "F2 Instrument",
+  "state": "Driver · Today",
+  "name": "Ribbon instrument + legal bands + bottom stops",
+  "nav": "icon rail",
+  "actions": "attached to the pause",
+  "map": "none",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   4,
+   3,
+   5,
+   5
+  ],
+  "reason": "Clear and implementable: chip anchor, ruler lenses, ribbon with legal bands and an attached action at the pause. But it's the Round 1 D-01 page with a rail, missing the road's distinctiveness."
+ },
+ {
+  "id": "W-10",
+  "fam": "F4 Temporal",
+  "state": "Driver · Today",
+  "name": "Identity column + time spine with lens rows",
+  "nav": "edge",
+  "actions": "proposal bar when editing",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   5,
+   4,
+   5,
+   4
+  ],
+  "reason": "Lenses are rows added to one shared clock (activity, legality, stops, documents, vehicle), so adding context never creates a new page. The identity column stays fixed. The most dynamic-friendly grammar."
+ },
+ {
+  "id": "W-11",
+  "fam": "F2 Instrument",
+  "state": "Driver · Legality",
+  "name": "Legal reach cone as the instrument",
+  "nav": "icon rail",
+  "actions": "edge (two)",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "The cone holds the full legal answer, and the chip anchor plus ruler lenses keep identity without stealing scale. Edge actions stay out of the instrument. It needs a one-time explanation."
+ },
+ {
+  "id": "W-12",
+  "fam": "F5 Object",
+  "state": "Driver · Driver + Truck",
+  "name": "Person ⇄ machine joints on the drawing",
+  "nav": "receding crumb",
+  "actions": "object-attached",
+  "map": "none",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   3,
+   4,
+   3,
+   3
+  ],
+  "reason": "Compatibility joints between the person card and the drawing work. The receding crumb is elegant, but the joints still read as a diagram (Round 1's D-04 problem) once surrounded by UI."
+ },
+ {
+  "id": "W-13",
+  "fam": "F3 Spatial",
+  "state": "Driver · Driver + Route",
+  "name": "Legal corridor on real geography + day crossing",
+  "nav": "floating rail",
+  "actions": "geometry-bound (at Santarém)",
+  "map": "corridor zoom, dominant",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "Round 3's best Driver spatial state inside the shell. The floating rail recedes, the day ribbon crosses the map as a band, and the confirm action is attached to Santarém on the map."
+ },
+ {
+  "id": "W-14",
+  "fam": "F1 Editorial",
+  "state": "Driver · Driver + Restriction",
+  "name": "Sentence + rule path + exposure plane",
+  "nav": "top switcher",
+  "actions": "inline",
+  "map": "none",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   3,
+   4,
+   4,
+   4
+  ],
+  "reason": "Honest and readable: the sentence, the conditions path and the driver's crossing on a small plane. But the driver anchor feels incidental; this belongs to the restriction anchor."
+ },
+ {
+  "id": "W-15",
+  "fam": "F6 Operator",
+  "state": "Driver · dense multi-context",
+  "name": "Commitments + instrument + map + papers",
+  "nav": "icon + labels",
+  "actions": "contextual strip",
+  "map": "portrait column",
+  "v": "MAYBE",
+  "sc": [
+   3,
+   4,
+   3,
+   3,
+   5,
+   4
+  ],
+  "reason": "Everything at once works for a power user at 1920. At 1440 the four regions compete and the road loses its scale. Density is achieved, distinctiveness drops."
+ },
+ {
+  "id": "W-16",
+  "fam": "F5 Object",
+  "state": "Truck · Load",
+  "name": "Elevation + plan hero, unload order, docked inset",
+  "nav": "receding crumb",
+  "actions": "object-attached (at the doors)",
+  "map": "docked inset",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "The machine is the page. The elevation and plan are aligned, the unload order is drawn to the doors, and the action sits at the doors. A tiny docked inset says where without a map region."
+ },
+ {
+  "id": "W-17",
+  "fam": "F5 Object",
+  "state": "Truck · Technical",
+  "name": "Drawing sheet as the full page",
+  "nav": "receding crumb (inside the frame)",
+  "actions": "detail-attached",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   5,
+   4,
+   3,
+   5,
+   4,
+   3
+  ],
+  "reason": "The drawing sheet is FleetOS's most distinctive vehicle state and reads as a complete product state. Lower dynamic potential: it's a document, not a workspace."
+ },
+ {
+  "id": "W-18",
+  "fam": "F2 Instrument",
+  "state": "Truck · Maintenance",
+  "name": "Component lifelines hung from the drawing",
+  "nav": "icon rail",
+  "actions": "per-component attached",
+  "map": "none",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   4,
+   4,
+   4
+  ],
+  "reason": "Wear aligned to component position is right, but labels fight the drawing at 1440. It works at 1920 or with the sheet format."
+ },
+ {
+  "id": "W-19",
+  "fam": "F5 Object",
+  "state": "Truck · Truck + Restriction",
+  "name": "Front silhouette vs gates + detail cutout",
+  "nav": "receding crumb",
+  "actions": "object-attached",
+  "map": "street cutout",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   3,
+   5,
+   4,
+   4
+  ],
+  "reason": "The physical answer is centred, the gate outlines overlay the silhouette, and a circular street cutout says where the tightest gate is. Instantly understood."
+ },
+ {
+  "id": "W-20",
+  "fam": "F3 Spatial",
+  "state": "Truck · Truck + Route",
+  "name": "Object docked to its marker on a dark corridor",
+  "nav": "floating rail",
+  "actions": "geometry-bound (refuel)",
+  "map": "corridor, dark",
+  "v": "MAYBE",
+  "sc": [
+   5,
+   4,
+   4,
+   4,
+   3,
+   3
+  ],
+  "reason": "Beautiful, and the docked drawing keeps continuity. But dark tone for a daytime question breaks the 'grey is normal' language, so it's better as the paper variant."
+ },
+ {
+  "id": "W-21",
+  "fam": "F1 Editorial",
+  "state": "Transport · Narrative",
+  "name": "Front page of the transport",
+  "nav": "top switcher",
+  "actions": "inline in the lede",
+  "map": "inset figure",
+  "v": "MAYBE",
+  "sc": [
+   5,
+   4,
+   2,
+   4,
+   3,
+   4
+  ],
+  "reason": "In a real shell the front page reads like a briefing, ideal for handover or client view. It's static, though: once things move, an editorial layout ages in minutes."
+ },
+ {
+  "id": "W-22",
+  "fam": "F2 Instrument",
+  "state": "Transport · Execution",
+  "name": "Decision fork + ISA-101 margin",
+  "nav": "icon rail",
+  "actions": "branch-attached (recommended)",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   5,
+   5,
+   4,
+   4
+  ],
+  "reason": "The Round 4 signature in a shell: a rail, a grey-normal margin and the fork on time. The 'execution' state has one obvious next action, attached to the recommended branch. Best execution layout."
+ },
+ {
+  "id": "W-23",
+  "fam": "F4 Temporal",
+  "state": "Transport · Team",
+  "name": "People · equipment · places bands",
+  "nav": "edge",
+  "actions": "band-attached (swap)",
+  "map": "none",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   4,
+   4,
+   4
+  ],
+  "reason": "Bands show who and what is bound to each leg and make hand-overs visible. A good team view for multi-leg work, too heavy for single-driver transports."
+ },
+ {
+  "id": "W-24",
+  "fam": "F1 Editorial",
+  "state": "Transport · Documents",
+  "name": "Paper timeline over the open sheet",
+  "nav": "top switcher",
+  "actions": "sheet-attached",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "Receipts on the top timeline, stamps above it, and the selected sheet at reading scale below. The documents of a transport finally read as evidence of events. Survives inside the shell."
+ },
+ {
+  "id": "W-25",
+  "fam": "F4 Temporal",
+  "state": "Transport · Revision",
+  "name": "Plan lineage + reissue proposal bar",
+  "nav": "edge",
+  "actions": "proposal bar",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   5,
+   4,
+   4,
+   4
+  ],
+  "reason": "The proposal bar works here: revisions stack as plans, the pending change appears as rev. 8 drawn dashed, and the dark bar states the consequence. The clearest editing state in the set."
+ },
+ {
+  "id": "W-26",
+  "fam": "F6 Operator",
+  "state": "Transport · dense",
+  "name": "Strip + string chart + map + papers + strip actions",
+  "nav": "icon + labels",
+  "actions": "contextual strip",
+  "map": "portrait column",
+  "v": "MAYBE",
+  "sc": [
+   3,
+   4,
+   3,
+   3,
+   5,
+   4
+  ],
+  "reason": "It holds everything a power user wants, but at 1440 the string chart is cramped and the map column is decorative. Better as a 1920-only mode."
+ },
+ {
+  "id": "W-27",
+  "fam": "F2 Instrument",
+  "state": "Route · time–distance",
+  "name": "String chart + vertical corridor",
+  "nav": "icon rail",
+  "actions": "alternative-attached",
+  "map": "vertical corridor on the chart's axis",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   5,
+   5,
+   4
+  ],
+  "reason": "The strongest route state in context. The corridor column and the chart share the km axis, and the alternative's action sits on its dashed line. Reflows: at 1199 the corridor narrows to a ribbon; at 1920 a stop column appears."
+ },
+ {
+  "id": "W-28",
+  "fam": "F4 Temporal",
+  "state": "Route · corridor",
+  "name": "Unrolled corridor + km strata",
+  "nav": "edge",
+  "actions": "stratum-attached",
+  "map": "corridor band",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "The geology-section route as a full product state: the corridor band on top and strata for road, legality, fuel, restrictions and cargo. Edge nav and one attached action. Calm, dense, distinctive."
+ },
+ {
+  "id": "W-29",
+  "fam": "F3 Spatial",
+  "state": "Route · map-dominant",
+  "name": "Full route + bottom strip bound by leaders",
+  "nav": "floating rail",
+  "actions": "edge actions",
+  "map": "dominant",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   4,
+   4,
+   4,
+   5
+  ],
+  "reason": "Round 3's A3 archetype holds up in the shell: floating rail, edge actions and a distance-true strip bound to the geography. The most implementable spatial state."
+ },
+ {
+  "id": "W-30",
+  "fam": "F2 Instrument",
+  "state": "Route · alternative comparison",
+  "name": "Two strings + delta ledger + proposal",
+  "nav": "icon rail",
+  "actions": "proposal bar",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   5,
+   4,
+   4,
+   4
+  ],
+  "reason": "Comparison as geometry: current and alternative strings on one chart, a delta ledger beside it, and the proposal bar for 'adopt alternative'. Clear recommendation and consequence."
+ },
+ {
+  "id": "W-31",
+  "fam": "F3 Spatial",
+  "state": "Route · stop focus",
+  "name": "Street approach + minute ticks + local strip",
+  "nav": "floating rail",
+  "actions": "dock-attached",
+  "map": "street detail",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   4,
+   4,
+   4
+  ],
+  "reason": "Street-level OSM, the final approach with minute ticks, the underpass marked in place, and a strip re-scoped to the last 36 km. The local stop state the product never had."
+ },
+ {
+  "id": "W-32",
+  "fam": "F1 Editorial",
+  "state": "Documents · dossier",
+  "name": "Sheet centre stage + margin notes + tape",
+  "nav": "top switcher",
+  "actions": "margin-attached",
+  "map": "none",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   3,
+   4,
+   4,
+   4
+  ],
+  "reason": "A strong reading experience, but the dossier is really W-24 with the timeline compressed. Two document layouts are one too many."
+ },
+ {
+  "id": "W-33",
+  "fam": "F5 Object",
+  "state": "Documents · diff",
+  "name": "Two sheets, marks on the fields, cause in the margin",
+  "nav": "receding crumb",
+  "actions": "sheet-attached",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "The sheets themselves are the interface: diff marks on the fields and the cause written in the margin. The receding crumb gives the whole width to paper."
+ },
+ {
+  "id": "W-34",
+  "fam": "F4 Temporal",
+  "state": "Documents · issue / reissue",
+  "name": "Cause → sheet → consequence + proposal",
+  "nav": "edge",
+  "actions": "proposal bar",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   4,
+   5,
+   5,
+   4,
+   4,
+   4
+  ],
+  "reason": "Reissue reads left to right (change, affected field, consequences) and the proposal bar makes it a single, explicit commitment. The editing grammar for every document."
+ },
+ {
+  "id": "W-35",
+  "fam": "F1 Editorial",
+  "state": "Restrictions · applicability",
+  "name": "Verdict sentence + conditions path + evidence fold",
+  "nav": "top switcher",
+  "actions": "inline",
+  "map": "none",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   5,
+   3,
+   4,
+   4,
+   5
+  ],
+  "reason": "Very clear and cheap to build, but it is a sentence and a row of boxes. It needs the two-futures or plane to earn its screen."
+ },
+ {
+  "id": "W-36",
+  "fam": "F5 Object",
+  "state": "Restrictions · missing fact",
+  "name": "Axle gap hero + two futures",
+  "nav": "receding crumb",
+  "actions": "object-attached",
+  "map": "none",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "The missing fact is drawn where it lives (the axle), with the world split on it and priced. The task is attached to the drawing. Distinctive and actionable."
+ },
+ {
+  "id": "W-37",
+  "fam": "F4 Temporal",
+  "state": "Restrictions · route impact",
+  "name": "Barrier on the plane + affected rows",
+  "nav": "edge",
+  "actions": "row-attached",
+  "map": "none",
+  "v": "MAYBE",
+  "sc": [
+   4,
+   4,
+   4,
+   4,
+   4,
+   4
+  ],
+  "reason": "Solid, but a single-restriction variant of W-07. Keep W-07 and filter it by restriction instead of a separate layout."
+ },
+ {
+  "id": "W-38",
+  "fam": "F3 Spatial",
+  "state": "Restrictions · spatial segment",
+  "name": "Street segment + detail-A cutout + logic chip",
+  "nav": "floating rail",
+  "actions": "segment-attached",
+  "map": "street detail",
+  "v": "KEEP",
+  "sc": [
+   5,
+   5,
+   4,
+   5,
+   4,
+   4
+  ],
+  "reason": "Round 3's G-09 holds in the shell: the ring at street level, the physical section in a CAD bubble, and the logic as a small chip. No panel, all bound to the place."
+ }
+]

@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="base.css" />
+<style>
+  body { background: #e9e4d9; }
+  .world { position: absolute; inset: 0; transform-origin: 0 0; }
+  .el { position: absolute; border-radius: 18px; overflow: hidden; background: #f6f2ea; box-shadow: 0 18px 40px -22px rgba(40,32,18,.35), 0 1px 0 rgba(255,255,255,.7) inset; }
+  .el.map { background: #aad3e8 center / cover no-repeat url(bg-overview.png); }
+  .el.dark { background: #1b1d22; color: #f6f2ea; }
+  .el .lb { position: absolute; left: 16px; top: 14px; font: 600 15px var(--sans); letter-spacing: -.01em; white-space: nowrap; }
+  .el .ln { position: absolute; left: 16px; right: 16px; height: 7px; border-radius: 4px; background: rgba(27,29,34,.08); }
+  .el.dark .ln { background: rgba(246,242,234,.12); }
+  .el.map .lb { background: rgba(246,242,234,.9); padding: 3px 9px; border-radius: 8px; }
+  svg.links { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+  .title { position: absolute; left: 40px; top: 28px; z-index: 50; }
+  .title .n { font: 600 12px var(--mono); color: var(--ink-3); letter-spacing: .1em; }
+  .title h1 { margin: 2px 0 0; font-size: 30px; font-weight: 650; letter-spacing: -.035em; }
+  .title p { margin: 4px 0 0; font-size: 14px; color: var(--ink-2); max-width: 620px; }
+  .cap { position: absolute; left: 50%; bottom: 18px; translate: -50% 0; padding: 8px 16px; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 13px var(--sans); z-index: 60; white-space: nowrap; }
+  .cursor { position: absolute; width: 22px; height: 22px; z-index: 80; pointer-events: none; }
+  .ripple { position: absolute; border-radius: 50%; border: 2px solid var(--focus); z-index: 79; pointer-events: none; }
+  .card0 { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 70; background: #e9e4d9; }
+  .card0 .n { font: 600 14px var(--mono); color: var(--ink-3); letter-spacing: .12em; }
+  .card0 h1 { margin: 10px 0 0; font-size: 64px; font-weight: 650; letter-spacing: -.045em; }
+  .card0 p { margin: 12px 0 0; font-size: 18px; color: var(--ink-2); max-width: 760px; text-align: center; line-height: 1.45; }
+</style>
+</head>
+<body>
+<div class="world" id="world"></div>
+<div class="title" id="title"></div>
+<div class="cap" id="cap"></div>
+<div id="intro"></div>
+<script src="anim.js"></script>
+</body>
+</html>

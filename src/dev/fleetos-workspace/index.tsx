@@ -1,7 +1,7 @@
 // DEV-only office workspace built from the screens chosen in the design review
 // (docs/visual-exploration). Synthetic lab world only; no production state.
 import { useEffect } from "react";
-import { NOW } from "../fleetos-environment/world";
+import { NOW } from "../../world/world";
 import { WorkspaceProvider, useWs, type View } from "./store";
 import { AssignWizard, Dia, Hoje, Inbox, Operacao, Planeamento, Quadro, Tabela, TransportDetail } from "./views";
 import "./workspace.css";

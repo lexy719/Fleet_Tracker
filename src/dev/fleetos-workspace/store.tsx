@@ -14,7 +14,7 @@ import {
   type AttentionItem,
   type JobStatus,
   type WorldJob,
-} from "../fleetos-environment/world";
+} from "../../world/world";
 
 export type View = "hoje" | "inbox" | "operacao" | "dia" | "quadro" | "tabela" | "planeamento";
 export type Job = WorldJob & { routeKm: number };

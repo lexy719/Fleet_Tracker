@@ -1,0 +1,2056 @@
+{
+ "k01-base_1440": {
+  "anchor": "operação",
+  "lead": null,
+  "active": [],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "MULTI_ENTITY / job",
+  "path": "spatial_dominant-base",
+  "arrangement": "base",
+  "family": "SPATIAL_DOMINANT",
+  "map": "690 x 806 px",
+  "history": 0,
+  "ix": {
+   "spatial": 5,
+   "rail": 10,
+   "dev": 1,
+   "follow": 10
+  }
+ },
+ "k02-op-drivers_1440": {
+  "anchor": "operação",
+  "lead": "Drivers",
+  "active": [
+   "Drivers"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "MULTI_ENTITY / job",
+  "path": "centered_work-Drivers",
+  "arrangement": "operation-view-left / fleet-map-right",
+  "family": "CENTERED_WORK",
+  "map": "506 x 806 px",
+  "history": 1,
+  "ix": {
+   "spatial": 5,
+   "rail": 10,
+   "dev": 1,
+   "follow": 16
+  }
+ },
+ "k03-op-drivers-jobs_1440": {
+  "anchor": "operação",
+  "lead": null,
+  "active": [
+   "Drivers",
+   "Jobs"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "MULTI_ENTITY / job",
+  "path": "spatial_dominant-Jobs",
+  "arrangement": "operation-view-left / fleet-map-right",
+  "family": "SPATIAL_DOMINANT",
+  "map": "453 x 806 px",
+  "history": 2,
+  "ix": {
+   "spatial": 5,
+   "rail": 10,
+   "dev": 1,
+   "follow": 1,
+   "inspect": 1
+  }
+ },
+ "kA2-qual-follow_1440": {
+  "anchor": "J-4219",
+  "lead": "Documents",
+  "active": [
+   "Jobs",
+   "Drivers",
+   "Documents"
+  ],
+  "facet": {
+   "Documents": "qualification"
+  },
+  "focus": {
+   "kind": "qualification",
+   "driver": "D-09",
+   "qual": "cpc"
+  },
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / job",
+  "path": "no_map_assurance-Documents",
+  "arrangement": "base",
+  "family": "NO_MAP_ASSURANCE",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 9,
+   "edit": 2,
+   "inspect": 6
+  }
+ },
+ "k05-driver-qual-edit_1440": {
+  "anchor": "J-4219",
+  "lead": "Documents",
+  "active": [
+   "Jobs",
+   "Drivers",
+   "Documents"
+  ],
+  "facet": {
+   "Documents": "qualification"
+  },
+  "focus": {
+   "kind": "qualification",
+   "driver": "D-09",
+   "qual": "cpc"
+  },
+  "edit": {
+   "kind": "qualification",
+   "target": "D-09:cpc",
+   "returnFacet": "qualification"
+  },
+  "pending": {
+   "kind": "qualification",
+   "id": "D-09:cpc",
+   "from": "2 out 2026",
+   "to": "2 out 2031"
+  },
+  "mapFull": false,
+  "q": "NONE / job",
+  "path": "no_map_assurance-Documents",
+  "arrangement": "base",
+  "family": "NO_MAP_ASSURANCE",
+  "map": "oculto",
+  "history": 5,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 10,
+   "edit": 2,
+   "inspect": 6,
+   "propose": 4,
+   "commit": 1
+  }
+ },
+ "kA3-cancel-esc_1440": {
+  "anchor": "J-4219",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Drivers"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "CURRENT_ENTITY / resource",
+  "path": "centered_work-Drivers",
+  "arrangement": "local-left / work-right",
+  "family": "CENTERED_WORK",
+  "map": "447 x 425 px",
+  "history": 2,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 15,
+   "edit": 2,
+   "inspect": 5
+  }
+ },
+ "k04b-driver-legality_1440": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Drivers"
+  ],
+  "facet": {
+   "Drivers": "legality"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "centered_work-Drivers",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 14,
+   "edit": 2,
+   "inspect": 5
+  }
+ },
+ "k04c-driver-quals_1440": {
+  "anchor": "J-4219",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Drivers"
+  ],
+  "facet": {
+   "Drivers": "qualifications"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "centered_work-Drivers",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 14,
+   "edit": 1,
+   "inspect": 5
+  }
+ },
+ "k04d-driver-corridor_1440": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Drivers"
+  ],
+  "facet": {
+   "Drivers": "corridor"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NEXT_LEG / stop",
+  "path": "centered_work-Drivers",
+  "arrangement": "work-left / corridor-right",
+  "family": "CENTERED_WORK",
+  "map": "447 x 290 px",
+  "history": 3,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 17,
+   "edit": 1,
+   "inspect": 5
+  }
+ },
+ "k04e-driver-assign_1440": {
+  "anchor": "J-4219",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Drivers"
+  ],
+  "facet": {
+   "Drivers": "assignment"
+  },
+  "focus": null,
+  "edit": {
+   "kind": "driver",
+   "target": "J-4219",
+   "returnFacet": "execution"
+  },
+  "pending": {
+   "kind": "driver",
+   "id": "J-4219",
+   "from": "D-09",
+   "to": "D-40"
+  },
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "centered_work-Drivers",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 4,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 16,
+   "edit": 2,
+   "inspect": 5,
+   "propose": 9,
+   "commit": 1
+  }
+ },
+ "k06-driver-spatial_1440": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Drivers"
+  ],
+  "facet": {
+   "Drivers": "execution"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": true,
+  "q": "NEXT_LEG / stop",
+  "path": "spatial-Drivers",
+  "arrangement": "spatial-Drivers-right",
+  "family": "SPATIAL_DOMINANT",
+  "map": "1314 x 806 px",
+  "history": 4,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 11
+  }
+ },
+ "k07-driver-spatial-docs_1440": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Drivers",
+   "Documents"
+  ],
+  "facet": {
+   "Drivers": "execution"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": true,
+  "q": "NEXT_LEG / stop",
+  "path": "spatial-Drivers",
+  "arrangement": "spatial-Drivers-right",
+  "family": "SPATIAL_DOMINANT",
+  "map": "1314 x 806 px",
+  "history": 5,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 12
+  }
+ },
+ "kG3-driver-spatial-vehicle_1440": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Drivers",
+   "Documents",
+   "Trucks"
+  ],
+  "facet": {
+   "Drivers": "execution"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": true,
+  "q": "NEXT_LEG / stop",
+  "path": "spatial-Drivers",
+  "arrangement": "spatial-Drivers-right",
+  "family": "SPATIAL_DOMINANT",
+  "map": "1314 x 806 px",
+  "history": 6,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 12
+  }
+ },
+ "k08-vehicle-load_1440": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "load"
+  },
+  "focus": {
+   "kind": "vehicle",
+   "aspect": "load"
+  },
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "CURRENT_ENTITY / resource",
+  "path": "centered_work-Trucks",
+  "arrangement": "local-right / work-left",
+  "family": "CENTERED_WORK",
+  "map": "447 x 425 px",
+  "history": 2,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 18,
+   "edit": 2,
+   "inspect": 5,
+   "unclassified": 1
+  }
+ },
+ "k08b-vehicle-delivery-focus_1440": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "load"
+  },
+  "focus": {
+   "kind": "delivery",
+   "stop": "S2"
+  },
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "CURRENT_ENTITY / resource",
+  "path": "centered_work-Trucks",
+  "arrangement": "local-right / work-left",
+  "family": "CENTERED_WORK",
+  "map": "447 x 425 px",
+  "history": 3,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 19,
+   "edit": 2,
+   "inspect": 5,
+   "unclassified": 1
+  }
+ },
+ "k09-vehicle-restriction_1440": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "restriction"
+  },
+  "focus": {
+   "kind": "vehicle",
+   "aspect": "restriction"
+  },
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "centered_work-Trucks",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "rail": 10,
+   "spatial": 3,
+   "dev": 1,
+   "follow": 17,
+   "edit": 3,
+   "inspect": 11
+  }
+ },
+ "k09b-vehicle-fuel_1440": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "fuel"
+  },
+  "focus": {
+   "kind": "vehicle",
+   "aspect": "fuel"
+  },
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NEXT_LEG / stop",
+  "path": "centered_work-Trucks",
+  "arrangement": "work-left / corridor-right",
+  "family": "CENTERED_WORK",
+  "map": "591 x 358 px",
+  "history": 3,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 17,
+   "edit": 3,
+   "inspect": 5
+  }
+ },
+ "k09c-vehicle-maintenance_1440": {
+  "anchor": "J-4220",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "maintenance"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "centered_work-Trucks",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 2,
+  "ix": {
+   "rail": 10,
+   "spatial": 2,
+   "dev": 1,
+   "follow": 11,
+   "edit": 3,
+   "inspect": 5
+  }
+ },
+ "k10-vehicle-trailer_1440": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "assignment"
+  },
+  "focus": {
+   "kind": "vehicle",
+   "aspect": "load"
+  },
+  "edit": {
+   "kind": "trailer",
+   "target": "J-4217",
+   "returnFacet": "load"
+  },
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "centered_work-Trucks",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 14,
+   "edit": 2,
+   "inspect": 5,
+   "propose": 9
+  }
+ },
+ "k11-vehicle-pending-trailer_1440": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "assignment"
+  },
+  "focus": {
+   "kind": "vehicle",
+   "aspect": "load"
+  },
+  "edit": {
+   "kind": "trailer",
+   "target": "J-4217",
+   "returnFacet": "load"
+  },
+  "pending": {
+   "kind": "trailer",
+   "id": "J-4217",
+   "from": "PT-3821",
+   "to": "PT-1021"
+  },
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "centered_work-Trucks",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 4,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 18,
+   "edit": 2,
+   "inspect": 5,
+   "propose": 10,
+   "commit": 1
+  }
+ },
+ "kC3-trailer-cancel_1440": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "load"
+  },
+  "focus": {
+   "kind": "vehicle",
+   "aspect": "load"
+  },
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "CURRENT_ENTITY / resource",
+  "path": "centered_work-Trucks",
+  "arrangement": "local-right / work-left",
+  "family": "CENTERED_WORK",
+  "map": "447 x 425 px",
+  "history": 2,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 18,
+   "edit": 2,
+   "inspect": 5,
+   "unclassified": 1
+  }
+ },
+ "k10b-j4222-trailer_1440": {
+  "anchor": "J-4222",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "assignment"
+  },
+  "focus": null,
+  "edit": {
+   "kind": "trailer",
+   "target": "J-4222"
+  },
+  "pending": {
+   "kind": "trailer",
+   "id": "J-4222",
+   "from": "PT-3302",
+   "to": "PT-8481"
+  },
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "centered_work-Trucks",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 3,
+   "rail": 10,
+   "dev": 1,
+   "follow": 13,
+   "edit": 2,
+   "inspect": 5,
+   "propose": 11,
+   "commit": 1
+  }
+ },
+ "k12-vehicle-map_1440": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "load"
+  },
+  "focus": {
+   "kind": "vehicle",
+   "aspect": "load"
+  },
+  "edit": null,
+  "pending": null,
+  "mapFull": true,
+  "q": "RESOURCE_AND_JOB / resource",
+  "path": "spatial-Trucks",
+  "arrangement": "spatial-Trucks-left",
+  "family": "SPATIAL_DOMINANT",
+  "map": "1314 x 806 px",
+  "history": 3,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 10
+  }
+ },
+ "k13-route_1440": {
+  "anchor": "J-4217",
+  "lead": "Fuel",
+  "active": [
+   "Jobs",
+   "Fuel"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "ROUTE_AND_STOP / candidates",
+  "path": "split_decision-Fuel",
+  "arrangement": "decision-left / portrait-route-right",
+  "family": "SPLIT_DECISION",
+  "map": "394 x 806 px",
+  "history": 2,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 21,
+   "edit": 1,
+   "inspect": 8,
+   "propose": 1
+  }
+ },
+ "k14-route-stop_1440": {
+  "anchor": "J-4217",
+  "lead": "Fuel",
+  "active": [
+   "Jobs",
+   "Fuel"
+  ],
+  "facet": {
+   "Fuel": "stops"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": {
+   "kind": "stop",
+   "id": "F-03",
+   "from": "F-07"
+  },
+  "mapFull": false,
+  "q": "ROUTE_AND_STOP / candidates",
+  "path": "split_decision-Fuel",
+  "arrangement": "decision-left / portrait-route-right",
+  "family": "SPLIT_DECISION",
+  "map": "394 x 806 px",
+  "history": 5,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 24,
+   "edit": 2,
+   "inspect": 8,
+   "propose": 3,
+   "commit": 1
+  }
+ },
+ "k14b-route-window_1440": {
+  "anchor": "J-4218",
+  "lead": "Fuel",
+  "active": [
+   "Jobs",
+   "Fuel"
+  ],
+  "facet": {
+   "Fuel": "window"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / job",
+  "path": "centered_work-Fuel",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 3,
+   "rail": 10,
+   "dev": 1,
+   "follow": 13,
+   "edit": 1,
+   "inspect": 3
+  }
+ },
+ "k14c-route-segment_1440": {
+  "anchor": "J-4217",
+  "lead": "Fuel",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Restrictions"
+  ],
+  "facet": {
+   "Fuel": "segment"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "AFFECTED_SEGMENT / restriction",
+  "path": "primary_support_stack-Fuel",
+  "arrangement": "local-left / work-right",
+  "family": "PRIMARY_SUPPORT_STACK",
+  "map": "565 x 491 px",
+  "history": 4,
+  "ix": {
+   "spatial": 7,
+   "rail": 10,
+   "dev": 1,
+   "follow": 19,
+   "edit": 1,
+   "inspect": 7
+  }
+ },
+ "k15-route-dense_1440": {
+  "anchor": "J-4217",
+  "lead": "Fuel",
+  "active": [
+   "Jobs",
+   "Drivers",
+   "Trucks",
+   "Documents",
+   "Restrictions",
+   "Fuel"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "ROUTE_AND_STOP / candidates",
+  "path": "horizontal_journey-Fuel",
+  "arrangement": "decision-left / portrait-route-right",
+  "family": "HORIZONTAL_JOURNEY",
+  "map": "394 x 451 px",
+  "history": 6,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 28,
+   "edit": 1,
+   "inspect": 11,
+   "propose": 1
+  }
+ },
+ "kD2-break-to-driver_1440": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Drivers"
+  ],
+  "facet": {
+   "Drivers": "execution"
+  },
+  "focus": {
+   "kind": "time",
+   "at": 632,
+   "label": "Pausa · Santarém",
+   "stop": "F-07"
+  },
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NEXT_LEG / stop",
+  "path": "centered_work-Drivers",
+  "arrangement": "work-left / corridor-right",
+  "family": "CENTERED_WORK",
+  "map": "447 x 290 px",
+  "history": 5,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 24,
+   "edit": 2,
+   "inspect": 6
+  }
+ },
+ "kD3-back-route_1440": {
+  "anchor": "J-4217",
+  "lead": "Fuel",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Drivers"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "ROUTE_AND_STOP / candidates",
+  "path": "primary_support_stack-Fuel",
+  "arrangement": "decision-left / portrait-route-right",
+  "family": "PRIMARY_SUPPORT_STACK",
+  "map": "394 x 451 px",
+  "history": 4,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 22,
+   "edit": 1,
+   "inspect": 9,
+   "propose": 1
+  }
+ },
+ "k16-route-map_1440": {
+  "anchor": "J-4217",
+  "lead": "Fuel",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Restrictions"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": true,
+  "q": "ROUTE_AND_STOP / candidates",
+  "path": "spatial-Fuel",
+  "arrangement": "spatial-Fuel-bottom",
+  "family": "SPATIAL_DOMINANT",
+  "map": "1314 x 806 px",
+  "history": 5,
+  "ix": {
+   "spatial": 7,
+   "rail": 10,
+   "dev": 1,
+   "follow": 11,
+   "inspect": 3
+  }
+ },
+ "k17-docs-dossier_1440": {
+  "anchor": "J-4217",
+  "lead": "Documents",
+  "active": [
+   "Jobs",
+   "Documents"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / job",
+  "path": "centered_work-Documents",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 2,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 17,
+   "edit": 1,
+   "inspect": 9,
+   "propose": 1
+  }
+ },
+ "k18-docs-diff_1440": {
+  "anchor": "J-4217",
+  "lead": "Documents",
+  "active": [
+   "Jobs",
+   "Documents"
+  ],
+  "facet": {
+   "Documents": "diff"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / job",
+  "path": "centered_work-Documents",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 15,
+   "edit": 1,
+   "inspect": 4,
+   "propose": 1
+  }
+ },
+ "kE2-revision-overview_1440": {
+  "anchor": "J-4217",
+  "lead": "Jobs",
+  "active": [
+   "Jobs",
+   "Documents"
+  ],
+  "facet": {
+   "Documents": "diff"
+  },
+  "focus": {
+   "kind": "revision",
+   "field": "Paletes"
+  },
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "FULL_ROUTE / job",
+  "path": "split_decision-Jobs",
+  "arrangement": "work-above / overview-below",
+  "family": "SPLIT_DECISION",
+  "map": "1314 x 355 px",
+  "history": 4,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 17,
+   "edit": 1,
+   "inspect": 1
+  }
+ },
+ "kE3-back-diff_1440": {
+  "anchor": "J-4217",
+  "lead": "Documents",
+  "active": [
+   "Jobs",
+   "Documents"
+  ],
+  "facet": {
+   "Documents": "diff"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / job",
+  "path": "centered_work-Documents",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 15,
+   "edit": 1,
+   "inspect": 4,
+   "propose": 1
+  }
+ },
+ "k18b-docs-history_1440": {
+  "anchor": "J-4217",
+  "lead": "Documents",
+  "active": [
+   "Jobs",
+   "Documents"
+  ],
+  "facet": {
+   "Documents": "history"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / job",
+  "path": "centered_work-Documents",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 14,
+   "edit": 1,
+   "inspect": 8,
+   "propose": 1
+  }
+ },
+ "k19-docs-issue_1440": {
+  "anchor": "J-4218",
+  "lead": "Documents",
+  "active": [
+   "Jobs",
+   "Documents"
+  ],
+  "facet": {
+   "Documents": "issue"
+  },
+  "focus": null,
+  "edit": {
+   "kind": "issue",
+   "target": "CMR-4218"
+  },
+  "pending": {
+   "kind": "issue",
+   "id": "CMR-4218",
+   "from": "DRAFT",
+   "to": "1"
+  },
+  "mapFull": false,
+  "q": "NONE / job",
+  "path": "centered_work-Documents",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 4,
+  "ix": {
+   "spatial": 3,
+   "rail": 10,
+   "dev": 1,
+   "follow": 14,
+   "edit": 1,
+   "inspect": 7,
+   "propose": 1,
+   "commit": 1
+  }
+ },
+ "k19b-docs-reissue_1440": {
+  "anchor": "J-4217",
+  "lead": "Documents",
+  "active": [
+   "Jobs",
+   "Documents"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": {
+   "kind": "reissue",
+   "id": "CMR-4217",
+   "from": "CMR-4217"
+  },
+  "mapFull": false,
+  "q": "NONE / job",
+  "path": "centered_work-Documents",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 16,
+   "edit": 1,
+   "inspect": 11,
+   "propose": 1,
+   "commit": 1
+  }
+ },
+ "k20-restriction-unknown_1440": {
+  "anchor": "J-4217",
+  "lead": "Restrictions",
+  "active": [
+   "Jobs",
+   "Restrictions"
+  ],
+  "facet": {
+   "Restrictions": "logic"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "AFFECTED_SEGMENT / restriction",
+  "path": "primary_support_stack-Restrictions",
+  "arrangement": "local-left / work-right",
+  "family": "PRIMARY_SUPPORT_STACK",
+  "map": "565 x 491 px",
+  "history": 2,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 34,
+   "edit": 2,
+   "inspect": 5
+  }
+ },
+ "k21-restriction-missing_1440": {
+  "anchor": "J-4217",
+  "lead": "Restrictions",
+  "active": [
+   "Jobs",
+   "Restrictions"
+  ],
+  "facet": {
+   "Restrictions": "missing"
+  },
+  "focus": null,
+  "edit": {
+   "kind": "authorization",
+   "target": "T-08",
+   "returnFacet": "missing"
+  },
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / restriction",
+  "path": "centered_work-Restrictions",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 4,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 13,
+   "edit": 2,
+   "inspect": 5,
+   "propose": 3
+  }
+ },
+ "kB3-axle-edit_1440": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Restrictions",
+   "Trucks"
+  ],
+  "facet": {
+   "Restrictions": "logic",
+   "Trucks": "restriction"
+  },
+  "focus": {
+   "kind": "vehicle",
+   "aspect": "restriction",
+   "part": "firstAxle"
+  },
+  "edit": {
+   "kind": "axle",
+   "target": "T-08",
+   "returnFacet": "restriction"
+  },
+  "pending": {
+   "kind": "axle",
+   "id": "T-08",
+   "from": "",
+   "to": "1.06"
+  },
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "no_map_assurance-Trucks",
+  "arrangement": "base",
+  "family": "NO_MAP_ASSURANCE",
+  "map": "oculto",
+  "history": 5,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 21,
+   "edit": 3,
+   "inspect": 12,
+   "propose": 3,
+   "commit": 1
+  }
+ },
+ "k22-restriction-preview_1440": {
+  "anchor": "J-4217",
+  "lead": "Restrictions",
+  "active": [
+   "Jobs",
+   "Restrictions",
+   "Trucks"
+  ],
+  "facet": {
+   "Restrictions": "logic",
+   "Trucks": "restriction"
+  },
+  "focus": null,
+  "edit": {
+   "kind": "axle",
+   "target": "T-08",
+   "returnFacet": "restriction"
+  },
+  "pending": {
+   "kind": "axle",
+   "id": "T-08",
+   "from": "",
+   "to": "1.06"
+  },
+  "mapFull": false,
+  "q": "AFFECTED_SEGMENT / restriction",
+  "path": "primary_support_stack-Restrictions",
+  "arrangement": "local-left / work-right",
+  "family": "PRIMARY_SUPPORT_STACK",
+  "map": "565 x 491 px",
+  "history": 6,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 34,
+   "edit": 2,
+   "inspect": 6,
+   "propose": 1,
+   "commit": 1
+  }
+ },
+ "kB5-axle-confirmed_1440": {
+  "anchor": "J-4217",
+  "lead": "Restrictions",
+  "active": [
+   "Jobs",
+   "Restrictions",
+   "Trucks"
+  ],
+  "facet": {
+   "Restrictions": "logic",
+   "Trucks": "restriction"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "AFFECTED_SEGMENT / restriction",
+  "path": "primary_support_stack-Restrictions",
+  "arrangement": "local-left / work-right",
+  "family": "PRIMARY_SUPPORT_STACK",
+  "map": "565 x 491 px",
+  "history": 5,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 32,
+   "edit": 2,
+   "inspect": 6
+  }
+ },
+ "k22b-restriction-alt_1440": {
+  "anchor": "J-4217",
+  "lead": "Restrictions",
+  "active": [
+   "Jobs",
+   "Restrictions"
+  ],
+  "facet": {
+   "Restrictions": "alternative"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "AFFECTED_SEGMENT / restriction",
+  "path": "primary_support_stack-Restrictions",
+  "arrangement": "local-left / work-right",
+  "family": "PRIMARY_SUPPORT_STACK",
+  "map": "565 x 491 px",
+  "history": 3,
+  "ix": {
+   "spatial": 7,
+   "rail": 10,
+   "dev": 1,
+   "follow": 12,
+   "edit": 1,
+   "inspect": 5
+  }
+ },
+ "k22c-restriction-evidence_1440": {
+  "anchor": "J-4217",
+  "lead": "Restrictions",
+  "active": [
+   "Jobs",
+   "Restrictions"
+  ],
+  "facet": {
+   "Restrictions": "evidence"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / restriction",
+  "path": "centered_work-Restrictions",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 12,
+   "edit": 1,
+   "inspect": 5
+  }
+ },
+ "k23-restriction-map_1440": {
+  "anchor": "J-4217",
+  "lead": "Restrictions",
+  "active": [
+   "Jobs",
+   "Restrictions"
+  ],
+  "facet": {
+   "Restrictions": "logic"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": true,
+  "q": "AFFECTED_SEGMENT / restriction",
+  "path": "spatial-Restrictions",
+  "arrangement": "spatial-Restrictions-right",
+  "family": "SPATIAL_DOMINANT",
+  "map": "1314 x 806 px",
+  "history": 3,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 12
+  }
+ },
+ "kF2-map-alternative-route_1440": {
+  "anchor": "J-4217",
+  "lead": "Fuel",
+  "active": [
+   "Jobs",
+   "Restrictions",
+   "Fuel"
+  ],
+  "facet": {
+   "Restrictions": "logic",
+   "Fuel": "segment"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": true,
+  "q": "AFFECTED_SEGMENT / restriction",
+  "path": "spatial-Fuel",
+  "arrangement": "spatial-Fuel-bottom",
+  "family": "SPATIAL_DOMINANT",
+  "map": "1314 x 806 px",
+  "history": 4,
+  "ix": {
+   "spatial": 8,
+   "rail": 10,
+   "dev": 1,
+   "follow": 11,
+   "inspect": 3
+  }
+ },
+ "kF3-esc-restores_1440": {
+  "anchor": "J-4217",
+  "lead": "Restrictions",
+  "active": [
+   "Jobs",
+   "Restrictions"
+  ],
+  "facet": {
+   "Restrictions": "logic"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": true,
+  "q": "AFFECTED_SEGMENT / restriction",
+  "path": "spatial-Restrictions",
+  "arrangement": "spatial-Restrictions-right",
+  "family": "SPATIAL_DOMINANT",
+  "map": "1314 x 806 px",
+  "history": 3,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 12
+  }
+ },
+ "k24-overview_1440": {
+  "anchor": "J-4217",
+  "lead": "Jobs",
+  "active": [
+   "Jobs"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "FULL_ROUTE / job",
+  "path": "split_decision-Jobs",
+  "arrangement": "work-above / overview-below",
+  "family": "SPLIT_DECISION",
+  "map": "1314 x 355 px",
+  "history": 2,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 12,
+   "edit": 1
+  }
+ },
+ "k25-overview-map_1440": {
+  "anchor": "J-4217",
+  "lead": "Jobs",
+  "active": [
+   "Jobs",
+   "Drivers",
+   "Trucks"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": true,
+  "q": "FULL_ROUTE / job",
+  "path": "spatial-Jobs",
+  "arrangement": "spatial-Jobs-left",
+  "family": "SPATIAL_DOMINANT",
+  "map": "1314 x 806 px",
+  "history": 5,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 7
+  }
+ },
+ "kH3-op-vehicle_1440": {
+  "anchor": "operação",
+  "lead": "Trucks",
+  "active": [
+   "Drivers",
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "MULTI_ENTITY / job",
+  "path": "centered_work-Trucks",
+  "arrangement": "operation-view-left / fleet-map-right",
+  "family": "CENTERED_WORK",
+  "map": "453 x 806 px",
+  "history": 3,
+  "ix": {
+   "spatial": 5,
+   "rail": 10,
+   "dev": 1,
+   "follow": 6
+  }
+ },
+ "kH4-op-documents_1440": {
+  "anchor": "operação",
+  "lead": "Documents",
+  "active": [
+   "Drivers",
+   "Jobs",
+   "Trucks",
+   "Documents"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "MULTI_ENTITY / job",
+  "path": "centered_work-Documents",
+  "arrangement": "operation-view-left / fleet-map-right",
+  "family": "CENTERED_WORK",
+  "map": "453 x 806 px",
+  "history": 4,
+  "ix": {
+   "spatial": 5,
+   "rail": 10,
+   "dev": 1,
+   "follow": 2,
+   "inspect": 2
+  }
+ },
+ "k26-op-multilens_1440": {
+  "anchor": "operação",
+  "lead": "Restrictions",
+  "active": [
+   "Drivers",
+   "Jobs",
+   "Trucks",
+   "Documents",
+   "Restrictions"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "MULTI_ENTITY / job",
+  "path": "horizontal_journey-Restrictions",
+  "arrangement": "operation-view-left / fleet-map-right",
+  "family": "HORIZONTAL_JOURNEY",
+  "map": "506 x 806 px",
+  "history": 5,
+  "ix": {
+   "spatial": 5,
+   "rail": 10,
+   "dev": 1,
+   "follow": 6,
+   "inspect": 3
+  }
+ },
+ "kH6-op-remove_1440": {
+  "anchor": "operação",
+  "lead": "Trucks",
+  "active": [
+   "Drivers",
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "MULTI_ENTITY / job",
+  "path": "centered_work-Trucks",
+  "arrangement": "operation-view-left / fleet-map-right",
+  "family": "CENTERED_WORK",
+  "map": "453 x 806 px",
+  "history": 7,
+  "ix": {
+   "spatial": 5,
+   "rail": 10,
+   "dev": 1,
+   "follow": 6
+  }
+ },
+ "k27-dense-transport_1440": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Drivers",
+   "Trucks",
+   "Documents",
+   "Restrictions",
+   "Fuel"
+  ],
+  "facet": {
+   "Drivers": "execution"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NEXT_LEG / stop",
+  "path": "centered_work-Drivers",
+  "arrangement": "work-left / corridor-right",
+  "family": "CENTERED_WORK",
+  "map": "447 x 290 px",
+  "history": 7,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 35,
+   "edit": 2,
+   "inspect": 8
+  }
+ },
+ "k28-1199-driver": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Drivers"
+  ],
+  "facet": {
+   "Drivers": "execution"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NEXT_LEG / stop",
+  "path": "centered_work-Drivers",
+  "arrangement": "work-left / corridor-right",
+  "family": "CENTERED_WORK",
+  "map": "380 x 290 px",
+  "history": 3,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 24,
+   "edit": 2,
+   "inspect": 6
+  }
+ },
+ "k29-1199-route": {
+  "anchor": "J-4217",
+  "lead": "Fuel",
+  "active": [
+   "Jobs",
+   "Fuel"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "ROUTE_AND_STOP / candidates",
+  "path": "split_decision-Fuel",
+  "arrangement": "decision-left / portrait-route-right",
+  "family": "SPLIT_DECISION",
+  "map": "330 x 706 px",
+  "history": 2,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 21,
+   "edit": 1,
+   "inspect": 8,
+   "propose": 1
+  }
+ },
+ "k28b-1199-trailer": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "assignment"
+  },
+  "focus": {
+   "kind": "vehicle",
+   "aspect": "load"
+  },
+  "edit": {
+   "kind": "trailer",
+   "target": "J-4217",
+   "returnFacet": "load"
+  },
+  "pending": {
+   "kind": "trailer",
+   "id": "J-4217",
+   "from": "PT-3821",
+   "to": "PT-1021"
+  },
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "centered_work-Trucks",
+  "arrangement": "base",
+  "family": "CENTERED_WORK",
+  "map": "oculto",
+  "history": 4,
+  "ix": {
+   "spatial": 4,
+   "rail": 10,
+   "dev": 1,
+   "follow": 18,
+   "edit": 2,
+   "inspect": 5,
+   "propose": 10,
+   "commit": 1
+  }
+ },
+ "k30-1920-driver": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Drivers"
+  ],
+  "facet": {
+   "Drivers": "execution"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NEXT_LEG / stop",
+  "path": "centered_work-Drivers",
+  "arrangement": "work-left / corridor-right",
+  "family": "CENTERED_WORK",
+  "map": "607 x 368 px",
+  "history": 3,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 24,
+   "edit": 2,
+   "inspect": 6
+  }
+ },
+ "k31-1920-vehicle": {
+  "anchor": "J-4217",
+  "lead": "Trucks",
+  "active": [
+   "Jobs",
+   "Trucks"
+  ],
+  "facet": {
+   "Trucks": "restriction"
+  },
+  "focus": {
+   "kind": "vehicle",
+   "aspect": "restriction"
+  },
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NONE / resource",
+  "path": "no_map_assurance-Trucks",
+  "arrangement": "base",
+  "family": "NO_MAP_ASSURANCE",
+  "map": "oculto",
+  "history": 3,
+  "ix": {
+   "rail": 10,
+   "spatial": 3,
+   "dev": 1,
+   "follow": 17,
+   "edit": 3,
+   "inspect": 11
+  }
+ },
+ "k32-1920-route": {
+  "anchor": "J-4217",
+  "lead": "Fuel",
+  "active": [
+   "Jobs",
+   "Fuel"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "ROUTE_AND_STOP / candidates",
+  "path": "split_decision-Fuel",
+  "arrangement": "decision-left / portrait-route-right",
+  "family": "SPLIT_DECISION",
+  "map": "535 x 966 px",
+  "history": 2,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 21,
+   "edit": 1,
+   "inspect": 8,
+   "propose": 1
+  }
+ },
+ "k33-1920-restrictions": {
+  "anchor": "J-4217",
+  "lead": "Restrictions",
+  "active": [
+   "Jobs",
+   "Restrictions"
+  ],
+  "facet": {
+   "Restrictions": "logic"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "AFFECTED_SEGMENT / restriction",
+  "path": "primary_support_stack-Restrictions",
+  "arrangement": "local-left / work-right",
+  "family": "PRIMARY_SUPPORT_STACK",
+  "map": "620 x 539 px",
+  "history": 2,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 34,
+   "edit": 2,
+   "inspect": 5
+  }
+ },
+ "k33b-1920-driver-map": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Drivers",
+   "Documents"
+  ],
+  "facet": {
+   "Drivers": "execution"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": true,
+  "q": "NEXT_LEG / stop",
+  "path": "spatial-Drivers",
+  "arrangement": "spatial-Drivers-right",
+  "family": "SPATIAL_DOMINANT",
+  "map": "1784 x 966 px",
+  "history": 5,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 12
+  }
+ },
+ "k04-driver-detail_1440": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Drivers"
+  ],
+  "facet": {
+   "Drivers": "execution"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NEXT_LEG / stop",
+  "path": "centered_work-Drivers",
+  "arrangement": "work-left / corridor-right",
+  "family": "CENTERED_WORK",
+  "map": "447 x 290 px",
+  "history": 3,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 24,
+   "edit": 2,
+   "inspect": 6
+  }
+ },
+ "kA1-driver-op-enter_1440": {
+  "anchor": "J-4219",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Drivers"
+  ],
+  "facet": {},
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "CURRENT_ENTITY / resource",
+  "path": "centered_work-Drivers",
+  "arrangement": "local-left / work-right",
+  "family": "CENTERED_WORK",
+  "map": "447 x 425 px",
+  "history": 2,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 15,
+   "edit": 2,
+   "inspect": 5
+  }
+ },
+ "kG4-driver-spatial-exit_1440": {
+  "anchor": "J-4217",
+  "lead": "Drivers",
+  "active": [
+   "Jobs",
+   "Fuel",
+   "Drivers",
+   "Documents"
+  ],
+  "facet": {
+   "Drivers": "execution"
+  },
+  "focus": null,
+  "edit": null,
+  "pending": null,
+  "mapFull": false,
+  "q": "NEXT_LEG / stop",
+  "path": "centered_work-Drivers",
+  "arrangement": "work-left / corridor-right",
+  "family": "CENTERED_WORK",
+  "map": "447 x 290 px",
+  "history": 6,
+  "ix": {
+   "spatial": 6,
+   "rail": 10,
+   "dev": 1,
+   "follow": 29,
+   "edit": 2,
+   "inspect": 7
+  }
+ }
+}

@@ -1,0 +1,82 @@
+import { svg, T, L, RECT, truck, loadPlan, C, W, H, RID, KM, STOPS, full, at, big, cap, unroll } from "./zb-kit.mjs";
+const s8 = (w) => w / 800;
+// front elevation of the combination (trailer rear-ish profile), scale px per metre
+const front = (cx, gy, m, { dark = false } = {}) => { const k = (v) => v * m, ink = dark ? "#cfe0d9" : C.ink; return `<rect x="${cx - k(1.275)}" y="${gy - k(4)}" width="${k(2.55)}" height="${k(3.1)}" fill="${dark ? C.dark2 : C.sheet}" stroke="${ink}" stroke-width="1.5"/><rect x="${cx - k(1.15)}" y="${gy - k(2.6)}" width="${k(2.3)}" height="${k(1.2)}" fill="${dark ? C.dark : "#dfe3df"}" stroke="${ink}"/><rect x="${cx - k(1.275)}" y="${gy - k(.95)}" width="${k(.45)}" height="${k(.95)}" fill="${ink}"/><rect x="${cx + k(.825)}" y="${gy - k(.95)}" width="${k(.45)}" height="${k(.95)}" fill="${ink}"/><rect x="${cx - k(1.2)}" y="${gy - k(1.1)}" width="${k(2.4)}" height="${k(.2)}" fill="${C.ink2}"/>`; };
+
+export default [
+{ id: "ZV-01", dom: "Vehicle", name: "Engineering drawing sheet (three views + title block)", kind: "highly technical", origin: "NEW",
+  v: "KEEP", sc: [5, 4, 5, 4], reason: "The vehicle as a real drawing sheet: side elevation, front, top plan and a title block (registration, revision, assignment). The revision table is the change history and detail callouts point at the open facts. Engineers and dispatchers both recognise it at once.",
+  html: () => { let s = `<rect x="30" y="30" width="1540" height="940" fill="none" stroke="${C.ink}" stroke-width="1.5"/><rect x="40" y="40" width="1520" height="920" fill="none" stroke="${C.ink}" stroke-width=".6"/>`;
+    s += truck({ w: 860, x: 80, y: 120, loadA: 18, loadB: 6 }); s += front(1220, 120 + 290 * 860 / 800, 95);
+    s += `<g transform="translate(150 640)">${loadPlan({ w: 780, h: 110, hl: null }).replace(/<\/?svg[^>]*>/g, "")}</g>`;
+    s += T(80, 100, "ALÇADO LATERAL · 1:60", { s: 11, m: 1, c: C.mut, ls: 1 }) + T(1100, 100, "ALÇADO FRONTAL · 1:50", { s: 11, m: 1, c: C.mut, ls: 1 }) + T(150, 625, "PLANTA · CARGA · 1:60", { s: 11, m: 1, c: C.mut, ls: 1 });
+    const cx = 80 + 80 * 860 / 800, cy = 120 + 262 * 860 / 800; s += `<circle cx="${cx}" cy="${cy + 40}" r="40" fill="none" stroke="${C.unk}" stroke-width="1.5" stroke-dasharray="5 4"/>` + L(cx + 40, cy + 40, 420, 545, C.unk) + `<circle cx="440" cy="545" r="20" fill="#fff" stroke="${C.unk}"/>` + L(420, 545, 460, 545, C.unk) + T(440, 541, "A", { a: "middle", s: 11, w: 700, c: C.unk }) + T(440, 559, "?", { a: "middle", s: 10, c: C.unk }) + T(470, 550, "altura ao 1.º eixo · por medir", { s: 12, c: C.unk });
+    const tb = (x, y, w, h, lab, val, b) => RECT(x, y, w, h, "none", C.ink, 'stroke-width=".8"') + T(x + 8, y + 14, lab, { s: 8.5, m: 1, c: C.mut, ls: .5 }) + T(x + 8, y + h - 10, val, { s: b ? 18 : 13, w: b ? 700 : 500, m: b ? 1 : 0 });
+    s += tb(1000, 790, 300, 60, "MATRÍCULA", "AA-42-ZP + PT-3821", 1) + tb(1300, 790, 260, 60, "MODELO", "DAF XF 480 FT · cortinas") + tb(1000, 850, 160, 50, "MASSA", "27,6 t / 40 t") + tb(1160, 850, 140, 50, "EIXOS", "2 + 3") + tb(1300, 850, 260, 50, "EM SERVIÇO", "J-4217 · Miguel Costa") + tb(1000, 900, 300, 50, "FOLHA", "AA-42-ZP · rev. F · 6 out 2026") + tb(1300, 900, 260, 50, "ESTADO", "apto · 1 facto em aberto");
+    s += RECT(1000, 560, 560, 200, "none", C.ink, 'stroke-width=".8"') + T(1010, 578, "REVISÕES", { s: 9, m: 1, c: C.mut, ls: 1 }); [["F", "6 out 06:05", "reboque PT-3910 → PT-3821"], ["E", "1 out", "IPO trator · aprovada"], ["D", "12 set", "pneus eixo 2 substituídos"], ["C", "3 mar", "tacógrafo calibrado"]].forEach(([r, d, t], i) => s += L(1000, 590 + i * 40, 1560, 590 + i * 40, C.line2, .6) + T(1014, 615 + i * 40, r, { m: 1, w: 700 }) + T(1050, 615 + i * 40, d, { s: 12, m: 1, c: C.mut }) + T(1180, 615 + i * 40, t, { s: 12.5 }));
+    return full(C.sheet) + at(0, 0, svg(W, H, s)); } },
+
+{ id: "ZV-02", dom: "Vehicle", name: "Section through the trailer (load cutaway + centre of gravity)", kind: "physical object", origin: "NEW",
+  v: "MAYBE", sc: [5, 4, 5, 3], reason: "Physically correct and beautiful, but centre of gravity is a niche question for dispatch. It's a drawing layer, not a screen.",
+  html: () => { let s = truck({ w: 1300, x: 150, y: 220, loadA: 0, loadB: 0, dims: false }); const g = s8(1300); const tx = 150 + 180 * g, slot = (580 * g) / 11;
+    for (let i = 0; i < 8; i++) { const isB = i >= 6, wt = isB ? 433 : 583; const h = 88 * g; s += RECT(tx + i * slot + 2, 220 + 150 * g, slot - 4, h, isB ? C.brand : "#dfe5e1", C.ink) + T(tx + i * slot + slot / 2, 220 + 150 * g + h / 2 + 4, `${wt * 3} kg`, { a: "middle", s: 11, m: 1, c: isB ? "#fff" : C.ink }); }
+    const cg = tx + 3.55 * slot; s += L(cg, 160, cg, 220 + 290 * g + 40, C.acc, 2, "6 4") + `<circle cx="${cg}" cy="${220 + 190 * g}" r="11" fill="none" stroke="${C.acc}" stroke-width="3"/><path d="M${cg - 11} ${220 + 190 * g} H${cg + 11} M${cg} ${220 + 190 * g - 11} V${220 + 190 * g + 11}" stroke="${C.acc}" stroke-width="2"/>` + T(cg + 16, 172, "centro de gravidade · 5,8 m da frente · 1,45 m de altura", { s: 13, w: 600, c: C.acc });
+    [[80, 6.9], [230, 10.8], [600, 3.3], [660, 3.3], [720, 3.3]].forEach(([ax, t]) => { const x = 150 + ax * g, y = 220 + 290 * g + 30; s += L(x, y + 60, x, y, C.ink, 3) + `<path d="M${x - 8} ${y + 10} L${x} ${y - 4} L${x + 8} ${y + 10}Z" fill="${C.ink}"/>` + T(x, y + 84, `${String(t).replace(".", ",")} t`, { a: "middle", m: 1, s: 14, w: 600 }); });
+    return full(C.paper) + at(0, 0, svg(W, H, s)) + at(150, 60, cap("PT-3821 · secção") + big("O peso está onde deve.", 48, "margin-top:8px")); } },
+
+{ id: "ZV-03", dom: "Vehicle", name: "Exploded combination (parts with states)", kind: "technical · physical", origin: "EVOLUTION",
+  v: "MAYBE", sc: [4, 3, 4, 2], reason: "Cleaner than Round 1's V-11: the tractor, fifth wheel, trailer and axle groups float apart on one axis, each with its state. Useful for 'which part is the problem', but a heavy drawing for a simple answer.",
+  html: () => { const tr = truck({ w: 700, x: 100, y: 380, tractorOnly: true, dims: false }); let s = tr; s += `<rect x="560" y="560" width="120" height="20" fill="${C.ink2}"/><ellipse cx="620" cy="555" rx="40" ry="10" fill="#fff" stroke="${C.ink}" stroke-width="2"/>` + T(620, 610, "5.ª roda · lubrificada 1 out", { a: "middle", s: 12 });
+    s += `<rect x="740" y="300" width="760" height="210" fill="${C.sheet}" stroke="${C.ink}" stroke-width="1.5"/><rect x="740" y="510" width="760" height="12" fill="${C.ink2}"/>` + T(1120, 410, "PT-3821 · cortinas · IPO caducada 2 out", { a: "middle", s: 16, w: 600, c: C.blk });
+    for (const x of [1250, 1320, 1390]) s += `<circle cx="${x}" cy="660" r="34" fill="${C.ink}"/><circle cx="${x}" cy="660" r="16" fill="#d9d7cf"/>`; s += RECT(1210, 610, 220, 14, C.ink2, "none") + T(1320, 730, "eixos 3–5 · pneus 7,8 mm ✓", { a: "middle", s: 12 });
+    s += L(640, 520, 760, 520, C.ink, 1, "4 4") + L(1320, 522, 1320, 610, C.ink, 1, "4 4") + T(260, 640, "AA-42-ZP · trator ✓", { s: 14, w: 600, c: C.ok });
+    return full(C.paper) + at(0, 0, svg(W, H, s)) + at(100, 80, cap("Conjunto · vista explodida") + big("O problema é o reboque.", 48, "margin-top:8px")); } },
+
+{ id: "ZV-04", dom: "Vehicle", name: "From below (axles, tyres, brakes)", kind: "ultra-dense · technical", origin: "NEW",
+  v: "MAYBE", sc: [4, 4, 5, 3], reason: "An underside plan nobody shows: each tyre carries tread depth, each axle its load and brake state. Perfect for the workshop, too specialised for dispatch.",
+  html: () => { let s = `<rect x="120" y="360" width="1360" height="240" fill="none" stroke="${C.ink}" stroke-width="1.5"/><rect x="120" y="360" width="300" height="240" fill="#efeee8" stroke="${C.ink}"/>`;
+    const ax = [[200, "1", 6.9, ["8,1", "8,0"]], [380, "2", 10.8, ["4,6", "4,9", "5,0", "4,7"]], [1130, "3", 3.3, ["7,8", "7,9"]], [1240, "4", 3.3, ["7,7", "7,8"]], [1350, "5", 3.3, ["7,6", "7,9"]]];
+    for (const [x, n, t, tr] of ax) { s += L(x, 330, x, 630, C.ink2, 4); const tyres = tr.length === 4 ? [300, 330, 630, 600] : [320, 610]; tyres.forEach((y, i) => { const v = +tr[i].replace(",", "."); s += RECT(x - 26, y - 14 - (y > 480 ? 0 : 0), 52, 28, v < 5 ? "#f5ead4" : "#fff", v < 5 ? C.risk : C.ink, 'stroke-width="1.5"') + T(x, y + 5, tr[i], { a: "middle", m: 1, s: 11, w: 600, c: v < 5 ? C.risk : C.ink }); });
+      s += T(x, 690, `eixo ${n}`, { a: "middle", s: 12, w: 600 }) + T(x, 708, `${String(t).replace(".", ",")} t`, { a: "middle", m: 1, s: 12, c: C.mut }); }
+    s += T(800, 488, "vista inferior · profundidade de piso em mm · travões OK", { a: "middle", s: 13, c: C.mut });
+    return full(C.paper) + at(0, 0, svg(W, H, s)) + at(120, 80, cap("AA-42-ZP + PT-3821 · por baixo") + big("Eixo motriz: pneus a 4,6 mm.", 46, "margin-top:8px")); } },
+
+{ id: "ZV-05", dom: "Vehicle", name: "Silhouette against every gate (front overlays)", kind: "physical comparison", origin: "EVOLUTION",
+  v: "KEEP", sc: [5, 5, 4, 4], reason: "The truck's front silhouette is overlaid on the outlines of every structure on its route, aligned at the road, like a key in many locks. The tightest fit pops out without reading.",
+  html: () => { const m = 120, gy = 900, cx = 800; let s = ""; [[4.3, 5.2, "Campanhã 4,30", C.risk], [4.8, 6.4, "Coimbra N. obras", C.ok], [5.0, 7.0, "Ponte A2", C.ok], [5.5, 8.5, "nó A1/A13", C.ok]].forEach(([h, w, n, c], i) => s += `<path d="M${cx - w * m / 2} ${gy} V${gy - h * m} H${cx + w * m / 2} V${gy}" fill="none" stroke="${c}" stroke-width="${i ? 1.2 : 2.5}" opacity="${i ? .6 : 1}"/>` + T(cx + w * m / 2 + 8, gy - h * m + 6 + i * 2, n, { s: 13, w: i ? 400 : 700, c }));
+    s += front(cx, gy, m) + L(200, gy, 1400, gy, C.ink, 2) + `<rect x="${cx - 1.275 * m}" y="${gy - 4.3 * m}" width="${2.55 * m}" height="${.3 * m}" fill="${C.risk}" opacity=".25"/>` + T(cx, gy - 4.15 * m + 6, "30 cm", { a: "middle", s: 15, w: 700, c: C.risk });
+    return full(C.sheet) + at(0, 0, svg(W, H, s)) + at(80, 60, cap("PT-3821 · 4,00 m × 2,55 m") + big("Cabe em tudo. O mais justo é Campanhã.", 44, "margin-top:8px")); } },
+
+{ id: "ZV-06", dom: "Vehicle", name: "The tank (fuel as a physical vessel)", kind: "extremely sparse · physical", origin: "NEW",
+  v: "MAYBE", sc: [4, 5, 3, 3], reason: "A single tank cross-section, litres as liquid, range as a rod measured against the road ahead. Immediately clear, but a one-variable screen.",
+  html: () => { let s = `<rect x="200" y="260" width="360" height="520" rx="40" fill="#fff" stroke="${C.ink}" stroke-width="2.5"/><clipPath id="tk"><rect x="200" y="260" width="360" height="520" rx="40"/></clipPath><g clip-path="url(#tk)"><rect x="200" y="${780 - 520 * .31}" width="360" height="${520 * .31}" fill="${C.info}"/><rect x="200" y="${780 - 520 * .1}" width="360" height="${520 * .1}" fill="${C.blk}" opacity=".35"/></g>`;
+    s += T(380, 780 - 520 * .31 - 14, "≈ 133 L · 31 %", { a: "middle", m: 1, s: 18, w: 700 }) + T(380, 810, "430 L", { a: "middle", m: 1, s: 12, c: C.mut });
+    const u = unroll(RID, 700, 1500, 560, 60, 282, 556); s += `<path d="${u.d}" fill="none" stroke="${C.line2}" stroke-width="10" stroke-linecap="round"/>` + `<path d="${unroll(RID, 700, 700 + 800 * (375 - 282) / 274, 560, 60, 282, 375).d}" fill="none" stroke="${C.info}" stroke-width="10" stroke-linecap="round"/>`;
+    s += T(700, 620, "agora · km 282", { s: 13 }) + T(u.X(320), 520, "Santarém ⛽", { a: "middle", s: 14, w: 600 }) + T(u.X(375), 620, "reserva ≈ km 375", { a: "middle", s: 13, c: C.blk }) + T(1500, 620, "Porto", { a: "end", s: 13 });
+    return full(C.paper) + at(0, 0, svg(W, H, s)) + at(200, 90, cap("AA-42-ZP · combustível") + big("Chega a 55 km de Coimbra.", 48, "margin-top:8px")); } },
+
+{ id: "ZV-07", dom: "Vehicle", name: "Maintenance aligned to the machine", kind: "temporal · object", origin: "HYBRID",
+  v: "MAYBE", sc: [4, 4, 5, 4], reason: "Workshop-grade and well aligned, but the labels collide with the drawing at desk size. Needs the sheet format of ZV-01.",
+  html: () => { let s = truck({ w: 1200, x: 200, y: 80, dims: false }); const g = s8(1200), x = (v) => 200 + v * g; const items = [[110, "Revisão geral", 0.62, "27 600 km"], [230, "Pneus eixo motriz", 0.92, "trocar ≤ 3 mm · ~3 sem"], [400, "5.ª roda", 0.2, "lubrificada"], [520, "IPO PT-3821", 1.05, "caducou 2 out"], [690, "Travões reboque", 0.45, "km 80 000"], [90, "Tacógrafo", 0.3, "calib. mar 2028"]];
+    items.forEach(([px, n, f, t], i) => { const y = 520 + i * 70, bad = f >= 1, warn = f > .85; s += L(x(px), 80 + 300 * g, x(px), y, C.line2, 1, "2 3") + `<circle cx="${x(px)}" cy="${80 + 250 * g}" r="6" fill="${bad ? C.blk : warn ? C.risk : C.ink}"/>` + RECT(x(px), y - 8, 360, 16, "#ece9df", "none") + RECT(x(px), y - 8, Math.min(1, f) * 360, 16, bad ? C.blk : warn ? C.risk : C.brand, "none") + T(x(px) - 10, y + 5, n, { a: "end", s: 13, w: 600 }) + T(x(px) + 370, y + 5, t, { s: 12.5, c: bad ? C.blk : warn ? C.risk : C.mut }); });
+    return full(C.paper) + at(0, 0, svg(W, H, s)) + at(1060, 40, cap("AA-42-ZP + PT-3821 · oficina") + big("Dois avisos, um caducado.", 34, "margin-top:8px")); } },
+
+{ id: "ZV-08", dom: "Vehicle", name: "Coupling fan (which trailer fits the tractor)", kind: "unconventional", origin: "NEW",
+  v: "REJECT", sc: [4, 2, 4, 2], reason: "Trailers fanning around the fifth wheel like keys on a ring is a memorable image, but the rotations make comparison impossible. Visually strong, operationally unclear.",
+  html: () => { let s = truck({ w: 520, x: 120, y: 420, tractorOnly: true, dims: false }); const px = 120 + 230 * 520 / 800, py = 420 + 250 * 520 / 800; [[-30, "PT-1021 · igual", C.ok], [-10, "PT-3390 · frio", C.ink2], [10, "PT-9281 · 2 eixos ✕", C.blk], [30, "PT-8481 · ADR", C.ink2]].forEach(([a, n, c]) => s += `<g transform="rotate(${a} ${px} ${py})"><rect x="${px}" y="${py - 120}" width="760" height="110" fill="${C.sheet}" stroke="${c}" stroke-width="1.5" opacity=".85"/>${T(px + 400, py - 60, n, { a: "middle", s: 15, w: 600, c })}</g>`);
+    return full(C.paper) + at(0, 0, svg(W, H, s)) + at(100, 80, big("Que reboque encaixa?", 48)); } },
+
+{ id: "ZV-09", dom: "Vehicle", name: "Plate and one line (sparse)", kind: "extremely sparse", origin: "NEW",
+  v: "REJECT", sc: [4, 4, 3, 5], reason: "Says nothing a list row couldn't. Calm is not the same as useful.",
+  html: () => full(C.sheet) + at(0, 330, `<div style="width:1600px;text-align:center"><span style="display:inline-block;font:700 130px/1 var(--m);border:7px solid ${C.ink};padding:16px 50px 16px 130px;background:#fff;position:relative;letter-spacing:.04em">AA-42-ZP<span style="position:absolute;left:0;top:0;bottom:0;width:80px;background:#2a49a0"></span></span><div style="font-size:26px;margin-top:50px">Em viagem com o J-4217. <span class="mut">Apto — falta medir a altura ao 1.º eixo.</span></div></div>`) },
+
+{ id: "ZV-10", dom: "Vehicle", name: "Mass over distance (the truck lightens along the road)", kind: "Vehicle + Route · temporal", origin: "NEW",
+  v: "KEEP", sc: [4, 5, 4, 4], reason: "A mass-over-km area chart whose top edge is drawn as the trailer roofline: 27.6 t until Coimbra, a step down to 25 t, then a final drop. Structures with mass limits sit on the same axis. A rare honest weight view.",
+  html: () => { const x0 = 140, x1 = 1480, X = (k) => x0 + k / KM * (x1 - x0), Y = (t) => 880 - t * 13.5; let s = "";
+    for (let t = 0; t <= 44; t += 4) s += L(x0, Y(t), x1, Y(t), "#ebe8df") + T(x0 - 10, Y(t) + 4, `${t} t`, { a: "end", m: 1, s: 11, c: C.fnt });
+    s += `<path d="M${X(0)} ${Y(0)} V${Y(27.6)} H${X(441)} V${Y(25)} H${X(556)} V${Y(0)}Z" fill="#dfe5e1" stroke="${C.ink}" stroke-width="1.5"/>` + `<path d="M${X(0)} ${Y(14.5)} H${X(556)}" stroke="${C.ink2}" stroke-dasharray="4 3"/>` + T(X(10), Y(14.5) - 6, "tara do conjunto 14,5 t", { s: 12, c: C.ink2 });
+    s += L(x0, Y(40), x1, Y(40), C.blk, 1.5) + T(x1, Y(40) - 8, "PBC 40 t", { a: "end", s: 12, w: 600, c: C.blk }) + RECT(X(90), Y(44), 30, Y(0) - Y(44), "none", C.ok, 'stroke-dasharray="4 3"') + T(X(105), Y(44) - 8, "Ponte A2 · 44 t", { a: "middle", s: 12, c: C.ok });
+    STOPS.forEach(([k, n]) => s += L(X(k), Y(0), X(k), Y(0) + 10, C.ink) + T(X(k), Y(0) + 30, n, { a: "middle", w: 600 }));
+    s += `<g transform="translate(${X(282) - 60} ${Y(27.6) - 74}) scale(.15)">${truck({ w: 800, dims: false })}</g>`;
+    return full(C.paper) + at(0, 0, svg(W, H, s)) + at(140, 60, cap("AA-42-ZP + PT-3821 · massa ao longo do J-4217") + big("27,6 t até Coimbra, depois 25 t.", 44, "margin-top:8px")); } },
+];

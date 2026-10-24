@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="base.css" />
+<style>
+  body { background: #ebe5d8; }
+  .bgdots { position: absolute; inset: 0; background: radial-gradient(circle at 1px 1px, rgba(27,29,34,.06) 1px, transparent 0) 0 0 / 24px 24px, #ebe5d8; }
+  .topb { position: absolute; top: 16px; left: 16px; height: 44px; display: flex; align-items: center; gap: 14px; padding: 0 8px 0 14px; z-index: 50; }
+  .clock2 { position: absolute; top: 20px; right: 16px; padding: 7px 12px; border-radius: 999px; font-size: 13px; color: var(--ink-2); z-index: 50; }
+  .clock2 b { font: 600 13px var(--mono); color: var(--ink); }
+  .tile { position: absolute; overflow: hidden; border-radius: 18px; background: var(--paper); box-shadow: var(--shadow); cursor: pointer; }
+  .tile.kid { background: var(--paper-2); box-shadow: inset 0 0 0 1px rgba(27,29,34,.05); border-radius: 13px; }
+  .tile.dark { background: var(--ink); color: var(--paper); }
+  .tile.kid.dark { background: #2b2d33; }
+  .tile.map { cursor: default; background: #aad3e8; }
+  .tile .c { position: absolute; inset: 0; }
+  .in { position: absolute; inset: 0; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+  .h { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; font-weight: 650; letter-spacing: -.02em; }
+  .h .n { font: 600 12px var(--mono); color: var(--ink-3); letter-spacing: 0; }
+  .dark .h .n, .dark .mut { color: rgba(246,242,234,.6); }
+  .mut { color: var(--ink-3); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .id { font: 600 12.5px var(--mono); white-space: nowrap; }
+  .t1 { font-weight: 650; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rw { display: flex; gap: 8px; align-items: center; padding: 6px 9px; border-radius: 10px; background: var(--paper-2); font-size: 12.5px; white-space: nowrap; overflow: hidden; }
+  .rw .id { font-size: 12px; }
+  .rw .s { margin-left: auto; font: 500 11px var(--mono); color: var(--ink-3); }
+  .facts { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; margin-top: 4px; }
+  .fact { padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,.5); }
+  .dark .fact { background: rgba(246,242,234,.08); }
+  .fact b { display: block; font: 600 16px var(--mono); }
+  .fact span { font-size: 11px; color: var(--ink-3); }
+  .pbar { height: 4px; border-radius: 2px; background: rgba(27,29,34,.12); overflow: hidden; }
+  .pbar i { display: block; height: 100%; background: var(--ink); }
+  .sigp { position: absolute; inset: 0; display: flex; align-items: center; gap: 7px; padding: 0 12px; font-size: 13px; white-space: nowrap; }
+  .sigp i { width: 8px; height: 8px; border-radius: 50%; }
+  .sigp b { font: 600 12px var(--mono); }
+  .mapimg { position: absolute; inset: 0; background-image: url(bg-overview.png); background-repeat: no-repeat; }
+  svg.ov { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+  .cursor { position: absolute; width: 22px; height: 22px; z-index: 80; pointer-events: none; }
+  .ripple { position: absolute; border-radius: 50%; border: 2px solid var(--focus); z-index: 79; pointer-events: none; }
+  .glow { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; box-shadow: inset 0 0 0 2px var(--focus); }
+  .cap { position: absolute; left: 50%; bottom: 12px; translate: -50% 0; padding: 7px 14px; border-radius: 999px; background: var(--ink); color: var(--paper); font: 600 12.5px var(--sans); z-index: 90; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="bgdots"></div>
+<div class="topb"><span class="brand"><span class="mark"></span>FleetOS</span></div>
+<div class="clock2 glass">sex 17/10 · <b id="clk">08:00</b></div>
+<div id="stage"></div>
+<div class="cap" id="cap"></div>
+<script src="field.js"></script>
+</body>
+</html>

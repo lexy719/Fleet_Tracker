@@ -11,30 +11,22 @@ import { ThemeProvider } from "./context/ThemeContext";
 import App from "./App";
 import "./index.css";
 
-// A direct DEV entry, intentionally outside every operational/data provider.
-// Existing application routes and navigation retain their original root tree.
-const EnvironmentLab =
-  import.meta.env.DEV &&
-  window.location.pathname.replace(/\/$/, "") === "/__dev/fleetos-environment"
-    ? lazy(() => import("./dev/fleetos-environment"))
-    : import.meta.env.DEV &&
-        window.location.pathname.replace(/\/$/, "") === "/__dev/fleetos-workspace"
-      ? lazy(() => import("./dev/fleetos-workspace"))
-      : import.meta.env.DEV &&
-          window.location.pathname.replace(/\/$/, "") === "/__dev/fleetos-studio"
-        ? lazy(() => import("./dev/fleetos-studio"))
-        : null;
+// FleetOS Studio is the app. The previous UI stays reachable under /classic while each of its
+// areas is rebuilt in the Studio design language (docs/fleetos-platform-plan.md, Phase 0).
+const path = window.location.pathname.replace(/\/$/, "");
+const CLASSIC = path === "/classic" || path.startsWith("/classic/");
+const DevLab =
+  import.meta.env.DEV && path === "/__dev/fleetos-workspace" ? lazy(() => import("./dev/fleetos-workspace")) : null;
+const StudioApp = lazy(() => import("./studio"));
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    {EnvironmentLab ? (
-      <Suspense
-        fallback={<div style={{ height: "100dvh", background: "#f6f7f4" }} />}
-      >
-        <EnvironmentLab />
+    {!CLASSIC ? (
+      <Suspense fallback={<div style={{ height: "100dvh", background: "#ebe5d8" }} />}>
+        {DevLab ? <DevLab /> : <StudioApp />}
       </Suspense>
     ) : (
-      <BrowserRouter>
+      <BrowserRouter basename="/classic">
         <ThemeProvider>
           <SettingsProvider>
             <OperationsProvider>

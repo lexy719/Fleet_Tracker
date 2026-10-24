@@ -1,0 +1,2531 @@
+/* Mapa vivo (v2). Two themes share every rule through tokens; the map itself is recoloured in LiveMap.tsx. */
+.lm {
+  --font: "Geist", system-ui, sans-serif;
+  --mono: "Geist Mono", ui-monospace, monospace;
+  --ease: cubic-bezier(0.32, 0.72, 0, 1);
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  font-family: var(--font);
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.lm[data-theme="dark"] {
+  --bg: #0d131b;
+  --glass: rgba(15, 21, 29, 0.74);
+  --glass-hi: rgba(255, 255, 255, 0.06);
+  --edge: rgba(255, 255, 255, 0.08);
+  --ink: #eef2f6;
+  --sub: #9aa6b5;
+  --mute: #6b7787;
+  --accent: #ff6a3d;
+  --accent-soft: rgba(255, 106, 61, 0.16);
+  --ok: #4fd396;
+  --puck: #fff3dc;
+  --puck-ink: #0d131b;
+  --halo: rgba(255, 243, 220, 0.18);
+  --shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8), 0 2px 10px -2px rgba(0, 0, 0, 0.5);
+  --shade: linear-gradient(90deg, #0d131b 0, #0d131b 16px, rgba(8, 12, 18, 0.55) 40px, rgba(8, 12, 18, 0) 34%);
+}
+.lm[data-theme="light"] {
+  --bg: #efe9dd;
+  --glass: rgba(250, 247, 240, 0.8);
+  --glass-hi: #fffdf8;
+  --lift: 0 1px 2px rgba(60, 45, 20, 0.08);
+  --edge: rgba(255, 255, 255, 0.9);
+  --ink: #1b1d22;
+  --sub: #555a64;
+  --mute: #868a93;
+  --accent: #e0502a;
+  --accent-soft: rgba(224, 80, 42, 0.12);
+  --ok: #2a7a57;
+  --puck: #1b1d22;
+  --puck-ink: #f6f2ea;
+  --halo: rgba(27, 29, 34, 0.12);
+  --shadow: 0 30px 70px -30px rgba(60, 45, 20, 0.45), 0 2px 8px -2px rgba(60, 45, 20, 0.12);
+  --shade: linear-gradient(90deg, #efe9dd 0, #efe9dd 16px, rgba(239, 233, 221, 0.6) 40px, rgba(239, 233, 221, 0) 34%);
+}
+.lm-map {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.22s var(--ease);
+}
+.lm[data-switching] .lm-map {
+  opacity: 0;
+}
+.lm .maplibregl-ctrl-attrib {
+  opacity: 0.6;
+}
+.lm-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--shade);
+}
+.lm button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+.lm button:focus {
+  outline: none;
+}
+.lm button:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  outline-offset: -2px;
+}
+.lm[data-theme="light"] :is(.lm-stat, .lm-chip, .lm-ava) {
+  box-shadow: var(--lift);
+}
+
+/* ── the sidebar ─────────────────────────────────────────────── */
+.lm-side {
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 3;
+  width: 304px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 14px 14px;
+  border-radius: 26px;
+  background: var(--glass);
+  backdrop-filter: blur(22px) saturate(1.3);
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  animation: lm-side-in 0.45s var(--ease) both;
+}
+@keyframes lm-side-in {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+}
+.lm-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px;
+}
+.lm-brand b {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.lm-mark {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: conic-gradient(from 210deg, var(--ink) 0 70%, var(--accent) 70% 100%);
+  box-shadow: inset 0 0 0 4px var(--glass);
+}
+.lm-clock {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: 600 13px var(--mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--sub);
+}
+.lm-clock i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent);
+}
+.lm-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.lm .lm-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 64px;
+  padding: 10px 10px 9px;
+  border-radius: 16px;
+  text-align: left;
+  background: var(--glass-hi);
+  transition: transform 0.2s var(--ease), background 0.2s;
+}
+.lm .lm-stat:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+.lm .lm-stat:disabled {
+  cursor: default;
+}
+.lm-stat b {
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.lm-stat span {
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--sub);
+}
+.lm-stat[data-tone="bad"] {
+  background: var(--accent-soft);
+}
+.lm-stat[data-tone="bad"] b {
+  color: var(--accent);
+}
+.lm-list {
+  flex: 0 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0 -4px;
+  padding: 0 4px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.lm .lm-row {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 11px;
+  min-height: 60px;
+  padding: 8px 10px;
+  border-radius: 16px;
+  text-align: left;
+  transition: background 0.25s var(--ease);
+  animation: lm-in 0.6s var(--ease) both;
+}
+@keyframes lm-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.lm .lm-row:hover {
+  background: var(--glass-hi);
+}
+.lm .lm-row[data-on] {
+  background: var(--glass-hi);
+  box-shadow: inset 0 0 0 1px var(--edge);
+}
+.lm-ava {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  font: 600 12px var(--mono);
+  color: var(--ink);
+  background: var(--glass-hi);
+  box-shadow: inset 0 0 0 1.5px var(--edge);
+}
+.lm-row[data-late] .lm-ava {
+  color: var(--accent);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+.lm-row[data-on] .lm-ava {
+  color: var(--puck-ink);
+  background: var(--puck);
+}
+.lm-who {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lm-who b {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.lm-who small {
+  overflow: hidden;
+  font-size: 13px;
+  color: var(--sub);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.lm-prog {
+  grid-column: 2 / 4;
+  display: block;
+  height: 2px;
+  margin-top: 2px;
+  overflow: hidden;
+  border-radius: 1px;
+  background: var(--glass-hi);
+}
+.lm-prog i {
+  display: block;
+  height: 100%;
+  background: var(--sub);
+  transform-origin: left;
+  transition: transform 1.9s linear;
+}
+.lm-row[data-late] .lm-prog i {
+  background: var(--accent);
+}
+.lm-eta {
+  font: 600 13px var(--font);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--ink);
+}
+.lm-eta[data-tone="bad"] {
+  color: var(--accent);
+}
+.lm-palcos {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--glass-hi);
+}
+.lm .lm-palcos button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-height: 56px;
+  padding: 8px 0 6px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sub);
+  transition: background 0.2s, color 0.2s;
+}
+.lm .lm-palcos button:hover {
+  color: var(--ink);
+  background: var(--glass-hi);
+}
+.lm-palcos svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── theme switch (to compare) ───────────────────────────────── */
+.lm-theme {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  display: flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+}
+.lm .lm-theme button {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sub);
+  transition: background 0.25s var(--ease), color 0.25s;
+}
+.lm .lm-theme button[aria-checked="true"] {
+  color: var(--puck-ink);
+  background: var(--puck);
+}
+
+/* ── trucks on the map ───────────────────────────────────────── */
+.lm-truck {
+  width: 0;
+  height: 0;
+  cursor: pointer;
+  transition: opacity 0.2s var(--ease);
+}
+.lm-truck[data-off="1"] {
+  opacity: 0;
+  pointer-events: none;
+}
+.lm-shadow {
+  position: absolute;
+  left: -12px;
+  top: 8px;
+  width: 24px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  filter: blur(4px);
+}
+.lm-puck {
+  position: absolute;
+  left: -15px;
+  top: -15px;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--puck);
+  box-shadow: 0 0 0 5px var(--halo), 0 10px 22px -8px rgba(0, 0, 0, 0.7);
+  transition: transform 0.35s var(--ease), background 0.3s;
+}
+.lm-arrow {
+  width: 12px;
+  height: 14px;
+  background: var(--puck-ink);
+  clip-path: polygon(50% 0, 100% 100%, 50% 76%, 0 100%);
+  transform: translateY(-1px) rotate(var(--rot, 0deg));
+}
+/* the whole 44px around the puck is the truck */
+.lm-truck::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  top: -22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+.lm-truck[data-late="1"] .lm-puck {
+  background: var(--accent);
+  box-shadow: 0 0 0 5px var(--accent-soft), 0 10px 22px -8px rgba(0, 0, 0, 0.7);
+}
+.lm-truck[data-late="1"] .lm-arrow {
+  background: #fff;
+}
+.lm-truck:hover .lm-puck,
+.lm-truck[data-focus="1"] .lm-puck {
+  transform: scale(1.18);
+}
+.lm-tag {
+  position: absolute;
+  left: 20px;
+  top: -17px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 10px 6px;
+  border-radius: 11px;
+  white-space: nowrap;
+  background: var(--glass);
+  backdrop-filter: blur(14px);
+  box-shadow: inset 0 1px 0 var(--edge), 0 12px 26px -14px rgba(0, 0, 0, 0.7);
+  transition: opacity 0.3s, transform 0.4s var(--ease);
+}
+.lm-tag b {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--ink);
+}
+.lm-tag small {
+  font: 600 11px var(--font);
+  font-variant-numeric: tabular-nums;
+  color: var(--sub);
+}
+.lm-truck[data-late="1"] .lm-tag small {
+  color: var(--accent);
+}
+.lm[data-following] .lm-truck[data-focus="1"] .lm-tag {
+  opacity: 0;
+  transform: translateX(-6px);
+}
+/* a problem is born where it happens: three rings, then quiet */
+.lm-ring {
+  position: absolute;
+  left: -13px;
+  top: -13px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  pointer-events: none;
+}
+.lm-truck.lm-born .lm-ring {
+  animation: lm-ring 1.5s cubic-bezier(0.2, 0.7, 0.3, 1) 3;
+}
+@keyframes lm-ring {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.6);
+  }
+}
+/* the alert card stands on the truck only while the camera is visiting it */
+.lm-alert {
+  position: absolute;
+  left: 0;
+  bottom: 40px;
+  width: 264px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 14px 13px;
+  border-radius: 16px;
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  box-shadow: inset 0 1px 0 var(--edge), 0 0 0 1.5px var(--accent), var(--shadow);
+  opacity: 0;
+  transform: translate(-50%, 10px) scale(0.96);
+  transform-origin: 50% 100%;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), transform 0.5s var(--ease);
+}
+.lm-alert::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -24px;
+  width: 2px;
+  height: 24px;
+  margin-left: -1px;
+  background: var(--accent);
+}
+.lm-truck[data-visit="1"] .lm-alert {
+  opacity: 1;
+  transform: translate(-50%, 0) scale(1);
+  pointer-events: auto;
+}
+.lm-truck[data-visit="1"] .lm-tag {
+  opacity: 0;
+}
+.lm-alert em {
+  font: 600 10.5px var(--mono);
+  font-style: normal;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.lm-alert strong {
+  font: 650 22px var(--font);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+.lm-alert small {
+  font-size: 13px;
+  color: var(--sub);
+}
+.lm .lm-alert button {
+  align-self: flex-start;
+  min-height: 44px;
+  margin-top: 8px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--puck-ink);
+  background: var(--puck);
+}
+
+/* ── following a truck: the HUD ──────────────────────────────── */
+.lm-hud {
+  position: absolute;
+  left: calc(50% + 168px);
+  bottom: 16px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 12px 12px 14px;
+  border-radius: 24px;
+  white-space: nowrap;
+  background: var(--glass);
+  backdrop-filter: blur(22px) saturate(1.3);
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  transform: translateX(-50%);
+  animation: lm-hud-in 0.55s var(--ease) both 0.6s;
+}
+@keyframes lm-hud-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 18px);
+  }
+}
+.lm-hud[data-leaving] {
+  opacity: 0;
+  transform: translate(-50%, 18px);
+  transition: opacity 0.22s var(--ease), transform 0.22s var(--ease);
+}
+.lm-stat b {
+  animation: lm-bump 0.2s var(--ease);
+}
+@keyframes lm-bump {
+  from {
+    transform: scale(1.18);
+  }
+}
+.lm-ava-lg {
+  width: 46px;
+  height: 46px;
+  font-size: 15px;
+  color: var(--puck-ink);
+  background: var(--puck);
+}
+.lm-hud-who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lm-hud-who b {
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+.lm-hud-who small {
+  font-size: 13px;
+  color: var(--sub);
+}
+.lm-hud-eta,
+.lm-hud-km {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding-left: 18px;
+  border-left: 1px solid var(--glass-hi);
+}
+.lm-hud-eta small,
+.lm-hud-km small {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sub);
+}
+.lm-hud-eta b,
+.lm-hud-km b {
+  font: 650 22px var(--font);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.lm-hud-eta[data-tone="bad"] b,
+.lm-hud-eta[data-tone="bad"] small {
+  color: var(--accent);
+}
+.lm .lm-btn {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--puck-ink);
+  background: var(--puck);
+  transition: transform 0.2s var(--ease);
+}
+.lm .lm-btn:hover {
+  transform: translateY(-1px);
+}
+.lm .lm-btn-quiet {
+  color: var(--ink);
+  background: var(--glass-hi);
+}
+.lm-btn kbd {
+  margin-left: 6px;
+  padding: 1px 5px;
+  border-radius: 5px;
+  font: 500 10.5px var(--mono);
+  color: var(--sub);
+  box-shadow: inset 0 0 0 1px var(--edge);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lm-side,
+  .lm-row,
+  .lm-hud,
+  .lm-truck.lm-born .lm-ring {
+    animation: none !important;
+  }
+}
+
+.lm-sec {
+  display: block;
+  padding: 2px 10px 6px;
+  font: 600 10.5px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sub);
+}
+.lm-spacer {
+  display: none;
+}
+.lm-palcos {
+  margin-top: auto;
+}
+.lm-free > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 6px;
+}
+.lm .lm-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px 0 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--glass-hi);
+  transition: background 0.2s, transform 0.2s var(--ease);
+}
+.lm .lm-chip:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--glass-hi) 100%, var(--ink) 6%);
+}
+.lm .lm-chip:disabled {
+  cursor: default;
+}
+.lm-chip i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ok);
+}
+.lm-free {
+  margin-top: 8px;
+}
+
+/* rings by cause: late (accent), a status change (quiet), setting off (green) */
+.lm-truck[data-ring="ok"] .lm-ring {
+  border-color: var(--sub);
+}
+.lm-truck[data-ring="go"] .lm-ring {
+  border-color: var(--ok);
+}
+.lm-truck[data-ring="ok"].lm-born .lm-ring,
+.lm-truck[data-ring="go"].lm-born .lm-ring {
+  animation-iteration-count: 1;
+}
+.lm-truck[data-ring="go"].lm-born .lm-puck {
+  animation: lm-go 0.25s var(--ease);
+}
+@keyframes lm-go {
+  50% {
+    transform: translateY(-6px);
+  }
+}
+/* an arrival time changed: the tag ticks once */
+.lm-truck.lm-tick .lm-tag small,
+.lm-eta,
+.lm-hud-eta b {
+  animation: lm-tick 0.18s var(--ease);
+}
+@keyframes lm-tick {
+  from {
+    opacity: 0.35;
+    transform: translateY(-3px);
+  }
+}
+/* the HUD keeps its place; its content crossfades when you switch trucks */
+.lm-hud-swap {
+  display: contents;
+}
+.lm-hud-swap > * {
+  animation: lm-swap 0.2s var(--ease) both;
+}
+.lm-hud-swap > :nth-child(2) {
+  animation-delay: 0.04s;
+}
+.lm-hud-swap > :nth-child(3) {
+  animation-delay: 0.08s;
+}
+.lm-hud-swap > :nth-child(4) {
+  animation-delay: 0.12s;
+}
+@keyframes lm-swap {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+/* Agora: what just happened, newest first */
+.lm-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 6px;
+}
+.lm .lm-event {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 10px;
+  border-radius: 12px;
+  text-align: left;
+  animation: lm-event-in 0.42s var(--ease) both;
+  transition: background 0.2s;
+}
+.lm .lm-event:hover {
+  background: var(--glass-hi);
+}
+@keyframes lm-event-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+}
+.lm-event i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--sub);
+}
+.lm-event[data-tone="bad"] i {
+  background: var(--accent);
+}
+.lm-event span {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.lm-event[data-tone="bad"] span {
+  font-weight: 600;
+}
+.lm-event small {
+  font: 600 11px var(--font);
+  font-variant-numeric: tabular-nums;
+  color: var(--sub);
+}
+/* follow again after looking around */
+.lm .lm-resume {
+  position: absolute;
+  top: 16px;
+  left: calc(50% + 168px);
+  z-index: 3;
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--puck-ink);
+  background: var(--puck);
+  box-shadow: var(--shadow);
+  transform: translateX(-50%);
+  animation: lm-resume-in 0.2s var(--ease) both;
+}
+@keyframes lm-resume-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -6px);
+  }
+}
+/* the alert on its way into the sidebar count */
+.lm-ghost {
+  position: fixed !important;
+  bottom: auto !important;
+  z-index: 10;
+  margin: 0 !important;
+  transform: none;
+  transform-origin: 50% 50% !important;
+  pointer-events: none !important;
+}
+.lm-ghost::after {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lm-truck.lm-born .lm-puck {
+    animation: none !important;
+    box-shadow: 0 0 0 7px var(--accent-soft), 0 0 0 2px var(--accent) !important;
+  }
+  .lm-event,
+  .lm-hud-swap > *,
+  .lm-eta,
+  .lm-resume {
+    animation: none !important;
+  }
+  .lm-hud-eta b,
+  .lm-truck.lm-tick .lm-tag small,
+  .lm-stat b {
+    animation: lm-fade 0.15s linear !important;
+  }
+}
+@keyframes lm-fade {
+  from {
+    opacity: 0.4;
+  }
+}
+
+/* while visiting or following, the other trucks step back */
+.lm:is([data-following], [data-visiting]) .lm-truck:not([data-focus="1"]):not([data-visit="1"]) {
+  opacity: 0.35;
+}
+.lm:is([data-following], [data-visiting]) .lm-truck:not([data-focus="1"]):not([data-visit="1"]) .lm-tag {
+  opacity: 0;
+}
+/* the alert stands beside its truck, on the side away from the route */
+.lm-alert {
+  left: auto;
+  right: 34px;
+  bottom: auto;
+  top: 0;
+  transform: translate(0, -50%) scale(0.96);
+  transform-origin: 100% 50%;
+}
+.lm-truck[data-visit="1"] .lm-alert {
+  transform: translate(0, -50%) scale(1);
+}
+.lm-alert::after {
+  left: auto;
+  right: -22px;
+  bottom: auto;
+  top: 50%;
+  width: 22px;
+  height: 2px;
+  margin: -1px 0 0;
+}
+/* one card during the handback: the source vanishes in the frame the ghost appears */
+.lm-truck[data-handing="1"] .lm-alert,
+.lm-truck[data-handing="1"] .lm-tag {
+  transition: none;
+  opacity: 0;
+}
+.lm-chip-late {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-style: normal;
+  font-weight: 650;
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+/* things that move with the map are opaque: no re-blurring on every frame */
+.lm[data-theme="dark"] {
+  --glass-solid: #151d28;
+}
+.lm[data-theme="light"] {
+  --glass-solid: #faf7f0;
+}
+.lm-tag,
+.lm-alert,
+.lm-ghost {
+  backdrop-filter: none !important;
+  background: var(--glass-solid) !important;
+}
+
+/* a tag that would cover a late destination stands on the other side of its puck */
+.lm-truck[data-flip="1"] .lm-tag {
+  left: auto;
+  right: 22px;
+  align-items: flex-end;
+}
+/* names never end in a hard cut: the map fades under the sidebar and at the right edge */
+.lm-map {
+  -webkit-mask-image: linear-gradient(90deg, transparent 316px, #000 352px, #000 calc(100% - 48px), transparent);
+  mask-image: linear-gradient(90deg, transparent 316px, #000 352px, #000 calc(100% - 48px), transparent);
+}
+
+/* ── nothing fixed but the map: a brand chip, a dock, things that float where they belong ── */
+.lm-map {
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent);
+  mask-image: linear-gradient(90deg, #000 calc(100% - 48px), transparent);
+}
+.lm-brandchip {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 16px 0 12px;
+  border-radius: 999px;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  backdrop-filter: blur(18px);
+  font-size: 14px;
+}
+.lm-brandchip b {
+  font-weight: 650;
+}
+.lm-brandchip .lm-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 4px;
+  font: 600 12px var(--font);
+  font-variant-numeric: tabular-nums;
+  color: var(--sub);
+}
+.lm-brandchip .lm-clock i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+}
+/* a notice passes under the brand chip: in, held, out (6 s), tappable while it is there */
+.lm .lm-toast {
+  position: absolute;
+  top: 74px;
+  left: 20px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  max-width: 340px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  cursor: pointer;
+  animation: lm-toast 6s var(--ease) both;
+}
+.lm-toast i {
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--sub);
+}
+.lm-toast[data-tone="bad"] i {
+  background: var(--accent);
+}
+@keyframes lm-toast {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  6%,
+  88% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-4px);
+    visibility: hidden;
+  }
+}
+.lm .lm-back {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  z-index: 4;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  animation: lm-in-down 0.35s var(--ease) both;
+}
+.lm-back kbd,
+.lm-card kbd {
+  font: 600 11px var(--mono);
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: var(--glass-hi);
+  color: var(--sub);
+}
+@keyframes lm-in-down {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}
+.lm .lm-resume {
+  left: 50%;
+  top: 74px;
+  transform: translateX(-50%);
+}
+
+/* the dock */
+.lm-dock {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  z-index: 4;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  border-radius: 999px;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  backdrop-filter: blur(18px);
+}
+.lm .lm-dock button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  height: 46px;
+  padding: 0 18px 0 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sub);
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+.lm .lm-dock button:hover:not(:disabled):not([aria-pressed="true"]):not([aria-expanded="true"]) {
+  color: var(--ink);
+}
+.lm .lm-dock button[aria-pressed="true"],
+.lm .lm-dock button[aria-expanded="true"] {
+  background: var(--ink);
+  color: var(--puck-ink);
+}
+.lm .lm-dock button:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+.lm-dock svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.lm-dock em {
+  font: 600 11px var(--font);
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--glass-hi);
+  animation: lm-tick 0.3s var(--ease);
+}
+.lm-dock button[aria-pressed="true"] em {
+  background: color-mix(in srgb, var(--puck-ink) 14%, transparent);
+}
+.lm-dock button[data-tone="bad"] em {
+  background: var(--accent);
+  color: #fff;
+}
+.lm-dock-sep {
+  width: 1px;
+  margin: 10px 4px;
+  background: var(--edge);
+}
+.lm-palcos-pop {
+  position: absolute;
+  bottom: 86px;
+  left: calc(50% + 150px);
+  z-index: 4;
+  display: grid;
+  gap: 2px;
+  min-width: 200px;
+  padding: 6px;
+  border-radius: 18px;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  animation: lm-pop 0.3s var(--ease) both;
+}
+.lm .lm-palcos-pop button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+}
+.lm .lm-palcos-pop button:hover {
+  background: var(--glass-hi);
+}
+.lm-palcos-pop small {
+  font-size: 12px;
+  color: var(--sub);
+}
+@keyframes lm-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
+}
+
+/* drivers mode: no lines, the trucks speak; routes mode: lines and their names, the trucks step back */
+.lm[data-cat="routes"]:not([data-route]) .lm-truck .lm-tag {
+  opacity: 0;
+}
+.lm[data-cat="routes"]:not([data-route]) .lm-truck {
+  opacity: 0.55;
+}
+.lm[data-route] .lm-truck .lm-tag {
+  opacity: 0;
+}
+
+/* ── the driver's card rides on the truck; its form is the driver's state ── */
+.lm-card {
+  position: absolute;
+  left: 40px;
+  top: 0;
+  transform: translateY(-50%) scale(0.92);
+  transform-origin: 0 50%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), transform 0.5s var(--ease);
+}
+.lm-truck[data-focus="1"] .lm-card {
+  opacity: 1;
+  transform: translateY(-50%);
+  pointer-events: auto;
+  transition-delay: 0.9s;
+}
+.lm-card::before {
+  content: "";
+  position: absolute;
+  left: -22px;
+  top: 50%;
+  width: 22px;
+  height: 1.5px;
+  background: var(--ink);
+  opacity: 0.55;
+}
+.lm-card-in {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 12px 22px 12px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+}
+.lm-ringv {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  flex: none;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  --tone: var(--ok);
+}
+.lm-ringv[data-tone="wait"] {
+  --tone: #f2b84b;
+}
+.lm[data-theme="light"] .lm-ringv[data-tone="wait"] {
+  --tone: #9a6a00;
+}
+.lm-ringv svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+.lm-ringv circle {
+  fill: none;
+  stroke-width: 7;
+}
+.lm-ringv .t {
+  stroke: var(--glass-hi);
+}
+.lm-ringv .f {
+  stroke: var(--tone);
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.6s var(--ease);
+}
+.lm-ringv b {
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.lm-ringv small {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--sub);
+}
+.lm-card-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.lm-card-txt > b {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.lm-card-txt small {
+  font-size: 13px;
+  font-weight: 550;
+  color: var(--sub);
+  font-variant-numeric: tabular-nums;
+}
+.lm-card-txt small em {
+  font-style: normal;
+  font-weight: 650;
+  color: var(--accent);
+}
+.lm-card-txt .st {
+  font-weight: 650;
+}
+.lm-card-txt .st[data-tone="go"] {
+  color: var(--ok);
+}
+.lm-card-txt .st[data-tone="wait"] {
+  color: #f2b84b;
+}
+.lm[data-theme="light"] .lm-card-txt .st[data-tone="wait"] {
+  color: #9a6a00;
+}
+.lm-card-acts {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.lm .lm-card-acts button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--ink);
+  color: var(--puck-ink);
+}
+.lm .lm-card-acts button.q {
+  background: var(--glass-hi);
+  color: var(--ink);
+}
+
+/* ── routes: names on the lines; the route seen whole has its ends pinned ── */
+.lm .lm-rname {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 7px 12px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  cursor: pointer;
+  animation: lm-fade-in 0.35s var(--ease) both;
+}
+.lm-rname b {
+  font-size: 13px;
+  font-weight: 650;
+}
+.lm-rname small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sub);
+  font-variant-numeric: tabular-nums;
+}
+.lm-rname[data-late="1"] small {
+  color: var(--accent);
+}
+.lm-stub {
+  display: flex;
+  flex-direction: column;
+  min-width: 140px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  animation: lm-fade-in 0.45s 1.4s var(--ease) both;
+}
+.lm-stub span {
+  font: 600 10px var(--mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sub);
+}
+.lm-stub b {
+  margin-top: 4px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.lm-stub small {
+  margin-top: 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sub);
+}
+.lm-stub strong {
+  margin-top: 8px;
+  font-size: 22px;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+.lm-stub strong em {
+  font-size: 13px;
+  font-style: normal;
+  color: var(--accent);
+}
+.lm-live {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px 8px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  animation: lm-fade-in 0.45s 1.7s var(--ease) both;
+}
+.lm-live i {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 750;
+  background: var(--puck);
+  color: var(--puck-ink);
+}
+.lm-live b {
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  font-weight: 650;
+}
+.lm-live b small {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--sub);
+  font-variant-numeric: tabular-nums;
+}
+.lm-live svg {
+  width: 120px;
+  height: 12px;
+}
+.lm-live svg line {
+  stroke: var(--glass-hi);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.lm-live svg line.d {
+  stroke: var(--ink);
+}
+.lm-live svg circle {
+  fill: var(--puck);
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+.lm-live em {
+  font-size: 12.5px;
+  font-style: normal;
+  font-weight: 650;
+  color: #f2b84b;
+}
+.lm-live em[data-tone="go"] {
+  color: var(--ok);
+}
+.lm[data-theme="light"] .lm-live em {
+  color: #9a6a00;
+}
+.lm[data-theme="light"] .lm-live em[data-tone="go"] {
+  color: var(--ok);
+}
+
+/* drivers mode: the free ones, where they are */
+.lm .lm-freepin {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border-radius: 999px;
+  white-space: nowrap;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  cursor: pointer;
+  animation: lm-fade-in 0.4s var(--ease) both;
+}
+.lm-freepin i {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 750;
+  background: var(--puck);
+  color: var(--puck-ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 55%, transparent);
+}
+.lm-freepin span {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.lm-freepin b {
+  font-size: 12.5px;
+  font-weight: 650;
+}
+.lm-freepin small {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ok);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lm .lm-toast,
+  .lm .lm-back,
+  .lm-palcos-pop,
+  .lm .lm-rname,
+  .lm-stub,
+  .lm-live,
+  .lm .lm-freepin {
+    animation-duration: 0.01s;
+    animation-delay: 0s;
+  }
+  .lm-truck[data-focus="1"] .lm-card {
+    transition-delay: 0s;
+  }
+}
+
+/* map markers own their transform (that is their position): they arrive by opacity only */
+@keyframes lm-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+.lm-stub,
+.lm-live {
+  transition: opacity 0.3s var(--ease);
+}
+
+/* ── Camiões: the machines, parked ones included; square pucks (people are round) ── */
+.lm-park {
+  position: relative;
+  width: max-content;
+  --st: var(--ok);
+}
+.lm-park[data-state="next"] {
+  --st: #7aa7ff;
+}
+.lm-park[data-state="shop"] {
+  --st: var(--accent);
+}
+.lm[data-theme="light"] .lm-park[data-state="next"] {
+  --st: #3b6fd8;
+}
+.lm .lm-park-b {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border-radius: 12px;
+  white-space: nowrap;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  cursor: pointer;
+  animation: lm-fade-in 0.4s var(--ease) both;
+  transform: translateX(-16px);
+}
+.lm-park .sq {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--puck);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--st) 60%, transparent);
+}
+.lm-park .sq svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: var(--puck-ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.lm-park .lab {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+.lm-park .lab b {
+  font-size: 12.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.lm-park .lab small {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--st);
+}
+.lm-park .warn {
+  margin-left: 2px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 650;
+  color: #fff;
+  background: var(--accent);
+}
+.lm-park .lm-card {
+  left: 120px;
+}
+.lm-park[data-focus="1"] .lm-card {
+  opacity: 1;
+  transform: translateY(-50%);
+  pointer-events: auto;
+  transition-delay: 1s;
+}
+.lm[data-truck] .lm-park:not([data-focus="1"]),
+.lm[data-truck] .lm-truck {
+  opacity: 0.3;
+}
+.lm[data-cat="trucks"] .lm-truck[data-machine="1"] .lm-tag small {
+  color: var(--sub);
+}
+
+/* the truck's panel: a fuel arc with its range, the plate and the machine's numbers, its deadlines */
+.lm-panel {
+  gap: 22px;
+  padding: 14px 22px 14px 18px;
+  border-radius: 28px;
+  align-items: center;
+}
+.lm-fuel {
+  position: relative;
+  width: 112px;
+  display: grid;
+  justify-items: center;
+}
+.lm-fuel svg {
+  width: 112px;
+  height: 64px;
+}
+.lm-fuel path {
+  fill: none;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+.lm-fuel .t {
+  stroke: var(--glass-hi);
+}
+.lm-fuel .f {
+  stroke: var(--ink);
+}
+.lm-fuel[data-low="1"] .f {
+  stroke: var(--accent);
+}
+.lm-fuel > b {
+  margin-top: -34px;
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.lm-fuel > b small {
+  font-size: 13px;
+  color: var(--sub);
+}
+.lm-fuel > small {
+  margin-top: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sub);
+}
+.lm-panel-id {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.lm-panel-id > b {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.lm-panel-id > small {
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--sub);
+}
+.lm-panel-id .st {
+  font-weight: 650;
+  color: var(--ok);
+}
+.lm-panel[data-state="shop"] .lm-panel-id .st {
+  color: var(--accent);
+}
+.lm-panel-nums {
+  display: flex;
+  gap: 14px;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 550;
+  color: var(--sub);
+}
+.lm-panel-nums b {
+  color: var(--ink);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.lm-panel-docs {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 6px 10px;
+  align-items: end;
+}
+.lm-panel-docs > span {
+  display: grid;
+  justify-items: center;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: var(--glass-hi);
+  font-size: 11px;
+  color: var(--sub);
+}
+.lm-panel-docs > span b i {
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  color: var(--sub);
+}
+.lm-panel-docs > span b {
+  font-size: 18px;
+  font-weight: 750;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.lm-panel-docs > span[data-soon="1"] b,
+.lm-panel-docs > span[data-soon="1"] small {
+  color: var(--accent);
+}
+.lm-panel-docs small {
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.lm-panel-docs em {
+  grid-column: 1 / -1;
+  font: 600 9.5px var(--mono);
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sub);
+  opacity: 0.7;
+  text-align: center;
+}
+.lm-panel-acts {
+  flex-direction: column;
+  margin-top: 0;
+}
+
+/* a yard: parked trucks too close to read apart gather into one chip */
+.lm .lm-yard {
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: center;
+  column-gap: 10px;
+  width: max-content;
+  padding: 7px 14px 7px 8px;
+  border-radius: 14px;
+  white-space: nowrap;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: inset 0 1px 0 var(--edge), var(--shadow);
+  cursor: pointer;
+  animation: lm-fade-in 0.35s var(--ease) both;
+}
+.lm-yard .dots {
+  grid-row: span 2;
+  display: grid;
+  grid-template-columns: repeat(2, 12px);
+  gap: 3px;
+}
+.lm-yard .dots i {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--puck);
+  box-shadow: inset 0 0 0 2.5px var(--ok);
+}
+.lm-yard .dots i[data-state="shop"] {
+  box-shadow: inset 0 0 0 2.5px var(--accent);
+}
+.lm-yard .dots i[data-state="next"] {
+  box-shadow: inset 0 0 0 2.5px #7aa7ff;
+}
+.lm-yard b {
+  font-size: 13px;
+  font-weight: 700;
+  text-align: left;
+}
+.lm-yard small {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--sub);
+  text-align: left;
+}
+
+/* ── a route seen whole: its bottom band (film title, facts, the trip as a day line) ── */
+.lm[data-route] .lm-truck .lm-tag,
+.lm[data-route] .lm-rname {
+  opacity: 0;
+}
+.lm-routeband {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  height: 460px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 96px 104px;
+  pointer-events: none;
+  background: linear-gradient(transparent 0, color-mix(in srgb, var(--bg) 88%, transparent) 90px, var(--bg) 150px);
+  animation: lm-band-in 0.6s 0.9s var(--ease) both;
+}
+.lm-routeband > * {
+  pointer-events: auto;
+}
+@keyframes lm-band-in {
+  from {
+    opacity: 0;
+  }
+}
+.lm-rb-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+.lm-rb-title h1 {
+  font-size: 68px;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  white-space: nowrap;
+  animation: lm-rise 0.7s 1s var(--ease) both;
+}
+.lm-rb-title h1 span {
+  color: var(--sub);
+  font-weight: 500;
+}
+.lm-rb-title p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 17px;
+  font-weight: 550;
+  color: var(--sub);
+  white-space: nowrap;
+  animation: lm-rise 0.6s 1.15s var(--ease) both;
+}
+.lm-rb-title p b {
+  color: var(--ink);
+  font-weight: 650;
+}
+.lm-rb-title p em {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 8px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-style: normal;
+  font-weight: 650;
+  --tone: #f2b84b;
+  color: var(--tone);
+  background: color-mix(in srgb, var(--tone) 15%, transparent);
+}
+.lm-rb-title p em[data-tone="go"] {
+  --tone: var(--ok);
+}
+.lm[data-theme="light"] .lm-rb-title p em[data-tone="wait"] {
+  --tone: #9a6a00;
+}
+.lm-rb-title p em i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--tone);
+  animation: lm-breath 1.6s ease-in-out infinite;
+}
+@keyframes lm-breath {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+}
+@keyframes lm-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.lm-rb-facts {
+  display: flex;
+  align-items: flex-end;
+  gap: 34px;
+  animation: lm-rise 0.6s 1.2s var(--ease) both;
+}
+.lm-rb-facts > span {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+.lm-rb-facts small {
+  font: 600 11px var(--mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sub);
+}
+.lm-rb-facts small em {
+  margin-left: 8px;
+  font-style: normal;
+  letter-spacing: 0;
+  color: var(--accent);
+}
+.lm-rb-facts b {
+  margin-top: 4px;
+  font-size: 40px;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  animation: lm-tick 0.4s var(--ease);
+}
+.lm-rb-facts b i {
+  margin-left: 3px;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+  color: var(--sub);
+  letter-spacing: 0;
+}
+.lm-rb-facts span[data-late] b {
+  color: var(--accent);
+}
+.lm .lm-rb-btn {
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 650;
+  white-space: nowrap;
+  background: var(--ink);
+  color: var(--puck-ink);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.lm .lm-rb-btn.q {
+  background: var(--glass-hi);
+  color: var(--ink);
+}
+.lm .lm-rb-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -12px rgba(0, 0, 0, 0.6);
+}
+.lm .lm-rb-btn:active {
+  transform: scale(0.96);
+}
+
+/* the trip as a day line: real plan segments, drawn left to right; past ones go thin */
+.lm-rb-day {
+  position: relative;
+  height: 104px;
+  margin-top: 22px;
+}
+.lm-rb-day svg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 22px;
+  width: 100%;
+  height: 40px;
+  overflow: visible;
+}
+.lm-rb-day .base {
+  stroke: var(--glass-hi);
+  stroke-width: 2;
+}
+.lm-rb-day .seg {
+  stroke-linecap: round;
+  stroke: var(--ink);
+  stroke-width: 6;
+  animation: lm-draw 0.5s var(--ease) both;
+}
+@keyframes lm-draw {
+  from {
+    opacity: 0;
+  }
+}
+.lm-rb-day .seg.break {
+  stroke: #f2b84b;
+  stroke-width: 5;
+  stroke-dasharray: 2 7;
+}
+.lm[data-theme="light"] .lm-rb-day .seg.break {
+  stroke: #9a6a00;
+}
+.lm-rb-day .seg.stop,
+.lm-rb-day .seg.wait,
+.lm-rb-day .seg.handover {
+  stroke: #7aa7ff;
+  stroke-opacity: 0.7;
+}
+.lm[data-theme="light"] .lm-rb-day .seg.stop,
+.lm[data-theme="light"] .lm-rb-day .seg.wait,
+.lm[data-theme="light"] .lm-rb-day .seg.handover {
+  stroke: #3b6fd8;
+}
+.lm-rb-day .seg.fuel {
+  stroke: var(--ok);
+}
+.lm-rb-day .seg.past {
+  stroke-width: 2;
+  stroke-opacity: 0.45;
+}
+.lm-rb-day .end {
+  fill: var(--bg);
+  stroke: var(--ink);
+  stroke-width: 3.5;
+}
+.lm-rb-hour {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font: 600 10.5px var(--font);
+  color: var(--sub);
+}
+.lm-rb-now {
+  position: absolute;
+  top: 6px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font: 700 10.5px var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink);
+  transition: left 1.8s linear;
+}
+.lm-rb-now i {
+  order: 2;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-top: 13px;
+  background: var(--ink);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--ink) 18%, transparent);
+  animation: lm-now 2s ease-in-out infinite;
+}
+@keyframes lm-now {
+  50% {
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--ink) 4%, transparent);
+  }
+}
+.lm-rb-mark {
+  position: absolute;
+  top: 66px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  white-space: nowrap;
+  padding: 4px 8px;
+  border-radius: 10px;
+  cursor: default;
+  animation: lm-rise 0.45s var(--ease) both;
+  transition: background 0.2s;
+}
+.lm-rb-mark[data-edge="l"] {
+  transform: translateX(-8px);
+  align-items: flex-start;
+  text-align: left;
+}
+.lm-rb-mark[data-edge="r"] {
+  transform: translateX(calc(-100% + 8px));
+  align-items: flex-end;
+  text-align: right;
+}
+.lm-rb-mark b {
+  font-size: 14px;
+  font-weight: 700;
+}
+.lm-rb-mark small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--sub);
+  font-variant-numeric: tabular-nums;
+}
+.lm-rb-mark[data-kind="break"] b {
+  color: #f2b84b;
+}
+.lm[data-theme="light"] .lm-rb-mark[data-kind="break"] b {
+  color: #9a6a00;
+}
+.lm-rb-mark[data-kind="fuel"] b {
+  color: var(--ok);
+}
+.lm-rb-mark[data-hot] {
+  background: var(--glass-hi);
+}
+
+/* pings on the line: born in travel order, a little sonar each, then still; hover lights its label */
+.lm-ping {
+  position: relative;
+  width: 0;
+  height: 0;
+  --tone: var(--ink);
+  pointer-events: auto;
+}
+.lm-ping[data-kind="break"] {
+  --tone: #f2b84b;
+}
+.lm[data-theme="light"] .lm-ping[data-kind="break"] {
+  --tone: #9a6a00;
+}
+.lm-ping[data-kind="fuel"] {
+  --tone: var(--ok);
+}
+.lm-ping b {
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 5px;
+  background: var(--tone);
+  box-shadow: 0 0 0 3px var(--bg);
+  animation: lm-fade-in 0.3s var(--d) var(--ease) both;
+  transition: box-shadow 0.25s var(--ease);
+}
+.lm-ping[data-kind="stop"] b,
+.lm-ping[data-kind="pickup"] b,
+.lm-ping[data-kind="delivery"] b {
+  border-radius: 50%;
+}
+.lm-ping i {
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--tone);
+  opacity: 0;
+  animation: lm-sonar 1.4s var(--d) cubic-bezier(0.2, 0.7, 0.3, 1) 2 both;
+}
+.lm-ping i + i {
+  animation-delay: calc(var(--d) + 0.35s);
+}
+@keyframes lm-sonar {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+.lm-ping[data-hot="1"] b {
+  box-shadow: 0 0 0 3px var(--bg), 0 0 0 8px color-mix(in srgb, var(--tone) 45%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lm-routeband,
+  .lm-rb-title h1,
+  .lm-rb-title p,
+  .lm-rb-facts,
+  .lm-rb-day .seg,
+  .lm-rb-mark,
+  .lm-ping b {
+    animation-duration: 0.01s;
+    animation-delay: 0s;
+  }
+  .lm-ping i,
+  .lm-rb-now i,
+  .lm-rb-title p em i {
+    animation: none;
+  }
+}
+
+/* ── every touch answers: marker wrappers (the map owns their transform), press, hover, data heartbeat ── */
+.lm-rname-m,
+.lm-freepin-m,
+.lm-yard-m {
+  width: max-content;
+}
+.lm .lm-rname {
+  animation: lm-name-in 0.5s var(--ease) both;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+@keyframes lm-name-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+  }
+}
+.lm .lm-rname[data-hot="1"],
+.lm .lm-rname:hover {
+  transform: translateY(-3px);
+  box-shadow: inset 0 1px 0 var(--edge), 0 16px 34px -14px rgba(0, 0, 0, 0.7);
+}
+.lm-comet {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ink) 25%, transparent), 0 0 24px 6px color-mix(in srgb, var(--ink) 35%, transparent);
+  pointer-events: none;
+}
+.lm .lm-dock button:active:not(:disabled),
+.lm .lm-rname:active,
+.lm .lm-freepin:active,
+.lm .lm-yard:active,
+.lm .lm-park-b:active,
+.lm .lm-card-acts button:active,
+.lm .lm-back:active,
+.lm .lm-toast:active {
+  transform: scale(0.95);
+}
+.lm .lm-dock button,
+.lm .lm-freepin,
+.lm .lm-yard,
+.lm .lm-back {
+  transition: transform 0.2s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease), box-shadow 0.25s var(--ease);
+}
+.lm .lm-freepin:hover,
+.lm .lm-yard:hover,
+.lm .lm-park-b:hover {
+  box-shadow: inset 0 1px 0 var(--edge), 0 16px 34px -14px rgba(0, 0, 0, 0.7);
+}
+.lm .lm-park-b {
+  transition: transform 0.2s var(--ease), box-shadow 0.25s var(--ease);
+}
+.lm-truck .lm-tag {
+  transition: opacity 0.3s, transform 0.35s var(--ease);
+}
+.lm-truck:hover .lm-tag {
+  transform: translateX(3px);
+}
+/* the live dot: a ripple at each data refresh */
+.lm-brandchip .lm-clock i {
+  position: relative;
+}
+.lm-brandchip .lm-clock i::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ok);
+  animation: lm-heart 1.2s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+@keyframes lm-heart {
+  from {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(3.2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lm .lm-rname,
+  .lm-brandchip .lm-clock i::after {
+    animation: none;
+  }
+}
+
+/* Camiões: each truck wears its fuel as a ring (on the road and parked) */
+.lm[data-cat="trucks"] .lm-truck[data-machine="1"] .lm-puck {
+  box-shadow: 0 0 0 5px var(--halo), 0 10px 22px -8px rgba(0, 0, 0, 0.7);
+}
+.lm[data-cat="trucks"] .lm-truck[data-machine="1"] .lm-puck::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  background: conic-gradient(var(--fuel-tone, var(--ok)) calc(var(--fuel, 0) * 360deg), color-mix(in srgb, var(--ink) 12%, transparent) 0);
+  -webkit-mask: radial-gradient(circle, transparent 18px, #000 19px);
+  mask: radial-gradient(circle, transparent 18px, #000 19px);
+  animation: lm-fuel-in 0.9s var(--ease) both;
+}
+.lm-park .sq {
+  position: relative;
+}
+.lm-park .sq::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 11px;
+  background: conic-gradient(var(--st) calc(var(--fuel, 0) * 360deg), color-mix(in srgb, var(--ink) 12%, transparent) 0);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 3px;
+}
+@keyframes lm-fuel-in {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.8);
+  }
+}
+
+/* a yard opened into its bays: each truck in its row; tap a bay → that truck */
+.lm .lm-yard.open {
+  display: block;
+  width: 320px;
+  padding: 10px;
+  border-radius: 18px;
+  cursor: default;
+  animation: lm-yard-open 0.45s var(--ease) both;
+}
+@keyframes lm-yard-open {
+  from {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+}
+.lm-yard .yh {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  align-items: center;
+  column-gap: 10px;
+  padding: 2px 4px 8px;
+}
+.lm-yard .bays {
+  display: grid;
+  gap: 4px;
+}
+.lm-yard .bay {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: var(--glass-hi);
+  cursor: pointer;
+  --st: var(--ok);
+  animation: lm-rise 0.4s calc(0.08s * var(--i) + 0.1s) var(--ease) both;
+  transition: transform 0.2s var(--ease), background 0.2s;
+}
+.lm-yard .bay:hover {
+  transform: translateX(3px);
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+.lm-yard .bay:active {
+  transform: scale(0.97);
+}
+.lm-yard .bay[data-state="shop"] {
+  --st: var(--accent);
+}
+.lm-yard .bay[data-state="next"] {
+  --st: #7aa7ff;
+}
+.lm-yard .bay .sq {
+  grid-row: span 2;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--puck);
+  box-shadow: 0 0 0 2.5px color-mix(in srgb, var(--st) 70%, transparent);
+}
+.lm-yard .bay b {
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.lm-yard .bay small {
+  grid-column: 2;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--st);
+}
+.lm-yard .bay .fbar {
+  grid-column: 3;
+  grid-row: 1;
+  width: 64px;
+  height: 6px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+  overflow: hidden;
+}
+.lm-yard .bay .fbar i {
+  display: block;
+  height: 100%;
+  width: calc(var(--fuel) * 100%);
+  border-radius: 3px;
+  background: var(--ink);
+  animation: lm-fill 0.8s calc(0.08s * var(--i) + 0.3s) var(--ease) both;
+}
+@keyframes lm-fill {
+  from {
+    width: 0;
+  }
+}
+.lm-yard .bay em {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: end;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-style: normal;
+  font-weight: 650;
+  color: #fff;
+  background: var(--accent);
+}
+/* several free drivers at one place: their faces overlap, names in one line */
+.lm-freepin .avs {
+  display: flex;
+}
+.lm-freepin .avs i + i {
+  margin-left: -10px;
+}
+
+/* ── Camiões: a field of pings; the scene is the camera. Tap a ping → the truck up close ── */
+.lm-map canvas {
+  transition: filter 0.9s var(--ease);
+}
+.lm[data-cat="trucks"]:not([data-truck]):not([data-following]) .lm-map canvas {
+  filter: brightness(0.78) saturate(0.75);
+}
+.lm[data-theme="light"][data-cat="trucks"]:not([data-truck]):not([data-following]) .lm-map canvas {
+  filter: brightness(0.93) saturate(0.7);
+}
+.lm[data-cat="trucks"] .lm-park .lm-park-b {
+  position: relative;
+  width: 0;
+  height: 0;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+  transform: none;
+  animation: none;
+}
+.lm[data-cat="trucks"] .lm-park .lm-park-b .lab,
+.lm[data-cat="trucks"] .lm-park .lm-park-b .warn {
+  position: absolute;
+  left: 16px;
+  top: -16px;
+  padding: 4px 9px;
+  border-radius: 9px;
+  white-space: nowrap;
+  background: var(--glass-solid, var(--glass));
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateX(-4px);
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease), transform 0.25s var(--ease);
+}
+.lm[data-cat="trucks"] .lm-park .lm-park-b .warn {
+  top: 18px;
+}
+.lm[data-cat="trucks"] .lm-park .lm-park-b:hover .lab,
+.lm[data-cat="trucks"] .lm-park .lm-park-b:hover .warn {
+  opacity: 1;
+  transform: none;
+}
+/* the ping: a dot in the truck's state colour; it lands, sends one wave, then breathes a wave now and then */
+.lm[data-cat="trucks"] .lm-park .sq {
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--st);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--bg) 70%, transparent), 0 0 18px 2px color-mix(in srgb, var(--st) 55%, transparent);
+  animation: lm-land 0.55s var(--d, 0s) cubic-bezier(0.34, 1.5, 0.64, 1) both;
+  cursor: pointer;
+}
+.lm[data-cat="trucks"] .lm-park .sq svg {
+  display: none;
+}
+.lm[data-cat="trucks"] .lm-park .sq::after {
+  inset: -3px;
+  border-radius: 50%;
+  padding: 0;
+  background: none;
+  -webkit-mask: none;
+  mask: none;
+  border: 2px solid var(--st);
+  animation: lm-ping-wave 3.6s var(--d, 0s) cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+}
+@keyframes lm-land {
+  from {
+    opacity: 0;
+    transform: translateY(-26px) scale(0.4);
+  }
+}
+@keyframes lm-ping-wave {
+  0% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+  45%,
+  100% {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+.lm[data-cat="trucks"] .lm-park .lm-park-b:hover .sq {
+  transform: scale(1.35);
+  transition: transform 0.2s var(--ease);
+}
+/* trucks on the road are pings too (white: moving), with their plate on hover */
+.lm[data-cat="trucks"]:not([data-following]) .lm-truck .lm-tag {
+  opacity: 0;
+}
+.lm[data-cat="trucks"]:not([data-following]) .lm-truck:hover .lm-tag {
+  opacity: 1;
+}
+.lm[data-cat="trucks"]:not([data-following]) .lm-truck .lm-puck {
+  left: -8px;
+  top: -8px;
+  width: 16px;
+  height: 16px;
+  background: var(--ink);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--bg) 70%, transparent), 0 0 18px 2px color-mix(in srgb, var(--ink) 45%, transparent);
+}
+.lm[data-cat="trucks"]:not([data-following]) .lm-truck .lm-puck .lm-arrow,
+.lm[data-cat="trucks"]:not([data-following]) .lm-truck .lm-shadow,
+.lm[data-cat="trucks"]:not([data-following]) .lm-truck[data-machine="1"] .lm-puck::after {
+  display: none;
+}
+.lm[data-cat="trucks"]:not([data-following]) .lm-truck .lm-puck::before {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid var(--ink);
+  animation: lm-ping-wave 3.6s 1.6s cubic-bezier(0.2, 0.7, 0.3, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lm[data-cat="trucks"] .lm-park .sq,
+  .lm[data-cat="trucks"] .lm-park .sq::after,
+  .lm[data-cat="trucks"] .lm-truck .lm-puck::before {
+    animation: none;
+  }
+}
